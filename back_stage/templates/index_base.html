@@ -1,0 +1,379 @@
+{% load static  %}
+{#{% load blog_tags %}#}
+<!doctype html>
+{#<html lang="en" class="fixed">#}
+<html lang="en" class="fixed left-sidebar-collapsed">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{% block title %}cc{% endblock %}</title>
+    <link rel="apple-touch-icon" sizes="120x120" href={% static "favicon/apple-icon-120x120.png" %}>
+    <link rel="icon" type="/static/image/png" sizes="192x192" href={% static "favicon/android-icon-192x192.png" %}>
+    <link rel="icon" type="/static/image/png" sizes="32x32" href={% static "favicon/favicon-32x32.png" %}>
+    <link rel="icon" type="/static/image/png" sizes="16x16" href={% static "favicon/favicon-16x16.png" %}>
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href={% static "vendor/animate.css/animate.css" %}>
+    <link rel="stylesheet" href={% static "vendor/data-table/media/css/dataTables.bootstrap.min.css" %}>
+    <link rel="stylesheet" href={% static "vendor/data-table/extensions/Responsive/css/responsive.bootstrap.min.css" %}>
+    <link rel="stylesheet" href={% static "stylesheets/css/style.css" %}>
+
+</head>
+
+<body>
+<div class="wrap">
+    <div class="page-header">
+        <div class="leftside-header">
+            <div class="logo">
+{#                <a href="{% url "index" %}" class="on-click">#}
+{#                    <img alt="logo" id="img-4" src={% static 'images/mh2.png' %} />#}
+{#                    <img alt="logo" id="img-1" src={% static 'images/yuepu3.png' %} />#}
+
+                </a>
+            </div>
+
+
+
+            <div id="menu-toggle" class="visible-xs toggle-left-sidebar" data-toggle-class="left-sidebar-open" data-target="html">
+                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+        </div>
+        <div class="rightside-header">
+            <div class="header-middle"></div>
+            <div class="header-section" id="search-headerbox">
+                <input type="text" name="search" id="search" placeholder="Search...">
+                <i class="fa fa-search search" id="search-icon" aria-hidden="true"></i>
+                <div class="header-separator"></div>
+            </div>
+            <div class="header-section hidden-xs" id="notice-headerbox">
+
+
+
+                <div class="header-separator"></div>
+            </div>
+            <div class="header-section" id="user-headerbox">
+                <div class="user-header-wrap">
+                    <div class="user-photo">
+                        <img src={% static "images/cc2.jpg" %} alt="Jane" />
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">CC</span>
+                        <span class="user-profile">Admin</span>
+                    </div>
+                    <i class="fa fa-plus icon-open" aria-hidden="true"></i>
+                    <i class="fa fa-minus icon-close" aria-hidden="true"></i>
+                </div>
+                <div class="user-options dropdown-box">
+                    <div class="drop-content basic">
+                        <ul>
+                            <li> <a href="pages_user-profile.html"><i class="fa fa-user" aria-hidden="true"></i> Profile</a></li>
+                            <li> <a href="pages_lock-screen.html"><i class="fa fa-lock" aria-hidden="true"></i> Lock Screen</a></li>
+                            <li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Configurations</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="header-separator"></div>
+            <div class="header-section">
+{#                <a href="{% url "django.contrib.auth.views.logout" %}"><i class="fa fa-sign-out log-out" aria-hidden="true"></i></a>#}
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+
+        <div class="left-sidebar">
+            <div class="left-sidebar-header">
+
+                <div class="btn btn-o btn-primary btn-xs btn-animated mb-xs" data-img="img-4" data-animated-class="rotateOut">导航</div>
+
+                <div class="left-sidebar-toggle c-hamburger c-hamburger--htla hidden-xs" data-toggle-class="left-sidebar-collapsed" data-target="html">
+                    <span></span>
+                </div>
+            </div>
+            <div id="left-nav" class="nano">
+                <div class="nano-content">
+                    <nav>
+                        <ul class="nav" id="main-nav">
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-cubes" aria-hidden="true"></i><span>看板</span></a>
+
+                            </li>
+                            <li class=" has-child-item close-item">
+                                <a>
+                                    <i class="fa fa-sitemap" aria-hidden="true"></i>
+                                    <span>料号管理</span>
+                                </a>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <a>上传料号</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li class="has-child-item close-item">
+                                                <a>excel</a>
+                                                <ul class="nav child-nav level-3 ">
+{#                                                    <li><a href="{% url "tools:excel_combine" %}">工作表合并</a></li>#}
+                                                    <li><a href="#">工作表拆分（开发中）</a></li>
+{#                                                    <li><a href="{% url "tools:excel_vlookup" %}">vlookup工具</a></li>#}
+                                                </ul>
+                                            </li>
+                                            <li class="has-child-item close-item">
+                                                <a>txt</a>
+                                                <ul class="nav child-nav level-3 ">
+                                                    <li><a href="#">合并（开发中）</a></li>
+                                                    <li><a href="#">拆分（开发中）</a></li>
+                                                    <li><a href="#">Item 3</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">文件夹比对（开发中）</a></li>
+
+                                        </ul>
+                                    </li>
+
+
+                                </ul>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <a>权限管理</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li class="has-child-item close-item">
+                                                <a>excel</a>
+                                                <ul class="nav child-nav level-3 ">
+{#                                                    <li><a href="{% url "tools:excel_combine" %}">工作表合并</a></li>#}
+                                                    <li><a href="#">工作表拆分（开发中）</a></li>
+{#                                                    <li><a href="{% url "tools:excel_vlookup" %}">vlookup工具</a></li>#}
+                                                </ul>
+                                            </li>
+                                            <li class="has-child-item close-item">
+                                                <a>txt</a>
+                                                <ul class="nav child-nav level-3 ">
+                                                    <li><a href="#">合并（开发中）</a></li>
+                                                    <li><a href="#">拆分（开发中）</a></li>
+                                                    <li><a href="#">Item 3</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">文件夹比对（开发中）</a></li>
+
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li class=" has-child-item close-item">
+                                <a>
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    <span>客户管理</span>
+                                </a>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <a>客户统计</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li><a href="{% url "back_stage:index" %}">瑞小云-信有钱宝</a></li>
+                                            <li><a href="{% url "back_stage:index" %}">瑞鹏-信有钱宝</a></li>
+
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-child-item close-item">
+                                        <a>流量相关查询</a>
+                                        <ul class="nav child-nav level-2 ">
+{#                                            <li><a href="{% url "raiyiwork:db_center_dg_ld_js_gs_tj" %}">落档、结算查询</a></li>#}
+{#                                            <li><a href="{% url "raiyiwork:db_center_PredictYieldRatio" %}">预计结酬比查询</a></li>#}
+                                            <li class="has-child-item close-item">
+                                                <a>Option 3</a>
+                                                <ul class="nav child-nav level-3 ">
+                                                    <li><a href="#">Item 1</a></li>
+                                                    <li><a href="#">Item 2</a></li>
+                                                    <li><a href="#">Item 3</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+{#                                <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>手机号查询</span></a>#}
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="charts_chart-js.html">CharJS</a></li>
+                                    <li><a href="charts_morris.html">Morris</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-columns" aria-hidden="true"></i><span>订单管理</span></a>
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="forms_layouts.html">报价管理</a></li>
+                                    <li><a href="forms_elements.html">订单管理</a></li>
+                                    <li><a href="../excel_combine">售后管理</a></li>
+                                    <li><a href="forms_validation.html">接单配置</a></li>
+                                    <li><a href="forms_validation.html">派单配置</a></li>
+                                    <li><a href="forms_validation.html">制作配置</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-table" aria-hidden="true"></i><span>EQ管理</span></a>
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="../db_center_dg_ld_js_gs_tj">发展、落档、结算个数查询</a></li>
+                                    <li><a href="../db_center_PredictYieldRatio">预计结酬比</a></li>
+                                    <li><a href="tables_responsive.html">Responsive</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-files-o" aria-hidden="true"></i><span>料号分析管理</span></a>
+                                <ul class="nav child-nav level-1">
+{#                                    <li><a href="{% url "django.contrib.auth.views.logout" %}">Sign in</a></li>#}
+                                    <li><a href="pages_lock-screen.html">Lock screen</a></li>
+                                    <li><a href="pages_forgot-password.html">Forgot password</a></li>
+                                    <li class="has-child-item close-item">
+                                        <a>Error pages</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li><a href="pages_error-404-content.html">Error 404 content</a></li>
+                                            <li><a href="pages_error-404.html">Error 404 page</a></li>
+                                            <li><a href="pages_error-500.html">Error 500</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="pages_faq.html">FAQ</a></li>
+                                    <li><a href="pages_user-profile.html">User profile</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-magic" aria-hidden="true"></i><span>后台设置</span></a>
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="helpers_background-border.html">用户管理</a></li>
+                                    <li><a href="helpers_margin-padding.html">模块管理</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-home" aria-hidden="true"></i><a href="">{% block content_header %}主页{% endblock %}</a></li>
+                        {% block content_header_child %}{% endblock %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row animated fadeInUp">
+            {% block main_content %}
+
+
+                <div class="col-sm-12 col-lg-9">
+
+                </div>
+
+                <div class="col-sm-12 col-lg-3">
+
+                </div>
+            {% endblock %}
+            </div>
+
+        </div>
+
+        <div class="right-sidebar">
+            <div class="right-sidebar-toggle" data-toggle-class="right-sidebar-opened" data-target="html">
+                <i class="fa fa-cog fa-spin" aria-hidden="true"></i>
+            </div>
+            <div id="right-nav" class="nano">
+                <div class="nano-content">
+                    <div class="template-settings">
+                        <h4 class="text-center">Template Settings</h4>
+                        <ul class="toggle-settings pv-xlg">
+                            <li>
+                                <h6 class="text">Header fixed</h6>
+                                <label class="switch">
+                                    <input id="header-fixed" type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <h6 class="text">Left sidebar fixed</h6>
+                                <label class="switch">
+                                    <input id="left-sidebar-fixed" type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <h6 class="text">Left sidebar collapsed</h6>
+                                <label class="switch">
+                                    <input id="left-sidebar-collapsed" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <h6 class="text">Content header fixed</h6>
+                                <label class="switch">
+                                    <input id="content-header-fixed" type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </ul>
+                        <h4 class="text-center">Template Colors</h4>
+                        <ul class="toggle-colors">
+                            <li>
+                                <a href="index.html" class="on-click"> <img alt="Helsinki-green" src={% static "images/helsinki-green.png" %} /></a>
+                            </li>
+                            <li>
+                                <a href="../helsinki-light/index.html" class="on-click"> <img alt="Helsinki-light" src={% static "images/helsinki-light.png" %} /></a>
+                            </li>
+                            <li>
+                                <a href="../helsinki-blue/index.html" class="on-click"> <img alt="Helsinki-blue" src={% static "images/helsinki-blue.png" %} /></a>
+                            </li>
+                            <li>
+                                <a href="../helsinki-red/index.html" class="on-click"> <img alt="Helsinki-red" src={% static "images/helsinki-red.png" %} /></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    </div>
+</div>
+
+
+<script src={% static "javascripts/jquery.min.js" %}></script>
+<script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>
+<script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
+<script src={% static "javascripts/template-script.min.js" %}></script>
+<script src={% static "javascripts/template-init.min.js" %}></script>
+<script src={% static "vendor/toastr/toastr.min.js" %}></script>
+<script src={% static "vendor/chart-js/chart.min.js" %}></script>
+<script src={% static "vendor/magnific-popup/jquery.magnific-popup.min.js" %}></script>
+<script src={% static "javascripts/examples/dashboard.js" %}></script>
+<script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
+<script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
+<script src={% static "vendor/data-table/extensions/Responsive/js/dataTables.responsive.min.js" %}></script>
+<script src={% static "vendor/data-table/extensions/Responsive/js/responsive.bootstrap.min.js" %}></script>
+<script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
+
+
+
+<script>
+    $.fn.extend({
+        animateCss: function(animationName) {
+            var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            this.addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+        }
+    });
+
+    $(".btn-animated").on('click', function() {
+        var animation = $(this).attr('data-animated-class');
+        var img = $(this).attr('data-img');
+        $("#" + img).animateCss(animation);
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+{% load static  %}
+
+<!doctype html>
+{#<html lang="en" class="fixed">#}
+<html lang="en" class="fixed left-sidebar-collapsed">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>{% block title %}cc{% endblock %}</title>
+        <link rel="apple-touch-icon" sizes="120x120" href={% static "favicon/apple-icon-120x120.png" %}>
+        <link rel="icon" type="/static/image/png" sizes="192x192" href={% static "favicon/android-icon-192x192.png" %}>
+        <link rel="icon" type="/static/image/png" sizes="32x32" href={% static "favicon/favicon-32x32.png" %}>
+        <link rel="icon" type="/static/image/png" sizes="16x16" href={% static "favicon/favicon-16x16.png" %}>
+        <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href={% static "vendor/animate.css/animate.css" %}>
+        <link rel="stylesheet" href={% static "vendor/data-table/media/css/dataTables.bootstrap.min.css" %}>
+        <link rel="stylesheet" href={% static "vendor/data-table/extensions/Responsive/css/responsive.bootstrap.min.css" %}>
+        <link rel="stylesheet" href={% static "stylesheets/css/style.css" %}>
+    </head>
+
+    <body>
+
+        <div class="page-header">
+            <div class="leftside-header">
+
+
+
+
+
+                <div class="logo">
+
+{#                        <img alt="logo" id="img-4" src={% static 'images/mh2.png' %} />#}
+
+                    <div class="user-info">
+                            <span class="user-name"><h3 class="title color-light-1"><a href="{% url "back_stage:index" %}" style="color:rgb(200,200,50);"> &nbsp&nbsp主页 </a></h3></span>
+                    </div>
+
+
+
+                </div>
+                <div id="menu-toggle" class="visible-xs toggle-left-sidebar" data-toggle-class="left-sidebar-open" data-target="html">
+                    <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                </div>
+
+
+
+            </div>
+            <div class="rightside-header">
+
+                <div class="header-separator"></div>
+
+                <div class="header-section">
+                    <span class="user-name"><h3 class="title color-light-1"><a href="" style="color:rgb(200,200,50);"> &nbsp&nbsp博客 </a></h3></span>
+
+                </div>
+
+                <div class="header-separator"></div>
+
+                {#                下方用空格占好位置#}
+                <div class="header-section">
+                    <span class="user-name"><h3 class="title color-light-1"><a href="" style="color:rgb(200,200,50);"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </a></h3></span>
+                </div>
+                {#                下方用空格占好位置#}
+                <div class="header-section">
+                    <span class="user-name"><h3 class="title color-light-1"><a href="" style="color:rgb(200,200,50);"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </a></h3></span>
+                </div>
+                {#                下方用空格占好位置#}
+                <div class="header-section">
+                    <span class="user-name"><h3 class="title color-light-1"><a href="" style="color:rgb(200,200,50);"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </a></h3></span>
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+        <div class="content">
+            {% block main_content %}
+
+            {% endblock %}
+
+        </div>
+        <div class="right-sidebar">
+            <div class="right-sidebar-toggle" data-toggle-class="right-sidebar-opened" data-target="html">
+                <i class="fa fa-cog fa-spin" aria-hidden="true"></i>
+            </div>
+            <div id="right-nav" class="nano">
+                <div class="nano-content">
+                    <div class="template-settings">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+        <script src={% static "javascripts/jquery.min.js" %}></script>
+        <script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>
+        <script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
+        <script src={% static "javascripts/template-script.min.js" %}></script>
+        <script src={% static "javascripts/template-init.min.js" %}></script>
+        <script src={% static "vendor/toastr/toastr.min.js" %}></script>
+        <script src={% static "vendor/chart-js/chart.min.js" %}></script>
+        <script src={% static "vendor/magnific-popup/jquery.magnific-popup.min.js" %}></script>
+        <script src={% static "javascripts/examples/dashboard.js" %}></script>
+        <script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
+        <script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
+        <script src={% static "vendor/data-table/extensions/Responsive/js/dataTables.responsive.min.js" %}></script>
+        <script src={% static "vendor/data-table/extensions/Responsive/js/responsive.bootstrap.min.js" %}></script>
+        <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
+
+        <script>
+            $.fn.extend({
+                animateCss: function(animationName) {
+                    var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+                    this.addClass('animated ' + animationName).one(animationEnd, function() {
+                        $(this).removeClass('animated ' + animationName);
+                    });
+                }
+            });
+
+            $(".btn-animated").on('click', function() {
+                var animation = $(this).attr('data-animated-class');
+                var img = $(this).attr('data-img');
+                $("#" + img).animateCss(animation);
+            });
+        </script>
+    </body>
+
+</html>
