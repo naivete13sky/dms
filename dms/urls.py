@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
+from job_manage import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('job_manage/', include('job_manage.urls', namespace='job_manage')),
+    path('router_job_org/<order>', views.file_download_org, name='file_download_org'),
 ]
