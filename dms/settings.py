@@ -90,7 +90,8 @@ DATABASES = {
         # 'NAME': 'ep_develop',
         'USER': 'postgres',
         'PASSWORD': 'cc',
-        'HOST': '10.97.80.118',
+        # 'HOST': '10.97.80.118',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
