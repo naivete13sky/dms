@@ -116,3 +116,6 @@ LEFT JOIN job_manage_information h on a.id=h.job_name_org_id;
     table_content = df.itertuples(index=False)
     theads = ['反馈类型', '当前状态', '数量', '时间']
     return render(request, 'list_all_job.html',{"theads": table_title, "trows": table_content})
+
+def job_upload(request):
+    return render(request,r'../templates/job_upload.html')
