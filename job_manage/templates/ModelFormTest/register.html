@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+        <td>
+            <tr>用户:</tr>
+            <tr><input type="text" name="username"></tr>
+            <br>
+            <tr>密码:</tr>
+            <tr><input type="password" name="pwd1"></tr>
+            <br>
+            <tr>再次输入密码:</tr>
+            <tr><input type="password" name="pwd2"></tr>
+            <br>
+            <tr>电话</tr>
+            <tr><input type="text" name="telephone"></tr>
+            <br>
+            <tr>邮箱</tr>
+            <tr><input type="text" name="email"></tr>
+            <br>
+            <tr><input type="submit" value="提交"></tr>
+        </td>
+    </table>
+</form>
+</body>
+</html>

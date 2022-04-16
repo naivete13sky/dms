@@ -161,11 +161,53 @@ class AddArticle(View):
         form = AddForms(request.POST)
         # is_valid:代表验证通过的情况下
         if form.is_valid():
-
+            # print(form)
+            form.save()  # 保存完之后在数据库中显示正常
             return HttpResponse('success')
         else:
             print(form.errors.get_json_data())
             return HttpResponse('fail')
+
+from .forms import RegisterForm
+class RegisterArticle(View):
+    def get(self, request):
+        return render(request, r'../templates/ModelFormTest/register.html')
+
+    def post(self, request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.password = form.cleaned_data.get('pwd1')
+            user.save()
+            return HttpResponse('注册成功')
+        else:
+            print(form.errors.get_json_data())
+            return HttpResponse('fail')
+
+from .forms import Article
+class UploadFiles(View):
+    def get(self, request):
+        return render(request, r'../templates/ModelFormTest/upload.html')
+
+    def post(self, request):
+        # # print(request.POST)
+        # # 当选择文件上传的时候,应该选择的是FILES该文件
+        # print(request.FILES)  # <MultiValueDict: {'images': [<InMemoryUploadedFile: thumb-1920-771788.png (image/png)>]}>
+        # images = request.FILES.get('images')
+        # print(images)  # thumb-1920-771788.png 打印的是图片的名字
+        # print(type(images))  # 但是这张图片是一个类
+        # with open('demo.png', 'wb')as f:
+        #     f.write(images.read())
+        # return HttpResponse('success')
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        author = request.POST.get('author')
+        create_time = request.POST.get('create_time')
+        # 当接收文件的时候使用的是FILES这个文件方式来进行接收
+        images = request.FILES.get('images')
+        article = Article(title=title, content=content, author=author, images=images)
+        article.save()
+        return HttpResponse('success')
 
 
 

@@ -40,7 +40,22 @@ class Article(models.Model):
     author = models.CharField(max_length=15)
     create_time = models.DateTimeField(auto_now_add=True)
 
+    # FileField 为文件上传功能
+    # upload_to:对应的files创建的文件夹目录
+    images = models.FileField(upload_to='files', null=True)
+    # images = models.FileField(upload_to='%Y/%M/%D', null=True)
+
     class Meta:
         db_table = 'article'
 
+class Register(models.Model):
+    # 当不能设置最小长度的时候,可以使用自定义验证器来弄最小长度值
+    # 对应的字段里面都会对应的自定义验证器使用
+    username = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=3)])
+    password = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=3)])
+    telephone = models.CharField(max_length=11, validators=[validators.RegexValidator(r'1[3456789]\d{9}', message='请输入正确的手机号码')])
+    email = models.CharField(max_length=20, validators=[validators.EmailValidator(message='请输入正确的邮箱地址')])
+
+    class Meta:
+        db_table = 'register'
 

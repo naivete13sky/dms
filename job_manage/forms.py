@@ -52,11 +52,8 @@ class JobModelForm(ModelForm):
 # @Author : Small-J
 from django import forms
 from .models import Article
-
 # forms.Form:代表着为导入表单
 # forms.ModelForm:代表着导入模型的表单
-
-
 class AddForms(forms.ModelForm):
     """
     Meta : 该类是必须继承的,但是该字段是
@@ -66,6 +63,68 @@ class AddForms(forms.ModelForm):
     class Meta:
         model = Article
         # fields = '__all__'
+        # 当只想验证某几个字段的情况下可以使用[]的形式
+        # fields = ['title']  # 表示只验证title这个字段
+        exclude = ['title']   # exclude->排除的意思  表示不验证title这个字段
+
+        error_messages = {
+            'title': {
+                'required': '该字段是必须要填的',
+                'min_length': '最小长度为3',
+                'max_length': '最大长度为20'
+            },
+            'content': {
+                'required': '该字段是必须要填的',
+                'max_length': '最大长度为100'
+            },
+            'author': {
+                'required': '该字段是必须要填的',
+                'max_length': '最大长度为15'
+            }
+        }
+
+
+from .models import Register
+class RegisterForm(forms.ModelForm):
+    pwd1 = forms.CharField(min_length=3, max_length=10)
+    pwd2 = forms.CharField(min_length=3, max_length=10)
+    email = forms.EmailField()
+
+    # clean映射多字段
+    def clean(self):
+        changed_data = super().clean()
+        # print(changed_data)  # 该返回的是一个字典形式
+        # changed_data:该返回是有变化的列表
+        pwd1 = changed_data.get('pwd1')
+        pwd2 = changed_data.get('pwd2')
+        if pwd1 != pwd2:
+            raise forms.ValidationError('请输入两次相同的密码')
+
+    class Meta:
+        # 使用的模型
+        model = Register
+        # 不验证密码
+        exclude = ['password']
+        error_messages = {
+            'telephone': {
+                'required': '请填写该字段',
+            },
+            'email': {
+                'required': '请填写该字段',
+                'invalid': '请输入正确的邮箱地址'
+            }
+        }
+
+
+class UploadForms(forms.ModelForm):
+    """
+    Meta : 该类是必须继承的,但是该字段是
+    model :对应的模型类
+    fields : 当为‘__all__就是验证全部字段’,当只想验证其中部分的字段的时候，需要使用[]包裹起来
+    """
+    class Meta:
+        model = Article
+        fields = '__all__'
         # 当只想验证某几个字段的情况下可以使用[]的形式
         # fields = ['title']  # 表示只验证title这个字段
         exclude = ['title']   # exclude->排除的意思  表示不验证title这个字段
