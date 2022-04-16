@@ -36,6 +36,22 @@ def file_download_odb(request,order):
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
     return response
 
+def file_download(request,order):
+    # do something
+    print(request.path_info)
+    print("*"*30,order)
+    excel_name = str(request.path_info).replace("/media/files/","")
+    print(excel_name)
+    pwd = os.getcwd()
+    the_file_name = excel_name
+    filename = pwd + r"\media\files\\" + excel_name
+    # filename=request.path_info
+    print(filename)
+    response = StreamingHttpResponse(readFile(filename))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
+    return response
+
 def post_detail(request, order):
     order = get_object_or_404(Job, slug=order)
     print(order)

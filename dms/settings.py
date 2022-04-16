@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'job_manage.apps.JobManageConfig',
     'back_stage.apps.BackStageConfig',
+    'gb.apps.GbConfig',
 ]
 
 MIDDLEWARE = [
