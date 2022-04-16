@@ -10,6 +10,8 @@ import pandas as pd
 import psycopg2
 from pathlib import Path
 from django.conf import settings
+from job_manage.forms import UserForm
+from job_manage import models
 
 
 def readFile(filename,chunk_size=512):
@@ -149,3 +151,14 @@ def job_upload_ajax(request):
         job_name = request.POST.get('job_name')
         print(job_name)
         return HttpResponse('完成上传')
+
+def reg(request):
+  form = UserForm()
+  if request.method == "POST":
+    # print(request.POST)
+    # 实例化form对象的时候，把post提交过来的数据直接传进去
+    form = UserForm(request.POST) # form表单的name属性值应该与forms组件的字段名称一致
+    if form.is_valid():
+      print(form.cleaned_data)
+      return HttpResponse('注册成功')
+  return render(request, r'../templates/reg.html', locals())

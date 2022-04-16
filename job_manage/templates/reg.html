@@ -1,0 +1,56 @@
+  <!DOCTYPE html>
+   <html lang="zh_CN">
+   <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="x-ua-compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>注册</title>
+   </head>
+   <body>
+   <h3>传统form表单</h3>
+   <form action="" method="post">
+     {% csrf_token %}
+     <p>用户名：<input type="text" name="username"></p>
+     <p>密码：<input type="password" name="pwd"></p>
+     <p>确认密码：<input type="password" name="r_pwd"></p>
+     <p>邮箱：<input type="email" name="email"></p>
+     <p>手机号：<input type="tel" name="tel"></p>
+     <p><input type="submit" value="提交"></p>
+   </form>
+   <h3>forms组件渲染方式1</h3>
+   <form action="" method="post" novalidate>
+     {% csrf_token %}
+     <p>{{ form.username.label }}：{{ form.username }} <span>{{ form.username.errors.0 }}</span></p>
+     <p>密码：{{ form.pwd }}
+       <span>{{ form.pwd.errors.0 }}</span></p>
+     <p>确认密码：{{ form.r_pwd }}
+       <span>{{ form.r_pwd.errors.0 }}</span></p>
+     <p>邮箱：{{ form.email }}
+       <span>{{ form.email.errors.0 }}</span></p>
+     <p>手机号：{{ form.tel }}
+       <span>{{ form.tel.errors.0 }}</span></p>
+     <p><input type="submit" value="提交"></p>
+   </form>
+   <h3>forms组件渲染标签方式2</h3>
+     <form action="" method="post" novalidate>
+       {% csrf_token %}
+       {% for field in form %}
+         <div class="form-group clearfix">
+           <label for="">{{ field.label }}</label>
+           {{ field }}
+           <span style="color: red" class="pull-right">{{ field.errors.0 }}</span>
+           {% if field.name == 'r_pwd' %}
+             <span style="color: red" class="pull-right">{{ errors.0 }}</span>
+           {% endif %}
+         </div>
+       {% endfor %}
+       <input type="submit" value="注册" class="btn btn-default pull-right">
+     </form>
+   <h3>forms组件渲染标签方式3  不推荐使用</h3>
+   <form action="" method="post">
+     {% csrf_token %}
+     {{ form.as_p }}
+     <input type="submit" value="注册">
+   </form>
+   </body>
+   </html>
