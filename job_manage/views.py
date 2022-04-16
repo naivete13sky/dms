@@ -1,13 +1,16 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,HttpResponse
 from .models import Org
 # Create your views here.
 import os
 from django.http import StreamingHttpResponse
 import pandas as pd
 import psycopg2
+from pathlib import Path
+from django.conf import settings
+
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -119,3 +122,28 @@ LEFT JOIN job_manage_information h on a.id=h.job_name_org_id;
 
 def job_upload(request):
     return render(request,r'../templates/job_upload.html')
+
+# ajax上传文件
+def job_upload_ajax(request):
+    if request.method=='GET':
+        return render(request,r'../templates/upload.html')
+    elif request.method=='POST':
+        # name = request.POST.get('username')
+        # psd = request.POST.get('password')
+        file_odb = request.FILES.get('file_odb')
+        file_odb_name = file_odb.name
+        # 拼接绝对路径
+        file_odb_path = os.path.join(settings.BASE_DIR, 'upload', file_odb_name)
+        with open(file_odb_path, 'wb')as f:
+            for chunk in file_odb.chunks():#chunks()每次读取数据默认我64k
+                f.write(chunk)
+        #压缩文件
+        file_compressed = request.FILES.get('file_compressed')
+        file_compressed_name = file_compressed.name
+        print(file_compressed_name)
+        # 拼接绝对路径
+        file_compressed_path = os.path.join(settings.BASE_DIR, 'upload', file_compressed_name)
+        with open(file_compressed_path, 'wb')as f:
+            for chunk in file_compressed.chunks():  # chunks()每次读取数据默认我64k
+                f.write(chunk)
+        return HttpResponse('完成上传')
