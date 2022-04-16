@@ -16,7 +16,8 @@ class Job(models.Model):
     file_odb = models.FileField(upload_to='files', null=True)
     file_compressed = models.FileField(upload_to='files', null=True)
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
-    remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
+    # remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
     author = models.CharField(max_length=15)
     create_time = models.DateTimeField(auto_now_add=True)
 

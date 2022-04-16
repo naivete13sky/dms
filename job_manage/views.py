@@ -97,7 +97,14 @@ def job_upload_ajax(request):
             for chunk in file_compressed.chunks():  # chunks()每次读取数据默认我64k
                 f.write(chunk)
         job_name = request.POST.get('job_name')
+        remark = request.POST.get('remark')
+        author = request.POST.get('author')
         print("*"*30,job_name)
+
+        job = Job(file_odb=file_odb, file_compressed=file_compressed,
+                  job_name=job_name, remark=remark, author=author)
+        job.save()
+
         return HttpResponse('完成上传')
 
 def reg(request):
