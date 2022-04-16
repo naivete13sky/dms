@@ -27,23 +27,48 @@
 
                                                         <form action="" method="post" enctype="multipart/form-data">
                                                                 {% csrf_token %}
-                                                                <table>
-                                                                    <tr>
-                                                                    <td><input type="file" name="file_odb"></td>
-                                                                    <tr>
-                                                                    <td><input type="file" name="file_compressed"></td>
-                                                                    <tr>
-                                                                    <td>料号名称:</td>
-                                                                    <td><input type="text" name="job_name"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                    <td>备注:</td>
-                                                                    <td><input type="textarea" name="remark"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                    <td>上传人:</td>
-                                                                    <td><input type="text" name="author"></td>
-                                                                </table>
+
+                                                                <div class="form-group">
+                                                                    <label for="righticon" class="col-sm-2 control-label">ODB++(.tgz)</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <input type="file" class="form-control" id="file_odb" name="file_odb" placeholder="路径">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="righticon" class="col-sm-2 control-label">原始资料（压缩包）</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <input type="file" class="form-control" id="file_compressed" name="file_compressed" placeholder="路径">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="tooltip" class="col-sm-2 control-label">料号名称</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control" id="job_name" name="job_name" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
+                                                                </div>
+                                                            </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="tooltip" class="col-sm-2 control-label">备注</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control" id="remark" name="remark" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
+                                                                </div>
+                                                            </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="tooltip" class="col-sm-2 control-label">负责人</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control" id="author" name="author" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
+                                                                </div>
+                                                            </div>
+
                                                                 <td><input type="submit" value="提交"></td>
                                                         </form>
 

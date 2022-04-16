@@ -210,8 +210,7 @@ class JobUpload(View):
         author = request.POST.get('author')
         create_time = request.POST.get('create_time')
         # 当接收文件的时候使用的是FILES这个文件方式来进行接收
-        images = request.FILES.get('images')
-        print("*"*20,images)
+
         job = Job(file_odb=file_odb, file_compressed=file_compressed,
                   job_name=job_name, remark=remark,author=author)
         job.save()
