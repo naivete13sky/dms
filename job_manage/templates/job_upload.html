@@ -55,7 +55,7 @@
                                                             <div class="form-group">
                                                                 <label for="tooltip" class="col-sm-2 control-label">料号名称</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" class="form-control" id="tooltip" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
+                                                                    <input type="text" class="form-control" id="job_name" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
                                                                 </div>
                                                             </div>
 
@@ -203,18 +203,19 @@
                                                                         //ajax上传文件必须通过FormData对象传输数据
                                                                         var formdata = new FormData();
 
-                                                                        {#var username = $('#username').val();#}
+                                                                        var job_name = $('#job_name').val();
                                                                         {#var psd = $('#password').val();#}
                                                                         var csrf_data = $('input[name=csrfmiddlewaretoken]').val();
                                                                         //获取上传文件对象(文件句柄)：定位对象，转成DOM对象，取值(文件对象列表)
                                                                         var file_odb = $('#file_odb')[0].files[0];
                                                                         var file_compressed = $('#file_compressed')[0].files[0];
 
-                                                                        {#formdata.append('username', username);#}
+
                                                                         {#formdata.append('psd', psd);#}
                                                                         formdata.append('csrfmiddlewaretoken', csrf_data);//csrf认证的键是固定的
                                                                         formdata.append('file_odb', file_odb);
                                                                         formdata.append('file_compressed', file_compressed);
+                                                                        formdata.append('job_name', job_name);
 
                                                                         $.ajax({
                                                                             url: "{% url 'job_manage:job_upload_ajax' %}",

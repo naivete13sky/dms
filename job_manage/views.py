@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render, get_object_or_404,HttpResponse
-from .models import Org
+from .models import Job
 # Create your views here.
 import os
 from django.http import StreamingHttpResponse
@@ -21,15 +21,15 @@ def readFile(filename,chunk_size=512):
             else:
                 break
 
-def file_download_org(request,order):
+def file_download_odb(request,order):
     # do something
     print(request.path_info)
     print("*"*30,order)
-    excel_name = str(request.path_info).replace("/router_job_org/","")
+    excel_name = str(request.path_info).replace("/router_job_odb/","")
     print(excel_name)
     pwd = os.getcwd()
     the_file_name = excel_name
-    filename = pwd + r"\router_job_org\\" + excel_name
+    filename = pwd + r"\router_job_odb\\" + excel_name
     # filename=request.path_info
     print(filename)
     response = StreamingHttpResponse(readFile(filename))
@@ -38,7 +38,7 @@ def file_download_org(request,order):
     return response
 
 def post_detail(request, order):
-    order = get_object_or_404(Org, slug=order)
+    order = get_object_or_404(Job, slug=order)
     print(order)
     # return render(request, 'blog/post/detail.html', {'order': order,})
 
@@ -128,7 +128,7 @@ def job_upload_ajax(request):
     if request.method=='GET':
         return render(request,r'../templates/upload.html')
     elif request.method=='POST':
-        # name = request.POST.get('username')
+
         # psd = request.POST.get('password')
         file_odb = request.FILES.get('file_odb')
         file_odb_name = file_odb.name
@@ -140,10 +140,12 @@ def job_upload_ajax(request):
         #压缩文件
         file_compressed = request.FILES.get('file_compressed')
         file_compressed_name = file_compressed.name
-        print(file_compressed_name)
+        # print(file_compressed_name)
         # 拼接绝对路径
         file_compressed_path = os.path.join(settings.BASE_DIR, 'upload', file_compressed_name)
         with open(file_compressed_path, 'wb')as f:
             for chunk in file_compressed.chunks():  # chunks()每次读取数据默认我64k
                 f.write(chunk)
+        job_name = request.POST.get('job_name')
+        print(job_name)
         return HttpResponse('完成上传')

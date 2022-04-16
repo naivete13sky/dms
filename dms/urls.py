@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('job_manage/', include('job_manage.urls', namespace='job_manage')),
     path('back_stage/', include('back_stage.urls', namespace='back_stage')),
-    path('router_job_org/<order>', views.file_download_org, name='file_download_org'),
+    path('router_job_odb/<order>', views.file_download_odb, name='file_download_odb'),
 ]
