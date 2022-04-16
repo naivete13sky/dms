@@ -203,14 +203,17 @@ class JobUpload(View):
         # with open('demo.png', 'wb')as f:
         #     f.write(images.read())
         # return HttpResponse('success')
-        title = request.POST.get('title')
-        content = request.POST.get('content')
+        file_odb = request.FILES.get('file_odb')
+        file_compressed = request.FILES.get('file_compressed')
+        job_name = request.POST.get('job_name')
+        remark = request.POST.get('remark')
         author = request.POST.get('author')
         create_time = request.POST.get('create_time')
         # 当接收文件的时候使用的是FILES这个文件方式来进行接收
         images = request.FILES.get('images')
         print("*"*20,images)
-        article = Job(title=title, content=content, author=author, images=images)
-        article.save()
+        job = Job(file_odb=file_odb, file_compressed=file_compressed,
+                  job_name=job_name, remark=remark,author=author)
+        job.save()
         return HttpResponse('success')
 

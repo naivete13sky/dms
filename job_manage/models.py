@@ -10,15 +10,16 @@ from django.core import validators
 class Job(models.Model):
     # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器
     # MinLengthValidator
-    title = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
-    content = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
+    # FileField 为文件上传功能
+    # upload_to:对应的files创建的文件夹目录
+    # images = models.FileField(upload_to='%Y/%M/%D', null=True)
+    file_odb = models.FileField(upload_to='files', null=True)
+    file_compressed = models.FileField(upload_to='files', null=True)
+    job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
+    remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
     author = models.CharField(max_length=15)
     create_time = models.DateTimeField(auto_now_add=True)
 
-    # FileField 为文件上传功能
-    # upload_to:对应的files创建的文件夹目录
-    images = models.FileField(upload_to='files', null=True)
-    # images = models.FileField(upload_to='%Y/%M/%D', null=True)
 
     class Meta:
         db_table = 'job'

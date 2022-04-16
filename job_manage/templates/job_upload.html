@@ -29,20 +29,20 @@
                                                                 {% csrf_token %}
                                                                 <table>
                                                                     <tr>
-                                                                    <td>标题:</td>
-                                                                    <td><input type="text" name="title"></td>
+                                                                    <td><input type="file" name="file_odb"></td>
+                                                                    <tr>
+                                                                    <td><input type="file" name="file_compressed"></td>
+                                                                    <tr>
+                                                                    <td>料号名称:</td>
+                                                                    <td><input type="text" name="job_name"></td>
                                                                     </tr>
                                                                     <tr>
-                                                                    <td>内容:</td>
-                                                                    <td><input type="textarea" name="content"></td>
+                                                                    <td>备注:</td>
+                                                                    <td><input type="textarea" name="remark"></td>
                                                                     </tr>
                                                                     <tr>
-                                                                    <td>作者:</td>
+                                                                    <td>上传人:</td>
                                                                     <td><input type="text" name="author"></td>
-                                                                    </tr>
-                                                                    <td><input type="file" name="images"></td>
-
-
                                                                 </table>
                                                                 <td><input type="submit" value="提交"></td>
                                                         </form>

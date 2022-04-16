@@ -49,12 +49,12 @@ class UploadForms(forms.ModelForm):
         exclude = ['title']   # exclude->排除的意思  表示不验证title这个字段
 
         error_messages = {
-            'title': {
+            'job_name': {
                 'required': '该字段是必须要填的',
                 'min_length': '最小长度为3',
                 'max_length': '最大长度为20'
             },
-            'content': {
+            'remark': {
                 'required': '该字段是必须要填的',
                 'max_length': '最大长度为100'
             },
