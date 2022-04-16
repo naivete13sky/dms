@@ -1,280 +1,263 @@
 {% extends 'index_base.html' %}
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
-
-{% block content_header_child %}{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href="#">料号管理</a></li>
+    <li><a>上传料号</a></li>
+{% endblock %}
 {% block main_content %}
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tabs">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li class="active"><a href="#home2" data-toggle="tab"><h4 class="section-subtitle"><b>单个上传 </b></h4></a></li>
+                                    <li><a href="#profile2" data-toggle="tab"><h4 class="section-subtitle"><b>批量上传 </b></h4></a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="home2">
+{#                                            <h4 class="section-subtitle"><b>上传料号 </b></h4>#}
+                                        <div class="panel">
+                                            <div class="panel-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form class="form-horizontal form-stripe">
+
+                                                            <div class="form-group">
+                                                                <label for="righticon" class="col-sm-2 control-label">ODB++(.tgz)</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control" id="button-addon" placeholder="路径">
+                                                                            <span class="input-group-btn">
+                                                                                <button class="btn btn-primary" type="button">选择文件</button>
+                                                                       </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="righticon" class="col-sm-2 control-label">原始资料（压缩包）</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control" id="button-addon" placeholder="路径">
+                                                                            <span class="input-group-btn">
+                                                                                <button class="btn btn-primary" type="button">选择文件</button>
+                                                                       </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="tooltip" class="col-sm-2 control-label">料号名称</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control" id="tooltip" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
+                                                                </div>
+                                                            </div>
+
+                                                            <form class="form-horizontal form-stripe">
+                                                                <div class="form-group">
+                                                                    <label for="select2-example-tags" class="col-sm-2 control-label">Tagging</label>
+                                                                    <div class="col-sm-10">
+                                                                        <select name="country" id="select2-example-tags" class="form-control select-tag-primary" multiple="multiple" style="width: 100%">
+                                                                            <optgroup label="AMERICA">
+                                                                                <option value="AI" label="Anguilla">Anguilla</option>
+                                                                                <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
+
+                                                                                <option value="VE" label="Venezuela">Venezuela</option>
+                                                                            </optgroup>
+                                                                            <optgroup label="ASIA">
+                                                                                <option value="AF" label="Afghanistan">Afghanistan</option>
+                                                                                <option value="AM" label="Armenia">Armenia</option>
+                                                                                <option value="AZ" label="Azerbaijan">Azerbaijan</option>
+                                                                                <option value="BH" label="Bahrain">Bahrain</option>
+                                                                                <option value="BD" label="Bangladesh">Bangladesh</option>
+                                                                                <option value="BT" label="Bhutan">Bhutan</option>
+                                                                                <option value="BN" label="Brunei">Brunei</option>
+                                                                                <option value="KH" label="Cambodia">Cambodia</option>
+                                                                                <option value="CN" label="China">China</option>
+                                                                                <option value="CY" label="Cyprus">Cyprus</option>
+                                                                                <option value="GE" label="Georgia">Georgia</option>
+                                                                                <option value="HK" label="Hong Kong SAR China">Hong Kong SAR China</option>
+                                                                                <option value="IN" label="India">India</option>
+                                                                                <option value="ID" label="Indonesia">Indonesia</option>
+                                                                                <option value="IR" label="Iran">Iran</option>
+                                                                                <option value="IQ" label="Iraq">Iraq</option>
+                                                                                <option value="IL" label="Israel">Israel</option>
+                                                                                <option value="JP" label="Japan">Japan</option>
+                                                                                <option value="JO" label="Jordan">Jordan</option>
+                                                                                <option value="KZ" label="Kazakhstan">Kazakhstan</option>
+                                                                                <option value="KW" label="Kuwait">Kuwait</option>
+                                                                                <option value="KG" label="Kyrgyzstan">Kyrgyzstan</option>
+                                                                                <option value="LA" label="Laos">Laos</option>
+                                                                                <option value="LB" label="Lebanon">Lebanon</option>
+                                                                                <option value="MO" label="Macau SAR China">Macau SAR China</option>
+                                                                                <option value="MY" label="Malaysia">Malaysia</option>
+                                                                                <option value="MV" label="Maldives">Maldives</option>
+                                                                                <option value="MN" label="Mongolia">Mongolia</option>
+                                                                                <option value="MM" label="Myanmar [Burma]">Myanmar [Burma]</option>
+                                                                                <option value="NP" label="Nepal">Nepal</option>
+                                                                                <option value="NT" label="Neutral Zone">Neutral Zone</option>
+                                                                                <option value="KP" label="North Korea">North Korea</option>
+                                                                                <option value="OM" label="Oman">Oman</option>
+                                                                                <option value="PK" label="Pakistan">Pakistan</option>
+                                                                                <option value="PS" label="Palestinian Territories">Palestinian Territories</option>
+                                                                                <option value="YD" label="People's Democratic Republic of Yemen">People's Democratic Republic of Yemen</option>
+                                                                                <option value="PH" label="Philippines">Philippines</option>
+                                                                                <option value="QA" label="Qatar">Qatar</option>
+                                                                                <option value="SA" label="Saudi Arabia">Saudi Arabia</option>
+                                                                                <option value="SG" label="Singapore" selected="selected">Singapore</option>
+                                                                                <option value="KR" label="South Korea">South Korea</option>
+                                                                                <option value="LK" label="Sri Lanka">Sri Lanka</option>
+                                                                                <option value="SY" label="Syria">Syria</option>
+                                                                                <option value="TW" label="Taiwan">Taiwan</option>
+                                                                                <option value="TJ" label="Tajikistan">Tajikistan</option>
+                                                                                <option value="TH" label="Thailand">Thailand</option>
+                                                                                <option value="TL" label="Timor-Leste">Timor-Leste</option>
+                                                                                <option value="TR" label="Turkey">Turkey</option>
+                                                                                <option value="™" label="Turkmenistan">Turkmenistan</option>
+                                                                                <option value="AE" label="United Arab Emirates">United Arab Emirates</option>
+                                                                                <option value="UZ" label="Uzbekistan">Uzbekistan</option>
+                                                                                <option value="VN" label="Vietnam">Vietnam</option>
+                                                                                <option value="YE" label="Yemen">Yemen</option>
+                                                                            </optgroup>
+                                                                            <optgroup label="EUROPE">
+                                                                                <option value="AL" label="Albania">Albania</option>
+                                                                                <option value="AD" label="Andorra">Andorra</option>
+                                                                                <option value="AT" label="Austria">Austria</option>
+                                                                                <option value="BY" label="Belarus">Belarus</option>
+                                                                                <option value="BE" label="Belgium">Belgium</option>
+                                                                                <option value="BA" label="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                                                                <option value="BG" label="Bulgaria">Bulgaria</option>
+                                                                                <option value="HR" label="Croatia">Croatia</option>
+                                                                                <option value="CY" label="Cyprus">Cyprus</option>
+                                                                                <option value="CZ" label="Czech Republic">Czech Republic</option>
+                                                                                <option value="DK" label="Denmark">Denmark</option>
+                                                                                <option value="DD" label="East Germany">East Germany</option>
+                                                                                <option value="EE" label="Estonia">Estonia</option>
+                                                                                <option value="FO" label="Faroe Islands">Faroe Islands</option>
+                                                                                <option value="FI" label="Finland" selected="selected">Finland</option>
+                                                                                <option value="FR" label="France">France</option>
+                                                                                <option value="DE" label="Germany">Germany</option>
+                                                                                <option value="GI" label="Gibraltar">Gibraltar</option>
+                                                                                <option value="GR" label="Greece">Greece</option>
+                                                                                <option value="GG" label="Guernsey">Guernsey</option>
+                                                                                <option value="HU" label="Hungary">Hungary</option>
+                                                                                <option value="IS" label="Iceland">Iceland</option>
+                                                                                <option value="IE" label="Ireland">Ireland</option>
+                                                                                <option value="IM" label="Isle of Man">Isle of Man</option>
+                                                                                <option value="IT" label="Italy">Italy</option>
+                                                                                <option value="JE" label="Jersey">Jersey</option>
+                                                                                <option value="LV" label="Latvia">Latvia</option>
+                                                                                <option value="LI" label="Liechtenstein">Liechtenstein</option>
+                                                                                <option value="LT" label="Lithuania">Lithuania</option>
+                                                                                <option value="LU" label="Luxembourg">Luxembourg</option>
+                                                                                <option value="MK" label="Macedonia">Macedonia</option>
+                                                                                <option value="MT" label="Malta">Malta</option>
+                                                                                <option value="FX" label="Metropolitan France">Metropolitan France</option>
+                                                                                <option value="MD" label="Moldova">Moldova</option>
+                                                                                <option value="MC" label="Monaco">Monaco</option>
+                                                                                <option value="ME" label="Montenegro">Montenegro</option>
+                                                                                <option value="NL" label="Netherlands">Netherlands</option>
+                                                                                <option value="NO" label="Norway">Norway</option>
+                                                                                <option value="PL" label="Poland">Poland</option>
+                                                                                <option value="PT" label="Portugal">Portugal</option>
+                                                                                <option value="RO" label="Romania">Romania</option>
+                                                                                <option value="RU" label="Russia">Russia</option>
+                                                                                <option value="SM" label="San Marino">San Marino</option>
+                                                                                <option value="RS" label="Serbia">Serbia</option>
+                                                                                <option value="CS" label="Serbia and Montenegro">Serbia and Montenegro</option>
+                                                                                <option value="SK" label="Slovakia">Slovakia</option>
+                                                                                <option value="SI" label="Slovenia">Slovenia</option>
+                                                                                <option value="ES" label="Spain">Spain</option>
+                                                                                <option value="SJ" label="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
+                                                                                <option value="SE" label="Sweden">Sweden</option>
+                                                                                <option value="CH" label="Switzerland">Switzerland</option>
+                                                                                <option value="UA" label="Ukraine">Ukraine</option>
+                                                                                <option value="SU" label="Union of Soviet Socialist Republics">Union of Soviet Socialist Republics</option>
+                                                                                <option value="GB" label="United Kingdom">United Kingdom</option>
+                                                                                <option value="VA" label="Vatican City">Vatican City</option>
+                                                                                <option value="AX" label="Åland Islands">Åland Islands</option>
+                                                                            </optgroup>
+                                                                            <optgroup label="other">
+                                                                                <option value="1" label="write" selected="selected">write</option>
+                                                                                <option value="2" label="your" selected="selected">your</option>
+                                                                                <option value="3" label="tag" selected="selected">tag</option>
+                                                                            </optgroup>
+                                                                        </select>
+                                                                        <span class="help-block"><i class="fa fa-info-circle mr-xs"></i>选择已有标签或创建新的标签, 用',' 隔开他们</span>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                            <div class="form-group">
+                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                            </div>
 
 
-
-    <div class="wrap">
-        <div class="page-body">
-
-                <div class="content">
-
-
-                        <div class="col-sm-12">
-                            <h4 class="section-subtitle"><b>上传料号 </b></h4>
-                            <div class="panel">
-                                <div class="panel-content">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <form class="form-horizontal form-stripe">
-
-                                                <div class="form-group">
-                                                    <label for="righticon" class="col-sm-2 control-label">ODB++(.tgz)</label>
-                                                    <div class="col-sm-10">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="button-addon" placeholder="路径">
-                                                                <span class="input-group-btn">
-                                                                    <button class="btn btn-primary" type="button">选择文件</button>
-                                                           </span>
-                                                        </div>
+                                                        </form>
                                                     </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="righticon" class="col-sm-2 control-label">原始资料（压缩包）</label>
-                                                    <div class="col-sm-10">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="button-addon" placeholder="路径">
-                                                                <span class="input-group-btn">
-                                                                    <button class="btn btn-primary" type="button">选择文件</button>
-                                                           </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="tooltip" class="col-sm-2 control-label">料号名称</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="tooltip" placeholder="Hover me!" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
-                                                    </div>
-                                                </div>
-
-                                                <form class="form-horizontal form-stripe">
-
-
-                                            <div class="form-group">
-                                                <label for="select2-example-tags" class="col-sm-2 control-label">Tagging</label>
-                                                <div class="col-sm-10">
-                                                    <select name="country" id="select2-example-tags" class="form-control select-tag-primary" multiple="multiple" style="width: 100%">
-                                                        <optgroup label="AMERICA">
-                                                            <option value="AI" label="Anguilla">Anguilla</option>
-                                                            <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
-                                                            <option value="AR" label="Argentina">Argentina</option>
-                                                            <option value="AW" label="Aruba">Aruba</option>
-                                                            <option value="BS" label="Bahamas">Bahamas</option>
-                                                            <option value="BB" label="Barbados">Barbados</option>
-                                                            <option value="BZ" label="Belize">Belize</option>
-                                                            <option value="BM" label="Bermuda">Bermuda</option>
-                                                            <option value="BO" label="Bolivia">Bolivia</option>
-                                                            <option value="BR" label="Brazil">Brazil</option>
-                                                            <option value="VG" label="British Virgin Islands">British Virgin Islands</option>
-                                                            <option value="CA" label="Canada">Canada</option>
-                                                            <option value="KY" label="Cayman Islands">Cayman Islands</option>
-                                                            <option value="CL" label="Chile">Chile</option>
-                                                            <option value="CO" label="Colombia">Colombia</option>
-                                                            <option value="CR" label="Costa Rica">Costa Rica</option>
-                                                            <option value="CU" label="Cuba">Cuba</option>
-                                                            <option value="DM" label="Dominica">Dominica</option>
-                                                            <option value="DO" label="Dominican Republic">Dominican Republic</option>
-                                                            <option value="EC" label="Ecuador">Ecuador</option>
-                                                            <option value="SV" label="El Salvador">El Salvador</option>
-                                                            <option value="FK" label="Falkland Islands">Falkland Islands</option>
-                                                            <option value="GF" label="French Guiana">French Guiana</option>
-                                                            <option value="GL" label="Greenland">Greenland</option>
-                                                            <option value="GD" label="Grenada">Grenada</option>
-                                                            <option value="GP" label="Guadeloupe">Guadeloupe</option>
-                                                            <option value="GT" label="Guatemala">Guatemala</option>
-                                                            <option value="GY" label="Guyana">Guyana</option>
-                                                            <option value="HT" label="Haiti">Haiti</option>
-                                                            <option value="HN" label="Honduras">Honduras</option>
-                                                            <option value="JM" label="Jamaica">Jamaica</option>
-                                                            <option value="MQ" label="Martinique">Martinique</option>
-                                                            <option value="MX" label="Mexico">Mexico</option>
-                                                            <option value="MS" label="Montserrat">Montserrat</option>
-                                                            <option value="AN" label="Netherlands Antilles">Netherlands Antilles</option>
-                                                            <option value="NI" label="Nicaragua">Nicaragua</option>
-                                                            <option value="PA" label="Panama">Panama</option>
-                                                            <option value="PY" label="Paraguay">Paraguay</option>
-                                                            <option value="PE" label="Peru">Peru</option>
-                                                            <option value="PR" label="Puerto Rico">Puerto Rico</option>
-                                                            <option value="BL" label="Saint Barthélemy">Saint Barthélemy</option>
-                                                            <option value="KN" label="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                                                            <option value="LC" label="Saint Lucia">Saint Lucia</option>
-                                                            <option value="MF" label="Saint Martin">Saint Martin</option>
-                                                            <option value="PM" label="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
-                                                            <option value="VC" label="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-                                                            <option value="SR" label="Suriname">Suriname</option>
-                                                            <option value="TT" label="Trinidad and Tobago">Trinidad and Tobago</option>
-                                                            <option value="TC" label="Turks and Caicos Islands">Turks and Caicos Islands</option>
-                                                            <option value="VI" label="U.S. Virgin Islands">U.S. Virgin Islands</option>
-                                                            <option value="US" label="United States">United States</option>
-                                                            <option value="UY" label="Uruguay">Uruguay</option>
-                                                            <option value="VE" label="Venezuela">Venezuela</option>
-                                                        </optgroup>
-                                                        <optgroup label="ASIA">
-                                                            <option value="AF" label="Afghanistan">Afghanistan</option>
-                                                            <option value="AM" label="Armenia">Armenia</option>
-                                                            <option value="AZ" label="Azerbaijan">Azerbaijan</option>
-                                                            <option value="BH" label="Bahrain">Bahrain</option>
-                                                            <option value="BD" label="Bangladesh">Bangladesh</option>
-                                                            <option value="BT" label="Bhutan">Bhutan</option>
-                                                            <option value="BN" label="Brunei">Brunei</option>
-                                                            <option value="KH" label="Cambodia">Cambodia</option>
-                                                            <option value="CN" label="China">China</option>
-                                                            <option value="CY" label="Cyprus">Cyprus</option>
-                                                            <option value="GE" label="Georgia">Georgia</option>
-                                                            <option value="HK" label="Hong Kong SAR China">Hong Kong SAR China</option>
-                                                            <option value="IN" label="India">India</option>
-                                                            <option value="ID" label="Indonesia">Indonesia</option>
-                                                            <option value="IR" label="Iran">Iran</option>
-                                                            <option value="IQ" label="Iraq">Iraq</option>
-                                                            <option value="IL" label="Israel">Israel</option>
-                                                            <option value="JP" label="Japan">Japan</option>
-                                                            <option value="JO" label="Jordan">Jordan</option>
-                                                            <option value="KZ" label="Kazakhstan">Kazakhstan</option>
-                                                            <option value="KW" label="Kuwait">Kuwait</option>
-                                                            <option value="KG" label="Kyrgyzstan">Kyrgyzstan</option>
-                                                            <option value="LA" label="Laos">Laos</option>
-                                                            <option value="LB" label="Lebanon">Lebanon</option>
-                                                            <option value="MO" label="Macau SAR China">Macau SAR China</option>
-                                                            <option value="MY" label="Malaysia">Malaysia</option>
-                                                            <option value="MV" label="Maldives">Maldives</option>
-                                                            <option value="MN" label="Mongolia">Mongolia</option>
-                                                            <option value="MM" label="Myanmar [Burma]">Myanmar [Burma]</option>
-                                                            <option value="NP" label="Nepal">Nepal</option>
-                                                            <option value="NT" label="Neutral Zone">Neutral Zone</option>
-                                                            <option value="KP" label="North Korea">North Korea</option>
-                                                            <option value="OM" label="Oman">Oman</option>
-                                                            <option value="PK" label="Pakistan">Pakistan</option>
-                                                            <option value="PS" label="Palestinian Territories">Palestinian Territories</option>
-                                                            <option value="YD" label="People's Democratic Republic of Yemen">People's Democratic Republic of Yemen</option>
-                                                            <option value="PH" label="Philippines">Philippines</option>
-                                                            <option value="QA" label="Qatar">Qatar</option>
-                                                            <option value="SA" label="Saudi Arabia">Saudi Arabia</option>
-                                                            <option value="SG" label="Singapore" selected="selected">Singapore</option>
-                                                            <option value="KR" label="South Korea">South Korea</option>
-                                                            <option value="LK" label="Sri Lanka">Sri Lanka</option>
-                                                            <option value="SY" label="Syria">Syria</option>
-                                                            <option value="TW" label="Taiwan">Taiwan</option>
-                                                            <option value="TJ" label="Tajikistan">Tajikistan</option>
-                                                            <option value="TH" label="Thailand">Thailand</option>
-                                                            <option value="TL" label="Timor-Leste">Timor-Leste</option>
-                                                            <option value="TR" label="Turkey">Turkey</option>
-                                                            <option value="™" label="Turkmenistan">Turkmenistan</option>
-                                                            <option value="AE" label="United Arab Emirates">United Arab Emirates</option>
-                                                            <option value="UZ" label="Uzbekistan">Uzbekistan</option>
-                                                            <option value="VN" label="Vietnam">Vietnam</option>
-                                                            <option value="YE" label="Yemen">Yemen</option>
-                                                        </optgroup>
-                                                        <optgroup label="EUROPE">
-                                                            <option value="AL" label="Albania">Albania</option>
-                                                            <option value="AD" label="Andorra">Andorra</option>
-                                                            <option value="AT" label="Austria">Austria</option>
-                                                            <option value="BY" label="Belarus">Belarus</option>
-                                                            <option value="BE" label="Belgium">Belgium</option>
-                                                            <option value="BA" label="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-                                                            <option value="BG" label="Bulgaria">Bulgaria</option>
-                                                            <option value="HR" label="Croatia">Croatia</option>
-                                                            <option value="CY" label="Cyprus">Cyprus</option>
-                                                            <option value="CZ" label="Czech Republic">Czech Republic</option>
-                                                            <option value="DK" label="Denmark">Denmark</option>
-                                                            <option value="DD" label="East Germany">East Germany</option>
-                                                            <option value="EE" label="Estonia">Estonia</option>
-                                                            <option value="FO" label="Faroe Islands">Faroe Islands</option>
-                                                            <option value="FI" label="Finland" selected="selected">Finland</option>
-                                                            <option value="FR" label="France">France</option>
-                                                            <option value="DE" label="Germany">Germany</option>
-                                                            <option value="GI" label="Gibraltar">Gibraltar</option>
-                                                            <option value="GR" label="Greece">Greece</option>
-                                                            <option value="GG" label="Guernsey">Guernsey</option>
-                                                            <option value="HU" label="Hungary">Hungary</option>
-                                                            <option value="IS" label="Iceland">Iceland</option>
-                                                            <option value="IE" label="Ireland">Ireland</option>
-                                                            <option value="IM" label="Isle of Man">Isle of Man</option>
-                                                            <option value="IT" label="Italy">Italy</option>
-                                                            <option value="JE" label="Jersey">Jersey</option>
-                                                            <option value="LV" label="Latvia">Latvia</option>
-                                                            <option value="LI" label="Liechtenstein">Liechtenstein</option>
-                                                            <option value="LT" label="Lithuania">Lithuania</option>
-                                                            <option value="LU" label="Luxembourg">Luxembourg</option>
-                                                            <option value="MK" label="Macedonia">Macedonia</option>
-                                                            <option value="MT" label="Malta">Malta</option>
-                                                            <option value="FX" label="Metropolitan France">Metropolitan France</option>
-                                                            <option value="MD" label="Moldova">Moldova</option>
-                                                            <option value="MC" label="Monaco">Monaco</option>
-                                                            <option value="ME" label="Montenegro">Montenegro</option>
-                                                            <option value="NL" label="Netherlands">Netherlands</option>
-                                                            <option value="NO" label="Norway">Norway</option>
-                                                            <option value="PL" label="Poland">Poland</option>
-                                                            <option value="PT" label="Portugal">Portugal</option>
-                                                            <option value="RO" label="Romania">Romania</option>
-                                                            <option value="RU" label="Russia">Russia</option>
-                                                            <option value="SM" label="San Marino">San Marino</option>
-                                                            <option value="RS" label="Serbia">Serbia</option>
-                                                            <option value="CS" label="Serbia and Montenegro">Serbia and Montenegro</option>
-                                                            <option value="SK" label="Slovakia">Slovakia</option>
-                                                            <option value="SI" label="Slovenia">Slovenia</option>
-                                                            <option value="ES" label="Spain">Spain</option>
-                                                            <option value="SJ" label="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
-                                                            <option value="SE" label="Sweden">Sweden</option>
-                                                            <option value="CH" label="Switzerland">Switzerland</option>
-                                                            <option value="UA" label="Ukraine">Ukraine</option>
-                                                            <option value="SU" label="Union of Soviet Socialist Republics">Union of Soviet Socialist Republics</option>
-                                                            <option value="GB" label="United Kingdom">United Kingdom</option>
-                                                            <option value="VA" label="Vatican City">Vatican City</option>
-                                                            <option value="AX" label="Åland Islands">Åland Islands</option>
-                                                        </optgroup>
-                                                        <optgroup label="other">
-                                                            <option value="1" label="write" selected="selected">write</option>
-                                                            <option value="2" label="your" selected="selected">your</option>
-                                                            <option value="3" label="tag" selected="selected">tag</option>
-                                                        </optgroup>
-                                                    </select>
-                                                    <span class="help-block"><i class="fa fa-info-circle mr-xs"></i>Select from pre-existing options or create a new tag, use ',' to separate them.</span>
                                                 </div>
                                             </div>
-                                        </form>
-
-
-                                            </form>
                                         </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile2">
+                                        <div class="panel">
+                                                <div class="panel-content">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <form class="form-horizontal form-stripe">
+
+                                                                <div class="form-group">
+                                                                    <label for="righticon" class="col-sm-2 control-label">ODB++(.tgz)批量文件所在文件夹</label>
+                                                                    <div class="col-sm-10">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" id="button-addon" placeholder="路径">
+                                                                                <span class="input-group-btn">
+                                                                                    <button class="btn btn-primary" type="button">选择文件</button>
+                                                                           </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="righticon" class="col-sm-2 control-label">原始资料（压缩包）批量文件所在文件夹</label>
+                                                                    <div class="col-sm-10">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" id="button-addon" placeholder="路径">
+                                                                                <span class="input-group-btn">
+                                                                                    <button class="btn btn-primary" type="button">选择文件</button>
+                                                                           </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="tooltip" class="col-sm-2 control-label">料号名称</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control" id="tooltip" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+                                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
+                    </div>
                 </div>
-
-
-
             </div>
+        </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-<div align="center">
-
-    {#<img style="width: 20px; height: 20px;" src="http://www.beian.gov.cn/img/ghs.png" alt="备案标识" /><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32058202010228&token=2be051c1-22dd-44ec-9f4b-d41155f2d855" target="_blank" rel="nofollow noopener">苏ICP备18069791号</a>#}
-<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">苏ICP备18069791号-1</a>
-
-</div>
-<div style="width:300px;margin:0 auto; padding:20px 0;">
-    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32050802010946" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="\static\images\备案图标.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">苏公网安备 32050802010946号</p></a>
-</div>
-
-
 {% endblock %}
