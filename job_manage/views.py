@@ -77,7 +77,7 @@ def job_upload(request):
 # ajax上传文件
 def job_upload_ajax(request):
     if request.method=='GET':
-        return render(request,r'../templates/upload_ajax.html')
+        return render(request,r'../templates/job_upload.html')
     elif request.method=='POST':
         # psd = request.POST.get('password')
         file_odb = request.FILES.get('file_odb')
@@ -97,7 +97,7 @@ def job_upload_ajax(request):
             for chunk in file_compressed.chunks():  # chunks()每次读取数据默认我64k
                 f.write(chunk)
         job_name = request.POST.get('job_name')
-        print(job_name)
+        print("*"*30,job_name)
         return HttpResponse('完成上传')
 
 def reg(request):
