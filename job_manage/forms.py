@@ -25,35 +25,45 @@ class UserForm(forms.Form):
      tel = forms.CharField(label='手机号',
                 widget=widgets.TextInput(attrs={"class": "form-control"}),
                 )
-
 from job_manage import models
 from django.forms import ModelForm
 from django.forms.widgets import Textarea
-class JobModelForm(ModelForm):
-    class Meta:
-        model = models.Job  #对应的Model类
-        fields = '__all__'  #对应的Model类中字段
-        exclude = None      #排除的字段
-        labels = {
-            "job_name":"料号名",       #用于html页面中显示的名字
-        }
-        help_texts = {
-            "job_name":"我是料号名称" #自定义帮助信息
-        }
-        error_messages = {
-            "job_name":{"required":"料号名不能为空"}  #自定义错误信息
-        }
-        widgets = {
-            "job_name":Textarea(attrs={"class":"form-control"}) #自定义属性
-        }
-
-
-# @Time : 2020/7/21 0:18
-# @Author : Small-J
 from django import forms
-from .models import Article
+from .models import Job
+from .models import Register
 # forms.Form:代表着为导入表单
 # forms.ModelForm:代表着导入模型的表单
+
+
+class UploadForms(forms.ModelForm):
+    """
+    Meta : 该类是必须继承的,但是该字段是
+    model :对应的模型类
+    fields : 当为‘__all__就是验证全部字段’,当只想验证其中部分的字段的时候，需要使用[]包裹起来
+    """
+    class Meta:
+        model = Job
+        fields = '__all__'
+        # 当只想验证某几个字段的情况下可以使用[]的形式
+        # fields = ['title']  # 表示只验证title这个字段
+        exclude = ['title']   # exclude->排除的意思  表示不验证title这个字段
+
+        error_messages = {
+            'title': {
+                'required': '该字段是必须要填的',
+                'min_length': '最小长度为3',
+                'max_length': '最大长度为20'
+            },
+            'content': {
+                'required': '该字段是必须要填的',
+                'max_length': '最大长度为100'
+            },
+            'author': {
+                'required': '该字段是必须要填的',
+                'max_length': '最大长度为15'
+            }
+        }
+
 class AddForms(forms.ModelForm):
     """
     Meta : 该类是必须继承的,但是该字段是
@@ -61,7 +71,7 @@ class AddForms(forms.ModelForm):
     fields : 当为‘__all__就是验证全部字段’,当只想验证其中部分的字段的时候，需要使用[]包裹起来
     """
     class Meta:
-        model = Article
+        model = Job
         # fields = '__all__'
         # 当只想验证某几个字段的情况下可以使用[]的形式
         # fields = ['title']  # 表示只验证title这个字段
@@ -83,8 +93,6 @@ class AddForms(forms.ModelForm):
             }
         }
 
-
-from .models import Register
 class RegisterForm(forms.ModelForm):
     pwd1 = forms.CharField(min_length=3, max_length=10)
     pwd2 = forms.CharField(min_length=3, max_length=10)
@@ -115,32 +123,3 @@ class RegisterForm(forms.ModelForm):
             }
         }
 
-
-class UploadForms(forms.ModelForm):
-    """
-    Meta : 该类是必须继承的,但是该字段是
-    model :对应的模型类
-    fields : 当为‘__all__就是验证全部字段’,当只想验证其中部分的字段的时候，需要使用[]包裹起来
-    """
-    class Meta:
-        model = Article
-        fields = '__all__'
-        # 当只想验证某几个字段的情况下可以使用[]的形式
-        # fields = ['title']  # 表示只验证title这个字段
-        exclude = ['title']   # exclude->排除的意思  表示不验证title这个字段
-
-        error_messages = {
-            'title': {
-                'required': '该字段是必须要填的',
-                'min_length': '最小长度为3',
-                'max_length': '最大长度为20'
-            },
-            'content': {
-                'required': '该字段是必须要填的',
-                'max_length': '最大长度为100'
-            },
-            'author': {
-                'required': '该字段是必须要填的',
-                'max_length': '最大长度为15'
-            }
-        }

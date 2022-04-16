@@ -1,6 +1,5 @@
 # Create your views here.
 from django.shortcuts import render, get_object_or_404,HttpResponse
-from .models import Job
 # Create your views here.
 import os
 from django.http import StreamingHttpResponse
@@ -8,7 +7,7 @@ import pandas as pd
 import psycopg2
 from pathlib import Path
 from django.conf import settings
-from job_manage.forms import UserForm,JobModelForm
+from job_manage.forms import UserForm
 from job_manage import models
 from django.views import View
 
@@ -78,9 +77,8 @@ def job_upload(request):
 # ajax上传文件
 def job_upload_ajax(request):
     if request.method=='GET':
-        return render(request,r'../templates/upload.html')
+        return render(request,r'../templates/upload_ajax.html')
     elif request.method=='POST':
-
         # psd = request.POST.get('password')
         file_odb = request.FILES.get('file_odb')
         file_odb_name = file_odb.name
@@ -115,41 +113,21 @@ def reg(request):
 
 from django.shortcuts import render,redirect,HttpResponse
 
-def JobAdd(request):
-    job_list = models.Job.objects.all()
-    # print(job_list)
-    #获取添加数据的表单
-    if request.method == "GET":
-        form = JobModelForm()
-        return render(request,r'../templates/joblist.html',locals())
-    if request.method == "POST":
-        # print("post"*30)
-        #POST请求添加数据
-        form = JobModelForm(data=request.POST)
-        # print(form)
-        form.save()
-
-        if form.is_valid():
-            # print("forem is valid")
-            #保存数据
-            form.save()
-            return HttpResponse('数据提交成功！！')
-
-def JobEdit(request,id):
-    job = models.Job.objects.filter(id=id).first()
-    #获取修改数据的表单
-    if request.method == "GET":
-        form = JobModelForm(instance=job)
-        return render(request, r'../templates/joblist.html', locals())
-    #POST请求添加修改过后的数据
-    form = JobModelForm(data=request.POST,instance=job)
-    #对数据验证并且保存
-    if form.is_valid():
-        # print("valid"*10)
-        form.save()
-    return HttpResponse('数据修改成功！！')
 
 
+# def JobEdit(request,id):
+#     job = models.Job.objects.filter(id=id).first()
+#     #获取修改数据的表单
+#     if request.method == "GET":
+#         form = JobModelForm(instance=job)
+#         return render(request, r'../templates/joblist.html', locals())
+#     #POST请求添加修改过后的数据
+#     form = JobModelForm(data=request.POST,instance=job)
+#     #对数据验证并且保存
+#     if form.is_valid():
+#         # print("valid"*10)
+#         form.save()
+#     return HttpResponse('数据修改成功！！')
 
 # 导入表单验证
 from .forms import AddForms
@@ -184,7 +162,7 @@ class RegisterArticle(View):
             print(form.errors.get_json_data())
             return HttpResponse('fail')
 
-from .forms import Article
+from .forms import Job
 class UploadFiles(View):
     def get(self, request):
         return render(request, r'../templates/ModelFormTest/upload.html')
@@ -205,9 +183,34 @@ class UploadFiles(View):
         create_time = request.POST.get('create_time')
         # 当接收文件的时候使用的是FILES这个文件方式来进行接收
         images = request.FILES.get('images')
-        article = Article(title=title, content=content, author=author, images=images)
+        print("*"*20,images)
+        article = Job(title=title, content=content, author=author, images=images)
         article.save()
         return HttpResponse('success')
 
+class JobUpload(View):
+    def get(self, request):
+        # return render(request, r'../templates/joblist.html')
+        return render(request, r'../templates/job_upload.html')
 
+    def post(self, request):
+        # # print(request.POST)
+        # # 当选择文件上传的时候,应该选择的是FILES该文件
+        # print(request.FILES)  # <MultiValueDict: {'images': [<InMemoryUploadedFile: thumb-1920-771788.png (image/png)>]}>
+        # images = request.FILES.get('images')
+        # print(images)  # thumb-1920-771788.png 打印的是图片的名字
+        # print(type(images))  # 但是这张图片是一个类
+        # with open('demo.png', 'wb')as f:
+        #     f.write(images.read())
+        # return HttpResponse('success')
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        author = request.POST.get('author')
+        create_time = request.POST.get('create_time')
+        # 当接收文件的时候使用的是FILES这个文件方式来进行接收
+        images = request.FILES.get('images')
+        print("*"*20,images)
+        article = Job(title=title, content=content, author=author, images=images)
+        article.save()
+        return HttpResponse('success')
 

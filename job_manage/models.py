@@ -4,35 +4,10 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
-
-class Job(models.Model):
-    file_odb = models.FileField(upload_to='router_job_odb', verbose_name="ODB++(.tgz)")
-    file_compressed = models.FileField(upload_to='router_job_compressed', verbose_name="原始资料（压缩包）")
-    RECIPE_STATUS_CHOICES = (('yes', 'yes'), ('no', 'no'))
-
-    job_name = models.CharField(max_length=250,verbose_name="料号名称")
-    slug = models.SlugField(max_length=250, unique_for_date='receive_date')
-    receive_staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='use_org',verbose_name="料号负责人")
-    receive_date = models.DateTimeField(default=timezone.now,verbose_name="接受料号时间")
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    recipe_status = models.CharField(max_length=10, choices=RECIPE_STATUS_CHOICES, default='no',verbose_name="是否提供了参数")
-    remark = models.TextField(verbose_name="备注")
-
-    class Meta:
-        ordering = ('-receive_date',)
-        verbose_name = '料号'
-        verbose_name_plural = '料号'
-
-    def __str__(self):
-        return self.job_name
-
-
-from django.db import models
-
 # 自定义验证器
 from django.core import validators
-class Article(models.Model):
+
+class Job(models.Model):
     # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器
     # MinLengthValidator
     title = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
@@ -46,7 +21,7 @@ class Article(models.Model):
     # images = models.FileField(upload_to='%Y/%M/%D', null=True)
 
     class Meta:
-        db_table = 'article'
+        db_table = 'job'
 
 class Register(models.Model):
     # 当不能设置最小长度的时候,可以使用自定义验证器来弄最小长度值
@@ -58,4 +33,3 @@ class Register(models.Model):
 
     class Meta:
         db_table = 'register'
-
