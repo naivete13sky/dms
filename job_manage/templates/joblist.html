@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>料号</title>
+</head>
+<body>
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        {% for job in form %}
+            <div>
+                {# 拿到数据字段的labels,没有就默认显示字段名 #}
+                <label >{{ job.label }}</label>
+                <div>{{ job }}{{ job.help_text }}</div>
+            </div>
+        {% endfor %}
+        <div class="col-md-2 col-md-offset-10">
+            <input type="submit" value="提交" class="btn-primary">
+        </div>
+    </form>
+
+</body>
+</html>

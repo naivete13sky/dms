@@ -1,10 +1,9 @@
-from django.db import models
-
 # Create your models here.
+from django.core import validators
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.conf import settings
 
 class Job(models.Model):
     file_odb = models.FileField(upload_to='router_job_odb', verbose_name="ODB++(.tgz)")
@@ -27,3 +26,21 @@ class Job(models.Model):
 
     def __str__(self):
         return self.job_name
+
+
+from django.db import models
+
+# 自定义验证器
+from django.core import validators
+class Article(models.Model):
+    # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器
+    # MinLengthValidator
+    title = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
+    content = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
+    author = models.CharField(max_length=15)
+    create_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'article'
+
+

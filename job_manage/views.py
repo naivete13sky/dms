@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.shortcuts import render, get_object_or_404,HttpResponse
 from .models import Job
@@ -10,9 +8,9 @@ import pandas as pd
 import psycopg2
 from pathlib import Path
 from django.conf import settings
-from job_manage.forms import UserForm
+from job_manage.forms import UserForm,JobModelForm
 from job_manage import models
-
+from django.views import View
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -44,54 +42,6 @@ def post_detail(request, order):
     print(order)
     # return render(request, 'blog/post/detail.html', {'order': order,})
 
-
-def file_download_job_pre(request,order):
-    # do something
-    print(request.path_info)
-    print("*"*30,order)
-    excel_name = str(request.path_info).replace("/router_job_pre/","")
-    print(excel_name)
-    pwd = os.getcwd()
-    the_file_name = excel_name
-    filename = pwd + r"\router_job_pre\\" + excel_name
-    print(filename)
-    response = StreamingHttpResponse(readFile(filename))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
-    return response
-
-def file_download_job_robot(request,order):
-    # do something
-    excel_name = str(request.path_info).replace("/router_job_robot/","")
-    pwd = os.getcwd()
-    the_file_name = excel_name
-    filename = pwd + r"\router_job_robot\\" + excel_name
-    response = StreamingHttpResponse(readFile(filename))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
-    return response
-
-def file_download_job_feedback(request,order):
-    # do something
-    excel_name = str(request.path_info).replace("/router_job_feedback/","")
-    pwd = os.getcwd()
-    the_file_name = excel_name
-    filename = pwd + r"\router_job_feedback\\" + excel_name
-    response = StreamingHttpResponse(readFile(filename))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
-    return response
-
-def file_download_job_recipe(request,order):
-    # do something
-    excel_name = str(request.path_info).replace("/router_job_recipe/","")
-    pwd = os.getcwd()
-    the_file_name = excel_name
-    filename = pwd + r"\router_job_recipe\\" + excel_name
-    response = StreamingHttpResponse(readFile(filename))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
-    return response
 
 def list_all_job(request):
 
@@ -162,3 +112,60 @@ def reg(request):
       print(form.cleaned_data)
       return HttpResponse('注册成功')
   return render(request, r'../templates/reg.html', locals())
+
+from django.shortcuts import render,redirect,HttpResponse
+
+def JobAdd(request):
+    job_list = models.Job.objects.all()
+    # print(job_list)
+    #获取添加数据的表单
+    if request.method == "GET":
+        form = JobModelForm()
+        return render(request,r'../templates/joblist.html',locals())
+    if request.method == "POST":
+        # print("post"*30)
+        #POST请求添加数据
+        form = JobModelForm(data=request.POST)
+        # print(form)
+        form.save()
+
+        if form.is_valid():
+            # print("forem is valid")
+            #保存数据
+            form.save()
+            return HttpResponse('数据提交成功！！')
+
+def JobEdit(request,id):
+    job = models.Job.objects.filter(id=id).first()
+    #获取修改数据的表单
+    if request.method == "GET":
+        form = JobModelForm(instance=job)
+        return render(request, r'../templates/joblist.html', locals())
+    #POST请求添加修改过后的数据
+    form = JobModelForm(data=request.POST,instance=job)
+    #对数据验证并且保存
+    if form.is_valid():
+        # print("valid"*10)
+        form.save()
+    return HttpResponse('数据修改成功！！')
+
+
+
+# 导入表单验证
+from .forms import AddForms
+class AddArticle(View):
+    def get(self, request):
+        return render(request, r'../templates/ModelFormTest/add.html')
+
+    def post(self, request):
+        form = AddForms(request.POST)
+        # is_valid:代表验证通过的情况下
+        if form.is_valid():
+
+            return HttpResponse('success')
+        else:
+            print(form.errors.get_json_data())
+            return HttpResponse('fail')
+
+
+

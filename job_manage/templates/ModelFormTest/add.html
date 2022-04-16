@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="post">
+    {# csrf_token:代表着解除csrf的一个保护    #}
+    {% csrf_token %}
+    <table>
+        <tr>
+        <td>标题:</td>
+        <td><input type="text" name="title"></td>
+        </tr>
+        <tr>
+        <td>内容:</td>
+        <td><input type="textarea" name="content"></td>
+        </tr>
+        <tr>
+        <td>作者:</td>
+        <td><input type="text" name="author"></td>
+        </tr>
+        <td><input type="submit" value="提交"></td>
+    </table>
+</form>
+</body>
+</html>
