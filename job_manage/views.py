@@ -259,10 +259,9 @@ def add(request):
             data["file_compressed"] = file_compressed
 
             models.Job.objects.create(**data)
-            return HttpResponse(
-                'ok'
-            )
-            # return render(request, "add_emp.html", {"form": form})
+            # return HttpResponse('ok' )
+            up_status="新增完成！"
+            return render(request, "add.html", {"form": form,"up_status":up_status})
         else:
             print(form.errors)    # 打印错误信息
             clean_errors = form.errors.get("__all__")
