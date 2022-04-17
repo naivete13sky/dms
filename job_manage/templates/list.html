@@ -1,0 +1,16 @@
+    <h1>My Job</h1>
+    {% for job in jobs %}
+        <h2>
+            <a href="{{ job.get_absolute_url }}">
+                {{ job.job_name }}
+            </a>
+        </h2>
+        <p class="date">
+        Published {{ job.creat_time }} by {{ job.author }}
+        </p>
+        {{ job.remark|truncatewords:30|linebreaks }}
+    {% endfor %}
+{#    {% include 'pagination.html' with page=posts %}#}
+    {% include 'pagination.html' with page=page_obj %}
+
+

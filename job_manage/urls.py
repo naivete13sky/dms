@@ -16,8 +16,10 @@ urlpatterns = [
     path('addArticle', views.AddArticle.as_view()),
     path('register/', views.RegisterArticle.as_view()),
     path('uploadcc/', views.UploadFiles.as_view()),
-    path('', views.job_view,name='job_view'),
+    # path('', views.job_view,name='job_view'),
     path('add', views.add,name='add'),
+    path('',views.JobListView.as_view(),name='job_list'),
+    path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
 
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

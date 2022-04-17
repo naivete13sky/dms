@@ -262,3 +262,15 @@ def add(request):
             clean_errors = form.errors.get("__all__")
             print(222, clean_errors)
         return render(request, "add.html", {"form": form, "clean_errors": clean_errors})
+
+from django.views.generic import ListView
+class JobListView(ListView):
+    queryset = models.Job.objects.all()
+    context_object_name = 'jobs'
+    paginate_by = 3
+    template_name = r'../templates/list.html'
+
+def job_detail(request, year, month, day, job):
+    job = get_object_or_404(Job, slug=job, status="published", publish__year=year, publish__month=month,
+                             publish__day=day)
+    return render(request, r'../templates/detail.html', {'job': job})

@@ -15,7 +15,7 @@ admin.site.site_header = 'CAM料号管理系统'
 
 @admin.register(Job)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('file_odb','file_compressed','job_name','author',)
+    list_display = ('job_name','file_odb','file_compressed','author',)
     list_filter = ('job_name','author',)
     search_fields = ('job_name','author',)
     # prepopulated_fields = {'slug': ('title',)}

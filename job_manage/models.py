@@ -5,6 +5,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core import validators  # 自定义验证器
+from django.urls import reverse
+
+class JobManager(models.Manager):
+    def get_queryset(self):
+        return super(JobManager, self).get_queryset().filter(job_name ='job002')
+        # return super(JobManager, self).get_queryset().all()
 
 class Job(models.Model):
     # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器
@@ -17,12 +23,24 @@ class Job(models.Model):
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
     # remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)])
-    author = models.CharField(max_length=15)
-    create_time = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(max_length=250, unique_for_date='publish')
 
+    # author = models.CharField(max_length=15)
+    author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs')
+    publish = models.DateTimeField(default=timezone.now)
+    create_time = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+
+    objects = models.Manager()  # 默认的管理器
+    published = JobManager()  # 自定义管理器
 
     class Meta:
         db_table = 'job'
+
+    def get_absolute_url(self):
+        return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
 
 class Register(models.Model):
     # 当不能设置最小长度的时候,可以使用自定义验证器来弄最小长度值
