@@ -38,6 +38,7 @@ class Job(models.Model):
 
     class Meta:
         db_table = 'job'
+        ordering = ('-publish',)
 
     def get_absolute_url(self):
         return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
