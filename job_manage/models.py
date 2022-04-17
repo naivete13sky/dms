@@ -4,8 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
-# 自定义验证器
-from django.core import validators
+from django.core import validators  # 自定义验证器
 
 class Job(models.Model):
     # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器

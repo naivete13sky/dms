@@ -1,15 +1,15 @@
 # Create your views here.
 from django.shortcuts import render, get_object_or_404,HttpResponse
-# Create your views here.
 import os
+from django.views import View
 from django.http import StreamingHttpResponse
+from django.shortcuts import render,redirect,HttpResponse
+from django.conf import settings
 import pandas as pd
 import psycopg2
 from pathlib import Path
-from django.conf import settings
-from job_manage.forms import UserForm
+from job_manage.forms import UserForm,UploadForms
 from job_manage import models
-from django.views import View
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -56,7 +56,6 @@ def post_detail(request, order):
     order = get_object_or_404(Job, slug=order)
     print(order)
     # return render(request, 'blog/post/detail.html', {'order': order,})
-
 
 def list_all_job(request):
 
@@ -134,23 +133,27 @@ def reg(request):
       return HttpResponse('注册成功')
   return render(request, r'../templates/reg.html', locals())
 
-from django.shortcuts import render,redirect,HttpResponse
-
-
-
-# def JobEdit(request,id):
-#     job = models.Job.objects.filter(id=id).first()
-#     #获取修改数据的表单
-#     if request.method == "GET":
-#         form = JobModelForm(instance=job)
-#         return render(request, r'../templates/joblist.html', locals())
-#     #POST请求添加修改过后的数据
-#     form = JobModelForm(data=request.POST,instance=job)
-#     #对数据验证并且保存
-#     if form.is_valid():
-#         # print("valid"*10)
-#         form.save()
-#     return HttpResponse('数据修改成功！！')
+def Edit(request,id):
+    job = models.Job.objects.filter(id=id).first()
+    # print(job)
+    #获取修改数据的表单
+    if request.method == "GET":
+        form = UploadForms(instance=job)
+        return render(request, r'../templates/edit.html', locals())
+    #POST请求添加修改过后的数据
+    form = UploadForms(data=request.POST,instance=job)
+    #对数据验证并且保存
+    if form.is_valid():
+        file_odb = request.FILES.get('file_odb')
+        if file_odb != None:
+            print(file_odb)
+            job.file_odb = file_odb
+        file_compressed = request.FILES.get('file_compressed')
+        if file_compressed != None:
+            print(file_compressed)
+            job.file_compressed = file_compressed
+        form.save()
+    return HttpResponse('数据修改成功！！')
 
 # 导入表单验证
 from .forms import AddForms
@@ -214,26 +217,15 @@ class UploadFiles(View):
 class JobUpload(View):
     def get(self, request):
         # return render(request, r'../templates/joblist.html')
-        return render(request, r'../templates/job_upload.html')
+        return render(request, r'../templates/upload.html')
 
     def post(self, request):
-        # # print(request.POST)
-        # # 当选择文件上传的时候,应该选择的是FILES该文件
-        # print(request.FILES)  # <MultiValueDict: {'images': [<InMemoryUploadedFile: thumb-1920-771788.png (image/png)>]}>
-        # images = request.FILES.get('images')
-        # print(images)  # thumb-1920-771788.png 打印的是图片的名字
-        # print(type(images))  # 但是这张图片是一个类
-        # with open('demo.png', 'wb')as f:
-        #     f.write(images.read())
-        # return HttpResponse('success')
         file_odb = request.FILES.get('file_odb')
         file_compressed = request.FILES.get('file_compressed')
         job_name = request.POST.get('job_name')
         remark = request.POST.get('remark')
         author = request.POST.get('author')
         create_time = request.POST.get('create_time')
-        # 当接收文件的时候使用的是FILES这个文件方式来进行接收
-
         job = Job(file_odb=file_odb, file_compressed=file_compressed,
                   job_name=job_name, remark=remark,author=author)
         job.save()
