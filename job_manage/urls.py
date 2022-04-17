@@ -12,10 +12,12 @@ urlpatterns = [
     path('reg/', views.reg,name='reg'),
     # re_path('job/$', views.JobAdd),
     re_path('job/(?P<id>\d+)/$', views.Edit,name='edit'),
-    re_path('upload/$', views.JobUpload.as_view()),
-    path('', views.AddArticle.as_view()),
+    re_path('upload/$', views.JobUpload.as_view(), name='upload'),
+    path('addArticle', views.AddArticle.as_view()),
     path('register/', views.RegisterArticle.as_view()),
     path('uploadcc/', views.UploadFiles.as_view()),
+    path('', views.job_view,name='job_view'),
+    path('add', views.add,name='add'),
 
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

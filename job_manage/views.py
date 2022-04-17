@@ -8,7 +8,7 @@ from django.conf import settings
 import pandas as pd
 import psycopg2
 from pathlib import Path
-from job_manage.forms import UserForm,UploadForms
+from job_manage.forms import UserForm,UploadForms,ViewForms
 from job_manage import models
 
 def readFile(filename,chunk_size=512):
@@ -153,7 +153,9 @@ def Edit(request,id):
             print(file_compressed)
             job.file_compressed = file_compressed
         form.save()
-    return HttpResponse('数据修改成功！！')
+    # return HttpResponse('数据修改成功！！')
+    status = "修改成功！"
+    return render(request, r'../templates/edit.html', {"status": status})
 
 # 导入表单验证
 from .forms import AddForms
@@ -229,5 +231,34 @@ class JobUpload(View):
         job = Job(file_odb=file_odb, file_compressed=file_compressed,
                   job_name=job_name, remark=remark,author=author)
         job.save()
-        return HttpResponse('success')
+        # return HttpResponse('success')
+        status="上传成功！"
+        return render(request, r'../templates/upload.html',{"status":status})
 
+def job_view(request):
+    pass
+    table_form = ViewForms()
+    return render(request, r'../templates/view.html', {'form': table_form})
+
+def add(request):
+    if request.method == "GET":
+        form = UploadForms()
+        return render(request, "add.html", {"form": form})
+    else:
+        form = UploadForms(request.POST)
+        if form.is_valid():  # 进行数据校验
+            # 校验成功
+            data = form.cleaned_data  # 校验成功的值，会放在cleaned_data里。
+            data.pop('job_name')
+            print(data)
+
+            models.Job.objects.create(**data)
+            return HttpResponse(
+                'ok'
+            )
+            # return render(request, "add_emp.html", {"form": form})
+        else:
+            print(form.errors)    # 打印错误信息
+            clean_errors = form.errors.get("__all__")
+            print(222, clean_errors)
+        return render(request, "add.html", {"form": form, "clean_errors": clean_errors})

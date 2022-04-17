@@ -1,0 +1,143 @@
+{% extends 'index_base.html' %}
+{% load static  %}
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href="#">料号管理</a></li>
+    <li><a>上传料号</a></li>
+{% endblock %}
+{% block main_content %}
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tabs">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li class="active"><a href="#home2" data-toggle="tab"><h4 class="section-subtitle"><b>单个上传 </b></h4></a></li>
+                                    <li><a href="#profile2" data-toggle="tab"><h4 class="section-subtitle"><b>批量上传 </b></h4></a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    {{status}}
+                                    <div class="tab-pane fade in active" id="home2">
+{#                                            <h4 class="section-subtitle"><b>上传料号 </b></h4>#}
+                                        <div class="panel">
+                                            <div class="panel-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        abc
+                                                        {{ clean_errors }}
+                                                        <h3>添加员工</h3>
+
+                                                        {#1、自己手动写HTML页面#}
+{#                                                        <form action="" method="post">#}
+{#                                                            <p>姓名：<input type="text" name="name"></p>#}
+{#                                                            <p>年龄：<input type="text" name="age"></p>#}
+{#                                                            <p>工资：<input type="text" name="salary"></p>#}
+{#                                                            <input type="submit">#}
+{#                                                        </form>#}
+
+                                                        2、通过form对象的as_p方法实现
+                                                        <form action="" method="post" novalidate enctype="multipart/form-data">
+                                                            {% csrf_token %}
+                                                            {{ form.as_p }}
+                                                            <input type="submit">
+                                                        </form>
+
+                                                        {#3、手动获取form对象的字段#}
+                                                        {#<form action="" method="post" novalidate>#}
+                                                        {#    {% csrf_token %}#}
+                                                        {#    <div>#}
+                                                        {#        <label for="id_{{ form.name.name }}">姓名</label>#}
+                                                        {#        {{ form.name }} <span>{{ form.name.errors.0 }}</span>#}
+                                                        {#    </div>#}
+                                                        {#    <div>#}
+                                                        {#        <label for="id_{{ form.age.name }}">年龄</label>#}
+                                                        {#        {{ form.age }} <span>{{ form.age.errors.0 }}</span>#}
+                                                        {#    </div>#}
+                                                        {#    <div>#}
+                                                        {#        <label for="id_salary">工资</label>#}
+                                                        {#        {{ form.salary }} <span>{{ form.salary.errors.0 }}</span>#}
+                                                        {#    </div>#}
+                                                        {#    <input type="submit">#}
+                                                        {#</form>#}
+
+
+                                                        {#4、用for循环展示所有字段#}
+                                                        {#<form action="" method="post" novalidate>#}
+                                                        {#    {% csrf_token %}#}
+                                                        {#    {% for field in form %}#}
+                                                        {#        <div>#}
+                                                        {#            <label for="id_{{ field.name }}">{{ field.label }}</label>#}
+                                                        {#            {{ field }} <span>{{ field.errors.0 }}</span>#}
+                                                        {#        </div>#}
+                                                        {#    {% endfor %}#}
+                                                        {#    <input type="submit">#}
+                                                        {#</form>#}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile2">
+                                        <div class="panel">
+                                                <div class="panel-content">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <form class="form-horizontal form-stripe">
+
+                                                                <div class="form-group">
+                                                                    <label for="righticon" class="col-sm-2 control-label">ODB++(.tgz)批量文件所在文件夹</label>
+                                                                    <div class="col-sm-10">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" id="button-addon" placeholder="路径">
+                                                                                <span class="input-group-btn">
+                                                                                    <button class="btn btn-primary" type="button">选择文件</button>
+                                                                           </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="righticon" class="col-sm-2 control-label">原始资料（压缩包）批量文件所在文件夹</label>
+                                                                    <div class="col-sm-10">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" id="button-addon" placeholder="路径">
+                                                                                <span class="input-group-btn">
+                                                                                    <button class="btn btn-primary" type="button">选择文件</button>
+                                                                           </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="tooltip" class="col-sm-2 control-label">料号名称</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control" id="tooltip" placeholder="料号名称" data-toggle="tooltip" data-trigger="hover" data-original-title="Your tooltip content!">
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="form-group">
+                                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<script src={% static "javascripts/jquery.min.js" %}></script>

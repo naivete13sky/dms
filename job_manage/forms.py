@@ -123,3 +123,5 @@ class RegisterForm(forms.ModelForm):
             }
         }
 
+class ViewForms(forms.ModelForm):
+    pass

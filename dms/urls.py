@@ -26,4 +26,5 @@ urlpatterns = [
     path('media/files/<order>', views.file_download, name='file_download'),
     path('gb/', include('gb.urls', namespace='gb')),
     path('media/router_job_org/<order>', gb.file_download_org, name='file_download_org'),
+    path('blog/', include('blog.urls', namespace='blog')),
 ]
