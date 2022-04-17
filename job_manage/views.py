@@ -8,7 +8,7 @@ from django.conf import settings
 import pandas as pd
 import psycopg2
 from pathlib import Path
-from job_manage.forms import UserForm,UploadForms,ViewForms
+from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file
 from job_manage import models
 
 def readFile(filename,chunk_size=512):
@@ -226,10 +226,12 @@ class JobUpload(View):
         file_compressed = request.FILES.get('file_compressed')
         job_name = request.POST.get('job_name')
         remark = request.POST.get('remark')
+        slug = request.POST.get('slug')
         author = request.POST.get('author')
         create_time = request.POST.get('create_time')
         job = Job(file_odb=file_odb, file_compressed=file_compressed,
-                  job_name=job_name, remark=remark,author=author)
+                  job_name=job_name, remark=remark,slug=slug,
+                  author=author)
         job.save()
         # return HttpResponse('success')
         status="上传成功！"
@@ -242,15 +244,19 @@ def job_view(request):
 
 def add(request):
     if request.method == "GET":
-        form = UploadForms()
+        form = UploadForms_no_file()
         return render(request, "add.html", {"form": form})
     else:
-        form = UploadForms(request.POST)
+        form = UploadForms_no_file(request.POST)
         if form.is_valid():  # 进行数据校验
             # 校验成功
             data = form.cleaned_data  # 校验成功的值，会放在cleaned_data里。
-            data.pop('job_name')
+            # data.pop('job_name')
             print(data)
+            file_odb = request.FILES.get('file_odb')
+            file_compressed = request.FILES.get('file_compressed')
+            data["file_odb"]=file_odb
+            data["file_compressed"] = file_compressed
 
             models.Job.objects.create(**data)
             return HttpResponse(

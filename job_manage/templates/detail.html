@@ -4,5 +4,7 @@
     <p class="date">
     Published {{ job.publish }} by {{ job.author }}
     </p>
+    {{ job.file_odb }}
+    {{ job.file_compressed }}
     {{ job.remark|linebreaks }}
 

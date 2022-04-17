@@ -64,6 +64,35 @@ class UploadForms(forms.ModelForm):
             }
         }
 
+class UploadForms_no_file(forms.ModelForm):
+    """
+    Meta : 该类是必须继承的,但是该字段是
+    model :对应的模型类
+    fields : 当为‘__all__就是验证全部字段’,当只想验证其中部分的字段的时候，需要使用[]包裹起来
+    """
+    class Meta:
+        model = Job
+        fields = ['job_name','remark','slug','author','publish','status']
+        # 当只想验证某几个字段的情况下可以使用[]的形式
+        # fields = ['title']  # 表示只验证title这个字段
+        exclude = ['title']   # exclude->排除的意思  表示不验证title这个字段
+
+        error_messages = {
+            'job_name': {
+                'required': '该字段是必须要填的',
+                'min_length': '最小长度为3',
+                'max_length': '最大长度为20'
+            },
+            'remark': {
+                'required': '该字段是必须要填的',
+                'max_length': '最大长度为100'
+            },
+            'author': {
+                'required': '该字段是必须要填的',
+                'max_length': '最大长度为15'
+            }
+        }
+
 class AddForms(forms.ModelForm):
     """
     Meta : 该类是必须继承的,但是该字段是
