@@ -20,9 +20,9 @@
     <link rel="stylesheet" href={% static "stylesheets/css/style.css" %}>
     <link rel="stylesheet" href={% static "vendor/select2/css/select2.min.css" %}>
     <link rel="stylesheet" href={% static "vendor/select2/css/select2-bootstrap.min.css" %}>
-{#    <link rel="stylesheet" href={% static "vendor/bootstrap_date-picker/css/bootstrap-datepicker3.min.css" %}>#}
+    <link rel="stylesheet" href={% static "vendor/bootstrap_date-picker/css/bootstrap-datepicker3.min.css" %}>
     <link rel="stylesheet" href={% static "vendor/bootstrap_time-picker/css/timepicker.css" %}>
-{#    <link rel="stylesheet" href={% static "vendor/bootstrap_color-picker/css/bootstrap-colorpicker.min.css" %}>#}
+    <link rel="stylesheet" href={% static "vendor/bootstrap_color-picker/css/bootstrap-colorpicker.min.css" %}>
 
 
 
@@ -107,20 +107,10 @@
 
                             </li>
                             <li class=" has-child-item close-item">
-                                <a >
+                                <a>
                                     <i class="fa fa-sitemap" aria-hidden="true"></i>
                                     <span>料号管理</span>
-
                                 </a>
-                                <ul class="nav child-nav level-1">
-                                    <li class="has-child-item close-item">
-
-                                        <li><a href="{% url "job_manage:job_list" %}">料号查询</a></li>
-
-                                    </li>
-
-
-                                </ul>
                                 <ul class="nav child-nav level-1">
                                     <li class="has-child-item close-item">
 
@@ -361,10 +351,6 @@
 </div>
 
 
-{% block js %}
-
-
-
 <script src={% static "javascripts/jquery.min.js" %}></script>
 <script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>
 <script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
@@ -374,9 +360,9 @@
 <script src={% static "vendor/select2/js/select2.min.js" %}></script>
 <script src={% static "vendor/input-masked/inputmask.bundle.min.js" %}></script>
 <script src={% static "vendor/input-masked/phone-codes/phone.js" %}></script>
-{#<script src={% static "vendor/bootstrap_date-picker/js/bootstrap-datepicker.min.js" %}></script>#}
+<script src={% static "vendor/bootstrap_date-picker/js/bootstrap-datepicker.min.js" %}></script>
 <script src={% static "vendor/bootstrap_time-picker/js/bootstrap-timepicker.js" %}></script>
-{#<script src={% static "vendor/bootstrap_color-picker/js/bootstrap-colorpicker.min.js" %}></script>#}
+<script src={% static "vendor/bootstrap_color-picker/js/bootstrap-colorpicker.min.js" %}></script>
 <script src={% static "javascripts/examples/forms/advanced.js" %}></script>
 
 <script src={% static "vendor/toastr/toastr.min.js" %}></script>
@@ -389,14 +375,9 @@
 <script src={% static "vendor/data-table/extensions/Responsive/js/responsive.bootstrap.min.js" %}></script>
 <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
 
-<script src={% static "javascripts/jquery.min.js" %}></script>
-<script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>
-<script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
-<script src={% static "javascripts/template-script.min.js" %}></script>
-<script src={% static "javascripts/template-init.min.js" %}></script>
-<script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
-<script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
-<script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
+
+
+
 
 <script>
     $.fn.extend({
@@ -414,8 +395,6 @@
         $("#" + img).animateCss(animation);
     });
 </script>
-
-{% endblock %}
 </body>
 
 </html>
