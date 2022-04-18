@@ -22,6 +22,6 @@ urlpatterns = [
     path('add2', views.add,name='add2'),#附件有问题
     path('',views.JobListView.as_view(),name='job_list'),
     path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
-
+    path('view',views.job_view,name='job_view'),
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

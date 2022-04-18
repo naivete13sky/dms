@@ -239,8 +239,8 @@ class JobUpload(View):
 
 def job_view(request):
     pass
-    table_form = ViewForms()
-    return render(request, r'../templates/view.html', {'form': table_form})
+    job_list=models.Job.objects.all()
+    return render(request, r'../templates/view.html', {'job_list': job_list})
 
 def add(request):
     if request.method == "GET":
