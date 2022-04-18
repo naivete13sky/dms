@@ -18,8 +18,8 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display = ('job_name','file_odb','file_compressed','author',)
     list_filter = ('job_name','author',)
     search_fields = ('job_name','author',)
-    # prepopulated_fields = {'slug': ('title',)}
-    # raw_id_fields = ('receive_staff',)
-    # date_hierarchy = 'receive_date'
+    prepopulated_fields = {'slug': ('job_name',)}
+    raw_id_fields = ('author',)
+    date_hierarchy = 'publish'
     # ordering = ('recipe_status', 'receive_date',)
     list_per_page = 10
