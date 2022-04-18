@@ -240,7 +240,18 @@ class JobUpload(View):
 def job_view(request):
     pass
     job_list=models.Job.objects.all()
-    return render(request, r'../templates/view.html', {'job_list': job_list})
+    job_field_verbose_name=[Job._meta.get_field('job_name').verbose_name,
+                            Job._meta.get_field('file_odb').verbose_name,
+                            Job._meta.get_field('file_compressed').verbose_name,
+                            Job._meta.get_field('remark').verbose_name,
+                            Job._meta.get_field('author').verbose_name,
+                            Job._meta.get_field('publish').verbose_name,
+                            ]
+    # print(job_field_verbose_name)
+
+    return render(request, r'../templates/view.html',
+                  {'job_list': job_list,
+                   'job_field_verbose_name':job_field_verbose_name})
 
 def add(request):
     if request.method == "GET":
