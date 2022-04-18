@@ -106,6 +106,7 @@
                                 <a><i class="fa fa-cubes" aria-hidden="true"></i><span>看板</span></a>
 
                             </li>
+
                             <li class=" has-child-item close-item">
                                 <a >
                                     <i class="fa fa-sitemap" aria-hidden="true"></i>
@@ -115,150 +116,131 @@
                                 <ul class="nav child-nav level-1">
                                     <li class="has-child-item close-item">
 
-                                        <li><a href="{% url "job_manage:job_view" %}">料号查询</a></li>
+                                        <li>
+                                            <a href="{% url "job_manage:job_view" %}">料号查询</a>
+                                        </li>
 
                                     </li>
-
-
                                 </ul>
                                 <ul class="nav child-nav level-1">
                                     <li class="has-child-item close-item">
-
                                         <li><a href="{% url "job_manage:add" %}">上传料号</a></li>
-                                        <ul class="nav child-nav level-2 ">
-                                            <li class="has-child-item close-item">
-                                                <a>excel</a>
-                                                <ul class="nav child-nav level-3 ">
-{#                                                    <li><a href="{% url "tools:excel_combine" %}">工作表合并</a></li>#}
-                                                    <li><a href="#">工作表拆分（开发中）</a></li>
-{#                                                    <li><a href="{% url "tools:excel_vlookup" %}">vlookup工具</a></li>#}
-                                                </ul>
-                                            </li>
-                                            <li class="has-child-item close-item">
-                                                <a>txt</a>
-                                                <ul class="nav child-nav level-3 ">
-                                                    <li><a href="#">合并（开发中）</a></li>
-                                                    <li><a href="#">拆分（开发中）</a></li>
-                                                    <li><a href="#">Item 3</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">文件夹比对（开发中）</a></li>
 
-                                        </ul>
                                     </li>
 
 
                                 </ul>
                                 <ul class="nav child-nav level-1">
                                     <li class="has-child-item close-item">
-                                        <a>权限管理</a>
-                                        <ul class="nav child-nav level-2 ">
-                                            <li class="has-child-item close-item">
-                                                <a>excel</a>
-                                                <ul class="nav child-nav level-3 ">
-{#                                                    <li><a href="{% url "tools:excel_combine" %}">工作表合并</a></li>#}
-                                                    <li><a href="#">工作表拆分（开发中）</a></li>
-{#                                                    <li><a href="{% url "tools:excel_vlookup" %}">vlookup工具</a></li>#}
-                                                </ul>
-                                            </li>
-                                            <li class="has-child-item close-item">
-                                                <a>txt</a>
-                                                <ul class="nav child-nav level-3 ">
-                                                    <li><a href="#">合并（开发中）</a></li>
-                                                    <li><a href="#">拆分（开发中）</a></li>
-                                                    <li><a href="#">Item 3</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">文件夹比对（开发中）</a></li>
+                                        <li><a href="{% url "job_manage:job_view" %}">料号分析</a></li>
 
-                                        </ul>
                                     </li>
+
+
+                                </ul>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "job_manage:job_view" %}">配置</a></li>
+
+                                    </li>
+
 
                                 </ul>
                             </li>
+
                             <li class=" has-child-item close-item">
-                                <a>
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                    <span>客户管理</span>
+                                <a >
+                                    <i class="fa fa-sitemap" aria-hidden="true"></i>
+                                    <span>工程管理</span>
+
                                 </a>
                                 <ul class="nav child-nav level-1">
                                     <li class="has-child-item close-item">
-                                        <a>客户统计</a>
-                                        <ul class="nav child-nav level-2 ">
-                                            <li><a href="{% url "back_stage:index" %}">瑞小云-信有钱宝</a></li>
-                                            <li><a href="{% url "back_stage:index" %}">瑞鹏-信有钱宝</a></li>
 
-                                        </ul>
+                                        <li>
+                                            <a href="{% url "job_manage:job_view" %}">工程查询</a>
+                                        </li>
+
                                     </li>
-
-                                    <li class="has-child-item close-item">
-                                        <a>流量相关查询</a>
-                                        <ul class="nav child-nav level-2 ">
-{#                                            <li><a href="{% url "raiyiwork:db_center_dg_ld_js_gs_tj" %}">落档、结算查询</a></li>#}
-{#                                            <li><a href="{% url "raiyiwork:db_center_PredictYieldRatio" %}">预计结酬比查询</a></li>#}
-                                            <li class="has-child-item close-item">
-                                                <a>Option 3</a>
-                                                <ul class="nav child-nav level-3 ">
-                                                    <li><a href="#">Item 1</a></li>
-                                                    <li><a href="#">Item 2</a></li>
-                                                    <li><a href="#">Item 3</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-
                                 </ul>
-                            </li>
-                            <li class="has-child-item close-item">
-{#                                <a><i class="fa fa-pie-chart" aria-hidden="true"></i><span>手机号查询</span></a>#}
                                 <ul class="nav child-nav level-1">
-                                    <li><a href="charts_chart-js.html">CharJS</a></li>
-                                    <li><a href="charts_morris.html">Morris</a></li>
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "job_manage:add" %}">工程详情</a></li>
+
+                                    </li>
+
+
+                                </ul>
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "job_manage:job_view" %}">配置</a></li>
+
+                                    </li>
+
+
                                 </ul>
                             </li>
+
                             <li class="has-child-item close-item">
                                 <a><i class="fa fa-columns" aria-hidden="true"></i><span>订单管理</span></a>
                                 <ul class="nav child-nav level-1">
-                                    <li><a href="forms_layouts.html">报价管理</a></li>
-                                    <li><a href="forms_elements.html">订单管理</a></li>
-                                    <li><a href="../excel_combine">售后管理</a></li>
-                                    <li><a href="forms_validation.html">接单配置</a></li>
-                                    <li><a href="forms_validation.html">派单配置</a></li>
-                                    <li><a href="forms_validation.html">制作配置</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-child-item close-item">
-                                <a><i class="fa fa-table" aria-hidden="true"></i><span>EQ管理</span></a>
-                                <ul class="nav child-nav level-1">
-                                    <li><a href="../db_center_dg_ld_js_gs_tj">发展、落档、结算个数查询</a></li>
-                                    <li><a href="../db_center_PredictYieldRatio">预计结酬比</a></li>
-                                    <li><a href="tables_responsive.html">Responsive</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-child-item close-item">
-                                <a><i class="fa fa-files-o" aria-hidden="true"></i><span>料号分析管理</span></a>
-                                <ul class="nav child-nav level-1">
-{#                                    <li><a href="{% url "django.contrib.auth.views.logout" %}">Sign in</a></li>#}
-                                    <li><a href="pages_lock-screen.html">Lock screen</a></li>
-                                    <li><a href="pages_forgot-password.html">Forgot password</a></li>
+
                                     <li class="has-child-item close-item">
-                                        <a>Error pages</a>
+                                        <a>CAM服务代工</a>
                                         <ul class="nav child-nav level-2 ">
-                                            <li><a href="pages_error-404-content.html">Error 404 content</a></li>
-                                            <li><a href="pages_error-404.html">Error 404 page</a></li>
-                                            <li><a href="pages_error-500.html">Error 500</a></li>
+                                            <li><a href="pages_error-404-content.html">订单查询</a></li>
+                                            <li><a href="pages_error-404.html">订单详情</a></li>
+                                            <li><a href="pages_error-404.html">订单统计</a></li>
+                                            <li><a href="pages_error-500.html">配置</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="pages_faq.html">FAQ</a></li>
-                                    <li><a href="pages_user-profile.html">User profile</a></li>
+
+                                    <li><a href="forms_layouts.html">设计PCB代工服务</a></li>
+
                                 </ul>
                             </li>
                             <li class="has-child-item close-item">
-                                <a><i class="fa fa-magic" aria-hidden="true"></i><span>后台设置</span></a>
+                                <a>
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    <span>EDA用户信息管理</span>
+                                </a>
                                 <ul class="nav child-nav level-1">
-                                    <li><a href="helpers_background-border.html">用户管理</a></li>
-                                    <li><a href="helpers_margin-padding.html">模块管理</a></li>
+                                    <li class="has-child-item close-item">
+                                        <a>客户信息</a>
+                                    </li>
+
+                                    <li class="has-child-item close-item">
+                                        <a>厂规</a>
+
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-table" aria-hidden="true"></i><span>标准EQ配置</span></a>
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="../db_center_dg_ld_js_gs_tj">标准EQ查询</a></li>
+                                    <li><a href="../db_center_PredictYieldRatio">标准EQ新增</a></li>
+                                    <li><a href="../db_center_PredictYieldRatio">EQ详情</a></li>
+                                    <li><a href="tables_responsive.html">配置</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-files-o" aria-hidden="true"></i><span>DMS后台管理</span></a>
+                                <ul class="nav child-nav level-1">
+{#                                    <li><a href="{% url "django.contrib.auth.views.logout" %}">Sign in</a></li>#}
+                                    <li><a href="pages_lock-screen.html">用户管理</a></li>
+                                    <li><a href="pages_forgot-password.html">权限管理</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-magic" aria-hidden="true"></i><span>后台统计</span></a>
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="helpers_background-border.html">CAM服务销售统计</a></li>
+                                    <li><a href="helpers_margin-padding.html">PCB服务销售统计</a></li>
                                 </ul>
                             </li>
 
