@@ -45,11 +45,12 @@
                                                             <td>{{ job.publish }}</td>
                                                             <td>
                                                                 <div class="btn-group btn-group-xs">
-                                                                    <button class="btn btn-transparent"><i class="fa fa-eye"></i>
-                                                                        <a href="job/{{ job.id }}">查看</a>
+                                                                    <button class="btn btn-transparent" onclick="window.location.href='job/{{ job.id }}';"><i class="fa fa-pencil"></i>
                                                                     </button>
-                                                                    <button class="btn btn-transparent"><i class="fa fa-pencil"></i>
+                                                                    <button class="btn btn-transparent" onclick="window.location.href='job/{{ job.id }}';"><i class="fa fa-eye"></i>
+{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
                                                                     </button>
+
                                                                     <button class="btn btn-transparent"><i class="fa fa-times"></i>
                                                                     </button>
                                                                 </div>
