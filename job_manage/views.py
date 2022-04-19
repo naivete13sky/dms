@@ -247,6 +247,7 @@ def job_view(request):
                             Job._meta.get_field('remark').verbose_name,
                             Job._meta.get_field('author').verbose_name,
                             Job._meta.get_field('publish').verbose_name,
+                            "操作",
                             ]
     # print(job_field_verbose_name)
 
