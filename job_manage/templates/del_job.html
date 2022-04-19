@@ -2,8 +2,8 @@
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
-    <li><i class="fa fa-home" aria-hidden="true"></i><a href="#">料号管理</a></li>
-    <li><a>上传料号</a></li>
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:job_view" %}>料号管理</a></li>
+    <li><a>删除料号</a></li>
 {% endblock %}
 {% block main_content %}
     <div class="row animated fadeInUp">
@@ -24,7 +24,7 @@
                                 {% endfor %}
 
                                 <div class="col-md-2 col-md-offset-10">
-                                    <input type="submit" value="删除" class="btn-primary">
+                                    <input type="submit" value="删除" onclick="return deletejob();" class="btn-primary">
                                 </div>
                             </form>
                         </div>
@@ -33,5 +33,18 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript" language="JavaScript">
+                function deletejob()
+                {
+                     if(confirm("确定要删除吗?"))
+                     {
+                         return true;
+                     }else{
+                         return false;
+                     }
+                }
+    </script>
+
 {% endblock %}
 <script src={% static "javascripts/jquery.min.js" %}></script>
