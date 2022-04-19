@@ -1,0 +1,7 @@
+<ul>
+    {% for job in latest_jobs %}
+    <li>
+        <a href="{{ job.get_absolute_url }}">{{ job.job_name }}</a>
+    </li>
+    {% endfor %}
+</ul>

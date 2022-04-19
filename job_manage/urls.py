@@ -24,5 +24,6 @@ urlpatterns = [
     path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
     path('',views.job_view,name='job_view'),
 
+
 # ]
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -9,7 +9,7 @@ from django.urls import reverse
 
 class JobManager(models.Manager):
     def get_queryset(self):
-        return super(JobManager, self).get_queryset().filter(job_name ='job002')
+        return super(JobManager, self).get_queryset().filter(status ='published')
         # return super(JobManager, self).get_queryset().all()
 
 class Job(models.Model):

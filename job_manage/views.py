@@ -10,6 +10,7 @@ import psycopg2
 from pathlib import Path
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file
 from job_manage import models
+from django.contrib.sites.models import Site
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -249,9 +250,15 @@ def job_view(request):
                             ]
     # print(job_field_verbose_name)
 
+    #附件超链接
+    current_site = Site.objects.get_current()
+    # print(current_site)
+
+
     return render(request, r'../templates/view.html',
                   {'job_list': job_list,
-                   'job_field_verbose_name':job_field_verbose_name})
+                   'job_field_verbose_name':job_field_verbose_name,
+                   'current_site':current_site})
 
 def add(request):
     if request.method == "GET":

@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path,include
 from job_manage import views
 from gb import views as gb
+from django.contrib.sitemaps.views import sitemap
+from job_manage.sitemaps import JobSitemap
+sitemaps = {'jobs': JobSitemap,}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +30,5 @@ urlpatterns = [
     path('gb/', include('gb.urls', namespace='gb')),
     path('media/router_job_org/<order>', gb.file_download_org, name='file_download_org'),
     path('blog/', include('blog.urls', namespace='blog')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
 ]

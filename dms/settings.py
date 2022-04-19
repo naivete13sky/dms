@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+SITE_ID = 1
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'job_manage.apps.JobManageConfig',
     'back_stage.apps.BackStageConfig',
     'gb.apps.GbConfig',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +167,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+# SITE_ID = 1
