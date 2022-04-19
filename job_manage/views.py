@@ -298,3 +298,17 @@ def job_detail(request, year, month, day, job):
     job = get_object_or_404(Job, slug=job, status="published", publish__year=year, publish__month=month,
                              publish__day=day)
     return render(request, r'../templates/detail.html', {'job': job})
+
+def del_job(request, job_id):
+    # job = Job.objects.get(id=job_id)
+    # return render(request, 'del_job.html', {'job': job})
+    job = models.Job.objects.filter(id=job_id).first()
+    # print(job)
+    # 获取修改数据的表单
+    if request.method == "GET":
+        form = UploadForms(instance=job)
+        return render(request, r'../templates/del_job.html', locals())
+    if request.method == 'POST':
+        job.delete()
+        return redirect('job_manage:job_view')
+
