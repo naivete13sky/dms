@@ -22,7 +22,7 @@ class Job(models.Model):
     file_compressed = models.FileField(upload_to='files', null=True,verbose_name="原始料号压缩包")
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
     # remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
-    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注")
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True)
     slug = models.SlugField(max_length=250, unique_for_date='publish')
 
     # author = models.CharField(max_length=15)
@@ -32,6 +32,7 @@ class Job(models.Model):
     updated = models.DateTimeField(auto_now=True)
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+
 
     objects = models.Manager()  # 默认的管理器
     published = JobManager()  # 自定义管理器
@@ -53,3 +54,17 @@ class Register(models.Model):
 
     class Meta:
         db_table = 'register'
+
+class ShareAccount(models.Model):
+    pass
+    share_job=models.ForeignKey(Job, on_delete=models.DO_NOTHING,related_name='job_manage_jobs_share_job',verbose_name="被分享的料")
+    share_account=models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs_share_user',verbose_name="被分享人")
+    publish = models.DateTimeField(default=timezone.now)
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
+                              verbose_name="备注",blank=True)
+    slug = models.SlugField(max_length=250, unique_for_date='publish')
+    create_time = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    class Meta:
+        ordering=("share_job",)
+
