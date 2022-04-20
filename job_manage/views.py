@@ -12,8 +12,9 @@ from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file
 from job_manage import models
 from django.contrib.sites.models import Site
 from django.views.generic import ListView
-# from django.contrib.auth.decorators import login_required
-# from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -241,6 +242,7 @@ class JobUpload(View):
         status="上传成功！"
         return render(request, r'../templates/upload.html',{"status":status})
 
+@login_required
 def job_view(request):
     pass
     job_list=models.Job.objects.all()
@@ -292,14 +294,23 @@ def add(request):
 
 
 # @method_decorator(login_required,name='job_list')
+
+# @login_required
 class JobListView(ListView):
     # @login_required
-    # @method_decorator(login_required)
+    @method_decorator(login_required)
     def job_list(self):
         queryset = models.Job.objects.all()
         context_object_name = 'jobs'
         paginate_by = 3
         template_name = r'../templates/list.html'
+
+@login_required
+def job_list_view(request):
+    queryset = models.Job.objects.all()
+    context_object_name = 'jobs'
+    paginate_by = 3
+    template_name = r'../templates/list.html'
 
 def job_detail(request, year, month, day, job):
     job = get_object_or_404(Job, slug=job, status="published", publish__year=year, publish__month=month,
