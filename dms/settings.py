@@ -177,3 +177,15 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+
+
+#EMAIL_BACKEND是用的本地email服务，会在cmd窗口中模拟，不是真的发邮件，如果要真的发，是要配置的
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#下面用的465端口，阿里云可以用的
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'chen320821@163.com' # 帐号
+# EMAIL_HOST_PASSWORD =  'angela123.163'  # 密码
+EMAIL_HOST_PASSWORD =  'CZZLYIRGEDHOTHWA'  # 密码
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
