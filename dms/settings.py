@@ -31,7 +31,11 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 SITE_ID = 2
+#这里将我们的应用放在应用列表的最前边，原因是：我们稍后会为自己的应用编写验证系统的模板，
+# Django内置的验证系统自带了一套模板，如此设置可以让我们的模板覆盖其他应用中的模板设置。
+# Django按照INSTALLED_APPS中的顺序寻找模板。
 INSTALLED_APPS = [
+    'account.apps.AccountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +48,7 @@ INSTALLED_APPS = [
     'gb.apps.GbConfig',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+
 ]
 
 MIDDLEWARE = [
@@ -169,4 +174,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-# SITE_ID = 1
+# LOGIN_REDIRECT_URL = 'dashboard'
+# LOGIN_URL = 'login'
+# LOGOUT_URL = 'logout'

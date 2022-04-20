@@ -11,6 +11,9 @@ from pathlib import Path
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file
 from job_manage import models
 from django.contrib.sites.models import Site
+from django.views.generic import ListView
+# from django.contrib.auth.decorators import login_required
+# from django.utils.decorators import method_decorator
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -287,12 +290,16 @@ def add(request):
             print(222, clean_errors)
         return render(request, "add.html", {"form": form, "clean_errors": clean_errors})
 
-from django.views.generic import ListView
+
+# @method_decorator(login_required,name='job_list')
 class JobListView(ListView):
-    queryset = models.Job.objects.all()
-    context_object_name = 'jobs'
-    paginate_by = 3
-    template_name = r'../templates/list.html'
+    # @login_required
+    # @method_decorator(login_required)
+    def job_list(self):
+        queryset = models.Job.objects.all()
+        context_object_name = 'jobs'
+        paginate_by = 3
+        template_name = r'../templates/list.html'
 
 def job_detail(request, year, month, day, job):
     job = get_object_or_404(Job, slug=job, status="published", publish__year=year, publish__month=month,
