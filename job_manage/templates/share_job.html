@@ -12,19 +12,8 @@
                 <div class="panel-content">
                     <div class="row">
                         <div class="col-md-12">
-                        {{status}}
-                            <form method="POST" novalidate enctype="multipart/form-data">
-                                {% csrf_token %}
-                                {% for job in form %}
-                                    <div>
-{#                                         拿到数据字段的labels,没有就默认显示字段名#}
-                                        <label >{{ job.label }}</label>
-                                        <div>{{ job }}{{ job.help_text }}</div>
-                                    </div>
-                                {% endfor %}
-
-                                料号{{ job_name }}已被分享给以下账号：
-                                <table id="basic-table" class="table table-striped table-hover table-bordered text-center" cellspacing="0" width="100%">
+                        料号{{ job_name }}已被分享给以下账号：
+                        <table id="basic-table" class="table table-striped table-hover table-bordered text-center" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
 
@@ -38,19 +27,30 @@
                                     <tbody>
                                     {% for each in share_account %}
                                         <tr>
+                                            <td>{{ each.share_account }}</td>
+                                            <td>{{ each.remark }}</td>
 
 
-                                        <td>{{ each.share_job }}</td>
-                                        <td>{{ each.share_account }}</td>
-
-
-                                    </tr>
+                                         </tr>
 
 
                                     {% endfor %}
 
                                     </tbody>
                                 </table>
+                        {{up_status}}
+                            新增分享
+                            <form method="POST" novalidate enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% for job in form %}
+                                    <div>
+{#                                         拿到数据字段的labels,没有就默认显示字段名#}
+                                        <label >{{ job.label }}</label>
+                                        <div>{{ job }}{{ job.help_text }}</div>
+                                    </div>
+                                {% endfor %}
+
+
 
                                 <div class="col-md-2 col-md-offset-10">
                                     <input type="submit" value="确认" onclick="return deletejob();" class="btn-primary">

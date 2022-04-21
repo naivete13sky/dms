@@ -175,7 +175,7 @@ class JobFormsReadOnly(forms.ModelForm):
 class ShareForm(forms.ModelForm):
     class Meta:
         model = ShareAccount
-        fields = ['share_job','share_account']
+        fields = ['share_account','publish','remark','slug']
         # 当只想验证某几个字段的情况下可以使用[]的形式
         # fields = ['title']  # 表示只验证title这个字段
         # exclude = ['share_job']   # exclude->排除的意思  表示不验证title这个字段

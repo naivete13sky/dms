@@ -341,25 +341,48 @@ def share_job(request, job_id):
     # for each in share_account:
     #     print(each)
     # print(share_account[0])
-    field_verbose_name=['job_name','account']
+    field_verbose_name=['用户','备注']
 
     # 获取修改数据的表单
     if request.method == "GET":
-        form = JobFormsReadOnly(instance=job)
+        # form = JobFormsReadOnly(instance=job)
         # for each in share_account:
         #     form_share=ShareForm(instance=each)
 
-        # print(form_share)
+        form=ShareForm()
         return render(request, r'../templates/share_job.html',
                       {
-                        # "form":form,
+                        "form":form,
                        "share_account":share_account,
                        'field_verbose_name':field_verbose_name,
                        'job_name':job.job_name}
 
         )
     if request.method == 'POST':
-        # job.delete()
-        return redirect('job_manage:job_view')
+        pass
+        form = ShareForm(request.POST)
+        if form.is_valid():  # 进行数据校验
+            # 校验成功
+            data = form.cleaned_data  # 校验成功的值，会放在cleaned_data里。
+            data["share_job"]=job
+            print(data)
+            models.ShareAccount.objects.create(**data)
+            up_status = "新增完成！"
+            # return render(request, "share_job.html", {"form": form, "up_status": up_status})
+            return render(request, r'../templates/share_job.html',
+                          {
+                              "form": form,
+                              "share_account": share_account,
+                              'field_verbose_name': field_verbose_name,
+                              'job_name': job.job_name,
+                              "up_status": up_status
+                          }
+
+                          )
+        else:
+            print(form.errors)  # 打印错误信息
+            clean_errors = form.errors.get("__all__")
+            print(222, clean_errors)
+        return render(request, "share_job.html", {"form": form, "clean_errors": clean_errors})
 
 
