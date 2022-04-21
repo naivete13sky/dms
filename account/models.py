@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings
 from django.core import validators  # 自定义验证器
+from django.contrib.auth.models import User
+from django.utils import timezone
+from django.urls import reverse
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -20,3 +23,24 @@ class Profile(models.Model):
 
     def __str__(self):
         return "Profile for user {}".format(self.user.username)
+
+class FactoryRule(models.Model):
+    pass
+    factory_rule_name=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="厂规名称")
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
+                              verbose_name="备注", blank=True,null=True)
+    slug = models.SlugField(max_length=250, unique_for_date='publish')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='account_factory_rule_user', verbose_name="创建人")
+    publish = models.DateTimeField(default=timezone.now)
+    create_time = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    objects = models.Manager()  # 默认的管理器
+
+
+    class Meta:
+        db_table = 'factory_rule'
+        ordering = ('-publish',)
+
+
