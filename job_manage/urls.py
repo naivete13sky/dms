@@ -24,6 +24,7 @@ urlpatterns = [
     path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
     path('',views.job_view,name='job_view'),
     path('del_job/<int:job_id>/', views.del_job, name='del_job'),
+    path('share_job/<int:job_id>/', views.share_job, name='share_job'),
 
 
 # ]

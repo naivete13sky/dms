@@ -1,0 +1,79 @@
+{% extends 'index_base.html' %}
+{% load static  %}
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:job_view" %}>料号管理</a></li>
+    <li><a>分享料号</a></li>
+{% endblock %}
+{% block main_content %}
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                        {{status}}
+                            <form method="POST" novalidate enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% for job in form %}
+                                    <div>
+{#                                         拿到数据字段的labels,没有就默认显示字段名#}
+                                        <label >{{ job.label }}</label>
+                                        <div>{{ job }}{{ job.help_text }}</div>
+                                    </div>
+                                {% endfor %}
+
+                                料号{{ job_name }}已被分享给以下账号：
+                                <table id="basic-table" class="table table-striped table-hover table-bordered text-center" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+
+                                        {% for each in field_verbose_name %}
+                                            <th>{{ each }}</th>
+
+                                        {% endfor  %}
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for each in share_account %}
+                                        <tr>
+
+
+                                        <td>{{ each.share_job }}</td>
+                                        <td>{{ each.share_account }}</td>
+
+
+                                    </tr>
+
+
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+
+                                <div class="col-md-2 col-md-offset-10">
+                                    <input type="submit" value="确认" onclick="return deletejob();" class="btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" language="JavaScript">
+                function deletejob()
+                {
+                     if(confirm("确定要提交吗?"))
+                     {
+                         return true;
+                     }else{
+                         return false;
+                     }
+                }
+    </script>
+
+{% endblock %}
+<script src={% static "javascripts/jquery.min.js" %}></script>

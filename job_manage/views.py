@@ -8,7 +8,7 @@ from django.conf import settings
 import pandas as pd
 import psycopg2
 from pathlib import Path
-from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file
+from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
 from job_manage import models
 from django.contrib.sites.models import Site
 from django.views.generic import ListView
@@ -329,4 +329,37 @@ def del_job(request, job_id):
     if request.method == 'POST':
         job.delete()
         return redirect('job_manage:job_view')
+
+def share_job(request, job_id):
+    job = models.Job.objects.filter(id=job_id).first()
+    # print(job)
+    # print(job.id)
+    # print(job.job_name)
+    # share_account = models.ShareAccount.objects.all()
+    share_account = models.ShareAccount.objects.filter(share_job=job_id)
+    # print(share_account)
+    # for each in share_account:
+    #     print(each)
+    # print(share_account[0])
+    field_verbose_name=['job_name','account']
+
+    # 获取修改数据的表单
+    if request.method == "GET":
+        form = JobFormsReadOnly(instance=job)
+        # for each in share_account:
+        #     form_share=ShareForm(instance=each)
+
+        # print(form_share)
+        return render(request, r'../templates/share_job.html',
+                      {
+                        # "form":form,
+                       "share_account":share_account,
+                       'field_verbose_name':field_verbose_name,
+                       'job_name':job.job_name}
+
+        )
+    if request.method == 'POST':
+        # job.delete()
+        return redirect('job_manage:job_view')
+
 
