@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core import validators  # 自定义验证器
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 class JobManager(models.Manager):
     def get_queryset(self):
@@ -32,15 +33,13 @@ class Job(models.Model):
     updated = models.DateTimeField(auto_now=True)
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
-
-
     objects = models.Manager()  # 默认的管理器
     published = JobManager()  # 自定义管理器
+    tags=TaggableManager()
 
     class Meta:
         db_table = 'job'
         ordering = ('-publish',)
-
     def get_absolute_url(self):
         return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
 
@@ -51,7 +50,6 @@ class Register(models.Model):
     password = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=3)])
     telephone = models.CharField(max_length=11, validators=[validators.RegexValidator(r'1[3456789]\d{9}', message='请输入正确的手机号码')])
     email = models.CharField(max_length=20, validators=[validators.EmailValidator(message='请输入正确的邮箱地址')])
-
     class Meta:
         db_table = 'register'
 

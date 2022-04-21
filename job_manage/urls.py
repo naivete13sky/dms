@@ -16,7 +16,8 @@ urlpatterns = [
     path('addArticle', views.AddArticle.as_view()),
     path('register/', views.RegisterArticle.as_view()),
     # path('uploadcc/', views.UploadFiles.as_view()),
-    # path('', views.job_view,name='job_view'),
+    path('job_list', views.job_list,name='job_list'),
+    path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),
     # path('add', views.JobUpload.as_view(), name='add'),
     path('add', views.add, name='add'),
     path('add2', views.add,name='add2'),#附件有问题
@@ -25,6 +26,7 @@ urlpatterns = [
     path('',views.job_view,name='job_view'),
     path('del_job/<int:job_id>/', views.del_job, name='del_job'),
     path('share_job/<int:job_id>/', views.share_job, name='share_job'),
+
 
 
 # ]

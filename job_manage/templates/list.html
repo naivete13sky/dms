@@ -17,14 +17,26 @@
                                     <a href="{{ job.get_absolute_url }}">
                                         {{ job.job_name }}
                                     </a>
+                                <p class="tags">
+                                    Tags:
+{#                                    {{ job.tags.all|join:", " }}#}
+                                    {% for tag in job.tags.all %}
+                                        <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </p>
                                 </h2>
                                 <p class="date">
                                 Published {{ job.creat_time }} by {{ job.author }}
                                 </p>
                                 {{ job.remark|truncatewords:30|linebreaks }}
+                                {% if tag %}
+                                    <h2>Posts tagged with "{{ tag.name }}"</h2>
+                                {% endif %}
                             {% endfor %}
-                        {#    {% include 'pagination.html' with page=posts %}#}
-                            {% include 'pagination.html' with page=page_obj %}
+                            {% include 'pagination.html' with page=jobs %}
+{#                            {% include 'pagination.html' with page=page_obj %}#}
+
                     </div>
                 </div>
             </div>

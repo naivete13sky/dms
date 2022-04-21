@@ -1,4 +1,5 @@
 # Create your views here.
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,HttpResponse
 import os
 from django.views import View
@@ -14,6 +15,7 @@ from django.contrib.sites.models import Site
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from taggit.models import Tag
 
 
 def readFile(filename,chunk_size=512):
@@ -56,11 +58,6 @@ def file_download(request,order):
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
     return response
-
-def post_detail(request, order):
-    order = get_object_or_404(Job, slug=order)
-    print(order)
-    # return render(request, 'blog/post/detail.html', {'order': order,})
 
 def list_all_job(request):
 
@@ -243,8 +240,12 @@ class JobUpload(View):
         return render(request, r'../templates/upload.html',{"status":status})
 
 @login_required
-def job_view(request):
+def job_view(request,tag_slug=None):
     pass
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = models.Job.objects.filter(tags__in=[tag])
     job_list=models.Job.objects.all()
     job_field_verbose_name=[Job._meta.get_field('job_name').verbose_name,
                             Job._meta.get_field('file_odb').verbose_name,
@@ -264,7 +265,9 @@ def job_view(request):
     return render(request, r'../templates/view.html',
                   {'job_list': job_list,
                    'job_field_verbose_name':job_field_verbose_name,
-                   'current_site':current_site})
+                   'current_site':current_site,
+                   'tag': tag
+                   })
 
 def add(request):
     if request.method == "GET":
@@ -292,10 +295,27 @@ def add(request):
             print(222, clean_errors)
         return render(request, "add.html", {"form": form, "clean_errors": clean_errors})
 
+def job_list(request,tag_slug=None):
+    object_list = Job.published.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = models.Job.objects.filter(tags__in=[tag])
+    # object_list = Job.published.all()
+    paginator = Paginator(object_list, 3)  # 每页显示3篇文章
+    page = request.GET.get('page')
+    try:
+        jobs = paginator.page(page)
+    except PageNotAnInteger:
+        # 如果page参数不是一个整数就返回第一页
+        jobs = paginator.page(1)
+    except EmptyPage:
+        # 如果页数超出总页数就返回最后一页
+        jobs = paginator.page(paginator.num_pages)
 
-# @method_decorator(login_required,name='job_list')
+    # return render(request, 'blog/post/list.html', {'posts': posts})
+    return render(request, 'list.html', {'page': page, 'jobs': jobs,'tag': tag})
 
-# @login_required
 class JobListView(ListView):
     # @login_required
     @method_decorator(login_required)
@@ -306,7 +326,11 @@ class JobListView(ListView):
         template_name = r'../templates/list.html'
 
 @login_required
-def job_list_view(request):
+def job_list_view(request, tag_slug=None):
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        queryset = models.Job.objects.filter(tags__in=[tag])
     queryset = models.Job.objects.all()
     context_object_name = 'jobs'
     paginate_by = 3
@@ -384,5 +408,7 @@ def share_job(request, job_id):
             clean_errors = form.errors.get("__all__")
             print(222, clean_errors)
         return render(request, "share_job.html", {"form": form, "clean_errors": clean_errors})
+
+
 
 

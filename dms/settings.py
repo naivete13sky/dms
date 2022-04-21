@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'gb.apps.GbConfig',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'taggit',
 
 ]
 
