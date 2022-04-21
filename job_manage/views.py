@@ -317,24 +317,11 @@ def job_list(request,tag_slug=None):
     return render(request, 'list.html', {'page': page, 'jobs': jobs,'tag': tag})
 
 class JobListView(ListView):
-    # @login_required
-    @method_decorator(login_required)
-    def job_list(self):
-        queryset = models.Job.objects.all()
-        context_object_name = 'jobs'
-        paginate_by = 3
-        template_name = r'../templates/list.html'
-
-@login_required
-def job_list_view(request, tag_slug=None):
-    tag = None
-    if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
-        queryset = models.Job.objects.filter(tags__in=[tag])
     queryset = models.Job.objects.all()
     context_object_name = 'jobs'
     paginate_by = 3
-    template_name = r'../templates/list.html'
+    template_name = r'../templates/list3.html'
+
 
 def job_detail(request, year, month, day, job):
     job = get_object_or_404(Job, slug=job, status="published", publish__year=year, publish__month=month,

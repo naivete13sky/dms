@@ -4,24 +4,15 @@ from django.conf.urls.static import static
 from django.conf import settings
 app_name = 'job_manage'
 urlpatterns = [
-    # post views
-    # path("order_view/", views.list_all_job, name='order_view'),
-    # path("admin/order_view/", views.list_all_job, name='order_view'),
-    # path('job_upload', views.job_upload, name='job_upload'),
     path('job_upload_ajax', views.job_upload_ajax, name='job_upload_ajax'),
     path('reg/', views.reg,name='reg'),
-    # re_path('job/$', views.JobAdd),
     re_path('job/(?P<id>\d+)/$', views.Edit,name='edit'),
-    # re_path('upload/$', views.JobUpload.as_view(), name='upload'),
     path('addArticle', views.AddArticle.as_view()),
     path('register/', views.RegisterArticle.as_view()),
-    # path('uploadcc/', views.UploadFiles.as_view()),
     path('job_list', views.job_list,name='job_list'),
+    path('JobListView',views.JobListView.as_view(),name='JobListView'),
     path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),
-    # path('add', views.JobUpload.as_view(), name='add'),
     path('add', views.add, name='add'),
-    path('add2', views.add,name='add2'),#附件有问题
-    path('job_list',views.JobListView.as_view(),name='job_list'),
     path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
     path('',views.job_view,name='job_view'),
     path('del_job/<int:job_id>/', views.del_job, name='del_job'),

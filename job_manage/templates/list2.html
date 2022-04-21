@@ -19,7 +19,7 @@
                                     </a>
                                 <p class="tags">
                                     Tags:
-{#                                    {{ job.tags.all|join:", " }}#}
+                                    {{ job.tags.all|join:", " }}
                                     {% for tag in job.tags.all %}
                                         <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
                                     {% if not forloop.last %}, {% endif %}
@@ -34,8 +34,8 @@
                                     <h2>Posts tagged with "{{ tag.name }}"</h2>
                                 {% endif %}
                             {% endfor %}
-                            {% include 'pagination.html' with page=jobs %}
-{#                            {% include 'pagination.html' with page=page_obj %}#}
+{#                            {% include 'pagination.html' with page=jobs %}#}
+                            {% include 'pagination.html' with page=page_obj %}
 
                     </div>
                 </div>
