@@ -3,6 +3,10 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm
 from .models import Profile
 from django.contrib import messages
+from django.shortcuts import render, get_object_or_404,HttpResponse
+from taggit.models import Tag
+from account import models
+from django.contrib.sites.models import Site
 
 def user_login(request):
     if request.method == "POST":
@@ -60,5 +64,35 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+@login_required
+def profile_view(request,tag_slug=None):
+    pass
+    profile_list = models.Profile.objects.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        profile_list = models.Job.objects.filter(tags__in=[tag])
+
+    profile_field_verbose_name=[Profile._meta.get_field('user').verbose_name,
+                            Profile._meta.get_field('mobile').verbose_name,
+                            Profile._meta.get_field('recommender').verbose_name,
+                            Profile._meta.get_field('cam_level').verbose_name,
+                            "操作",
+                            ]
+    # print(job_field_verbose_name)
+
+    #附件超链接
+    current_site = Site.objects.get_current()
+    # print(current_site)
+
+
+    return render(request, r'../templates/profile_view.html',
+                  {'profile_list': profile_list,
+                   'profile_field_verbose_name':profile_field_verbose_name,
+                   'current_site':current_site,
+                   'tag': tag
+                   })
 
 
