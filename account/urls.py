@@ -22,5 +22,5 @@ urlpatterns = [
     path('profile_view',views.profile_view,name='profile_view'),
     path('add_profile',views.add_profile,name='add_profile'),
     re_path('profile/(?P<id>\d+)/$', views.edit_profile,name='edit_profile'),
-
+    path('del_profile/<int:id>/', views.del_profile, name='del_profile'),
 ]

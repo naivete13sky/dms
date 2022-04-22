@@ -1,0 +1,73 @@
+{% extends 'profile_base.html' %}
+
+
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "profile_view" %}>EDA用户信息管理</a></li>
+    <li><a>新增用户</a></li>
+{% endblock %}
+{% block main_content %}
+    {% load my_filter %}
+
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{up_status}}
+                            <div class="row animated fadeInRight">
+                                    <div class="col-sm-12">
+{#                                        <h4 class="section-subtitle"><b>料号查询</b></h4>#}
+                                        <div class="panel">
+                                            <div class="panel-content">
+
+
+                                                {% block content %}
+                                                    {{status}}
+                                                    <form method="POST" novalidate enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        {% for profile in form %}
+                                                            <div>
+                        {#                                         拿到数据字段的labels,没有就默认显示字段名#}
+                                                                <label >{{ profile.label }}</label>
+                                                                <div>{{ profile }}{{ profile.help_text }}</div>
+                                                            </div>
+                                                        {% endfor %}
+
+                                                        <div class="col-md-2 col-md-offset-10">
+                                                            <input type="submit" value="删除" onclick="return deleteprofile();" class="btn-primary">
+                                                        </div>
+                                                    </form>
+                                                    <script type="text/javascript" language="JavaScript">
+                                                                function deleteprofile()
+                                                                {
+                                                                     if(confirm("确定要删除吗?"))
+                                                                     {
+                                                                         return true;
+                                                                     }else{
+                                                                         return false;
+                                                                     }
+                                                                }
+                                                    </script>
+
+                                                {% endblock %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+

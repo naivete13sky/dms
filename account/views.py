@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll
 from .models import Profile
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404,HttpResponse
+from django.shortcuts import render, get_object_or_404,HttpResponse,redirect
 from account import models
 from django.contrib.sites.models import Site
 
@@ -128,8 +128,20 @@ def edit_profile(request,id):
     status = ""
     #对数据验证并且保存
     if form.is_valid():
-        print("valid")
+        # print("valid")
         form.save()
     # return HttpResponse('数据修改成功！！')
         status = "修改成功！"
     return render(request, r'profile_edit.html', {"status": status})
+
+def del_profile(request, id):
+    # print("abcedfg")
+    profile = models.Profile.objects.filter(id=id).first()
+    # print(profile)
+    # 获取修改数据的表单
+    if request.method == "GET":
+        form = ProfileEditFormAll(instance=profile)
+        return render(request, r'profile_delete.html', locals())
+    if request.method == 'POST':
+        profile.delete()
+        return redirect('profile_view')
