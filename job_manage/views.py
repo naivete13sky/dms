@@ -242,11 +242,13 @@ class JobUpload(View):
 @login_required
 def job_view(request,tag_slug=None):
     pass
+    job_list = models.Job.objects.all()
+    # job_list = models.Job.objects.all().order_by('-publish')
     tag = None
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
-        object_list = models.Job.objects.filter(tags__in=[tag])
-    job_list=models.Job.objects.all()
+        job_list = models.Job.objects.filter(tags__in=[tag])
+
     job_field_verbose_name=[Job._meta.get_field('job_name').verbose_name,
                             Job._meta.get_field('file_odb').verbose_name,
                             Job._meta.get_field('file_compressed').verbose_name,
@@ -260,8 +262,6 @@ def job_view(request,tag_slug=None):
     #附件超链接
     current_site = Site.objects.get_current()
     # print(current_site)
-
-
     return render(request, r'../templates/view.html',
                   {'job_list': job_list,
                    'job_field_verbose_name':job_field_verbose_name,
