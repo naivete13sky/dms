@@ -144,8 +144,10 @@ def Edit(request,id):
         return render(request, r'../templates/edit.html', locals())
     #POST请求添加修改过后的数据
     form = UploadForms(data=request.POST,instance=job)
+    # print(form)
     #对数据验证并且保存
     if form.is_valid():
+        print("valid")
         file_odb = request.FILES.get('file_odb')
         if file_odb != None:
             print(file_odb)
