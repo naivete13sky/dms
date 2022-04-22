@@ -2,7 +2,7 @@
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
-    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:job_view" %}>EDA用户信息管理</a></li>
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "profile_view" %}>EDA用户信息管理</a></li>
     <li><a>用户信息查询</a></li>
 {% endblock %}
 {% block main_content %}
@@ -21,7 +21,7 @@
 {#                                        <h4 class="section-subtitle"><b>料号查询</b></h4>#}
                                         <div class="panel">
                                             <div class="panel-content">
-                                                <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:add" %}>新增用户</a></h4>
+                                                <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "profile_view" %}>新增用户</a></h4>
 
                                                 <div class="table-responsive">
                                                     <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
