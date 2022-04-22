@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path,include,re_path
 from django.contrib.auth import views as auth_views
 from . import views
 
@@ -21,5 +21,6 @@ urlpatterns = [
     path('edit/', views.edit, name='edit'),
     path('profile_view',views.profile_view,name='profile_view'),
     path('add_profile',views.add_profile,name='add_profile'),
+    re_path('profile/(?P<id>\d+)/$', views.edit_profile,name='edit_profile'),
 
 ]

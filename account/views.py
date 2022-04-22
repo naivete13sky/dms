@@ -1,10 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm
+from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll
 from .models import Profile
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404,HttpResponse
-from taggit.models import Tag
 from account import models
 from django.contrib.sites.models import Site
 
@@ -67,13 +66,10 @@ def edit(request):
 
 
 @login_required
-def profile_view(request,tag_slug=None):
+def profile_view(request):
     pass
     profile_list = models.Profile.objects.all()
-    tag = None
-    if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
-        profile_list = models.Job.objects.filter(tags__in=[tag])
+
 
     profile_field_verbose_name=[Profile._meta.get_field('user').verbose_name,
                             Profile._meta.get_field('mobile').verbose_name,
@@ -92,7 +88,6 @@ def profile_view(request,tag_slug=None):
                   {'profile_list': profile_list,
                    'profile_field_verbose_name':profile_field_verbose_name,
                    'current_site':current_site,
-                   'tag': tag
                    })
 
 
@@ -121,3 +116,20 @@ def add_profile(request):
             print(222, clean_errors)
         return render(request, "add_profile.html", {"user_form": user_form, "clean_errors": clean_errors})
 
+def edit_profile(request,id):
+    profile = models.Profile.objects.filter(id=id).first()
+    #获取修改数据的表单
+    if request.method == "GET":
+        form = ProfileEditFormAll(instance=profile)
+        return render(request, r'profile_edit.html', locals())
+    #POST请求添加修改过后的数据
+    form = ProfileEditFormAll(data=request.POST,instance=profile)
+    # print(form)
+    status = ""
+    #对数据验证并且保存
+    if form.is_valid():
+        print("valid")
+        form.save()
+    # return HttpResponse('数据修改成功！！')
+        status = "修改成功！"
+    return render(request, r'profile_edit.html', {"status": status})

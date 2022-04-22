@@ -8,7 +8,7 @@
 {% endblock %}
 {% block main_content %}
     {% load my_filter %}
-    {% load job_tags %}
+
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
@@ -46,11 +46,6 @@
     </div>
 
 
-<div id="sidebar">
-{#    <h2>我的料号</h2>#}
-    <p>一共有{% total_jobs %} 资料</p>
-    <h3>最新料号</h3>
-    {% show_latest_jobs 3 %}
-</div>
+
 {% endblock %}
 

@@ -5,11 +5,12 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
 
+
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='user/%Y/%m/%d/', blank=True)
-    mobile=models.CharField(blank=True,max_length=13, validators=[validators.MinLengthValidator(limit_value=13)],verbose_name="手机号")
+    mobile=models.CharField(blank=True,max_length=11, validators=[validators.MinLengthValidator(limit_value=11)],verbose_name="手机号")
     recommender=models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,blank=True,null=True,related_name='account_recommender')
     cam_level=models.CharField(max_length=10,
                                choices=(('level1', '等级1'),
