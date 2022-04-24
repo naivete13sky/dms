@@ -341,6 +341,7 @@ class JobListView(ListView):
     queryset = models.Job.objects.all()
     context_object_name = 'jobs'
     paginate_by = 5
+    ordering = ['-publish']
     template_name = r'../templates/list_view.html'
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -354,12 +355,12 @@ class JobListView(ListView):
                                   "标签",
                                   "操作",
                                   ]
-        context['job_field_verbose_name'] = job_field_verbose_name
+        context['job_field_verbose_name'] = job_field_verbose_name# 表头用
         query=self.request.GET.get('query',False)
         if query:
-            context['cc'] = query
+            # context['cc'] = query
             # print(query)
-            context['query'] = query
+            # context['query'] = query
             context['jobs'] = models.Job.objects.filter(
                 Q(job_name__contains=query) |
                 Q(author__username__contains=query))
