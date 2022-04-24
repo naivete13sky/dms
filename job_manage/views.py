@@ -10,7 +10,6 @@ import pandas as pd
 import psycopg2
 from pathlib import Path
 from django.db.models import Q
-
 from dms.settings import MEDIA_URL
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
 from job_manage import models
@@ -244,7 +243,7 @@ class JobUpload(View):
         status="上传成功！"
         return render(request, r'../templates/upload.html',{"status":status})
 
-@login_required
+# @login_required#可以url中加装饰器
 def job_view(request,tag_slug=None):
     if request.method == "POST":
         pass
@@ -286,9 +285,6 @@ def job_view(request,tag_slug=None):
                    'current_site':current_site,
                    'tag': tag
                    })
-
-
-
 
 def add(request):
     if request.method == "GET":
@@ -337,11 +333,12 @@ def job_list(request,tag_slug=None):
     # return render(request, 'blog/post/list.html', {'posts': posts})
     return render(request, 'list.html', {'page': page, 'jobs': jobs,'tag': tag})
 
+
 class JobListView(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
     context_object_name = 'jobs'
-    paginate_by = 5
+    paginate_by = 10
     # ordering = ['-publish']
     template_name = r'../templates/list_view.html'
 
