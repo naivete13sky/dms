@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile,FactoryRule
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -34,3 +34,13 @@ class ProfileEditFormAll(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
+
+class FactoryRuleFormsReadOnly(forms.ModelForm):
+    class Meta:
+        model = FactoryRule
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(FactoryRuleFormsReadOnly, self).__init__(*args, **kwargs)
+            for name, field in self.fields.iteritems():
+                field.widget.attrs['readonly'] = 'true'
+

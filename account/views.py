@@ -1,11 +1,14 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll
+from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly
 from .models import Profile
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404,HttpResponse,redirect
 from account import models
+from.models import FactoryRule
 from django.contrib.sites.models import Site
+from django.views.generic import ListView,DetailView,FormView,CreateView
+from django.db.models import Q
 
 def user_login(request):
     if request.method == "POST":
@@ -90,7 +93,6 @@ def profile_view(request):
                    'current_site':current_site,
                    })
 
-
 def add_profile(request):
     if request.method == "GET":
         # print("GET")
@@ -145,3 +147,46 @@ def del_profile(request, id):
     if request.method == 'POST':
         profile.delete()
         return redirect('profile_view')
+
+class FactoryRuleListView(ListView):
+    queryset = models.FactoryRule.objects.all()
+    # model=models.Job
+    context_object_name = 'factoryrules'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = r'factoryrules_view.html'
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        factoryrule_field_verbose_name = [FactoryRule._meta.get_field('factory_rule_name').verbose_name,
+                                  FactoryRule._meta.get_field('remark').verbose_name,
+                                  FactoryRule._meta.get_field('slug').verbose_name,
+                                  FactoryRule._meta.get_field('author').verbose_name,
+                                  FactoryRule._meta.get_field('publish').verbose_name,
+                                  FactoryRule._meta.get_field('status').verbose_name,
+                                  "操作",
+                                  ]
+        context['factoryrule_field_verbose_name'] = factoryrule_field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            context['factoryrules'] = models.Job.objects.filter(
+                Q(factory_rule_name__contains=query) |
+                Q(author__username__contains=query))
+        return context
+
+class FactoryRuleFormView(FormView):
+    form_class = FactoryRuleFormsReadOnly
+    template_name = "detail_factoryrule.html"
+
+    def get(self, request, *args, **kwargs):
+        # print('get url parms: ' + kwargs['parm'])
+        factoryrule = models.FactoryRule.objects.filter(id=kwargs['parm']).first()
+        form = self.form_class(instance=factoryrule)
+        return self.render_to_response({'form': form})
+
+class FactoryRuleCreateView(CreateView):
+    model=FactoryRule
+    template_name = "factoryrule_create.html"
+    # fields = ['factory_rule_name']
+    fields = "__all__"
+    success_url = 'FactoryRuleListView'

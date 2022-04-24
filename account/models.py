@@ -43,5 +43,6 @@ class FactoryRule(models.Model):
     class Meta:
         db_table = 'factory_rule'
         ordering = ('-publish',)
-
+    def get_absolute_url(self):
+        return reverse('form', args=[self.id,])
 

@@ -23,4 +23,8 @@ urlpatterns = [
     path('add_profile',views.add_profile,name='add_profile'),
     re_path('profile/(?P<id>\d+)/$', views.edit_profile,name='edit_profile'),
     path('del_profile/<int:id>/', views.del_profile, name='del_profile'),
+    path('FactoryRuleListView',views.FactoryRuleListView.as_view(),name='FactoryRuleListView'),
+    re_path('form/(?P<parm>\w+)/', views.FactoryRuleFormView.as_view(), name='form'),
+    path('factoryrule_create', views.FactoryRuleCreateView.as_view(), name='factoryrule_create'),
+
 ]
