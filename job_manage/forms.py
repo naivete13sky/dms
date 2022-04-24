@@ -164,7 +164,8 @@ class JobFormsReadOnly(forms.ModelForm):
     class Meta:
         model = Job
         # fields = ['job_name','remark','slug','author','publish','status']
-        fields = ['job_name',]
+        # fields = ['job_name',]
+        fields = '__all__'
 
 
         def __init__(self, *args, **kwargs):
@@ -176,23 +177,5 @@ class ShareForm(forms.ModelForm):
     class Meta:
         model = ShareAccount
         fields = ['share_account','publish','remark','slug']
-        # 当只想验证某几个字段的情况下可以使用[]的形式
-        # fields = ['title']  # 表示只验证title这个字段
-        # exclude = ['share_job']   # exclude->排除的意思  表示不验证title这个字段
 
-        # error_messages = {
-        #     'job_name': {
-        #         'required': '该字段是必须要填的',
-        #         'min_length': '最小长度为3',
-        #         'max_length': '最大长度为20'
-        #     },
-        #     'remark': {
-        #         'required': '该字段是必须要填的',
-        #         'max_length': '最大长度为100'
-        #     },
-        #     'author': {
-        #         'required': '该字段是必须要填的',
-        #         'max_length': '最大长度为15'
-        #     }
-        # }
 

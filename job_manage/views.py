@@ -323,7 +323,7 @@ def job_list(request,tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = models.Job.objects.filter(tags__in=[tag])
     # object_list = Job.published.all()
-    paginator = Paginator(object_list, 5)  # 每页显示3篇文章
+    paginator = Paginator(object_list, 5)  # 每页显示5篇文章
     page = request.GET.get('page')
     try:
         jobs = paginator.page(page)
@@ -347,7 +347,8 @@ class JobListView(ListView):
 def job_detail(request, year, month, day, job):
     job = get_object_or_404(Job, slug=job, status="published", publish__year=year, publish__month=month,
                              publish__day=day)
-    return render(request, r'../templates/detail.html', {'job': job})
+    form=JobFormsReadOnly(instance=job)
+    return render(request, r'../templates/detail.html', {'job': job,'form':form})
 
 def del_job(request, job_id):
     # job = Job.objects.get(id=job_id)
