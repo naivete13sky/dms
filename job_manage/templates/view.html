@@ -23,6 +23,16 @@
                                             <div class="panel-content">
                                                 <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:add" %}>新增料号</a></h4>
 
+                                                <form action="" class="form-inline" method="post" enctype="multipart/form-data" novalidate>
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <input type="" class="form-control" id="query" name="query" placeholder="料号名、负责人">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-primary">查询</button>
+                                                    </div>
+                                                </form>
+
                                                 <div class="table-responsive">
                                                     <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
                                                         <thead>

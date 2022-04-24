@@ -9,6 +9,7 @@ from django.conf import settings
 import pandas as pd
 import psycopg2
 from pathlib import Path
+from django.db.models import Q
 
 from dms.settings import MEDIA_URL
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
@@ -245,8 +246,18 @@ class JobUpload(View):
 
 @login_required
 def job_view(request,tag_slug=None):
-    pass
-    job_list = models.Job.objects.all()
+    if request.method == "POST":
+        pass
+        # print("post")
+        query=request.POST.get('query')
+        if query:
+            # print(request.POST.get('query'))
+            job_list = models.Job.objects.all().filter(Q(job_name__contains=query)|Q(author__username__contains=query))
+        else:
+            query=''
+            job_list = models.Job.objects.all()
+    else:
+        job_list = models.Job.objects.all()
     # job_list = models.Job.objects.all().order_by('-publish')
     tag = None
     if tag_slug:
@@ -261,11 +272,10 @@ def job_view(request,tag_slug=None):
                             Job._meta.get_field('publish').verbose_name,
                             "操作",
                             ]
-    # print(job_field_verbose_name)
 
     #附件超链接
     current_site = Site.objects.get_current()
-    print(current_site,"***",MEDIA_URL)
+    # print(current_site,"***",MEDIA_URL)
     # print(current_site)
     return render(request, r'../templates/view.html',
                   {'job_list': job_list,
@@ -273,6 +283,9 @@ def job_view(request,tag_slug=None):
                    'current_site':current_site,
                    'tag': tag
                    })
+
+
+
 
 def add(request):
     if request.method == "GET":
