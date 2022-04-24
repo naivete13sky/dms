@@ -252,7 +252,10 @@ def job_view(request,tag_slug=None):
         query=request.POST.get('query')
         if query:
             # print(request.POST.get('query'))
-            job_list = models.Job.objects.all().filter(Q(job_name__contains=query)|Q(author__username__contains=query))
+            job_list = models.Job.objects.all().filter(Q(job_name__contains=query)
+                                                       |Q(author__username__contains=query)
+                                                       # |Q(tags__exact=query)
+                                                       )
         else:
             query=''
             job_list = models.Job.objects.all()
@@ -320,7 +323,7 @@ def job_list(request,tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = models.Job.objects.filter(tags__in=[tag])
     # object_list = Job.published.all()
-    paginator = Paginator(object_list, 3)  # 每页显示3篇文章
+    paginator = Paginator(object_list, 5)  # 每页显示3篇文章
     page = request.GET.get('page')
     try:
         jobs = paginator.page(page)

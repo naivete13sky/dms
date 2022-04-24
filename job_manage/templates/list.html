@@ -29,7 +29,7 @@
                                 <p class="date">
                                 Published {{ job.creat_time }} by {{ job.author }}
                                 </p>
-                                {{ job.remark|truncatewords:30|linebreaks }}
+{#                                {{ job.remark|truncatewords:30|linebreaks }}#}
                                 {% if tag %}
                                     <h2>Posts tagged with "{{ tag.name }}"</h2>
                                 {% endif %}
