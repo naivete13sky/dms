@@ -340,8 +340,31 @@ def job_list(request,tag_slug=None):
 class JobListView(ListView):
     queryset = models.Job.objects.all()
     context_object_name = 'jobs'
-    paginate_by = 3
-    template_name = r'../templates/list3.html'
+    paginate_by = 5
+    template_name = r'../templates/list_view.html'
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        job_field_verbose_name = [Job._meta.get_field('job_name').verbose_name,
+                                  Job._meta.get_field('file_odb').verbose_name,
+                                  Job._meta.get_field('file_compressed').verbose_name,
+                                  Job._meta.get_field('remark').verbose_name,
+                                  Job._meta.get_field('author').verbose_name,
+                                  Job._meta.get_field('publish').verbose_name,
+                                  "标签",
+                                  "操作",
+                                  ]
+        context['job_field_verbose_name'] = job_field_verbose_name
+        query=self.request.GET.get('query',False)
+        if query:
+            context['cc'] = query
+            # print(query)
+            context['query'] = query
+            context['jobs'] = models.Job.objects.filter(
+                Q(job_name__contains=query) |
+                Q(author__username__contains=query))
+        return context
+
 
 
 def job_detail(request, year, month, day, job):
