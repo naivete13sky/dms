@@ -170,7 +170,7 @@ class FactoryRuleListView(ListView):
         context['factoryrule_field_verbose_name'] = factoryrule_field_verbose_name# 表头用
         query=self.request.GET.get('query',False)
         if query:
-            context['factoryrules'] = models.Job.objects.filter(
+            context['factoryrules'] = models.FactoryRule.objects.filter(
                 Q(factory_rule_name__contains=query) |
                 Q(author__username__contains=query))
         return context
