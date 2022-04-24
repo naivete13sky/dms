@@ -9,6 +9,8 @@ from django.conf import settings
 import pandas as pd
 import psycopg2
 from pathlib import Path
+
+from dms.settings import MEDIA_URL
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
 from job_manage import models
 from django.contrib.sites.models import Site
@@ -263,6 +265,7 @@ def job_view(request,tag_slug=None):
 
     #附件超链接
     current_site = Site.objects.get_current()
+    print(current_site,"***",MEDIA_URL)
     # print(current_site)
     return render(request, r'../templates/view.html',
                   {'job_list': job_list,
