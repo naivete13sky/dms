@@ -11,6 +11,8 @@ urlpatterns = [
     path('register/', views.RegisterArticle.as_view()),
     path('job_list', views.job_list,name='job_list'),
     path('JobListView',views.JobListView.as_view(),name='JobListView'),
+    re_path('detail/(?P<pk>\d+)/', views.JobDetailView.as_view(), name='detail'),
+    re_path('form/(?P<parm>\w+)/', views.JobFormView.as_view(), name='form'),
     path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),
     path('add', views.add, name='add'),
     path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),

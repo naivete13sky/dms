@@ -15,7 +15,7 @@ from dms.settings import MEDIA_URL
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
 from job_manage import models
 from django.contrib.sites.models import Site
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView,FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from taggit.models import Tag
@@ -339,10 +339,22 @@ def job_list(request,tag_slug=None):
 
 class JobListView(ListView):
     queryset = models.Job.objects.all()
+    # model=models.Job
     context_object_name = 'jobs'
     paginate_by = 5
-    ordering = ['-publish']
+    # ordering = ['-publish']
     template_name = r'../templates/list_view.html'
+
+    # def get_queryset(self):
+    #     query = self.request.GET.get('query', '')
+    #     new_context = models.Job.objects.filter(
+    #             Q(job_name__contains=query) |
+    #             Q(author__username__contains=query))
+    #     return new_context
+    # def get_queryset(self):  # 重写get_queryset方法
+    #     # 获取所有is_deleted为False的用户，并且以时间倒序返回数据
+    #     return UserProfile.objects.filter(is_deleted=False).order_by('-create_time')
+
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
@@ -366,7 +378,26 @@ class JobListView(ListView):
                 Q(author__username__contains=query))
         return context
 
+class JobDetailView(DetailView):
+    model = Job
+    template_name = "detail_listview.html"
+    context_object_name = "job"
+    pk_url_kwarg = "pk"  # pk_url_kwarg默认值就是pk，这里可以覆盖，但必须和url中的命名组参数名称一致
+    def get(self, request, *args, **kwargs):
+        # print('get url parms: ' + kwargs['pk'])
+        job = models.Job.objects.filter(id=kwargs['pk']).first()
+        form = JobFormsReadOnly(instance=job)
+        return self.render_to_response({'form': form})
 
+class JobFormView(FormView):
+    form_class = JobFormsReadOnly
+    template_name = "detail_listview.html"
+
+    def get(self, request, *args, **kwargs):
+        # print('get url parms: ' + kwargs['parm'])
+        job = models.Job.objects.filter(id=kwargs['parm']).first()
+        form = self.form_class(instance=job)
+        return self.render_to_response({'form': form})
 
 def job_detail(request, year, month, day, job):
     job = get_object_or_404(Job, slug=job, status="published", publish__year=year, publish__month=month,
