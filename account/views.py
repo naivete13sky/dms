@@ -7,8 +7,9 @@ from django.shortcuts import render, get_object_or_404,HttpResponse,redirect
 from account import models
 from.models import FactoryRule
 from django.contrib.sites.models import Site
-from django.views.generic import ListView,DetailView,FormView,CreateView
+from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
 from django.db.models import Q
+from django.urls import reverse_lazy # 带参数跳转
 
 def user_login(request):
     if request.method == "POST":
@@ -190,3 +191,24 @@ class FactoryRuleCreateView(CreateView):
     # fields = ['factory_rule_name']
     fields = "__all__"
     success_url = 'FactoryRuleListView'
+
+class FactoryRuleUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = FactoryRule
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'factoryrule_update.html'
+    success_url = '' # 修改成功后跳转的链接
+
+class FactoryRuleDeleteView(DeleteView):
+  """
+  """
+  model = FactoryRule
+  template_name = 'factoryrule_delete.html'
+  # template_name_field = ''
+  # template_name_suffix = ''
+  # book_delete.html为models.py中__str__的返回值
+   # namespace:url_name
+  success_url = reverse_lazy('FactoryRuleListView')

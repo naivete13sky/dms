@@ -15,8 +15,8 @@
                         <div class="col-md-12">
 
                             <form method="post">{% csrf_token %}
-                                {{ form.as_p }}
-                                <input type="submit" value="新增">
+                                <p>Are you sure you want to delete "{{ object.factory_rule_name }}"?</p>
+                                <input type="submit" value="Confirm">
                             </form>
 
 

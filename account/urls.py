@@ -24,7 +24,9 @@ urlpatterns = [
     re_path('profile/(?P<id>\d+)/$', views.edit_profile,name='edit_profile'),
     path('del_profile/<int:id>/', views.del_profile, name='del_profile'),
     path('FactoryRuleListView',views.FactoryRuleListView.as_view(),name='FactoryRuleListView'),
-    re_path('form/(?P<parm>\w+)/', views.FactoryRuleFormView.as_view(), name='form'),
+    re_path('factoryruleformview/(?P<parm>\w+)/', views.FactoryRuleFormView.as_view(), name='factoryruleformview'),
     path('factoryrule_create', views.FactoryRuleCreateView.as_view(), name='factoryrule_create'),
+    path('factoryrule_update/<int:pk>', views.FactoryRuleUpdateView.as_view(), name='factoryrule_update'),
+    path('factoryrule_delete/<int:pk>', views.FactoryRuleDeleteView.as_view(),name='factoryrule_delete'),
 
 ]
