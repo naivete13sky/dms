@@ -27,6 +27,7 @@ urlpatterns = [
     path('ProfileListView',views.ProfileListView.as_view(),name='ProfileListView'),
     re_path('ProfileFormView/(?P<parm>\w+)/', views.ProfileFormView.as_view(), name='ProfileFormView'),
     path('ProfileCreateView', views.ProfileCreateView.as_view(), name='ProfileCreateView'),
+    # path('ProfileCreateView/<int:pk>', views.ProfileCreateView.as_view(), name='ProfileCreateView'),
     path('ProfileUpdateView/<int:pk>', views.ProfileUpdateView.as_view(), name='ProfileUpdateView'),
     path('ProfileDeleteView/<int:pk>', views.ProfileDeleteView.as_view(),name='ProfileDeleteView'),
 

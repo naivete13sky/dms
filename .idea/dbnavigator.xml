@@ -39,6 +39,7 @@
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="c06bc4c5-d69e-450d-b4f7-a0742f0d5d19" dataset="public.auth_user" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="c06bc4c5-d69e-450d-b4f7-a0742f0d5d19" dataset="public.account_profile" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="c06bc4c5-d69e-450d-b4f7-a0742f0d5d19" dataset="public.job" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">

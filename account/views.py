@@ -184,13 +184,16 @@ class ProfileFormView(FormView):
 
 class ProfileCreateView(CreateView):
     model=Profile
+    form=UserRegistrationForm
     template_name = "profile_create.html"
     fields = "__all__"
+    # fields = ["date_of_birth",'photo','mobile','recommender','cam_level']
     success_url = 'ProfileListView'
     # def form_valid(self, form):
     #     form.instance.user = self.request.user
-    #     response = super(ProfileCreateView, self).form_valid(form)
-    #     return response
+    #     form.instance.expert = Profile.objects.get(id=self.kwargs.get('pk'))
+    #     return super(ProfileCreateView, self).form_valid(form)
+
 
 class ProfileUpdateView(UpdateView):
     """
