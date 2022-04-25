@@ -35,6 +35,15 @@ class ProfileEditFormAll(forms.ModelForm):
         model = Profile
         fields = '__all__'
 
+class ProfileFormsReadOnly(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(ProfileFormsReadOnly, self).__init__(*args, **kwargs)
+            for name, field in self.fields.iteritems():
+                field.widget.attrs['readonly'] = 'true'
+
 class FactoryRuleFormsReadOnly(forms.ModelForm):
     class Meta:
         model = FactoryRule

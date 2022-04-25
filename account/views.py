@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly
+from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly,ProfileFormsReadOnly
 from .models import Profile
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404,HttpResponse,redirect
@@ -148,6 +148,71 @@ def del_profile(request, id):
     if request.method == 'POST':
         profile.delete()
         return redirect('profile_view')
+
+class ProfileListView(ListView):
+    queryset = models.Profile.objects.all()
+    # model=models.Job
+    context_object_name = 'profiles'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = r'profile_view.html'
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        profile_field_verbose_name = [Profile._meta.get_field('user').verbose_name,
+                                      Profile._meta.get_field('mobile').verbose_name,
+                                      Profile._meta.get_field('recommender').verbose_name,
+                                      Profile._meta.get_field('cam_level').verbose_name,
+                                      "操作",
+                                      ]
+        context['profile_field_verbose_name'] = profile_field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            context['profiles'] = models.Profile.objects.filter(
+                Q(user__username__contains=query) |
+                Q(mobile__contains=query))
+        return context
+
+class ProfileFormView(FormView):
+    form_class = ProfileFormsReadOnly
+    template_name = "profile_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        profile = models.Profile.objects.filter(id=kwargs['parm']).first()
+        form = self.form_class(instance=profile)
+        return self.render_to_response({'form': form})
+
+class ProfileCreateView(CreateView):
+    model=Profile
+    template_name = "profile_create.html"
+    fields = "__all__"
+    success_url = 'ProfileListView'
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     response = super(ProfileCreateView, self).form_valid(form)
+    #     return response
+
+class ProfileUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = Profile
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'profile_update.html'
+    success_url = '' # 修改成功后跳转的链接
+
+class ProfileDeleteView(DeleteView):
+  """
+  """
+  model = Profile
+  template_name = 'profile_delete.html'
+  # template_name_field = ''
+  # template_name_suffix = ''
+  # book_delete.html为models.py中__str__的返回值
+   # namespace:url_name
+  success_url = reverse_lazy('ProfileListView')
+
 
 class FactoryRuleListView(ListView):
     queryset = models.FactoryRule.objects.all()

@@ -23,6 +23,13 @@ urlpatterns = [
     path('add_profile',views.add_profile,name='add_profile'),
     re_path('profile/(?P<id>\d+)/$', views.edit_profile,name='edit_profile'),
     path('del_profile/<int:id>/', views.del_profile, name='del_profile'),
+
+    path('ProfileListView',views.ProfileListView.as_view(),name='ProfileListView'),
+    re_path('ProfileFormView/(?P<parm>\w+)/', views.ProfileFormView.as_view(), name='ProfileFormView'),
+    path('ProfileCreateView', views.ProfileCreateView.as_view(), name='ProfileCreateView'),
+    path('ProfileUpdateView/<int:pk>', views.ProfileUpdateView.as_view(), name='ProfileUpdateView'),
+    path('ProfileDeleteView/<int:pk>', views.ProfileDeleteView.as_view(),name='ProfileDeleteView'),
+
     path('FactoryRuleListView',views.FactoryRuleListView.as_view(),name='FactoryRuleListView'),
     re_path('factoryruleformview/(?P<parm>\w+)/', views.FactoryRuleFormView.as_view(), name='factoryruleformview'),
     path('factoryrule_create', views.FactoryRuleCreateView.as_view(), name='factoryrule_create'),

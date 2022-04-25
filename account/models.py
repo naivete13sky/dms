@@ -32,6 +32,8 @@ class FactoryRule(models.Model):
                               verbose_name="备注", blank=True,null=True)
     slug = models.SlugField(max_length=250, unique_for_date='publish')
     author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='account_factory_rule_user', verbose_name="创建人")
+    # author = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True,
+    #                            related_name='account_factory_rule_profile', verbose_name="创建人")
     publish = models.DateTimeField(default=timezone.now)
     create_time = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
