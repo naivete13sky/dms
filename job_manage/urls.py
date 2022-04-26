@@ -22,6 +22,8 @@ urlpatterns = [
     path('share_job/<int:job_id>/', views.share_job, name='share_job'),
     path('job_analysis', views.job_analysis, name='job_analysis'),
     path('JobCreateView', views.JobCreateView.as_view(), name='JobCreateView'),
+    path('job_settings', views.job_settings, name='job_settings'),
+    path('JobUpdateView/<int:pk>', views.JobUpdateView.as_view(), name='JobUpdateView'),
 
 
 

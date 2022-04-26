@@ -17,7 +17,7 @@ from dms.settings import MEDIA_URL
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
 from job_manage import models
 from django.contrib.sites.models import Site
-from django.views.generic import ListView, DetailView, FormView, CreateView
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from taggit.models import Tag
@@ -477,26 +477,23 @@ def job_analysis(request):
     pass
     return render(request, r'job_analysis.html', locals())
 
-
-
+#这种方式上传附件是可以的
 class JobCreateView(CreateView):
     model=Job
     template_name = "JobCreateView.html"
     fields = "__all__"
     success_url = 'JobListView'
 
+class JobUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = Job
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'JobUpdateView.html'
+    success_url = '' # 修改成功后跳转的链接
 
-
-# class FactoryRuleUpdateView(UpdateView):
-#     """
-#     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
-#     """
-#     model = FactoryRule
-#     fields = "__all__"
-#     # template_name_suffix = '_update_form'  # html文件后缀
-#     template_name = 'factoryrule_update.html'
-#     success_url = '' # 修改成功后跳转的链接
-#
 # class FactoryRuleDeleteView(DeleteView):
 #   """
 #   """
@@ -509,6 +506,8 @@ class JobCreateView(CreateView):
 #   success_url = reverse_lazy('FactoryRuleListView')
 
 
-
+def job_settings(request):
+    pass
+    return render(request, r'job_settings.html', locals())
 
 
