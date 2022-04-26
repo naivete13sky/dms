@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'taggit',
+    'project.apps.ProjectConfig',
 
 ]
 
