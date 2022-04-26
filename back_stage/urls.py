@@ -4,5 +4,6 @@ from . import views
 app_name = 'back_stage'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('dashboard', views.dashboard, name='dashboard'),
 
 ]
