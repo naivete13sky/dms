@@ -17,9 +17,10 @@ urlpatterns = [
     path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),
     path('add', views.add, name='add'),
     path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
-    path('',login_required(views.job_view),name='job_view'),
+    path('',login_required(views.JobListView.as_view()),name='job_view'),
     path('del_job/<int:job_id>/', views.del_job, name='del_job'),
     path('share_job/<int:job_id>/', views.share_job, name='share_job'),
+    path('job_analysis', views.job_analysis, name='job_analysis'),
 
 
 

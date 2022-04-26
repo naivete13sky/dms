@@ -340,7 +340,7 @@ class JobListView(ListView):
     context_object_name = 'jobs'
     paginate_by = 10
     # ordering = ['-publish']
-    template_name = r'../templates/list_view.html'
+    template_name = 'JobListView.html'
 
     # def get_queryset(self):
     #     query = self.request.GET.get('query', '')
@@ -469,6 +469,11 @@ def share_job(request, job_id):
             clean_errors = form.errors.get("__all__")
             print(222, clean_errors)
         return render(request, "share_job.html", {"form": form, "clean_errors": clean_errors})
+
+def job_analysis(request):
+    pass
+    return render(request, r'job_analysis.html', locals())
+
 
 
 
