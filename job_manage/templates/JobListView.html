@@ -10,7 +10,7 @@
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:add" %}>新增料号</a></h4>
+                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a></h4>
 
                     <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
