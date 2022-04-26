@@ -34,8 +34,8 @@ urlpatterns = [
     path('back_stage/', include('back_stage.urls', namespace='back_stage')),
     path('router_job_odb/<order>', views.file_download_odb, name='file_download_odb'),
     path('media/files/<order>', views.file_download, name='file_download'),
-    path('gb/', include('gb.urls', namespace='gb')),
-    path('media/router_job_org/<order>', gb.file_download_org, name='file_download_org'),
+
+
     path('blog/', include('blog.urls', namespace='blog')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('', include('job_manage.urls', namespace='job_index')),
