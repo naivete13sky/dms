@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404,HttpResponse
 import os
+from django.urls import reverse_lazy
 from django.views import View
 from django.http import StreamingHttpResponse
 from django.shortcuts import render,redirect,HttpResponse
@@ -17,7 +18,7 @@ from dms.settings import MEDIA_URL
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
 from job_manage import models
 from django.contrib.sites.models import Site
-from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from taggit.models import Tag
@@ -494,16 +495,16 @@ class JobUpdateView(UpdateView):
     template_name = 'JobUpdateView.html'
     success_url = '' # 修改成功后跳转的链接
 
-# class FactoryRuleDeleteView(DeleteView):
-#   """
-#   """
-#   model = FactoryRule
-#   template_name = 'factoryrule_delete.html'
-#   # template_name_field = ''
-#   # template_name_suffix = ''
-#   # book_delete.html为models.py中__str__的返回值
-#    # namespace:url_name
-#   success_url = reverse_lazy('FactoryRuleListView')
+class JobDeleteView(DeleteView):
+  """
+  """
+  model = Job
+  template_name = 'JobDeleteView.html'
+  # template_name_field = ''
+  # template_name_suffix = ''
+  # book_delete.html为models.py中__str__的返回值
+   # namespace:url_name
+  success_url = reverse_lazy('job_manage:job_view')
 
 
 def job_settings(request):
