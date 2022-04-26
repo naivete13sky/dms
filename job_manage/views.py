@@ -1,5 +1,8 @@
 # Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404,HttpResponse
 import os
 from django.views import View
@@ -14,7 +17,7 @@ from dms.settings import MEDIA_URL
 from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
 from job_manage import models
 from django.contrib.sites.models import Site
-from django.views.generic import ListView,DetailView,FormView
+from django.views.generic import ListView, DetailView, FormView, CreateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from taggit.models import Tag
@@ -473,6 +476,37 @@ def share_job(request, job_id):
 def job_analysis(request):
     pass
     return render(request, r'job_analysis.html', locals())
+
+
+
+class JobCreateView(CreateView):
+    model=Job
+    template_name = "JobCreateView.html"
+    fields = "__all__"
+    success_url = 'JobListView'
+
+
+
+# class FactoryRuleUpdateView(UpdateView):
+#     """
+#     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+#     """
+#     model = FactoryRule
+#     fields = "__all__"
+#     # template_name_suffix = '_update_form'  # html文件后缀
+#     template_name = 'factoryrule_update.html'
+#     success_url = '' # 修改成功后跳转的链接
+#
+# class FactoryRuleDeleteView(DeleteView):
+#   """
+#   """
+#   model = FactoryRule
+#   template_name = 'factoryrule_delete.html'
+#   # template_name_field = ''
+#   # template_name_suffix = ''
+#   # book_delete.html为models.py中__str__的返回值
+#    # namespace:url_name
+#   success_url = reverse_lazy('FactoryRuleListView')
 
 
 

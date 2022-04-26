@@ -66,3 +66,5 @@ class ShareAccount(models.Model):
     class Meta:
         ordering=("share_job",)
 
+
+

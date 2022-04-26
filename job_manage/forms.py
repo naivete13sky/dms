@@ -179,3 +179,4 @@ class ShareForm(forms.ModelForm):
         fields = ['share_account','publish','remark','slug']
 
 
+
