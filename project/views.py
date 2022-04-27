@@ -50,13 +50,13 @@ class ProjectFormView(FormView):
         form = self.form_class(instance=project)
         return self.render_to_response({'form': form})
 
-# class FactoryRuleCreateView(CreateView):
-#     model=FactoryRule
-#     template_name = "factoryrule_create.html"
-#     # fields = ['factory_rule_name']
-#     fields = "__all__"
-#     success_url = 'FactoryRuleListView'
-#
+
+class ProjectCreateView(CreateView):
+    model=Project
+    template_name = "ProjectCreateView.html"
+    fields = "__all__"
+    success_url = 'ProjectListView'
+
 # class FactoryRuleUpdateView(UpdateView):
 #     """
 #     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）

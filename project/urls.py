@@ -8,7 +8,7 @@ urlpatterns = [
     path('',views.ProjectListView.as_view(),name='index'),
     path('ProjectListView',views.ProjectListView.as_view(),name='ProjectListView'),
     re_path('ProjectFormView/(?P<parm>\w+)/', views.ProjectFormView.as_view(), name='ProjectFormView'),
-    # path('factoryrule_create', views.FactoryRuleCreateView.as_view(), name='factoryrule_create'),
+    path('ProjectCreateView', views.ProjectCreateView.as_view(), name='ProjectCreateView'),
     # path('factoryrule_update/<int:pk>', views.FactoryRuleUpdateView.as_view(), name='factoryrule_update'),
     # path('factoryrule_delete/<int:pk>', views.FactoryRuleDeleteView.as_view(),name='factoryrule_delete'),
 
