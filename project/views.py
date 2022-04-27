@@ -50,23 +50,22 @@ class ProjectFormView(FormView):
         form = self.form_class(instance=project)
         return self.render_to_response({'form': form})
 
-
 class ProjectCreateView(CreateView):
     model=Project
     template_name = "ProjectCreateView.html"
     fields = "__all__"
     success_url = 'ProjectListView'
 
-# class FactoryRuleUpdateView(UpdateView):
-#     """
-#     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
-#     """
-#     model = FactoryRule
-#     fields = "__all__"
-#     # template_name_suffix = '_update_form'  # html文件后缀
-#     template_name = 'factoryrule_update.html'
-#     success_url = '' # 修改成功后跳转的链接
-#
+class ProjectUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = Project
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'ProjectUpdateView.html'
+    success_url = '' # 修改成功后跳转的链接
+
 # class FactoryRuleDeleteView(DeleteView):
 #   """
 #   """
