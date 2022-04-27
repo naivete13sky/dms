@@ -22,12 +22,15 @@ class Project(models.Model):
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_user',verbose_name="负责人")
 
     publish = models.DateTimeField(default=timezone.now)
-    create_time = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    create_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+    updated = models.DateTimeField(auto_now=True,verbose_name="更新时间")
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
-    last_update_user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_last_user',verbose_name="最后一次更新人")
-
+    last_update_user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_last_user',null=True,blank=True,verbose_name="最后一次更新人")
+    factory_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',verbose_name="厂规")
+    customer_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',verbose_name="客规")
+    create_type = models.CharField(max_length=10, choices=(('create', '创建'), ('share', '分享')), default='create',
+                                            verbose_name="工程来源")
 
 
     objects = models.Manager()  # 默认的管理器
