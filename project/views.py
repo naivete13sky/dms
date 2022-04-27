@@ -1,5 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render
+from django.urls import reverse_lazy
+
 from .forms import ProjectFormsReadOnly
 
 # Create your views here.
@@ -66,13 +68,11 @@ class ProjectUpdateView(UpdateView):
     template_name = 'ProjectUpdateView.html'
     success_url = '' # 修改成功后跳转的链接
 
-# class FactoryRuleDeleteView(DeleteView):
-#   """
-#   """
-#   model = FactoryRule
-#   template_name = 'factoryrule_delete.html'
-#   # template_name_field = ''
-#   # template_name_suffix = ''
-#   # book_delete.html为models.py中__str__的返回值
-#    # namespace:url_name
-#   success_url = reverse_lazy('FactoryRuleListView')
+class ProjectDeleteView(DeleteView):
+  model = Project
+  template_name = 'ProjectDeleteView.html'
+  # template_name_field = ''
+  # template_name_suffix = ''
+  # book_delete.html为models.py中__str__的返回值
+   # namespace:url_name
+  success_url = reverse_lazy('project:ProjectListView')
