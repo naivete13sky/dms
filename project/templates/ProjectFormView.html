@@ -1,0 +1,37 @@
+{% extends 'index_base.html' %}
+{% load static  %}
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "project:index" %}>工程管理</a></li>
+
+    <li><a>工程详情</a></li>
+{% endblock %}
+{% block main_content %}
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+{#                            <h1>{{ job.title }}</h1>#}
+{#                            <p class="date">#}
+{#                            Published {{ job.publish }} by {{ job.author }}#}
+{#                            </p>#}
+{#                            {{ job.file_odb }}#}
+{#                            {{ job.file_compressed }}#}
+{#                            {{ job.remark|linebreaks }}#}
+
+                            {{ form.as_p }}
+{#                            {{ job }}#}
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<script src={% static "javascripts/jquery.min.js" %}></script>
+
