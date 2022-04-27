@@ -41,5 +41,5 @@ class Project(models.Model):
         db_table = 'project'
         ordering = ('-publish',)
 
-    # def get_absolute_url(self):
-    #     return reverse('factoryruleformview', args=[self.id,])
+    def get_absolute_url(self):
+        return reverse('project:ProjectFormView', args=[self.id,])
