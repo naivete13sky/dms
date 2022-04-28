@@ -79,8 +79,10 @@
                                             </button>
                                         {% endif %}
                                         {% if not each.factory_rule %}
-                                            <button class="btn btn-transparent" title="新增厂规" onclick="window.location.href='/admin/account/factoryrule/add/?_to_field=id&_popup=1';"><i class="fa fa-plus"></i>
-                                            </button>
+{#                                            <button class="btn btn-transparent" title="新增厂规" onclick="window.location.href='/admin/account/factoryrule/add/?_to_field=id&_popup=1';"><i class="fa fa-plus"></i>#}
+{#                                            </button>#}
+{#                                            <a href="#" class="btn btn-primary glyphicon glyphicon-search" data-toggle="tooltip" onclick="prom()" data-placement="top" title="使用模态框"></a>#}
+                                            <a href="#" class="fa fa-plus" data-toggle="tooltip" onclick="prom()" data-placement="top" title="添加厂规"></a>
 
 
 
@@ -128,8 +130,8 @@
         </div>
     </div>
 
-{#    模态框实现#}
-    <a href="#" class="btn btn-primary glyphicon glyphicon-search" data-toggle="tooltip" onclick="prom()" data-placement="top" title="使用模态框"></a>
+
+
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

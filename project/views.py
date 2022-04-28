@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from .forms import ProjectFormsReadOnly
@@ -67,7 +67,9 @@ class ProjectUpdateView(UpdateView):
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'ProjectUpdateView.html'
-    success_url = '' # 修改成功后跳转的链接
+    success_url = '../ProjectListView' # 修改成功后跳转的链接
+
+
 
 class ProjectDeleteView(DeleteView):
   model = Project
@@ -83,10 +85,12 @@ def project_settings(request):
     return render(request, r'project_settings.html', locals())
 
 def factory_rule_delete(request,pk):
-    pass
-    # print(pk)
-    project=Project.objects.filter(id=pk)[0]
-    project.factory_rule=None
-    project.save()
-    return HttpResponse(project)
-
+    object = Project.objects.filter(id=pk)[0]
+    if request.method == 'POST':
+        object=Project.objects.filter(id=pk)[0]
+        object.factory_rule=None
+        object.save()
+        # return HttpResponse("已删除!")
+        # return render(request, r'factory_rule_delete.html', locals())
+        return redirect('project:ProjectListView')
+    return render(request, r'factory_rule_delete.html', locals())
