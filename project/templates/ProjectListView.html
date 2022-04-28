@@ -141,9 +141,25 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    模态框标题
+                    选择或新建厂规
                 </h4>
-               模态框内容
+
+                新建厂规
+                <button class="btn btn-transparent" title="新建厂规" onclick="window.location.href='ProjectUpdateView/{{ each.id }}';"><i class="fa fa-plus-circle"></i>
+                </button>
+                <br>
+                或从厂规模板选择
+                <select>
+                    <option value ="volvo">PHP中文网</option>
+                    <option value ="saab">百度</option>
+                    <option value="opel">腾讯</option>
+                    <option value="audi">新浪</option>
+                </select>
+
+
+
+
+
             </div>
             <!-- /.modal-content -->
         </div>

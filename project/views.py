@@ -41,6 +41,7 @@ class ProjectListView(ListView):
             context['all'] = models.Project.objects.filter(
                 Q(name__contains=query) |
                 Q(author__username__contains=query))
+
         return context
 
 class ProjectFormView(FormView):
