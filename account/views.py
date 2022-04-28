@@ -229,7 +229,7 @@ class FactoryRuleListView(ListView):
         context = super().get_context_data(**kwargs)
         factoryrule_field_verbose_name = [FactoryRule._meta.get_field('factory_rule_name').verbose_name,
                                   FactoryRule._meta.get_field('remark').verbose_name,
-                                  FactoryRule._meta.get_field('slug').verbose_name,
+
                                   FactoryRule._meta.get_field('author').verbose_name,
                                   FactoryRule._meta.get_field('publish').verbose_name,
                                   FactoryRule._meta.get_field('status').verbose_name,

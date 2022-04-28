@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from job_manage.models import Job
-from account.models import FactoryRule
+from account.models import FactoryRule,Profile
 
 # Create your models here.
 class ProjectManager(models.Manager):
@@ -21,6 +21,7 @@ class Project(models.Model):
     work = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='project_job_work', verbose_name="工作稿料号")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True)
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_user',verbose_name="负责人")
+    # author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='project_profile', verbose_name="负责人")
 
     publish = models.DateTimeField(default=timezone.now,verbose_name="发布时间")
     create_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")

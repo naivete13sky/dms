@@ -1,16 +1,13 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
 from .forms import ProjectFormsReadOnly
-
 # Create your views here.
 from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView
-
 from project import models
 from .models import Project
 from django.http import HttpResponse
-
+from account.models import FactoryRule
 
 class ProjectListView(ListView):
     queryset = Project.objects.all()
@@ -95,3 +92,10 @@ def factory_rule_delete(request,pk):
         # return render(request, r'factory_rule_delete.html', locals())
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_delete.html', locals())
+
+def factory_rule_select(request,pk):
+    pass
+    print(pk)
+    objects=FactoryRule.objects.filter(author=pk)
+    print(objects)
+    return render(request, r'factory_rule_select.html', locals())
