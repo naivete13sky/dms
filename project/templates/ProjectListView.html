@@ -59,17 +59,22 @@
                                 <td>{{ each.updated }}</td>
                                 <td>{{ each.last_update_user }}</td>
                                 <td>
-{#                                    {{ each.factory_rule.factory_rule_name }}#}
+                                    <a title="查看厂规" href="{{ each.factory_rule.get_absolute_url }}">
+                                        {{ each.factory_rule.factory_rule_name }}
+                                    </a>
                                     <div class="btn-group btn-group-xs">
 
-                                        <button class="btn btn-transparent" title="新增厂规" onclick="window.location.href='http://10.97.80.118/admin/account/factoryrule/add/?_to_field=id&_popup=1';"><i class="fa fa-plus"></i>
-                                        </button>
-                                        <button class="btn btn-transparent" title="删除厂规" onclick="window.location.href='ProjectDeleteView/{{ each.id }}';"><i class="fa fa-times"></i>
-                                        </button>
-                                        <button class="btn btn-transparent" title="编辑厂规" onclick="window.location.href='{{ each.factory_rule.get_absolute_url_edit }}';"><i class="fa fa-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-transparent" title="查看厂规" onclick="window.location.href='{{ each.factory_rule.get_absolute_url }}';"><i class="fa fa-eye"></i>
-                                        </button>
+
+                                        {% if each.factory_rule %}
+                                            <button class="btn btn-transparent" title="编辑厂规" onclick="window.location.href='{{ each.factory_rule.get_absolute_url_edit }}';"><i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-transparent" title="删除厂规" onclick="window.location.href='factory_rule_delete/{{ each.id }}';"><i class="fa fa-times"></i>
+                                            </button>
+                                        {% endif %}
+                                        {% if not each.factory_rule %}
+                                            <button class="btn btn-transparent" title="新增厂规" onclick="window.location.href='/admin/account/factoryrule/add/?_to_field=id&_popup=1';"><i class="fa fa-plus"></i>
+                                            </button>
+                                        {% endif %}
 
 
 

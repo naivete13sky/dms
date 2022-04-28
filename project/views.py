@@ -9,6 +9,7 @@ from django.views.generic import ListView, FormView, CreateView, UpdateView, Del
 
 from project import models
 from .models import Project
+from django.http import HttpResponse
 
 
 class ProjectListView(ListView):
@@ -80,3 +81,12 @@ class ProjectDeleteView(DeleteView):
 def project_settings(request):
     pass
     return render(request, r'project_settings.html', locals())
+
+def factory_rule_delete(request,pk):
+    pass
+    # print(pk)
+    project=Project.objects.filter(id=pk)[0]
+    project.factory_rule=None
+    project.save()
+    return HttpResponse(project)
+

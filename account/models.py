@@ -36,7 +36,7 @@ class FactoryRule(models.Model):
     factory_rule_name=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="厂规名称")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
                               verbose_name="备注", blank=True,null=True)
-    slug = models.SlugField(max_length=250, unique_for_date='publish')
+    # slug = models.SlugField(max_length=250, unique_for_date='publish')
     author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='account_factory_rule_user', verbose_name="创建人")
     # author = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True,
     #                            related_name='account_factory_rule_profile', verbose_name="创建人")
