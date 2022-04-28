@@ -15,6 +15,8 @@ urlpatterns = [
 
     path('factory_rule_delete/<int:pk>', views.factory_rule_delete,name='factory_rule_delete'),
     path('factory_rule_select/<int:pk>/<int:id>', views.factory_rule_select,name='factory_rule_select'),
+    path('factory_rule_new/<int:pk>/<int:id>', views.factory_rule_new,name='factory_rule_new'),
+
 
 
 # ]

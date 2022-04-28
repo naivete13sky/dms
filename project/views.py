@@ -8,6 +8,8 @@ from project import models
 from .models import Project
 from django.http import HttpResponse
 from account.models import FactoryRule
+from account.forms import FactoryRuleFormsProjectNew
+from django.contrib.auth.models import User
 
 class ProjectListView(ListView):
     queryset = Project.objects.all()
@@ -106,4 +108,29 @@ def factory_rule_select(request,pk,id):
         project.save()
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_select.html', locals())
+
+def factory_rule_new(request,pk,id):
+    pass
+    form=FactoryRuleFormsProjectNew()
+    # new_factory_rule = FactoryRule()
+    id = id
+    if request.method == 'POST':
+        pass
+        factory_rule_form = FactoryRuleFormsProjectNew(request.POST)
+        if factory_rule_form.is_valid():
+            # 建立新数据对象但是不写入数据库
+            new_factory_rule = factory_rule_form.save(commit=False)
+            # 保存User对象
+            user=User(id=pk)
+            new_factory_rule.author=user
+            new_factory_rule.save()
+
+            project=Project.objects.filter(id=id)[0]
+            project.factory_rule=new_factory_rule
+            project.save()
+
+        return redirect('project:ProjectListView')
+    return render(request, r'factory_rule_new.html', locals())
+
+
 

@@ -53,3 +53,10 @@ class FactoryRuleFormsReadOnly(forms.ModelForm):
             for name, field in self.fields.iteritems():
                 field.widget.attrs['readonly'] = 'true'
 
+class FactoryRuleFormsProjectNew(forms.ModelForm):
+    class Meta:
+        model = FactoryRule
+        # fields = '__all__'
+        fields = ['factory_rule_name','remark','publish','status']
+
+
