@@ -76,3 +76,7 @@ class ProjectDeleteView(DeleteView):
   # book_delete.html为models.py中__str__的返回值
    # namespace:url_name
   success_url = reverse_lazy('project:ProjectListView')
+
+def project_settings(request):
+    pass
+    return render(request, r'project_settings.html', locals())
