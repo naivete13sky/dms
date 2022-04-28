@@ -7,6 +7,13 @@
     <li><a>工程查询</a></li>
 {% endblock %}
 {% block main_content %}
+
+
+
+
+
+
+
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
@@ -74,6 +81,10 @@
                                         {% if not each.factory_rule %}
                                             <button class="btn btn-transparent" title="新增厂规" onclick="window.location.href='/admin/account/factoryrule/add/?_to_field=id&_popup=1';"><i class="fa fa-plus"></i>
                                             </button>
+
+
+
+
                                         {% endif %}
 
 
@@ -116,6 +127,33 @@
             </div>
         </div>
     </div>
+
+{#    模态框实现#}
+    <a href="#" class="btn btn-primary glyphicon glyphicon-search" data-toggle="tooltip" onclick="prom()" data-placement="top" title="使用模态框"></a>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        onclick="closed()">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    模态框标题
+                </h4>
+               模态框内容
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+    <script type="text/javascript">
+        function prom(){
+            $("#myModal").modal('show');
+        }
+
+    </script>
+
 {% endblock %}
 <script src={% static "javascripts/jquery.min.js" %}></script>
 
