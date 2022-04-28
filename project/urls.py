@@ -14,7 +14,7 @@ urlpatterns = [
     path('project_settings', views.project_settings, name='project_settings'),
 
     path('factory_rule_delete/<int:pk>', views.factory_rule_delete,name='factory_rule_delete'),
-    path('factory_rule_select/<int:pk>', views.factory_rule_select,name='factory_rule_select'),
+    path('factory_rule_select/<int:pk>/<int:id>', views.factory_rule_select,name='factory_rule_select'),
 
 
 # ]

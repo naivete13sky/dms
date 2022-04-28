@@ -93,9 +93,16 @@ def factory_rule_delete(request,pk):
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_delete.html', locals())
 
-def factory_rule_select(request,pk):
+def factory_rule_select(request,pk,id):
     pass
-    print(pk)
     objects=FactoryRule.objects.filter(author=pk)
-    print(objects)
+    id=id
+    if request.method == 'POST':
+        pass
+        selected=request.POST.get('factory_rule_select',None)
+        print(selected)
+        project = Project.objects.filter(id=id)[0]
+        project.factory_rule = FactoryRule.objects.filter(factory_rule_name=selected)[0]
+        project.save()
+        return redirect('project:ProjectListView')
     return render(request, r'factory_rule_select.html', locals())

@@ -1,6 +1,10 @@
-<select>
-    <option value ="volvo">PHP中文网</option>
-    <option value ="saab">百度</option>
-    <option value="opel">腾讯</option>
-    <option value="audi">新浪</option>
-</select>
+<form method="post">
+    {% csrf_token %}
+    <select id="factory_rule_select" name="factory_rule_select">
+        {% for each in objects %}
+            <option value = {{ each.factory_rule_name }}>{{ each.factory_rule_name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="确认">
+</form>
