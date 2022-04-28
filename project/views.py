@@ -100,7 +100,7 @@ def factory_rule_select(request,pk,id):
     if request.method == 'POST':
         pass
         selected=request.POST.get('factory_rule_select',None)
-        print(selected)
+        # print(selected)
         project = Project.objects.filter(id=id)[0]
         project.factory_rule = FactoryRule.objects.filter(factory_rule_name=selected)[0]
         project.save()
