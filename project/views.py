@@ -106,3 +106,4 @@ def factory_rule_select(request,pk,id):
         project.save()
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_select.html', locals())
+
