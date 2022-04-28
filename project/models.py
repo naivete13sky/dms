@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from job_manage.models import Job
+from account.models import FactoryRule
 
 # Create your models here.
 class ProjectManager(models.Manager):
@@ -27,8 +28,9 @@ class Project(models.Model):
 
 
     last_update_user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_last_user',null=True,blank=True,verbose_name="最后一次更新人")
-    factory_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',verbose_name="厂规")
-    customer_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',verbose_name="客规")
+    factory_rule=models.ForeignKey(FactoryRule, on_delete=models.CASCADE, related_name='project_factory_rule',null=True,blank=True,verbose_name="厂规")
+    factory_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',null=True,blank=True,verbose_name="厂规状态")
+    customer_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',null=True,blank=True,verbose_name="客规状态")
     create_type = models.CharField(max_length=10, choices=(('create', '创建'), ('share', '分享')), default='create',
                                             verbose_name="工程来源")
     status = models.CharField(max_length=10, choices=(('draft', 'Draft'), ('published', 'Published')), default='draft')

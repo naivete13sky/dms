@@ -53,4 +53,6 @@ class FactoryRule(models.Model):
         ordering = ('-publish',)
     def get_absolute_url(self):
         return reverse('factoryruleformview', args=[self.id,])
+    def get_absolute_url_edit(self):
+        return reverse('factoryrule_update', args=[self.id,])
 

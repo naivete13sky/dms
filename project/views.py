@@ -27,7 +27,7 @@ class ProjectListView(ListView):
                                   Project._meta.get_field('create_time').verbose_name,
                                   Project._meta.get_field('updated').verbose_name,
                                   Project._meta.get_field('last_update_user').verbose_name,
-                                  Project._meta.get_field('factory_rule_status').verbose_name,
+                                  '厂规',
                                   Project._meta.get_field('customer_rule_status').verbose_name,
                                   Project._meta.get_field('create_type').verbose_name,
                                   Project._meta.get_field('status').verbose_name,

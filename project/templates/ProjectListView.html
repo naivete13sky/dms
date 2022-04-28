@@ -43,14 +43,35 @@
                                     </a>
                                 </td>
 
-                                <td>{{ each.org }}</td>
-                                <td>{{ each.work }}</td>
+                                <td>
+                                    <a href="{{ each.org.get_absolute_url }}">
+                                        {{ each.org.job_name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ each.work.get_absolute_url }}">
+                                        {{ each.work.job_name }}
+                                    </a>
+                                </td>
 
                                 <td>{{ each.author }}</td>
                                 <td>{{ each.create_time }}</td>
                                 <td>{{ each.updated }}</td>
                                 <td>{{ each.last_update_user }}</td>
-                                <td>{{ each.factory_rule_status }}</td>
+                                <td>
+{#                                    {{ each.factory_rule.factory_rule_name }}#}
+                                    <div class="btn-group btn-group-xs">
+
+                                        <button class="btn btn-transparent" title="编辑厂规" onclick="window.location.href='{{ each.factory_rule.get_absolute_url_edit }}';"><i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看厂规" onclick="window.location.href='{{ each.factory_rule.get_absolute_url }}';"><i class="fa fa-eye"></i>
+                                        </button>
+
+
+
+                                    </div>
+
+                                </td>
                                 <td>{{ each.customer_rule_status }}</td>
                                 <td>{{ each.create_type }}</td>
                                 <td>{{ each.status }}</td>
