@@ -9,6 +9,7 @@ from .models import Project
 from django.http import HttpResponse
 from .models import FactoryRule
 from django.contrib.auth.models import User
+from account.models import FactoryRule as AccountFactoryRule
 
 
 class ProjectListView(ListView):
@@ -101,14 +102,24 @@ def factory_rule_delete(request,pk):
 
 def factory_rule_select(request,author_id,id):
     pass
-    objects=FactoryRule.objects.filter(author=author_id)
+    objects=AccountFactoryRule.objects.filter(author=author_id)
 
     if request.method == 'POST':
         pass
         selected=request.POST.get('factory_rule_select',None)
         # print(selected)
         project = Project.objects.filter(id=id)[0]
-        project.factory_rule = FactoryRule.objects.filter(factory_rule_name=selected)[0]
+        factory_rule_account_select = AccountFactoryRule.objects.filter(factory_rule_name=selected)[0]
+        factory_rule_project_new=FactoryRule()#新factory rule
+        #开始复制
+        factory_rule_project_new.factory_rule_name=factory_rule_account_select.factory_rule_name
+        factory_rule_project_new.remark = factory_rule_account_select.remark
+        user_current=User(id=author_id)
+        factory_rule_project_new.author=user_current
+        factory_rule_project_new.publish = factory_rule_account_select.publish
+        factory_rule_project_new.status = factory_rule_account_select.status
+        factory_rule_project_new.save()
+        project.factory_rule = factory_rule_project_new
         project.save()
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_select.html', locals())
