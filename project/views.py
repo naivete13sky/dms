@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from .forms import ProjectFormsReadOnly,FactoryRuleFormsProjectNew
+from .forms import ProjectFormsReadOnly, FactoryRuleFormsProjectNew, FactoryRuleFormsReadOnly
 # Create your views here.
 from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView
 from project import models
@@ -128,6 +128,72 @@ def factory_rule_new(request,author_id,id):
 
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_new.html', locals())
+
+
+
+class FactoryRuleListView(ListView):
+    queryset = models.FactoryRule.objects.all()
+    # model=models.Job
+    context_object_name = 'factoryrules'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = r'FactoryRuleListView.html'
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        factoryrule_field_verbose_name = [FactoryRule._meta.get_field('factory_rule_name').verbose_name,
+                                  FactoryRule._meta.get_field('remark').verbose_name,
+
+                                  FactoryRule._meta.get_field('author').verbose_name,
+                                  FactoryRule._meta.get_field('publish').verbose_name,
+                                  FactoryRule._meta.get_field('status').verbose_name,
+                                  "操作",
+                                  ]
+        context['factoryrule_field_verbose_name'] = factoryrule_field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            context['factoryrules'] = models.FactoryRule.objects.filter(
+                Q(factory_rule_name__contains=query) |
+                Q(author__username__contains=query))
+        return context
+
+class FactoryRuleFormView(FormView):
+    form_class = FactoryRuleFormsReadOnly
+    template_name = "FactoryRuleFormView.html"
+
+    def get(self, request, *args, **kwargs):
+        # print('get url parms: ' + kwargs['parm'])
+        factoryrule = models.FactoryRule.objects.filter(id=kwargs['parm']).first()
+        form = self.form_class(instance=factoryrule)
+        return self.render_to_response({'form': form})
+
+class FactoryRuleCreateView(CreateView):
+    model=FactoryRule
+    template_name = "FactoryRuleCreateView.html"
+    # fields = ['factory_rule_name']
+    fields = "__all__"
+    success_url = 'FactoryRuleListView'
+
+class FactoryRuleUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = FactoryRule
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'FactoryRuleUpdateView.html'
+    success_url = '../' # 修改成功后跳转的链接
+
+class FactoryRuleDeleteView(DeleteView):
+  """
+  """
+  model = FactoryRule
+  template_name = 'FactoryRuleDeleteView.html'
+  # template_name_field = ''
+  # template_name_suffix = ''
+  # book_delete.html为models.py中__str__的返回值
+   # namespace:url_name
+  success_url = reverse_lazy('FactoryRuleListView')
 
 
 

@@ -16,7 +16,11 @@ urlpatterns = [
     path('factory_rule_delete/<int:pk>', views.factory_rule_delete,name='factory_rule_delete'),
     path('factory_rule_select/<int:author_id>/<int:id>', views.factory_rule_select,name='factory_rule_select'),
     path('factory_rule_new/<int:author_id>/<int:id>', views.factory_rule_new,name='factory_rule_new'),
-
+    path('FactoryRuleListView',views.FactoryRuleListView.as_view(),name='FactoryRuleListView'),
+    re_path('FactoryRuleFormView/(?P<parm>\w+)/', views.FactoryRuleFormView.as_view(), name='FactoryRuleFormView'),
+    path('FactoryRuleCreateView', views.FactoryRuleCreateView.as_view(), name='FactoryRuleCreateView'),
+    path('FactoryRuleUpdateView/<int:pk>', views.FactoryRuleUpdateView.as_view(), name='FactoryRuleUpdateView'),
+    path('FactoryRuleDeleteView/<int:pk>', views.FactoryRuleDeleteView.as_view(),name='FactoryRuleDeleteView'),
 
 
 # ]

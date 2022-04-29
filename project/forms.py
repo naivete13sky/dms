@@ -16,3 +16,12 @@ class FactoryRuleFormsProjectNew(forms.ModelForm):
         model = FactoryRule
         # fields = '__all__'
         fields = ['factory_rule_name','remark','publish','status']
+
+class FactoryRuleFormsReadOnly(forms.ModelForm):
+    class Meta:
+        model = FactoryRule
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(FactoryRuleFormsReadOnly, self).__init__(*args, **kwargs)
+            for name, field in self.fields.iteritems():
+                field.widget.attrs['readonly'] = 'true'
