@@ -1,15 +1,15 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from .forms import ProjectFormsReadOnly
+from .forms import ProjectFormsReadOnly,FactoryRuleFormsProjectNew
 # Create your views here.
 from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView
 from project import models
 from .models import Project
 from django.http import HttpResponse
-from account.models import FactoryRule
-from account.forms import FactoryRuleFormsProjectNew
+from .models import FactoryRule
 from django.contrib.auth.models import User
+
 
 class ProjectListView(ListView):
     queryset = Project.objects.all()
@@ -95,10 +95,10 @@ def factory_rule_delete(request,pk):
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_delete.html', locals())
 
-def factory_rule_select(request,pk,id):
+def factory_rule_select(request,author_id,id):
     pass
-    objects=FactoryRule.objects.filter(author=pk)
-    id=id
+    objects=FactoryRule.objects.filter(author=author_id)
+
     if request.method == 'POST':
         pass
         selected=request.POST.get('factory_rule_select',None)
@@ -109,19 +109,16 @@ def factory_rule_select(request,pk,id):
         return redirect('project:ProjectListView')
     return render(request, r'factory_rule_select.html', locals())
 
-def factory_rule_new(request,pk,id):
-    pass
+def factory_rule_new(request,author_id,id):
+    print("author_id:",author_id,"id:",id)
     form=FactoryRuleFormsProjectNew()
-    # new_factory_rule = FactoryRule()
-    id = id
     if request.method == 'POST':
-        pass
         factory_rule_form = FactoryRuleFormsProjectNew(request.POST)
         if factory_rule_form.is_valid():
             # 建立新数据对象但是不写入数据库
             new_factory_rule = factory_rule_form.save(commit=False)
             # 保存User对象
-            user=User(id=pk)
+            user=User(id=author_id)
             new_factory_rule.author=user
             new_factory_rule.save()
 

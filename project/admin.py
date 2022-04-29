@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project
+from .models import Project,FactoryRule
 # Register your models here.
 admin.site.site_header = 'CAM料号管理系统'
 
@@ -13,3 +13,8 @@ class ProjectAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish'
     # ordering = ('recipe_status', 'receive_date',)
     list_per_page = 10
+
+
+@admin.register(FactoryRule)
+class FactoryRuleAdmin(admin.ModelAdmin):
+    list_display = ['factory_rule_name','remark' ,'author']
