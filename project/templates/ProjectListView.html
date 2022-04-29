@@ -49,12 +49,17 @@
                                     <td>
                                         <a href="{{ each.org.get_absolute_url }}">
                                             {{ each.org.job_name }}
+{#                                            {{ each.org.file_odb }}#}
                                         </a>
+                                        <button class="btn btn-transparent" title="下载原稿" onclick="window.location.href='/media/{{ each.org.file_odb }}';"><i class="fa fa-download"></i>
+                                        </button>
                                     </td>
                                     <td>
                                         <a href="{{ each.work.get_absolute_url }}">
                                             {{ each.work.job_name }}
                                         </a>
+                                        <button class="btn btn-transparent" title="下载工作稿" onclick="window.location.href='/media/{{ each.work.file_odb }}';"><i class="fa fa-download"></i>
+                                        </button>
                                     </td>
                                     <td>{{ each.author }}</td>
                                     <td>{{ each.create_time }}</td>
