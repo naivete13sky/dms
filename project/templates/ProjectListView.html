@@ -82,6 +82,7 @@
 
 
 
+
                                             {% endif %}
                                         </div>
 
@@ -91,7 +92,7 @@
                                     <td>{{ each.status }}</td>
                                     <td>{{ each.remark }}</td>
                                     <td>
-                                    <div class="btn-group btn-group-xs">
+                                        <div class="btn-group btn-group-xs">
                                         <button class="btn btn-transparent" onclick="window.location.href='ProjectUpdateView/{{ each.id }}';"><i class="fa fa-pencil"></i>
                                         </button>
                                         <button class="btn btn-transparent" onclick="window.location.href='{{ each.get_absolute_url }}';"><i class="fa fa-eye"></i>
@@ -103,7 +104,7 @@
 {#                                        <button class="btn btn-transparent" onclick="window.location.href='share_job/{{ factoryrule.id }}';"><i class="fa fa-share-alt"></i>#}
 {#                                        </button>#}
                                     </div>
-                                </td>
+                                    </td>
                             </tr>
 
 
