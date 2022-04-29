@@ -88,8 +88,12 @@ def factory_rule_delete(request,pk):
     object = Project.objects.filter(id=pk)[0]
     if request.method == 'POST':
         object=Project.objects.filter(id=pk)[0]
+        #删除此工程下的factory rule
+        delete_factory_rule=FactoryRule.objects.filter(id=object.factory_rule.id)
+        delete_factory_rule.delete()
         object.factory_rule=None
         object.save()
+
         # return HttpResponse("已删除!")
         # return render(request, r'factory_rule_delete.html', locals())
         return redirect('project:ProjectListView')
