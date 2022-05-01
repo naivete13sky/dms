@@ -34,6 +34,8 @@ class Project(models.Model):
     last_update_user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_last_user',null=True,blank=True,verbose_name="最后一次更新人")
     factory_rule=models.ForeignKey(to='project.FactoryRule', on_delete=models.CASCADE, related_name='project_factory_rule',null=True,blank=True,verbose_name="厂规")
     factory_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',null=True,blank=True,verbose_name="厂规状态")
+    customer_rule = models.ForeignKey(to='project.CustomerRule', on_delete=models.CASCADE,
+                                     related_name='project_customer_rule', null=True, blank=True, verbose_name="客规")
     customer_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',null=True,blank=True,verbose_name="客规状态")
     create_type = models.CharField(max_length=10, choices=(('create', '创建'), ('share', '分享')), default='create',
                                             verbose_name="工程来源")
@@ -69,3 +71,25 @@ class FactoryRule(models.Model):
         return reverse('project:FactoryRuleFormView', args=[self.id,])
     def get_absolute_url_edit(self):
         return reverse('project:FactoryRuleUpdateView', args=[self.id,])
+
+class CustomerRule(models.Model):
+    customer_rule_name=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="客规名称")
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
+                              verbose_name="备注", blank=True,null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='project_customer_rule_user', verbose_name="创建人")
+    publish = models.DateTimeField(default=timezone.now)
+    create_time = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, choices=(('draft', 'Draft'), ('published', 'Published')), default='draft')
+    objects = models.Manager()  # 默认的管理器
+
+
+    class Meta:
+        db_table = 'project_customer_rule'
+        ordering = ('-publish',)
+    def get_absolute_url(self):
+        return reverse('project:CustomerRuleFormView', args=[self.id,])
+    def get_absolute_url_edit(self):
+        return reverse('project:CustomerRuleUpdateView', args=[self.id,])
+
+

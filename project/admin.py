@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project,FactoryRule
+from .models import Project,FactoryRule,CustomerRule
 # Register your models here.
 admin.site.site_header = 'CAM料号管理系统'
 
@@ -18,3 +18,7 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(FactoryRule)
 class FactoryRuleAdmin(admin.ModelAdmin):
     list_display = ['factory_rule_name','remark' ,'author']
+
+@admin.register(CustomerRule)
+class CustomerRuleAdmin(admin.ModelAdmin):
+    list_display = ['customer_rule_name','remark' ,'author']

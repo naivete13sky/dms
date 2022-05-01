@@ -92,7 +92,35 @@
                                         </div>
 
                                     </td>
-                                    <td>{{ each.customer_rule_status }}</td>
+
+                                    <td>
+                                        <a title="查看客规" href="{{ each.customer_rule.get_absolute_url }}">
+                                            {{ each.customer_rule.customer_rule_name }}
+                                        </a>
+                                        <div class="btn-group btn-group-xs">
+                                            {% if each.customer_rule %}
+                                                <button class="btn btn-transparent" title="编辑客规" onclick="window.location.href='{{ each.customer_rule.get_absolute_url_edit }}';"><i class="fa fa-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-transparent" title="删除客规" onclick="window.location.href='customer_rule_delete/{{ each.id }}';"><i class="fa fa-times"></i>
+                                                </button>
+                                            {% endif %}
+
+                                            {% if not each.customer_rule %}
+{#                                                author{{ each.author.id }}projectid{{ each.id }}#}
+                                                <button class="btn btn-transparent" title="新建客规" onclick="window.location.href='customer_rule_new/{{ each.author.id }}/{{ each.id }}';"><i class="fa fa-plus"></i>
+                                                </button>
+                                                <button class="btn btn-transparent" title="从模板选择客规" onclick="window.location.href='factory_rule_select/{{ each.author.id }}/{{ each.id }}';"><i class="fa fa-list-alt"></i>
+                                                </button>
+
+
+
+
+
+                                            {% endif %}
+                                        </div>
+
+                                    </td>
+
                                     <td>{{ each.create_type }}</td>
                                     <td>{{ each.status }}</td>
                                     <td>{{ each.remark }}</td>

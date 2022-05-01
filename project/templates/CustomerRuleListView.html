@@ -4,7 +4,7 @@
 {% block content_header_child %}
     <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "project:index" %}>工程管理</a></li>
 
-    <li><a>厂规信息查询</a></li>
+    <li><a>客规信息查询</a></li>
 {% endblock %}
 {% block main_content %}
     <div class="row animated fadeInUp">
@@ -27,7 +27,7 @@
                         <table id="basic-table" class="table table-striped nowrap table-hover" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                {% for each in factoryrule_field_verbose_name %}
+                                {% for each in field_verbose_name %}
                                     <th>{{ each }}</th>
 
                                 {% endfor  %}
