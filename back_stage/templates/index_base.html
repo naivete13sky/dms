@@ -179,9 +179,9 @@
                                 <ul class="nav child-nav level-1">
 
                                     <li class="has-child-item close-item">
-                                        <a>CAM服务代工</a>
+                                        <a href="{% url "order:CamOrderListView" %}">CAM服务代工</a>
                                         <ul class="nav child-nav level-2 ">
-                                            <li><a href="pages_error-404-content.html">订单查询</a></li>
+                                            <li><a href="{% url "order:CamOrderListView" %}">订单查询</a></li>
                                             <li><a href="pages_error-404.html">订单详情</a></li>
                                             <li><a href="pages_error-404.html">订单统计</a></li>
                                             <li><a href="pages_error-500.html">配置</a></li>

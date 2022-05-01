@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'taggit',
     'project.apps.ProjectConfig',
+    'djmoney',
+    'order.apps.OrderConfig',
 
 ]
 
