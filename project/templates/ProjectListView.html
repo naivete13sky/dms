@@ -66,11 +66,12 @@
                                     <td>{{ each.updated }}</td>
                                     <td>{{ each.last_update_user }}</td>
                                     <td>
-                                        <a title="查看厂规" href="{{ each.factory_rule.get_absolute_url }}">
-                                        {{ each.factory_rule.factory_rule_name }}
-                                    </a>
+
                                         <div class="btn-group btn-group-xs">
                                             {% if each.factory_rule %}
+                                                <button class="btn btn-transparent" title="查看厂规：{{ each.factory_rule.factory_rule_name }}" onclick="window.location.href='{{ each.factory_rule.get_absolute_url }}';"><i class="fa fa-eye"></i>
+                                                </button>
+
                                                 <button class="btn btn-transparent" title="编辑厂规" onclick="window.location.href='{{ each.factory_rule.get_absolute_url_edit }}';"><i class="fa fa-pencil"></i>
                                                 </button>
                                                 <button class="btn btn-transparent" title="删除厂规" onclick="window.location.href='factory_rule_delete/{{ each.id }}';"><i class="fa fa-times"></i>
@@ -94,11 +95,13 @@
                                     </td>
 
                                     <td>
-                                        <a title="查看客规" href="{{ each.customer_rule.get_absolute_url }}">
-                                            {{ each.customer_rule.customer_rule_name }}
-                                        </a>
+
                                         <div class="btn-group btn-group-xs">
                                             {% if each.customer_rule %}
+
+                                                <button class="btn btn-transparent" title="查看客规：{{ each.customer_rule.customer_rule_name }}" onclick="window.location.href='{{ each.customer_rule.get_absolute_url }}';"><i class="fa fa-eye"></i>
+                                                </button>
+
                                                 <button class="btn btn-transparent" title="编辑客规" onclick="window.location.href='{{ each.customer_rule.get_absolute_url_edit }}';"><i class="fa fa-pencil"></i>
                                                 </button>
                                                 <button class="btn btn-transparent" title="删除客规" onclick="window.location.href='customer_rule_delete/{{ each.id }}';"><i class="fa fa-times"></i>
@@ -126,13 +129,13 @@
                                     <td>{{ each.remark }}</td>
                                     <td>
                                         <div class="btn-group btn-group-xs">
-                                        <button class="btn btn-transparent" onclick="window.location.href='ProjectUpdateView/{{ each.id }}';"><i class="fa fa-pencil"></i>
+                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='ProjectUpdateView/{{ each.id }}';"><i class="fa fa-pencil"></i>
                                         </button>
-                                        <button class="btn btn-transparent" onclick="window.location.href='{{ each.get_absolute_url }}';"><i class="fa fa-eye"></i>
+                                        <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ each.get_absolute_url }}';"><i class="fa fa-eye"></i>
 {#                                                                        <a href="job/{{ job.id }}">查看</a>#}
                                         </button>
 
-                                        <button class="btn btn-transparent" onclick="window.location.href='ProjectDeleteView/{{ each.id }}';"><i class="fa fa-times"></i>
+                                        <button class="btn btn-transparent" title="删除" onclick="window.location.href='ProjectDeleteView/{{ each.id }}';"><i class="fa fa-times"></i>
                                         </button>
 {#                                        <button class="btn btn-transparent" onclick="window.location.href='share_job/{{ factoryrule.id }}';"><i class="fa fa-share-alt"></i>#}
 {#                                        </button>#}
