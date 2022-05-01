@@ -1,0 +1,10 @@
+<form method="post">
+    {% csrf_token %}
+    <select id="customer_rule_select" name="customer_rule_select">
+        {% for each in objects %}
+            <option value = {{ each.customer_rule_name }}>{{ each.customer_rule_name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="确认">
+</form>

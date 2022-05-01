@@ -23,7 +23,7 @@ urlpatterns = [
     path('FactoryRuleDeleteView/<int:pk>', views.FactoryRuleDeleteView.as_view(),name='FactoryRuleDeleteView'),
 
     path('customer_rule_delete/<int:pk>', views.customer_rule_delete,name='customer_rule_delete'),
-    # path('factory_rule_select/<int:author_id>/<int:id>', views.factory_rule_select,name='factory_rule_select'),
+    path('customer_rule_select/<int:author_id>/<int:id>', views.customer_rule_select,name='customer_rule_select'),
     path('customer_rule_new/<int:author_id>/<int:id>', views.customer_rule_new,name='customer_rule_new'),
     path('CustomerRuleListView',views.CustomerRuleListView.as_view(),name='CustomerRuleListView'),
     re_path('CustomerRuleFormView/(?P<parm>\w+)/', views.CustomerRuleFormView.as_view(), name='CustomerRuleFormView'),

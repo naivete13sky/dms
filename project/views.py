@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from .models import Project, FactoryRule,CustomerRule
 from django.contrib.auth.models import User
 from account.models import FactoryRule as AccountFactoryRule
+from account.models import CustomerRule as AccountCustomerRule
 
 
 class ProjectListView(ListView):
@@ -246,6 +247,25 @@ def customer_rule_new(request,author_id,id):
         return redirect('project:ProjectListView')
     return render(request, r'customer_rule_new.html', locals())
 
+def customer_rule_select(request,author_id,id):
+    objects=AccountCustomerRule.objects.filter(author=author_id)
+    if request.method == 'POST':
+        selected=request.POST.get('customer_rule_select',None)
+        project = Project.objects.filter(id=id)[0]
+        customer_rule_account_select = AccountCustomerRule.objects.filter(customer_rule_name=selected)[0]
+        customer_rule_project_new=CustomerRule()
+        #开始复制
+        customer_rule_project_new.customer_rule_name=customer_rule_account_select.customer_rule_name
+        customer_rule_project_new.remark = customer_rule_account_select.remark
+        user_current=User(id=author_id)
+        customer_rule_project_new.author=user_current
+        customer_rule_project_new.publish = customer_rule_account_select.publish
+        customer_rule_project_new.status = customer_rule_account_select.status
+        customer_rule_project_new.save()
+        project.customer_rule = customer_rule_project_new
+        project.save()
+        return redirect('project:ProjectListView')
+    return render(request, r'customer_rule_select.html', locals())
 
 class CustomerRuleListView(ListView):
     queryset = models.CustomerRule.objects.all()
