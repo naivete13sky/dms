@@ -1,11 +1,10 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly,ProfileFormsReadOnly
-from .models import Profile
+from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly,ProfileFormsReadOnly,CustomerRuleFormsReadOnly
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404,HttpResponse,redirect
 from account import models
-from.models import FactoryRule
+from .models import Profile,FactoryRule,CustomerRule
 from django.contrib.sites.models import Site
 from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
 from django.db.models import Q
@@ -280,3 +279,66 @@ class FactoryRuleDeleteView(DeleteView):
   # book_delete.html为models.py中__str__的返回值
    # namespace:url_name
   success_url = reverse_lazy('FactoryRuleListView')
+
+
+class CustomerRuleListView(ListView):
+    queryset = models.CustomerRule.objects.all()
+    # model=models.Job
+    context_object_name = 'customerrules'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = r'CustomerRuleListView.html'
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        field_verbose_name = [CustomerRule._meta.get_field('customer_rule_name').verbose_name,
+                                  CustomerRule._meta.get_field('remark').verbose_name,
+
+                                  CustomerRule._meta.get_field('author').verbose_name,
+                                  CustomerRule._meta.get_field('publish').verbose_name,
+                                  CustomerRule._meta.get_field('status').verbose_name,
+                                  "操作",
+                                  ]
+        context['field_verbose_name'] = field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            context['customerrules'] = models.CustomerRule.objects.filter(
+                Q(customer_rule_name__contains=query) |
+                Q(author__username__contains=query))
+        return context
+
+class CustomerRuleFormView(FormView):
+    form_class = CustomerRuleFormsReadOnly
+    template_name = "CustomerRuleFormView.html"
+    def get(self, request, *args, **kwargs):
+        # print('get url parms: ' + kwargs['parm'])
+        customerrule = models.CustomerRule.objects.filter(id=kwargs['parm']).first()
+        form = self.form_class(instance=customerrule)
+        return self.render_to_response({'form': form})
+
+class CustomerRuleCreateView(CreateView):
+    model=CustomerRule
+    template_name = "CustomerRuleCreateView.html"
+    fields = "__all__"
+    success_url = 'CustomerRuleListView'
+
+class CustomerRuleUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = CustomerRule
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'CustomerRuleUpdateView.html'
+    success_url = '../CustomerRuleListView' # 修改成功后跳转的链接
+
+class CustomerRuleDeleteView(DeleteView):
+  """
+  """
+  model = CustomerRule
+  template_name = 'CustomerRuleDeleteView.html'
+  # template_name_field = ''
+  # template_name_suffix = ''
+  # book_delete.html为models.py中__str__的返回值
+   # namespace:url_name
+  success_url = reverse_lazy('CustomerRuleListView')

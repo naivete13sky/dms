@@ -56,3 +56,24 @@ class FactoryRule(models.Model):
     def get_absolute_url_edit(self):
         return reverse('factoryrule_update', args=[self.id,])
 
+class CustomerRule(models.Model):
+    customer_rule_name=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="客规名称")
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
+                              verbose_name="备注", blank=True,null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='account_customer_rule_user', verbose_name="创建人")
+    publish = models.DateTimeField(default=timezone.now)
+    create_time = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    objects = models.Manager()  # 默认的管理器
+
+
+    class Meta:
+        db_table = 'customer_rule'
+        ordering = ('-publish',)
+    def get_absolute_url(self):
+        return reverse('CustomerRuleFormView', args=[self.id,])
+    def get_absolute_url_edit(self):
+        return reverse('CustomerRuleUpdateView', args=[self.id,])
+

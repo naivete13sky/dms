@@ -3,8 +3,8 @@
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
     <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "profile_view" %}>EDA用户信息管理</a></li>
-    <li><a href={% url "FactoryRuleListView" %}>厂规</a></li>
-    <li><a>删除厂规</a></li>
+    <li><a href={% url "CustomerRuleListView" %}>客规</a></li>
+    <li><a>编辑客规</a></li>
 {% endblock %}
 {% block main_content %}
     <div class="row animated fadeInUp">
@@ -15,8 +15,8 @@
                         <div class="col-md-12">
 
                             <form method="post">{% csrf_token %}
-                                <p>Are you sure you want to delete "{{ object.factory_rule_name }}"?</p>
-                                <input type="submit" value="Confirm">
+                                {{ form.as_p }}
+                                <input type="submit" value="Save">
                             </form>
 
 

@@ -37,4 +37,11 @@ urlpatterns = [
     path('factoryrule_update/<int:pk>', views.FactoryRuleUpdateView.as_view(), name='factoryrule_update'),
     path('factoryrule_delete/<int:pk>', views.FactoryRuleDeleteView.as_view(),name='factoryrule_delete'),
 
+    path('CustomerRuleListView',views.CustomerRuleListView.as_view(),name='CustomerRuleListView'),
+    re_path('CustomerRuleFormView/(?P<parm>\w+)/', views.CustomerRuleFormView.as_view(), name='CustomerRuleFormView'),
+    path('CustomerRuleCreateView', views.CustomerRuleCreateView.as_view(), name='CustomerRuleCreateView'),
+    path('CustomerRuleUpdateView/<int:pk>', views.CustomerRuleUpdateView.as_view(), name='CustomerRuleUpdateView'),
+    path('CustomerRuleDeleteView/<int:pk>', views.CustomerRuleDeleteView.as_view(),name='CustomerRuleDeleteView'),
+
+
 ]
