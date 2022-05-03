@@ -52,6 +52,10 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('project:ProjectFormView', args=[self.id,])
 
+    def __str__(self):
+        # Return a string that represents the instance
+        return self.name
+
 class FactoryRule(models.Model):
     factory_rule_name=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="厂规名称")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],

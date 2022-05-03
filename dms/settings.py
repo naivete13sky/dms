@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'project.apps.ProjectConfig',
     'djmoney',
     'order.apps.OrderConfig',
+    'process.apps.ProcessConfig',
 
 ]
 
