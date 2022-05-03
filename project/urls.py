@@ -11,6 +11,8 @@ urlpatterns = [
     path('ProjectCreateView', views.ProjectCreateView.as_view(), name='ProjectCreateView'),
     path('ProjectUpdateView/<int:pk>', views.ProjectUpdateView.as_view(), name='ProjectUpdateView'),
     path('ProjectDeleteView/<int:pk>', views.ProjectDeleteView.as_view(),name='ProjectDeleteView'),
+    path('ProjectUploadWork/<int:pk>', views.ProjectUploadWork.as_view(), name='ProjectUploadWork'),
+    path('project_upload_work/<int:pk>', views.project_upload_work, name='project_upload_work'),
     path('project_settings', views.project_settings, name='project_settings'),
 
     path('factory_rule_delete/<int:pk>', views.factory_rule_delete,name='factory_rule_delete'),

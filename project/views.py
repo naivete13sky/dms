@@ -10,7 +10,9 @@ from .models import Project, FactoryRule,CustomerRule
 from django.contrib.auth.models import User
 from account.models import FactoryRule as AccountFactoryRule
 from account.models import CustomerRule as AccountCustomerRule
-
+from job_manage.models import Job
+from job_manage.forms import JobForm
+from django.utils import timezone
 
 class ProjectListView(ListView):
     queryset = Project.objects.all()
@@ -70,8 +72,6 @@ class ProjectUpdateView(UpdateView):
     template_name = 'ProjectUpdateView.html'
     success_url = '../ProjectListView' # 修改成功后跳转的链接
 
-
-
 class ProjectDeleteView(DeleteView):
   model = Project
   template_name = 'ProjectDeleteView.html'
@@ -80,6 +80,53 @@ class ProjectDeleteView(DeleteView):
   # book_delete.html为models.py中__str__的返回值
    # namespace:url_name
   success_url = reverse_lazy('project:ProjectListView')
+
+class ProjectUploadWork_test1(CreateView):
+    model=Job
+    template_name = r"ProjectUploadWork.html"
+    fields = "__all__"
+    success_url = 'ProjectListView'
+
+class ProjectUploadWork(CreateView):
+    #OK，可以上传附件
+    model=Job
+    template_name = r"ProjectUploadWork.html"
+
+    def get(self,request,*args,**kwargs):
+        return render(request,'ProjectUploadWork.html')
+    def post(self, request,pk, *args, **kwargs):
+        object = Project.objects.filter(id=pk)[0]
+        print(object.name)
+        new_job = Job()
+        new_job.file_odb = request.FILES.get('file_odb')
+        new_job.job_name = "work_of_project{0}".format(pk)
+        # new_job.publish=timezone.now
+        new_job.status = 'publisthed'
+        new_job.save()
+        object.work = new_job
+        object.save()
+        return redirect("project:ProjectListView")
+
+
+def project_upload_work(request,pk):
+    # print(pk)
+    if request.method == 'POST':
+        object = Project.objects.filter(id=pk)[0]
+        print(object.name)
+        new_job = Job()
+        new_job.file_odb=request.FILES.get('file_odb')
+        new_job.job_name="work_of_project{0}".format(pk)
+        # new_job.publish=timezone.now
+        new_job.status='publisthed'
+        new_job.save()
+        object.work=new_job
+        object.save()
+
+        # return HttpResponse("已删除!")
+        # return render(request, r'factory_rule_delete.html', locals())
+        return redirect('project:ProjectListView')
+    return render(request,'project_upload_work.html',locals())
+
 
 def project_settings(request):
     pass
@@ -211,7 +258,6 @@ class FactoryRuleDeleteView(DeleteView):
    # namespace:url_name
   success_url = reverse_lazy('FactoryRuleListView')
 
-
 def customer_rule_delete(request,pk):
     object = Project.objects.filter(id=pk)[0]
     if request.method == 'POST':
@@ -330,3 +376,4 @@ class CustomerRuleDeleteView(DeleteView):
   # book_delete.html为models.py中__str__的返回值
    # namespace:url_name
   success_url = reverse_lazy('CustomerRuleListView')
+

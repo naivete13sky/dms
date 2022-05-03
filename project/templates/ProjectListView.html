@@ -58,8 +58,17 @@
                                         <a href="{{ each.work.get_absolute_url }}">
                                             {{ each.work.job_name }}
                                         </a>
-                                        <button class="btn btn-transparent" title="下载工作稿" onclick="window.location.href='/media/{{ each.work.file_odb }}';"><i class="fa fa-download"></i>
-                                        </button>
+                                        {% if each.work.job_name %}
+                                            <button class="btn btn-transparent" title="下载工作稿" onclick="window.location.href='/media/{{ each.work.file_odb }}';"><i class="fa fa-download"></i>
+                                            </button>
+                                        {% endif %}
+                                        {% if not each.work.job_name %}
+{#                                            <button class="btn btn-transparent" title="上传工作稿" onclick="window.location.href='project_upload_work/{{ each.id }}';"><i class="fa fa-upload"></i>#}
+{#                                            </button>#}
+                                            <button class="btn btn-transparent" title="上传工作稿" onclick="window.location.href='ProjectUploadWork/{{ each.id }}';"><i class="fa fa-upload"></i>
+                                            </button>
+                                        {% endif %}
+
                                     </td>
                                     <td>{{ each.author }}</td>
                                     <td>{{ each.create_time }}</td>

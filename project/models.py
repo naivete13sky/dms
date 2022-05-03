@@ -21,7 +21,7 @@ class Project(models.Model):
     # file_compressed = models.FileField(upload_to='files', null=True,verbose_name="原始料号压缩包")
     name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="工程名称")
     org=models.ForeignKey(Job, on_delete=models.CASCADE, related_name='project_job_org',verbose_name="原稿料号")
-    work = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='project_job_work', verbose_name="工作稿料号")
+    work = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='project_job_work',blank=True,null=True, verbose_name="工作稿料号")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True)
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_user',verbose_name="负责人")
     # author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='project_profile', verbose_name="负责人")

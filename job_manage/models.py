@@ -19,15 +19,15 @@ class Job(models.Model):
     # FileField 为文件上传功能
     # upload_to:对应的files创建的文件夹目录
     # images = models.FileField(upload_to='%Y/%M/%D', null=True)
-    file_odb = models.FileField(upload_to='files', null=True,verbose_name="ODB++料号")
-    file_compressed = models.FileField(upload_to='files', null=True,verbose_name="原始料号压缩包")
+    file_odb = models.FileField(upload_to='files',blank=True, null=True,verbose_name="ODB++料号")
+    file_compressed = models.FileField(upload_to='files',blank=True, null=True,verbose_name="原始料号压缩包")
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
     # remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True)
-    slug = models.SlugField(max_length=250, unique_for_date='publish')
+    # slug = models.SlugField(max_length=250, unique_for_date='publish')
 
     # author = models.CharField(max_length=15)
-    author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs',verbose_name="负责人")
+    author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs',null=True,blank=True,verbose_name="负责人")
     publish = models.DateTimeField(default=timezone.now)
     create_time = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -40,9 +40,11 @@ class Job(models.Model):
     class Meta:
         db_table = 'job'
         ordering = ('-publish',)
+    # def get_absolute_url(self):
+    #     return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
     def get_absolute_url(self):
-        return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
-
+        return reverse('job_manage:JobFormView', args=[self.id, ])
+        # return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
 class Register(models.Model):
     # 当不能设置最小长度的时候,可以使用自定义验证器来弄最小长度值
     # 对应的字段里面都会对应的自定义验证器使用
@@ -60,7 +62,7 @@ class ShareAccount(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
                               verbose_name="备注",blank=True)
-    slug = models.SlugField(max_length=250, unique_for_date='publish')
+    # slug = models.SlugField(max_length=250, unique_for_date='publish')
     create_time = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     class Meta:
