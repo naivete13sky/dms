@@ -202,7 +202,7 @@ class ProfileUpdateView(UpdateView):
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'profile_update.html'
-    success_url = '' # 修改成功后跳转的链接
+    success_url = '../ProfileListView' # 修改成功后跳转的链接
 
 class ProfileDeleteView(DeleteView):
   """
