@@ -59,23 +59,18 @@
                                             {% for i,j in each.data.items %}
                                                 {% if i == each_dynamic %}
 
-
                                                     <div class="panel panel-accordion">
                                                         <div class="panel-header bg-scale-0">
                                                             <a class="panel-title collapsed" data-toggle="collapse" href="#accordion{{ each.id }}{{ i }}">
-{#                                                                {{ i }}#}
-                                                                {{ j.状态 }}
+                                                                {{ i }}
                                                             </a>
                                                         </div>
                                                         <div id="accordion{{ each.id }}{{ i }}" class="panel-collapse collapse">
                                                             <div class="panel-content">
-                                                                {{ i }}---{{ j }}
+                                                                Anim pariatur
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
                                                 {% endif %}
                                             {% endfor %}
 
