@@ -1,0 +1,93 @@
+{% extends 'index_base.html' %}
+{% load static  %}
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "order:CamOrderListView" %}>流程管理</a></li>
+    <li><a href={% url "process:CarriageListView" %}>车厢查询</a></li>
+    <li><a>车厢查询</a></li>
+{% endblock %}
+{% block main_content %}
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "process:CarriageCreateView" %}>新增车厢</a></h4>
+
+                    <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="" class="form-control" id="query" name="query" placeholder="车厢名、车厢用途">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">模糊查询</button>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table id="basic-table" class="table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                {% for each in field_verbose_name %}
+                                    <th>{{ each }}</th>
+
+                                {% endfor  %}
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for each in all %}
+                                <tr>
+                                <td><a href="{{ each.get_absolute_url }}">
+                                        {{ each.name }}
+                                    </a>
+                                </td>
+
+
+                                <td>{{ each.remark }}</td>
+
+                                <td>
+                                        {{ each.carriage_type }}
+                                </td>
+                                <td>{{ each.carriage_use }}</td>
+                                <td>{{ each.author_exe }}</td>
+                                <td>{{ each.check_set }}</td>
+                                <td>{{ each.author_check }}</td>
+                                <td>{{ each.author_create }}</td>
+
+                                <td>{{ each.publish }}</td>
+
+
+                                <td>
+                                    <div class="btn-group btn-group-xs">
+                                        <button class="btn btn-transparent" title="编辑车厢" onclick="window.location.href='CarriageUpdateView/{{ each.id }}';"><i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看车厢" onclick="window.location.href='{{ each.get_absolute_url }}';"><i class="fa fa-eye"></i>
+{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="删除车厢" onclick="window.location.href='CarriageDeleteView/{{ each.id }}';"><i class="fa fa-times"></i>
+                                        </button>
+{#                                        <button class="btn btn-transparent" onclick="window.location.href='share_job/{{ factoryrule.id }}';"><i class="fa fa-share-alt"></i>#}
+{#                                        </button>#}
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            {% endfor %}
+
+
+
+                            </tbody>
+                        </table>
+                        {% include 'pagination.html' with page=page_obj %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<script src={% static "javascripts/jquery.min.js" %}></script>
+
+
+

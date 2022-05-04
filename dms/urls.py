@@ -41,6 +41,7 @@ urlpatterns = [
     path('', include('job_manage.urls', namespace='job_index')),
     path('project/', include('project.urls', namespace='project')),
     path('order/', include('order.urls', namespace='order')),
+    path('process/', include('process.urls', namespace='process')),
 
 
 ]

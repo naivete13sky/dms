@@ -2,6 +2,7 @@ from django.db import models
 from django.core import validators
 from django.contrib.auth.models import User
 # Create your models here.
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -12,7 +13,7 @@ class Carriage(models.Model):
                                   verbose_name="备注", blank=True)
         carriage_type = models.CharField(max_length=10, choices=(('head', '车头'), ('mid', '中间'), ('tail', '车尾')), default='head',null=True, blank=True,
                                           verbose_name="车厢类型")
-        carriage_use=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
+        carriage_use=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=2)],
                                 verbose_name="车厢用途")
         check_set= models.CharField(max_length=10,choices=(('no', '无需审核'), ('yes', '需要审核')), default='no', null=True, blank=True, verbose_name="是否需要审核")
 
@@ -37,8 +38,8 @@ class Carriage(models.Model):
             db_table = 'process_carriage'
             ordering = ('-publish',)
 
-        # def get_absolute_url(self):
-        #     return reverse('order:CamOrderFormView', args=[self.id, ])
+        def get_absolute_url(self):
+            return reverse('process:CarriageFormView', args=[self.id, ])
         def __str__(self):
             # Return a string that represents the instance
             return self.name
@@ -63,8 +64,8 @@ class Train(models.Model):
         db_table = 'process_train'
         ordering = ('-publish',)
 
-    # def get_absolute_url(self):
-    #     return reverse('order:CamOrderFormView', args=[self.id, ])
+    def get_absolute_url(self):
+        return reverse('process:TrainFormView', args=[self.id, ])
     def __str__(self):
         # Return a string that represents the instance
         return self.name
@@ -96,5 +97,10 @@ class TrainSet(models.Model):
         db_table = 'process_train_set'
         # ordering = ('-publish',)
         ordering = ('order_id',)
+    def get_absolute_url(self):
+        return reverse('process:TrainSetFormView', args=[self.id, ])
+    def __str__(self):
+        # Return a string that represents the instance
+        return self.name
 
 
