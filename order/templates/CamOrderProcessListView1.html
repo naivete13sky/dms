@@ -52,22 +52,46 @@
 
                                 <td>{{ each.author }}</td>
                                 <td>{{ each.publish }}</td>
+                                <td>
+{#                                    {{ list_dynamic }}#}
+{#                                {{ list_dynamic.0 }}#}
 
-                                {% for each_dynamic in list_dynamic %}
-                                    <td>
-                                        {% if each.data %}
-                                            {% for i,j in each.data.items %}
-                                                {% if i == each_dynamic %}
-                                                    {{ i }}
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                    </td>
-
-                                {% endfor %}
+                                    {% if each.data %}
 
 
+{#                                        {{ each.data | get_length_of_dict }}#}
+{#                                        {{ each.data | get_drzl }}#}
+{#                                        {{ each.data | get_dynamic:"导入资料" }}#}
+{#                                        {{ each.data | get_dynamic:list_dynamic.0 }}#}
+{#                                        {{ each.data | get_dynamic:list_dynamic.0 }}#}
+                                        {% for i,j in each.data.items %}
+                                            {% if i == list_dynamic.0 %}
+                                                {{ j }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
 
+
+
+                                </td>
+                                <td>
+                                    {% if each.data %}
+                                        {% for i,j in each.data.items %}
+                                            {% if i == list_dynamic.1 %}
+                                                {{ j }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if each.data %}
+                                        {% for i,j in each.data.items %}
+                                            {% if i == list_dynamic.2 %}
+                                                {{ j }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>
 
 
 
