@@ -45,6 +45,8 @@ class CamOrder(models.Model):
 
     def get_absolute_url(self):
         return reverse('order:CamOrderFormView', args=[self.id,])
+    def __str__(self):
+        return self.name
 
 
 
@@ -55,7 +57,7 @@ class CamOrderProcess(models.Model):
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
                               verbose_name="备注", blank=True)
     cam_order=models.ForeignKey(to='order.CamOrder', on_delete=models.CASCADE,null=True,blank=True, related_name='cam_order_process', verbose_name="CAM代工服务订单")
-    data = JSONField(db_index=True)
+    data = JSONField(db_index=True,null=True,blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cam_order_process_author_user', verbose_name="创建人")
     publish = models.DateTimeField(default=timezone.now, verbose_name="发布时间")
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
@@ -66,5 +68,7 @@ class CamOrderProcess(models.Model):
         db_table = 'cam_order_process'
         ordering = ('-publish',)
 
-    # def get_absolute_url(self):
-    #     return reverse('order:CamOrderFormView', args=[self.id, ])
+    def get_absolute_url(self):
+        return reverse('order:CamOrderProcessFormView', args=[self.id, ])
+    def __str__(self):
+        return self.name

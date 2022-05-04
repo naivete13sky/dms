@@ -2,7 +2,7 @@
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
-    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "order:index" %}>流程管理</a></li>
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "process:TrainListView" %}>流程管理</a></li>
     <li><a href={% url "process:TrainListView" %}>火车查询</a></li>
     <li><a>删除火车</a></li>
 {% endblock %}

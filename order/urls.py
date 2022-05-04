@@ -13,6 +13,12 @@ urlpatterns = [
     path('CamOrderDeleteView/<int:pk>', views.CamOrderDeleteView.as_view(),name='CamOrderDeleteView'),
     # path('project_settings', views.project_settings, name='project_settings'),
 
+    path('CamOrderProcessListView',views.CamOrderProcessListView.as_view(),name='CamOrderProcessListView'),
+    re_path('CamOrderProcessFormView/(?P<parm>\w+)/', views.CamOrderProcessFormView.as_view(), name='CamOrderProcessFormView'),
+    path('CamOrderProcessCreateView', views.CamOrderProcessCreateView.as_view(), name='CamOrderProcessCreateView'),
+    path('CamOrderProcessUpdateView/<int:pk>', views.CamOrderProcessUpdateView.as_view(), name='CamOrderProcessUpdateView'),
+    path('CamOrderProcessDeleteView/<int:pk>', views.CamOrderProcessDeleteView.as_view(),name='CamOrderProcessDeleteView'),
+
 
 
 

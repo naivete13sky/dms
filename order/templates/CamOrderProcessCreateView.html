@@ -2,9 +2,9 @@
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
-    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "process:TrainListView" %}>流程管理</a></li>
-    <li><a href={% url "process:TrainListView" %}>火车查询</a></li>
-    <li><a>创建火车</a></li>
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "order:index" %}>CAM代工服务订单管理</a></li>
+    <li><a href={% url "order:CamOrderProcessListView" %}>流程进度</a></li>
+    <li><a>创建流程进度</a></li>
 {% endblock %}
 {% block main_content %}
     <div class="row animated fadeInUp">
