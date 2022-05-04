@@ -7,6 +7,7 @@
     <li><a>流程进度查询</a></li>
 {% endblock %}
 {% block main_content %}
+    {% load my_filter %}
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
@@ -48,9 +49,26 @@
                                 <td>
                                         {{ each.cam_order }}
                                 </td>
-                                <td>{{ each.data }}</td>
+
                                 <td>{{ each.author }}</td>
                                 <td>{{ each.publish }}</td>
+                                <td>
+                                    {{ list_dynamic }}
+                                    {% if each.data %}
+
+                                        {{ each.data | get_length_of_dict }}
+                                        {{ each.data | get_drzl }}
+                                    {% endif %}
+
+
+
+                                </td>
+                                <td>
+                                    前处理
+                                </td>
+                                <td>
+                                    机器人处理
+                                </td>
 
 
 

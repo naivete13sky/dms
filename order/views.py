@@ -110,15 +110,17 @@ class CamOrderProcessListView(ListView):
         field_verbose_name = [CamOrderProcess._meta.get_field('name').verbose_name,
                               CamOrderProcess._meta.get_field('remark').verbose_name,
                               CamOrderProcess._meta.get_field('cam_order').verbose_name,
-                              CamOrderProcess._meta.get_field('data').verbose_name,
+                              # CamOrderProcess._meta.get_field('data').verbose_name,
                               CamOrderProcess._meta.get_field('author').verbose_name,
                               CamOrderProcess._meta.get_field('publish').verbose_name,
                               ]
 
         order_train=Train.objects.filter(name='CAM代工服务')[0]
+        list_dynamic=[]
         #找到车头
         order_train_set_head=TrainSet.objects.filter(train=order_train,current_carriage__carriage_type='head')[0]
         field_verbose_name.append(Carriage.objects.filter(name=order_train_set_head.current_carriage.name)[0])
+        list_dynamic.append(Carriage.objects.filter(name=order_train_set_head.current_carriage.name)[0].name)
         current_train_set_carriage=order_train_set_head
         # print("*" * 20, type(current_train_set_carriage), "*" * 20)
         #找到中间车厢
@@ -126,15 +128,16 @@ class CamOrderProcessListView(ListView):
             if current_train_set_carriage.post_carriage:
                 # print("***1",current_train_set_carriage.post_carriage.name)
                 field_verbose_name.append(Carriage.objects.filter(name=current_train_set_carriage.post_carriage.name)[0])
+                list_dynamic.append(Carriage.objects.filter(name=current_train_set_carriage.post_carriage.name)[0].name)
                 current_train_set_carriage=TrainSet.objects.filter(train=order_train,current_carriage__name=current_train_set_carriage.post_carriage.name)[0]
                 # print("***2",current_train_set_carriage.name)
             else:
                 break
 
         field_verbose_name.append("操作")
-
-
         context['field_verbose_name'] = field_verbose_name# 表头用
+
+        context['list_dynamic']=list_dynamic
         query=self.request.GET.get('query',False)
         if query:
             context['all'] = CamOrderProcess.objects.filter(
