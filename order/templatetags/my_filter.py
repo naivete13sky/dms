@@ -7,17 +7,21 @@ register =  Library()
 def get_drzl(val):
     # print(type(val))
     # result = json.loads(val)
-    result=val["导入资料"]
+    try:
+        result=val["导入资料"]
+    except:
+        result=""
     return result
 
 @register.filter
 def get_length_of_dict(val):
-
     result=len(val)
     return result
 
-# @register.filter
-# def get_length_of_dict2(val,key):
-#
-#     result=len(val)
-#     return result
+@register.filter
+def get_dynamic(val,key):
+    try:
+        result=val[key]
+    except:
+        result=""
+    return result

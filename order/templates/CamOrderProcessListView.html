@@ -53,11 +53,22 @@
                                 <td>{{ each.author }}</td>
                                 <td>{{ each.publish }}</td>
                                 <td>
-                                    {{ list_dynamic }}
+{#                                    {{ list_dynamic }}#}
+{#                                {{ list_dynamic.0 }}#}
+
                                     {% if each.data %}
 
-                                        {{ each.data | get_length_of_dict }}
-                                        {{ each.data | get_drzl }}
+
+{#                                        {{ each.data | get_length_of_dict }}#}
+{#                                        {{ each.data | get_drzl }}#}
+{#                                        {{ each.data | get_dynamic:"导入资料" }}#}
+{#                                        {{ each.data | get_dynamic:list_dynamic.0 }}#}
+{#                                        {{ each.data | get_dynamic:list_dynamic.0 }}#}
+                                        {% for i,j in each.data.items %}
+                                            {% if i == list_dynamic.0 %}
+                                                {{ j }}
+                                            {% endif %}
+                                        {% endfor %}
                                     {% endif %}
 
 
