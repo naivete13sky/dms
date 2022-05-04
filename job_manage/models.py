@@ -45,6 +45,10 @@ class Job(models.Model):
     def get_absolute_url(self):
         return reverse('job_manage:JobFormView', args=[self.id, ])
         # return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
+    def __str__(self):
+        # Return a string that represents the instance
+        return self.job_name
+
 class Register(models.Model):
     # 当不能设置最小长度的时候,可以使用自定义验证器来弄最小长度值
     # 对应的字段里面都会对应的自定义验证器使用

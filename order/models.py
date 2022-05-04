@@ -6,7 +6,7 @@ from taggit.managers import TaggableManager
 from django.urls import reverse
 from djmoney.models.fields import MoneyField
 from project.models import Project
-
+from django.db.models import JSONField
 # Create your models here.
 class CamOrderManager(models.Manager):
     def get_queryset(self):
@@ -14,8 +14,8 @@ class CamOrderManager(models.Manager):
 
 
 class CamOrder(models.Model):
-    name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="订单名称")
-    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True)
+    name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=2)],verbose_name="订单名称")
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=2)],verbose_name="备注",blank=True)
     customer_user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='cam_order_customer_user',verbose_name="下单人")
     project=models.ForeignKey(Project, on_delete=models.CASCADE, related_name='cam_order_project',verbose_name="工程")
     customer_price=MoneyField(max_digits=14, decimal_places=2,null=True, default_currency='Yuan',verbose_name='下单报价')
@@ -45,3 +45,26 @@ class CamOrder(models.Model):
 
     def get_absolute_url(self):
         return reverse('order:CamOrderFormView', args=[self.id,])
+
+
+
+
+class CamOrderProcess(models.Model):
+    name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
+                            verbose_name="订单流程名称")
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
+                              verbose_name="备注", blank=True)
+    cam_order=models.ForeignKey(to='order.CamOrder', on_delete=models.CASCADE,null=True,blank=True, related_name='cam_order_process', verbose_name="CAM代工服务订单")
+    data = JSONField(db_index=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cam_order_process_author_user', verbose_name="创建人")
+    publish = models.DateTimeField(default=timezone.now, verbose_name="发布时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+    objects = models.Manager()  # 默认的管理器
+
+    class Meta:
+        db_table = 'cam_order_process'
+        ordering = ('-publish',)
+
+    # def get_absolute_url(self):
+    #     return reverse('order:CamOrderFormView', args=[self.id, ])

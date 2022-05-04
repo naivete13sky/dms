@@ -116,15 +116,7 @@
                                     <span>料号管理</span>
 
                                 </a>
-{#                                <ul class="nav child-nav level-1">#}
-{#                                    <li class="has-child-item close-item">#}
-{##}
-{#                                        <li>#}
-{#                                            <a href="{% url "job_manage:job_view" %}">料号查询</a>#}
-{#                                        </li>#}
-{##}
-{#                                    </li>#}
-{#                                </ul>#}
+
                                 <ul class="nav child-nav level-1">
                                     <li class="has-child-item close-item">
 
@@ -169,29 +161,42 @@
                                         <li><a href="{% url "project:project_settings" %}">配置</a></li>
 
                                     </li>
-
-
                                 </ul>
                             </li>
 
-                            <li class="has-child-item close-item">
-                                <a><i class="fa fa-columns" aria-hidden="true"></i><span>订单管理</span></a>
+
+
+
+                            <li class=" has-child-item close-item">
+                                <a >
+                                    <i class="fa fa-sitemap" aria-hidden="true"></i>
+                                    <span>CAM代工服务订单</span>
+
+                                </a>
                                 <ul class="nav child-nav level-1">
-
                                     <li class="has-child-item close-item">
-                                        <a href="{% url "order:CamOrderListView" %}">CAM服务代工</a>
-                                        <ul class="nav child-nav level-2 ">
-                                            <li><a href="{% url "order:CamOrderListView" %}">订单查询</a></li>
-                                            <li><a href="pages_error-404.html">订单详情</a></li>
-                                            <li><a href="pages_error-404.html">订单统计</a></li>
-                                            <li><a href="pages_error-500.html">配置</a></li>
-                                        </ul>
+
+                                        <li>
+                                            <a href="{% url "order:CamOrderListView" %}">CAM代工服务订单</a>
+                                        </li>
+
                                     </li>
+                                </ul>
 
-                                    <li><a href="forms_layouts.html">设计PCB代工服务</a></li>
 
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "project:project_settings" %}">CAM代工制作进度管理</a></li>
+
+                                    </li>
                                 </ul>
                             </li>
+
+
+
+
+
+
                             <li class="has-child-item close-item">
                                 <a>
                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
