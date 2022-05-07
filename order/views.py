@@ -198,7 +198,7 @@ def input_status_select(request):
         dict_data=object.data
         # print(type(dict_data))
         # print(dict_data["导入资料"]["状态"])
-        dict_data["导入资料"]["状态"]=selected
+        dict_data[step]["状态"]=selected
         object.data=dict_data
         object.save()
         # print(object.data)
