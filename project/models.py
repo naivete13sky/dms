@@ -39,7 +39,7 @@ class Project(models.Model):
     customer_rule_status = models.CharField(max_length=10, choices=(('no', '否'), ('yes', '是')), default='no',null=True,blank=True,verbose_name="客规状态")
     create_type = models.CharField(max_length=10, choices=(('create', '创建'), ('share', '分享')), default='create',
                                             verbose_name="工程来源")
-    status = models.CharField(max_length=10, choices=(('draft', 'Draft'), ('published', 'Published')), default='draft')
+    status = models.CharField(max_length=10, choices=(('draft', '草稿'), ('published', '已发布')), default='draft')
 
     objects = models.Manager()  # 默认的管理器
     published = ProjectManager()  # 自定义管理器
