@@ -19,7 +19,7 @@ class Job(models.Model):
     # FileField 为文件上传功能
     # upload_to:对应的files创建的文件夹目录
     # images = models.FileField(upload_to='%Y/%M/%D', null=True)
-    file_odb = models.FileField(upload_to='files',blank=True, null=True,verbose_name="ODB++料号")
+    file_odb = models.FileField(upload_to='files',blank=True, null=True,verbose_name="料号（ODB++|EPS）")
     file_compressed = models.FileField(upload_to='files',blank=True, null=True,verbose_name="原始料号压缩包")
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
     # remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
@@ -28,9 +28,9 @@ class Job(models.Model):
 
     # author = models.CharField(max_length=15)
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs',null=True,blank=True,verbose_name="负责人")
-    publish = models.DateTimeField(default=timezone.now)
-    create_time = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    publish = models.DateTimeField(default=timezone.now,null=True,blank=True,verbose_name='发布时间')
+    create_time = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
+    updated = models.DateTimeField(auto_now=True,verbose_name='更新时间')
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     objects = models.Manager()  # 默认的管理器
