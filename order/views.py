@@ -18,18 +18,19 @@ class CamOrderListView(ListView):
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         context = super().get_context_data(**kwargs)
         field_verbose_name = [CamOrder._meta.get_field('name').verbose_name,
-                                  CamOrder._meta.get_field('remark').verbose_name,
-                                  CamOrder._meta.get_field('project').verbose_name,
-                                  CamOrder._meta.get_field('customer_user').verbose_name,
-                                  CamOrder._meta.get_field('customer_price').verbose_name,
-                                  CamOrder._meta.get_field('process_user').verbose_name,
-                                  CamOrder._meta.get_field('process_price').verbose_name,
-                                  CamOrder._meta.get_field('author').verbose_name,
-                                  CamOrder._meta.get_field('status').verbose_name,
-                                  CamOrder._meta.get_field('process_times').verbose_name,
-                                  CamOrder._meta.get_field('last_update_user').verbose_name,
-                                  CamOrder._meta.get_field('cam_order_type').verbose_name,
-                                  "操作",
+                              CamOrder._meta.get_field('remark').verbose_name,
+                              CamOrder._meta.get_field('project').verbose_name,
+                              CamOrder._meta.get_field('customer_user').verbose_name,
+                              CamOrder._meta.get_field('customer_price').verbose_name,
+                              CamOrder._meta.get_field('should_finish_time').verbose_name,
+                              CamOrder._meta.get_field('process_user').verbose_name,
+                              CamOrder._meta.get_field('process_price').verbose_name,
+                              CamOrder._meta.get_field('author').verbose_name,
+                              CamOrder._meta.get_field('status').verbose_name,
+                              CamOrder._meta.get_field('process_times').verbose_name,
+                              CamOrder._meta.get_field('last_update_user').verbose_name,
+                              CamOrder._meta.get_field('cam_order_type').verbose_name,
+                              "操作",
                                   ]
         context['field_verbose_name'] = field_verbose_name# 表头用
         query=self.request.GET.get('query',False)
