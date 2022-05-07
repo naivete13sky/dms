@@ -194,14 +194,12 @@ def input_status_select(request):
         # print("*"*100)
         # print(object)
         # print("*" * 100)
-        print(object.data)
+        # print(object.data)
         dict_data=object.data
-        print(type(dict_data))
-        print(dict_data["导入资料"]["状态"])
+        # print(type(dict_data))
+        # print(dict_data["导入资料"]["状态"])
         dict_data["导入资料"]["状态"]=selected
         object.data=dict_data
         object.save()
-        print(object.data)
-        # return redirect('project:ProjectListView')
-        return HttpResponse("ok")
-    # return render(request, 'factory_rule_select.html', locals())
+        # print(object.data)
+        return redirect('order:CamOrderProcessListView')
