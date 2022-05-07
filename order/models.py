@@ -20,8 +20,8 @@ class CamOrder(models.Model):
     project=models.ForeignKey(Project, on_delete=models.CASCADE, related_name='cam_order_project',verbose_name="工程")
     customer_price=MoneyField(max_digits=14, decimal_places=2,null=True,blank=True, default_currency='Yuan',verbose_name='下单报价')
     should_finish_time=models.DateTimeField(default=timezone.now,null=True,blank=True,verbose_name="应交付时间")
-    process_price=MoneyField(max_digits=14, decimal_places=2,null=True,blank=True, default_currency='Yuan',verbose_name='接单报价')
-    process_user=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True, related_name='cam_order_process_user',verbose_name="接单人")
+    process_price=MoneyField(max_digits=14, decimal_places=2,null=True,blank=True, default_currency='Yuan',verbose_name='做单报价')
+    process_user=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True, related_name='cam_order_process_user',verbose_name="做单人")
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='cam_order_author_user',verbose_name="负责人")
     status = models.CharField(
         max_length=10,
