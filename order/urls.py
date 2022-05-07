@@ -20,7 +20,7 @@ urlpatterns = [
     path('CamOrderProcessDeleteView/<int:pk>', views.CamOrderProcessDeleteView.as_view(),name='CamOrderProcessDeleteView'),
 
 
-
+    path('input_status_select',views.input_status_select,name='input_status_select'),
 
 
 

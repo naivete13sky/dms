@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect,HttpResponse
 from django.urls import reverse_lazy
 
 from .forms import CamOrderFormsReadOnly,CamOrderProcessFormsReadOnly
@@ -148,6 +148,8 @@ class CamOrderProcessListView(ListView):
 
         return context
 
+
+
 class CamOrderProcessCreateView(CreateView):
     model=CamOrderProcess
     template_name = "CamOrderProcessCreateView.html"
@@ -180,3 +182,26 @@ class CamOrderProcessFormView(FormView):
         train_set = CamOrderProcess.objects.filter(id=kwargs['parm']).first()
         form = self.form_class(instance=train_set)
         return self.render_to_response({'form': form})
+
+
+def input_status_select(request):
+    if request.method == 'POST':
+        selected=request.POST.get('input_status_select',None)
+        id=request.POST.get('id',None)
+        step = request.POST.get('step', None)
+        # print(selected,id,step)
+        object = CamOrderProcess.objects.filter(id=id)[0]
+        # print("*"*100)
+        # print(object)
+        # print("*" * 100)
+        print(object.data)
+        dict_data=object.data
+        print(type(dict_data))
+        print(dict_data["导入资料"]["状态"])
+        dict_data["导入资料"]["状态"]=selected
+        object.data=dict_data
+        object.save()
+        print(object.data)
+        # return redirect('project:ProjectListView')
+        return HttpResponse("ok")
+    # return render(request, 'factory_rule_select.html', locals())

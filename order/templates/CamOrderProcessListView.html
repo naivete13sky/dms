@@ -81,17 +81,19 @@
 
                                                                 {% endif %}
 
-                                                                <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                                                <form action="{% url 'order:input_status_select' %}" class="form-inline" method="post" enctype="multipart/form-data" novalidate>
                                                                     {% csrf_token %}
                                                                     <div class="form-group">
                                                                         <select id="input_status_select" name="input_status_select">
-                                                                            {% for each in list_input_status_select %}
-                                                                                <option value = {{ each }}>{{ each }}</option>
+                                                                            {% for each_select in list_input_status_select %}
+                                                                                <option value = {{ each_select }}>{{ each_select }}</option>
                                                                             {% endfor %}
-{#                                                                            <option value="pass">审核通过</option>#}
-{#                                                                            <option value="failed">审核未通过</option>#}
                                                                         </select>
+
+                                                                        <input type="text" name="id" value={{ each.id }} hidden="True"><br>
+                                                                        <input type="text" name="step" value={{ i }} hidden="True"><br>
                                                                     </div>
+
                                                                     <div class="form-group">
                                                                         <button type="submit" class="btn btn-primary">确认</button>
                                                                     </div>
