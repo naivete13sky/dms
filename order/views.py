@@ -139,6 +139,7 @@ class CamOrderProcessListView(ListView):
         context['field_verbose_name'] = field_verbose_name# 表头用
 
         context['list_dynamic']=list_dynamic
+        context['list_input_status_select']=["审核通过","审核未通过"]
         query=self.request.GET.get('query',False)
         if query:
             context['all'] = CamOrderProcess.objects.filter(

@@ -81,6 +81,25 @@
 
                                                                 {% endif %}
 
+                                                                <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                                                    {% csrf_token %}
+                                                                    <div class="form-group">
+                                                                        <select id="input_status_select" name="input_status_select">
+                                                                            {% for each in list_input_status_select %}
+                                                                                <option value = {{ each }}>{{ each }}</option>
+                                                                            {% endfor %}
+{#                                                                            <option value="pass">审核通过</option>#}
+{#                                                                            <option value="failed">审核未通过</option>#}
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-primary">确认</button>
+                                                                    </div>
+                                                                </form>
+
+
+
+
                                                             </div>
                                                         </div>
                                                     </div>
