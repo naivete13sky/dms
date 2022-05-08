@@ -33,7 +33,7 @@ class ProjectListView(ListView):
                                   '厂规',
                                   '客规',
                                   Project._meta.get_field('create_type').verbose_name,
-                                  Project._meta.get_field('status').verbose_name,
+                                  # Project._meta.get_field('status').verbose_name,
                                   Project._meta.get_field('remark').verbose_name,
                                   "操作",
                                   ]

@@ -47,19 +47,19 @@
                                     <td><a href="{{ each.get_absolute_url }}">{{ each.name }}</a>
                                     </td>
                                     <td>
-                                        <a href="{{ each.org.get_absolute_url }}">
-                                            {{ each.org.job_name }}
+{#                                        <a href="{{ each.org.get_absolute_url }}">#}
+{#                                            {{ each.org.job_name }}#}
 {#                                            {{ each.org.file_odb }}#}
-                                        </a>
-                                        <button class="btn btn-transparent" title="下载原稿" onclick="window.location.href='/media/{{ each.org.file_odb }}';"><i class="fa fa-download"></i>
+{#                                        </a>#}
+                                        <button class="btn btn-transparent" title="下载原稿：{{ each.org.job_name }}" onclick="window.location.href='/media/{{ each.org.file_odb }}';"><i class="fa fa-download"></i>
                                         </button>
                                     </td>
                                     <td>
-                                        <a href="{{ each.work.get_absolute_url }}">
-                                            {{ each.work.job_name }}
-                                        </a>
+{#                                        <a href="{{ each.work.get_absolute_url }}">#}
+{#                                            {{ each.work.job_name }}#}
+{#                                        </a>#}
                                         {% if each.work.job_name %}
-                                            <button class="btn btn-transparent" title="下载工作稿" onclick="window.location.href='/media/{{ each.work.file_odb }}';"><i class="fa fa-download"></i>
+                                            <button class="btn btn-transparent" title="下载工作稿：{{ each.work.job_name }}" onclick="window.location.href='/media/{{ each.work.file_odb }}';"><i class="fa fa-download"></i>
                                             </button>
                                         {% endif %}
                                         {% if not each.work.job_name %}
@@ -134,17 +134,17 @@
                                     </td>
 
                                     <td>{{ each.get_create_type_display }}</td>
-                                    <td>{{ each.get_status_display }}</td>
+{#                                    <td>{{ each.get_status_display }}</td>#}
                                     <td>{{ each.remark }}</td>
                                     <td>
                                         <div class="btn-group btn-group-xs">
-                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='ProjectUpdateView/{{ each.id }}';"><i class="fa fa-pencil"></i>
+                                        <button class="btn btn-transparent" title="编辑工程" onclick="window.location.href='ProjectUpdateView/{{ each.id }}';"><i class="fa fa-pencil"></i>
                                         </button>
-                                        <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ each.get_absolute_url }}';"><i class="fa fa-eye"></i>
+                                        <button class="btn btn-transparent" title="查看工程" onclick="window.location.href='{{ each.get_absolute_url }}';"><i class="fa fa-eye"></i>
 {#                                                                        <a href="job/{{ job.id }}">查看</a>#}
                                         </button>
 
-                                        <button class="btn btn-transparent" title="删除" onclick="window.location.href='ProjectDeleteView/{{ each.id }}';"><i class="fa fa-times"></i>
+                                        <button class="btn btn-transparent" title="删除工程" onclick="window.location.href='ProjectDeleteView/{{ each.id }}';"><i class="fa fa-times"></i>
                                         </button>
 {#                                        <button class="btn btn-transparent" onclick="window.location.href='share_job/{{ factoryrule.id }}';"><i class="fa fa-share-alt"></i>#}
 {#                                        </button>#}
