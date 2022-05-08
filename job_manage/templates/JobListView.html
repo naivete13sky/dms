@@ -37,39 +37,27 @@
                             <tbody>
                             {% for job in jobs %}
                                 <tr>
-                                <td><a href="{{ job.get_absolute_url }}" title="{{ job.job_name }}">
-                                        {{ job.job_name|slice:"20" }}
+                                <td>
+                                    <a href="{{ job.get_absolute_url }}" title="{{ job.job_name }}">
+                                        {{ job.job_name|slice:"10" }}
                                     </a>
-                                </td>
-
-                                <td>
-{#                                    <a href="/media/{{ job.file_odb }}">{{ job.file_odb}}</a>#}
                                     {% if job.file_odb %}
-                                        <button class="btn btn-transparent" title="下载{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
+                                        <button class="btn btn-transparent" title="ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
                                         </button>
                                     {% endif %}
-
-                                </td>
-                                <td>
-{#                                    <a href="/media/{{ job.file_compressed }}">{{ job.file_compressed }}</a>#}
                                     {% if job.file_compressed %}
-                                        <button class="btn btn-transparent" title="下载{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
+                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
                                         </button>
                                     {% endif %}
                                 </td>
-{#                                <td>{{ job.file_odb }}</td>#}
-{#                                <td>{{ job.file_compressed }}</td>#}
-
 
 
                                 <td>{{ job.remark }}</td>
                                 <td>{{ job.author }}</td>
                                 <td>{{ job.from_object }}</td>
-{#                                <td>{{ job.publish }}</td>#}
                                 <td>{{ job.create_time }}</td>
                                 <td>{{ job.updated }}</td>
                                 <td>
-{#                                    {{ job.tags.all|join:", " }}#}
                                     {% for tag in job.tags.all %}
                                         <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
                                         {% if not forloop.last %}, {% endif %}
