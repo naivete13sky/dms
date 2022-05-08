@@ -15,7 +15,7 @@
                     <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
                         <div class="form-group">
-                            <input type="" class="form-control" id="query" name="query" placeholder="料号名、负责人">
+                            <input type="" class="form-control" id="query" name="query" placeholder="料号名、负责人、料号来源">
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">模糊查询</button>
@@ -37,13 +37,26 @@
                             <tbody>
                             {% for job in jobs %}
                                 <tr>
-                                <td><a href="{{ job.get_absolute_url }}">
-                                        {{ job.job_name }}
+                                <td><a href="{{ job.get_absolute_url }}" title="{{ job.job_name }}">
+                                        {{ job.job_name|slice:"20" }}
                                     </a>
                                 </td>
 
-                                <td><a href="/media/{{ job.file_odb }}">{{ job.file_odb }}</a></td>
-                                <td><a href="/media/{{ job.file_compressed }}">{{ job.file_compressed }}</a></td>
+                                <td>
+{#                                    <a href="/media/{{ job.file_odb }}">{{ job.file_odb}}</a>#}
+                                    {% if job.file_odb %}
+                                        <button class="btn btn-transparent" title="下载{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+
+                                </td>
+                                <td>
+{#                                    <a href="/media/{{ job.file_compressed }}">{{ job.file_compressed }}</a>#}
+                                    {% if job.file_compressed %}
+                                        <button class="btn btn-transparent" title="下载{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
 {#                                <td>{{ job.file_odb }}</td>#}
 {#                                <td>{{ job.file_compressed }}</td>#}
 
@@ -51,7 +64,8 @@
 
                                 <td>{{ job.remark }}</td>
                                 <td>{{ job.author }}</td>
-                                <td>{{ job.publish }}</td>
+                                <td>{{ job.from_object }}</td>
+{#                                <td>{{ job.publish }}</td>#}
                                 <td>{{ job.create_time }}</td>
                                 <td>{{ job.updated }}</td>
                                 <td>

@@ -364,7 +364,8 @@ class JobListView(ListView):
                                   Job._meta.get_field('file_compressed').verbose_name,
                                   Job._meta.get_field('remark').verbose_name,
                                   Job._meta.get_field('author').verbose_name,
-                                  Job._meta.get_field('publish').verbose_name,
+                                  Job._meta.get_field('from_object').verbose_name,
+                                  # Job._meta.get_field('publish').verbose_name,
                                   Job._meta.get_field('create_time').verbose_name,
                                   Job._meta.get_field('updated').verbose_name,
                                   "标签",
@@ -378,6 +379,7 @@ class JobListView(ListView):
             # context['query'] = query
             context['jobs'] = models.Job.objects.filter(
                 Q(job_name__contains=query) |
+                Q(from_object__contains=query) |
                 Q(author__username__contains=query))
         return context
 
@@ -495,7 +497,7 @@ class JobUpdateView(UpdateView):
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'JobUpdateView.html'
-    success_url = '' # 修改成功后跳转的链接
+    success_url = '../JobListView' # 修改成功后跳转的链接
 
 class JobDeleteView(DeleteView):
   """

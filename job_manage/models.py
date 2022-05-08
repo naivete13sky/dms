@@ -14,24 +14,19 @@ class JobManager(models.Manager):
         # return super(JobManager, self).get_queryset().all()
 
 class Job(models.Model):
-    # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器
-    # MinLengthValidator
-    # FileField 为文件上传功能
-    # upload_to:对应的files创建的文件夹目录
-    # images = models.FileField(upload_to='%Y/%M/%D', null=True)
+    # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器MinLengthValidator
+    # FileField 为文件上传功能upload_to:对应的files创建的文件夹目录
     file_odb = models.FileField(upload_to='files',blank=True, null=True,verbose_name="料号（ODB++|EPS）")
     file_compressed = models.FileField(upload_to='files',blank=True, null=True,verbose_name="原始料号压缩包")
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
-    # remark = models.TextField(max_length=100, validators=[validators.MinLengthValidator(limit_value=3)])
-    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True)
-    # slug = models.SlugField(max_length=250, unique_for_date='publish')
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True,null=True)
 
-    # author = models.CharField(max_length=15)
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs',null=True,blank=True,verbose_name="负责人")
+    from_object=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=2)],null=True,blank=True,verbose_name="料号来源")
     publish = models.DateTimeField(default=timezone.now,null=True,blank=True,verbose_name='发布时间')
     create_time = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
     updated = models.DateTimeField(auto_now=True,verbose_name='更新时间')
-    STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
+    STATUS_CHOICES = (('draft', '草稿'), ('published', '正式'))
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     objects = models.Manager()  # 默认的管理器
     published = JobManager()  # 自定义管理器
@@ -39,7 +34,7 @@ class Job(models.Model):
 
     class Meta:
         db_table = 'job'
-        ordering = ('-publish',)
+        ordering = ('-create_time',)
     # def get_absolute_url(self):
     #     return reverse('job_manage:job_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
     def get_absolute_url(self):
@@ -71,6 +66,9 @@ class ShareAccount(models.Model):
     updated = models.DateTimeField(auto_now=True)
     class Meta:
         ordering=("share_job",)
+
+
+
 
 
 
