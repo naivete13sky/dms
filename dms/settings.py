@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'process.apps.ProcessConfig',
     'rest_framework',
     'restful_api.apps.RestfulApiConfig',
+    'corsheaders',
 
 ]
 
@@ -65,6 +66,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # CORS
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'dms.urls'
@@ -195,3 +200,14 @@ EMAIL_HOST_USER = 'chen320821@163.com' # 帐号
 # EMAIL_HOST_PASSWORD =  'angela123.163'  # 密码
 EMAIL_HOST_PASSWORD =  'CZZLYIRGEDHOTHWA'  # 密码
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+'''
+CORS_ORIGIN_ALLOW_ALL如果为True，则接收所有非同源请求。
+与此相反。默认为False，False情况下仅在CORS_ORIGIN_WHITELIST名单中源才允许访问，源组成为访问协议+host+端口号
+CORS_ORIGIN_WHITELIST，非同源白名单
+'''
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+)
+
