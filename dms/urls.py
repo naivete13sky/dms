@@ -43,6 +43,8 @@ urlpatterns = [
     path('order/', include('order.urls', namespace='order')),
     path('process/', include('process.urls', namespace='process')),
 
+    path('restful_api/', include('restful_api.urls',namespace='restful_api')),
+
 
 ]
 

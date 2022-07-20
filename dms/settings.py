@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'djmoney',
     'order.apps.OrderConfig',
     'process.apps.ProcessConfig',
+    'rest_framework',
+    'restful_api.apps.RestfulApiConfig',
 
 ]
 
