@@ -41,17 +41,22 @@
                                     <a href="{{ job.get_absolute_url }}" title="{{ job.job_name }}">
                                         {{ job.job_name|slice:"10" }}
                                     </a>
+
+
+                                </td>
+
+                                <td>
                                     {% if job.file_odb %}
                                         <button class="btn btn-transparent" title="ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
                                         </button>
                                     {% endif %}
+                                </td>
+                                <td>
                                     {% if job.file_compressed %}
                                         <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
                                         </button>
                                     {% endif %}
                                 </td>
-
-
                                 <td>{{ job.remark }}</td>
                                 <td>{{ job.author }}</td>
                                 <td>{{ job.from_object }}</td>

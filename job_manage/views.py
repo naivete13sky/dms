@@ -360,8 +360,8 @@ class JobListView(ListView):
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
         job_field_verbose_name = [Job._meta.get_field('job_name').verbose_name,
-                                  # Job._meta.get_field('file_odb').verbose_name,
-                                  # Job._meta.get_field('file_compressed').verbose_name,
+                                  Job._meta.get_field('file_odb').verbose_name,
+                                  Job._meta.get_field('file_compressed').verbose_name,
                                   Job._meta.get_field('remark').verbose_name,
                                   Job._meta.get_field('author').verbose_name,
                                   Job._meta.get_field('from_object').verbose_name,
