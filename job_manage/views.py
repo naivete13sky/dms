@@ -23,6 +23,27 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from taggit.models import Tag
 
+from os.path import dirname, abspath
+import os,sys,json,shutil
+path = os.path.dirname(os.path.realpath(__file__)) + r'/epcam'
+sys.path.append(path)
+import epcam
+import epcam_api
+
+
+import re
+base_path = dirname(dirname(abspath(__file__)))
+sys.path.insert(0, base_path)
+# print("*"*100)
+# print("bathpath",base_path)
+# print(sys.path)
+# print("*"*100)
+path_epcam_cc_method=os.path.join(base_path,r'job_manage')
+sys.path.append(path_epcam_cc_method)
+import job_operation
+import layer_info
+from epcam_cc_method import EpGerberToODB
+
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -582,4 +603,17 @@ def job_settings(request):
     pass
     return render(request, r'job_settings.html', locals())
 
+def gerber274x_to_odb_ep(request,job_id):
+    pass
+
+    epcam.init()
+    job = 'test1'
+    step = 'orig'
+    file_path = r'C:\job\test\gerber\760'
+    out_path = r'C:\job\test\odb'
+    cc = EpGerberToODB()
+    cc.ep_gerber_to_odb(job, step, file_path, out_path)
+
+
+    return render(request, r'job_settings.html', locals())
 

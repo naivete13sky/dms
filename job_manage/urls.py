@@ -28,6 +28,7 @@ urlpatterns = [
     path('JobUpdateView/<int:pk>', views.JobUpdateView.as_view(), name='JobUpdateView'),
     path('JobUpdateViewVs/<int:pk>', views.JobUpdateViewVs.as_view(), name='JobUpdateViewVs'),
     path('JobDeleteView/<int:pk>', views.JobDeleteView.as_view(),name='JobDeleteView'),
+    path('gerber274x_to_odb_ep/<int:job_id>/', views.gerber274x_to_odb_ep,name='gerber274x_to_odb_ep'),
 
 
 
