@@ -15,7 +15,8 @@ admin.site.site_header = 'CAM料号管理系统'
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('job_name','file_odb','file_compressed','file_odb_current','file_odb_g','author','from_object',)
+    list_display = ('job_name','file_odb','file_compressed','file_odb_current','file_odb_g','vs_result_ep','vs_result_g','drill_excellon2_units',
+                    'drill_excellon2_zeroes_omitted','drill_excellon2_number_format_A','drill_excellon2_number_format_B','drill_excellon2_tool_units','author','from_object',)
     search_fields = ('job_name','author__username',)
     prepopulated_fields = {'remark': ('job_name',)}
     raw_id_fields = ('author',)

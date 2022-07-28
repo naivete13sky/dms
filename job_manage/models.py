@@ -17,10 +17,22 @@ class Job(models.Model):
     # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器MinLengthValidator
     # FileField 为文件上传功能upload_to:对应的files创建的文件夹目录
     file_odb = models.FileField(upload_to='files',blank=True, null=True,verbose_name="EP-ODB++")
-    file_compressed = models.FileField(upload_to='files',blank=True, null=True,verbose_name="原始料号压缩包")
+    file_compressed = models.FileField(upload_to='files',blank=True, null=True,verbose_name="原始文件")
+    file_org_type=models.CharField(max_length=10, choices=(('gerber274X', 'Gerber274-X'), ('gerber274D', 'Gerber274-D'), ('odb++', 'ODB++'), ('else', '其它')), default='else',verbose_name="原始料号类型")
     file_odb_current = models.FileField(upload_to='files', blank=True, null=True, verbose_name="当前-EP-ODB++")
     file_odb_g = models.FileField(upload_to='files', blank=True, null=True, verbose_name="G-ODB++")
-
+    vs_result_ep=models.CharField(max_length=10, choices=(('success', '成功'), ('failed', '失败'), ('none', '未比对')), default='none',verbose_name="悦谱比图结果")
+    vs_result_g = models.CharField(max_length=10, choices=(('success', '成功'), ('failed', '失败'), ('none', '未比对')),
+                                    default='none',verbose_name="G软件比图结果")
+    drill_excellon2_units=models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM')), default='Inch',verbose_name="E2_units")
+    drill_excellon2_zeroes_omitted = models.CharField(max_length=10, choices=(('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', 'None')), default='Leading',verbose_name="E2省零")
+    drill_excellon2_number_format_A = models.CharField(max_length=10, choices=(('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8')),
+                                                       default='2',verbose_name="E2_format_A")
+    drill_excellon2_number_format_B = models.CharField(max_length=10, choices=(
+    ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8')),
+                                                       default='5', verbose_name="E2_format_B")
+    drill_excellon2_tool_units = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('Mils', 'Mils')), default='Mils',
+                                             verbose_name="E2_tool")
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True,null=True)
 

@@ -409,6 +409,16 @@ class JobListViewVs(ListView):
                                   Job._meta.get_field('file_odb').verbose_name,
                                   Job._meta.get_field('file_odb_current').verbose_name,
                                   Job._meta.get_field('file_odb_g').verbose_name,
+
+                                  Job._meta.get_field('vs_result_ep').verbose_name,
+                                  Job._meta.get_field('vs_result_g').verbose_name,
+                                  Job._meta.get_field('drill_excellon2_units').verbose_name,
+                                  Job._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
+                                  Job._meta.get_field('drill_excellon2_number_format_A').verbose_name,
+                                  Job._meta.get_field('drill_excellon2_number_format_B').verbose_name,
+                                  Job._meta.get_field('drill_excellon2_tool_units').verbose_name,
+
+
                                   Job._meta.get_field('remark').verbose_name,
                                   Job._meta.get_field('author').verbose_name,
                                   Job._meta.get_field('from_object').verbose_name,
