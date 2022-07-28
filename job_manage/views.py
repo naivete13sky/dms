@@ -546,6 +546,16 @@ class JobUpdateView(UpdateView):
     template_name = 'JobUpdateView.html'
     success_url = '../JobListView' # 修改成功后跳转的链接
 
+class JobUpdateViewVs(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = Job
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'JobUpdateView.html'
+    success_url = '../JobListViewVs' # 修改成功后跳转的链接
+
 class JobDeleteView(DeleteView):
   """
   """
