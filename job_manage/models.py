@@ -16,8 +16,11 @@ class JobManager(models.Manager):
 class Job(models.Model):
     # 当我们想设置最小长度的时候，但是在字段中没有的话，可以借助自定义验证器MinLengthValidator
     # FileField 为文件上传功能upload_to:对应的files创建的文件夹目录
-    file_odb = models.FileField(upload_to='files',blank=True, null=True,verbose_name="料号（ODB++|EPS）")
+    file_odb = models.FileField(upload_to='files',blank=True, null=True,verbose_name="EP-ODB++")
     file_compressed = models.FileField(upload_to='files',blank=True, null=True,verbose_name="原始料号压缩包")
+    file_odb_current = models.FileField(upload_to='files', blank=True, null=True, verbose_name="当前-EP-ODB++")
+    file_odb_g = models.FileField(upload_to='files', blank=True, null=True, verbose_name="G-ODB++")
+
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True,null=True)
 
