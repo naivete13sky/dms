@@ -64,6 +64,14 @@
                                         <button class="btn btn-transparent" title="最新EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb_current }}';"><i class="fa fa-download"></i>
                                         </button>
                                     {% endif %}
+
+                                    {% if not job.file_odb_current %}
+                                        <button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='ProjectUploadWork/{{ each.id }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
+
+
                                 </td>
 
                                 <td>
@@ -71,6 +79,12 @@
                                         <button class="btn btn-transparent" title="G-ODB下载：{{ job.file_odb_g}}" onclick="window.location.href='/media/{{ job.file_odb_g }}';"><i class="fa fa-download"></i>
                                         </button>
                                     {% endif %}
+
+                                    {% if not job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="生成G软件转图" onclick="window.location.href='ProjectUploadWork/{{ each.id }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
                                 </td>
 
                                 <td>{{ job.vs_result_ep }}</td>
