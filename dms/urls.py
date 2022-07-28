@@ -46,6 +46,7 @@ urlpatterns = [
     path('restful_api/', include('restful_api.urls',namespace='restful_api')),
 
 
+
 ]
 
 if settings.DEBUG:

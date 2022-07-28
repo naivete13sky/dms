@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'restful_api.apps.RestfulApiConfig',
     'corsheaders',
 
+
 ]
 
 MIDDLEWARE = [
