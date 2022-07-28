@@ -1,0 +1,129 @@
+{% extends 'index_base.html' %}
+{% load static  %}
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:JobListView" %}>料号管理</a></li>
+    <li><a>料号查询-VS</a></li>
+{% endblock %}
+{% block main_content %}
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a></h4>
+
+                    <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="" class="form-control" id="query" name="query" placeholder="料号名、负责人、料号来源">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">模糊查询</button>
+                        </div>
+                    </form>
+{#                    {{ cc }}#}
+
+                    <div class="table-responsive">
+                        <table id="basic-table" class=" table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                {% for each in job_field_verbose_name %}
+                                    <th>{{ each }}</th>
+
+                                {% endfor  %}
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for job in jobs %}
+                                <tr>
+                                <td>
+                                    <a href="{{ job.get_absolute_url }}" title="{{ job.job_name }}">
+                                        {{ job.job_name|slice:"20" }}
+                                    </a>
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.file_compressed %}
+                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if job.file_odb %}
+                                        <button class="btn btn-transparent" title="EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if job.file_odb_current %}
+                                        <button class="btn btn-transparent" title="最新EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb_current }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="G-ODB下载：{{ job.file_odb_g}}" onclick="window.location.href='/media/{{ job.file_odb_g }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+
+                                <td>{{ job.remark }}</td>
+                                <td>{{ job.author }}</td>
+                                <td>{{ job.from_object }}</td>
+                                <td>{{ job.create_time }}</td>
+                                <td>{{ job.updated }}</td>
+                                <td>
+                                    {% for tag in job.tags.all %}
+                                        <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if tag %}
+                                        <h2>Posts tagged with "{{ tag.name }}"</h2>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <div class="btn-group btn-group-xs">
+                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/{{ job.id }}';"><i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
+{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/{{ job.id }}';"><i class="fa fa-times"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/{{ job.id }}';"><i class="fa fa-share-alt"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分析" onclick="window.location.href='job_analysis';"><i class="fa fa-server"></i>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            {% endfor %}
+
+
+
+                            </tbody>
+                        </table>
+                        {% include 'pagination.html' with page=page_obj %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<script src={% static "javascripts/jquery.min.js" %}></script>
+
+
+

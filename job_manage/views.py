@@ -383,6 +383,53 @@ class JobListView(ListView):
                 Q(author__username__contains=query))
         return context
 
+class JobListViewVs(ListView):
+    queryset = models.Job.objects.all()
+    # model=models.Job
+    context_object_name = 'jobs'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = 'JobListViewVs.html'
+
+    # def get_queryset(self):
+    #     query = self.request.GET.get('query', '')
+    #     new_context = models.Job.objects.filter(
+    #             Q(job_name__contains=query) |
+    #             Q(author__username__contains=query))
+    #     return new_context
+    # def get_queryset(self):  # 重写get_queryset方法
+    #     # 获取所有is_deleted为False的用户，并且以时间倒序返回数据
+    #     return UserProfile.objects.filter(is_deleted=False).order_by('-create_time')
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        job_field_verbose_name = [Job._meta.get_field('job_name').verbose_name,
+                                  Job._meta.get_field('file_compressed').verbose_name,
+                                  Job._meta.get_field('file_odb').verbose_name,
+                                  Job._meta.get_field('file_odb_current').verbose_name,
+                                  Job._meta.get_field('file_odb_g').verbose_name,
+                                  Job._meta.get_field('remark').verbose_name,
+                                  Job._meta.get_field('author').verbose_name,
+                                  Job._meta.get_field('from_object').verbose_name,
+                                  # Job._meta.get_field('publish').verbose_name,
+                                  Job._meta.get_field('create_time').verbose_name,
+                                  Job._meta.get_field('updated').verbose_name,
+                                  "标签",
+                                  "操作",
+                                  ]
+        context['job_field_verbose_name'] = job_field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            # context['cc'] = query
+            # print(query)
+            # context['query'] = query
+            context['jobs'] = models.Job.objects.filter(
+                Q(job_name__contains=query) |
+                Q(from_object__contains=query) |
+                Q(author__username__contains=query))
+        return context
+
 class JobDetailView(DetailView):
     model = Job
     template_name = "detail_listview.html"
