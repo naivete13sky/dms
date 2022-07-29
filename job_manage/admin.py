@@ -9,14 +9,14 @@ from django.contrib import admin
 # admin.site.register(Order)
 
 from django.contrib import admin
-from .models import Job,ShareAccount
+from .models import Job,ShareAccount,EachJob
 # from .views import list_all_job
 admin.site.site_header = 'CAM料号管理系统'
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('job_name','file_odb','file_compressed','file_odb_current','file_odb_g','vs_result_ep','vs_result_g','drill_excellon2_units',
-                    'drill_excellon2_zeroes_omitted','drill_excellon2_number_format_A','drill_excellon2_number_format_B','drill_excellon2_tool_units','author','from_object',)
+    list_display = ('job_name','file_odb','file_compressed','file_odb_current','file_odb_g','vs_result_ep','vs_result_g','author','from_object',)
+
     search_fields = ('job_name','author__username',)
     prepopulated_fields = {'remark': ('job_name',)}
     raw_id_fields = ('author',)
@@ -36,3 +36,11 @@ class ShareAccountAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 
+@admin.register(EachJob)
+class EachJobAdmin(admin.ModelAdmin):
+    list_display = ('job','layer','layer_file_type','layer_type','drill_excellon2_units','drill_excellon2_zeroes_omitted','drill_excellon2_number_format_A','drill_excellon2_number_format_B','drill_excellon2_tool_units',)
+
+    search_fields = ('job','layer','layer_file_type','layer_type')
+    prepopulated_fields = {'remark': ('layer',)}
+    # ordering = ('recipe_status', 'receive_date',)
+    list_per_page = 10
