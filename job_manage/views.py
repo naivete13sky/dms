@@ -627,7 +627,7 @@ def gerber274x_to_odb_ep(request,job_id):
     #epcam 导入
     epcam.init()
     file_path_gerber = os.listdir(temp_path)[0]
-    job_name = file_path_gerber + '_ep'
+    job_name = file_path_gerber + '_ep_'+str(int(time.time()))
     step = 'orig'
 
     # print(file_path_gerber)
@@ -637,6 +637,7 @@ def gerber274x_to_odb_ep(request,job_id):
     out_path = temp_path
     cc = EpGerberToODB()
     cc.ep_gerber_to_odb(job_name, step, file_path, out_path)
+    #把悦谱转图压缩成tgz。
     ifn = os.path.join(r'C:\cc\share\temp',job_name)
     try:
         ifn = ifn.split(sep='"')[1]
@@ -645,6 +646,14 @@ def gerber274x_to_odb_ep(request,job_id):
         pass
     ofn = ifn + '.tgz'
     Tgz().maketgz(ofn, ifn)
+
+    #把压缩好悦谱转图tzg放入相应Job里
+    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    time.sleep(0.2)
+
+    job.file_odb_current=('files\\'+job_name)
+    job.save()
+
 
 
     return render(request, r'job_settings.html', locals())
