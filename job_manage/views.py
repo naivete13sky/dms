@@ -30,7 +30,7 @@ path = os.path.dirname(os.path.realpath(__file__)) + r'/epcam'
 sys.path.append(path)
 import epcam
 import epcam_api
-
+from cc_method import Tgz
 
 import re
 base_path = dirname(dirname(abspath(__file__)))
@@ -637,7 +637,14 @@ def gerber274x_to_odb_ep(request,job_id):
     out_path = temp_path
     cc = EpGerberToODB()
     cc.ep_gerber_to_odb(job_name, step, file_path, out_path)
-
+    ifn = os.path.join(r'C:\cc\share\temp',job_name)
+    try:
+        ifn = ifn.split(sep='"')[1]
+        # print(ifn)
+    except:
+        pass
+    ofn = ifn + '.tgz'
+    Tgz().maketgz(ofn, ifn)
 
 
     return render(request, r'job_settings.html', locals())

@@ -1,16 +1,22 @@
 import os
 import rarfile
-def un_rar(file_name):
-    """unrar zip file"""
-    rar = rarfile.RarFile(file_name)  # 待解压文件
-    if os.path.isdir(file_name + "_files"):
-        pass
-    else:
-        os.mkdir(file_name + "_files")
-    os.chdir(file_name + "_files")
-    rar.extractall()  # 解压指定目录
-    rar.close()
+import tarfile as tf
+import os
+class Tgz:
+    pass
+    def maketgz(self,ofn, ifn):
+        with tf.open(ofn, 'w:gz') as tar:
+            tar.add(ifn, arcname=os.path.basename(ifn))
+        return 1
 
-# un_rar(r'C:\cc\share\temp\760_eY28x7J.rar')
-rf = rarfile.RarFile(r'C:\cc\share\temp\760_eY28x7J.rar')
-rf.extractall(r'C:\cc\share\temp')
+
+if __name__ == '__main__':
+    ifn = r'C:\cc\share\temp\760_ep'
+    try:
+        ifn = ifn.split(sep='"')[1]
+        # print(ifn)
+    except:
+        pass
+    ofn = ifn + '.tgz'
+    if  Tgz().maketgz(ofn, ifn):
+        print('压缩成功！')
