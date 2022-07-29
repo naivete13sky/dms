@@ -30,6 +30,8 @@ urlpatterns = [
     path('JobDeleteView/<int:pk>', views.JobDeleteView.as_view(),name='JobDeleteView'),
     path('gerber274x_to_odb_ep/<int:job_id>/', views.gerber274x_to_odb_ep,name='gerber274x_to_odb_ep'),
 
+    path('LayerListView',login_required(views.LayerListView.as_view()),name='LayerListView'),
+
 
 
 # ]

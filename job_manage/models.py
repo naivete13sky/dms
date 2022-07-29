@@ -86,7 +86,7 @@ class ShareAccount(models.Model):
         ordering=("share_job",)
 
 
-class EachJob(models.Model):
+class Layer(models.Model):
     pass
     job = models.ForeignKey(to="job_manage.Job", on_delete=models.CASCADE,null=True,blank=True, related_name='job_manage_layer',verbose_name="料号名称")
 
@@ -116,9 +116,17 @@ class EachJob(models.Model):
                                                   choices=(('Inch', 'Inch'), ('MM', 'MM'), ('Mils', 'Mils'), ('none', '未记录')),
                                                   default='none',
                                                   verbose_name="E2_tool")
-
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_layer_user', null=True, blank=True,
+                               verbose_name="负责人")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],
                               verbose_name="备注", blank=True, null=True)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    updated = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    class Meta:
+        db_table = 'layer'
+        ordering = ('-create_time',)
+    # def get_absolute_url(self):
+    #     return reverse('job_manage:JobFormView', args=[self.id, ])
     def __str__(self):
         # Return a string that represents the instance
         return self.layer

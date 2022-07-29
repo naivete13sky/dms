@@ -618,3 +618,46 @@ def gerber274x_to_odb_ep(request,job_id):
 
     return render(request, r'job_settings.html', locals())
 
+class LayerListView(ListView):
+    queryset = models.Layer.objects.all()
+    # model=models.Job
+    context_object_name = 'layers'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = 'LayerListView.html'
+
+    # def get_queryset(self):
+    #     query = self.request.GET.get('query', '')
+    #     new_context = models.Job.objects.filter(
+    #             Q(job_name__contains=query) |
+    #             Q(author__username__contains=query))
+    #     return new_context
+    # def get_queryset(self):  # 重写get_queryset方法
+    #     # 获取所有is_deleted为False的用户，并且以时间倒序返回数据
+    #     return UserProfile.objects.filter(is_deleted=False).order_by('-create_time')
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
+                                  models.Layer._meta.get_field('layer').verbose_name,
+                                  models.Layer._meta.get_field('layer_file_type').verbose_name,
+                                  models.Layer._meta.get_field('layer_type').verbose_name,
+                                  models.Layer._meta.get_field('drill_excellon2_units').verbose_name,
+                                  models.Layer._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
+                                  # Job._meta.get_field('publish').verbose_name,
+                                  models.Layer._meta.get_field('drill_excellon2_number_format_A').verbose_name,
+                                  models.Layer._meta.get_field('drill_excellon2_number_format_B').verbose_name,
+                                models.Layer._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                                  "标签",
+                                  "操作",
+                                  ]
+        context['field_verbose_name'] = field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            # context['cc'] = query
+            # print(query)
+            # context['query'] = query
+            context['layers'] = models.Job.objects.filter(
+                Q(layer__contains=query))
+        return context
