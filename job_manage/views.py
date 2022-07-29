@@ -620,15 +620,24 @@ def gerber274x_to_odb_ep(request,job_id):
     shutil.copy(org_file_path,temp_path)
     time.sleep(0.2)
     rf = rarfile.RarFile(os.path.join(temp_path,str(job.file_compressed).split("/")[1]))
-    rf.extractall(r'C:\cc\share\temp')
+    rf.extractall(temp_path)
+    temp_compressed=os.path.join(temp_path,str(job.file_compressed).split("/")[1])
+    if os.path.exists(temp_compressed):
+        os.remove(temp_compressed)
+    #epcam 导入
+    epcam.init()
+    file_path_gerber = os.listdir(temp_path)[0]
+    job_name = file_path_gerber + '_ep'
+    step = 'orig'
 
-    # epcam.init()
-    # job = 'test1'
-    # step = 'orig'
-    # file_path = r'C:\job\test\gerber\760'
-    # out_path = r'C:\job\test\odb'
-    # cc = EpGerberToODB()
-    # cc.ep_gerber_to_odb(job, step, file_path, out_path)
+    # print(file_path_gerber)
+
+
+    file_path = os.path.join(r'C:\cc\share\temp',file_path_gerber)
+    out_path = temp_path
+    cc = EpGerberToODB()
+    cc.ep_gerber_to_odb(job_name, step, file_path, out_path)
+
 
 
     return render(request, r'job_settings.html', locals())
