@@ -61,6 +61,7 @@
 
                                 <td>
                                     {% if job.file_odb_current %}
+{#                                        {{ job.file_odb_current }}#}
                                         <button class="btn btn-transparent" title="最新EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb_current }}';"><i class="fa fa-download"></i>
                                         </button>
                                     {% endif %}

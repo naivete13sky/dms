@@ -609,6 +609,7 @@ def job_settings(request):
 
 def gerber274x_to_odb_ep(request,job_id):
     pass
+
     #找到job对象
     job=Job.objects.get(id=job_id)
     print(job.job_name,job.file_compressed)
@@ -616,6 +617,8 @@ def gerber274x_to_odb_ep(request,job_id):
 
     #先拿到原始料号，放到临时文件夹，完成解压
     temp_path=r'C:\cc\share\temp'
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
     org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
     shutil.copy(org_file_path,temp_path)
     time.sleep(0.2)
@@ -651,8 +654,14 @@ def gerber274x_to_odb_ep(request,job_id):
     shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
     time.sleep(0.2)
 
-    job.file_odb_current=('files\\'+job_name)
+    job.file_odb_current=('files/'+job_name+'.tgz')
     job.save()
+    #删除ep.tzg
+    if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
+        os.remove(os.path.join(temp_path,job_name+'.tgz'))
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
 
 
