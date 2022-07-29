@@ -4,7 +4,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404,HttpResponse
-import os
 from django.urls import reverse_lazy
 from django.views import View
 from django.http import StreamingHttpResponse
@@ -12,6 +11,8 @@ from django.shortcuts import render,redirect,HttpResponse
 from django.conf import settings
 import pandas as pd
 import psycopg2
+import time
+import rarfile
 from pathlib import Path
 from django.db.models import Q
 from dms.settings import MEDIA_URL
@@ -604,16 +605,30 @@ def job_settings(request):
     pass
     return render(request, r'job_settings.html', locals())
 
+
+
 def gerber274x_to_odb_ep(request,job_id):
     pass
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name,job.file_compressed)
 
-    epcam.init()
-    job = 'test1'
-    step = 'orig'
-    file_path = r'C:\job\test\gerber\760'
-    out_path = r'C:\job\test\odb'
-    cc = EpGerberToODB()
-    cc.ep_gerber_to_odb(job, step, file_path, out_path)
+
+    #先拿到原始料号，放到临时文件夹，完成解压
+    temp_path=r'C:\cc\share\temp'
+    org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
+    shutil.copy(org_file_path,temp_path)
+    time.sleep(0.2)
+    rf = rarfile.RarFile(os.path.join(temp_path,str(job.file_compressed).split("/")[1]))
+    rf.extractall(r'C:\cc\share\temp')
+
+    # epcam.init()
+    # job = 'test1'
+    # step = 'orig'
+    # file_path = r'C:\job\test\gerber\760'
+    # out_path = r'C:\job\test\odb'
+    # cc = EpGerberToODB()
+    # cc.ep_gerber_to_odb(job, step, file_path, out_path)
 
 
     return render(request, r'job_settings.html', locals())
