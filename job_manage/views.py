@@ -769,6 +769,7 @@ class LayerListView(ListView):
             # context['cc'] = query
             # print(query)
             # context['query'] = query
-            context['layers'] = models.Job.objects.filter(
-                Q(layer__contains=query))
+            context['layers'] = models.Layer.objects.filter(
+                Q(layer__contains=query) |
+                Q(job__job_name__contains=query))
         return context
