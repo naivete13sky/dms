@@ -665,7 +665,7 @@ def gerber274x_to_odb_ep(request,job_id):
 
 
 
-    return render(request, r'job_settings.html', locals())
+    return redirect('job_manage:JobListViewVs')
 
 class LayerListView(ListView):
     queryset = models.Layer.objects.all()
