@@ -31,7 +31,7 @@ urlpatterns = [
     path('gerber274x_to_odb_ep/<int:job_id>/', views.gerber274x_to_odb_ep,name='gerber274x_to_odb_ep'),
 
     path('LayerListView',login_required(views.LayerListView.as_view()),name='LayerListView'),
-
+    path('view_layer/<int:job_id>/', views.view_layer,name='view_layer'),
     path('get_file_name_from_org/<int:job_id>/', views.get_file_name_from_org,name='get_file_name_from_org'),
 
 

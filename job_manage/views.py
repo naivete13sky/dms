@@ -773,3 +773,32 @@ class LayerListView(ListView):
                 Q(layer__contains=query) |
                 Q(job__job_name__contains=query))
         return context
+
+def view_layer(request,job_id):
+    pass
+
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name,job.file_compressed)
+    layers = models.Layer.objects.filter(job=job)
+
+    field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
+                          models.Layer._meta.get_field('layer').verbose_name,
+                          models.Layer._meta.get_field('layer_org').verbose_name,
+                          models.Layer._meta.get_field('layer_file_type').verbose_name,
+                          models.Layer._meta.get_field('layer_type').verbose_name,
+                          models.Layer._meta.get_field('drill_excellon2_units').verbose_name,
+                          models.Layer._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
+                          # Job._meta.get_field('publish').verbose_name,
+                          models.Layer._meta.get_field('drill_excellon2_number_format_A').verbose_name,
+                          models.Layer._meta.get_field('drill_excellon2_number_format_B').verbose_name,
+                          models.Layer._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                          "标签",
+                          "操作",
+                          ]
+
+
+
+    # return redirect('job_manage:LayerListView')
+    return render(request, 'LayerListView.html', {'field_verbose_name': field_verbose_name, 'layers': layers,})
+

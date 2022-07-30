@@ -94,7 +94,11 @@
 
                                 <td>{{ job.vs_result_ep }}</td>
                                 <td>{{ job.vs_result_g }}</td>
-                                <td>查看层别信息</td>
+                                <td>
+                                    <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>
+
+                                    </button>
+                                </td>
 
 {#                                <td>{{ job.drill_excellon2_units }}</td>#}
 {#                                <td>{{ job.drill_excellon2_zeroes_omitted }}</td>#}
