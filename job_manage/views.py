@@ -611,6 +611,12 @@ def get_file_name_from_org(request,job_id):
     print(job_id)
     # 找到job对象
     job = Job.objects.get(id=job_id)
+    #先删除原来已有的层信息
+    layer_old=models.Layer.objects.filter(job=job)
+    print(layer_old)
+    layer_old.delete()
+
+
     print(job.job_name, job.file_compressed)
 
     # 先拿到原始料号，放到临时文件夹，完成解压
@@ -656,7 +662,9 @@ def get_file_name_from_org(request,job_id):
             layer_new.layer=file_name
             layer_new.layer_org=file_name_org
             layer_new.save()
-
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
     return redirect('job_manage:JobListViewVs')
 
