@@ -9,3 +9,7 @@ step = 'orig'
 pass_layers = []
 rets=None
 g_getway_path=r"C:\cc\python\epwork\gerber274x_to_odb\g\gateway.exe"
+
+
+
+job_id=None

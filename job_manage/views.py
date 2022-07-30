@@ -44,7 +44,7 @@ sys.path.append(path_epcam_cc_method)
 import job_operation
 import layer_info
 from epcam_cc_method import EpGerberToODB
-
+import gl as gl
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -800,5 +800,46 @@ def view_layer(request,job_id):
 
 
     # return redirect('job_manage:LayerListView')
-    return render(request, 'LayerListView.html', {'field_verbose_name': field_verbose_name, 'layers': layers,})
+    return render(request, 'LayerListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'layers': layers,})
+
+class LayerUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = models.Layer
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'LayerUpdateView.html'
+    success_url = '../LayerListView' # 修改成功后跳转的链接
+
+
+from .forms import LayerForm
+class LayerUpdateViewOneJob(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = models.Layer
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'LayerUpdateView.html'
+
+
+    def get_id(self,request,*args, **kwargs):
+        pass
+        layer_update = models.Layer.objects.get(id=self.kwargs['pk'])
+        print("fuckyou",layer_update)
+        job_id = layer_update.job_id
+        gl.job_id=job_id
+
+    def get(self, request, *args, **kwargs):
+        global job_id
+        layer_update = models.Layer.objects.get(id=self.kwargs['pk'])
+        # initial = {'name': adv_positin.name}
+        # form = self.form_class(initial)
+        form=LayerForm(instance=layer_update)
+        # print("*pk"*30,self.kwargs['pk'])
+        self.get_id(request, *args, **kwargs)
+        return render(request, 'LayerUpdateView.html', {'form':form})
+    job_id=gl.job_id
+    success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 

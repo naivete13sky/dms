@@ -29,7 +29,7 @@ from job_manage import models
 from django.forms import ModelForm
 from django.forms.widgets import Textarea
 from django import forms
-from .models import Job,ShareAccount
+from .models import Job,ShareAccount,Layer
 from .models import Register
 # forms.Form:代表着为导入表单
 # forms.ModelForm:代表着导入模型的表单
@@ -186,4 +186,9 @@ class JobForm(forms.ModelForm):
         fields = ['file_odb']
 
 
-
+class LayerForm(forms.ModelForm):
+    pass
+    class Meta:
+        model=Layer
+        fields = '__all__'
+        # fields = ['file_odb']
