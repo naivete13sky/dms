@@ -434,6 +434,7 @@ class JobListViewVs(ListView):
 
                                   Job._meta.get_field('vs_result_ep').verbose_name,
                                   Job._meta.get_field('vs_result_g').verbose_name,
+                                  '层别信息',
 
                                   # Job._meta.get_field('drill_excellon2_units').verbose_name,
                                   # Job._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
@@ -605,7 +606,59 @@ def job_settings(request):
     pass
     return render(request, r'job_settings.html', locals())
 
+def get_file_name_from_org(request,job_id):
+    pass
+    print(job_id)
+    # 找到job对象
+    job = Job.objects.get(id=job_id)
+    print(job.job_name, job.file_compressed)
 
+    # 先拿到原始料号，放到临时文件夹，完成解压
+    temp_path = r'C:\cc\share\temp'
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
+    org_file_path = (os.path.join(os.getcwd(), r'media', str(job.file_compressed))).replace(r'/', '\\')
+    shutil.copy(org_file_path, temp_path)
+    time.sleep(0.2)
+    rf = rarfile.RarFile(os.path.join(temp_path, str(job.file_compressed).split("/")[1]))
+    rf.extractall(temp_path)
+    temp_compressed = os.path.join(temp_path, str(job.file_compressed).split("/")[1])
+    if os.path.exists(temp_compressed):
+        os.remove(temp_compressed)
+    file_path_gerber = os.listdir(temp_path)[0]
+    print(file_path_gerber)
+    # for root, dirs, files in os.walk(os.path.join(temp_path,file_path_gerber)):
+    #     for file in files:
+    #         if EpGerberToODB().is_chinese(file):
+    #             print("*"*30,str(os.path.join(temp_path,file_path_gerber)) + r'/' + file)
+    #             os.rename(str(os.path.join(temp_path,file_path_gerber)) + r'/' + file, str(os.path.join(temp_path,file_path_gerber)) + r'/''unknow' + str(index))
+    #             file = 'unknow' + str(index)
+    #             index = index + 1
+    #         print(file)
+
+
+    list = os.listdir(os.path.join(temp_path,file_path_gerber))  # 列出文件夹下所有的目录与文件
+    index=1
+    for i in range(0, len(list)):
+        path = os.path.join(os.path.join(temp_path,file_path_gerber), list[i])
+        if os.path.isfile(path):
+            pass
+            print(path)
+            file_name=list[i]
+            file_name_org=list[i]
+            if EpGerberToODB().is_chinese(path):
+                pass
+                os.rename(path,os.path.join(temp_path,file_path_gerber,'unknow' + str(index)))
+                file_name='unknow' + str(index)
+                index=index+1
+            layer_new = models.Layer()
+            layer_new.job=job
+            layer_new.layer=file_name
+            layer_new.layer_org=file_name_org
+            layer_new.save()
+
+
+    return redirect('job_manage:JobListViewVs')
 
 def gerber274x_to_odb_ep(request,job_id):
     pass
@@ -690,6 +743,7 @@ class LayerListView(ListView):
         context = super().get_context_data(**kwargs)
         field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
                                   models.Layer._meta.get_field('layer').verbose_name,
+                              models.Layer._meta.get_field('layer_org').verbose_name,
                                   models.Layer._meta.get_field('layer_file_type').verbose_name,
                                   models.Layer._meta.get_field('layer_type').verbose_name,
                                   models.Layer._meta.get_field('drill_excellon2_units').verbose_name,

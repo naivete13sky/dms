@@ -49,6 +49,10 @@
                                     {% if job.file_compressed %}
                                         <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
                                         </button>
+
+                                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org/{{ job.id }}';"><i class="fa fa-list"></i>
+                                        </button>
+
                                     {% endif %}
                                 </td>
 
@@ -90,6 +94,7 @@
 
                                 <td>{{ job.vs_result_ep }}</td>
                                 <td>{{ job.vs_result_g }}</td>
+                                <td>查看层别信息</td>
 
 {#                                <td>{{ job.drill_excellon2_units }}</td>#}
 {#                                <td>{{ job.drill_excellon2_zeroes_omitted }}</td>#}

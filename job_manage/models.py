@@ -92,6 +92,8 @@ class Layer(models.Model):
 
     layer=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],
                             verbose_name="层名称")
+    layer_org=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+                            verbose_name="原始层名称")
     layer_file_type=models.CharField(max_length=10, choices=(('gerber274X', 'Gerber274-X'), ('gerber274D', 'Gerber274-D'), ('excellon2', 'Excellon2'),
                                                          ('excellon1', 'Excellon1'),('dxf', 'DXF'),
                                                              ('else', '其它')), default='else',verbose_name="层文件类型")

@@ -38,7 +38,7 @@ class ShareAccountAdmin(admin.ModelAdmin):
 
 @admin.register(Layer)
 class LayerAdmin(admin.ModelAdmin):
-    list_display = ('job','layer','layer_file_type','layer_type','drill_excellon2_units','drill_excellon2_zeroes_omitted','drill_excellon2_number_format_A','drill_excellon2_number_format_B','drill_excellon2_tool_units',)
+    list_display = ('job','layer','layer_org','layer_file_type','layer_type','drill_excellon2_units','drill_excellon2_zeroes_omitted','drill_excellon2_number_format_A','drill_excellon2_number_format_B','drill_excellon2_tool_units',)
 
     search_fields = ('job','layer','layer_file_type','layer_type')
     prepopulated_fields = {'remark': ('layer',)}

@@ -32,6 +32,8 @@ urlpatterns = [
 
     path('LayerListView',login_required(views.LayerListView.as_view()),name='LayerListView'),
 
+    path('get_file_name_from_org/<int:job_id>/', views.get_file_name_from_org,name='get_file_name_from_org'),
+
 
 
 # ]
