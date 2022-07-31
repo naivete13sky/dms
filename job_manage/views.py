@@ -823,14 +823,6 @@ class LayerUpdateViewOneJob(UpdateView):
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'LayerUpdateView.html'
 
-
-    def get_id(self,request,*args, **kwargs):
-        pass
-        layer_update = models.Layer.objects.get(id=self.kwargs['pk'])
-        print("fuckyou",layer_update)
-        job_id = layer_update.job_id
-        gl.job_id=job_id
-
     def get(self, request, *args, **kwargs):
         global job_id
         layer_update = models.Layer.objects.get(id=self.kwargs['pk'])
@@ -838,8 +830,13 @@ class LayerUpdateViewOneJob(UpdateView):
         # form = self.form_class(initial)
         form=LayerForm(instance=layer_update)
         # print("*pk"*30,self.kwargs['pk'])
-        self.get_id(request, *args, **kwargs)
+        self.job_id = layer_update.job_id
+
+
         return render(request, 'LayerUpdateView.html', {'form':form})
-    job_id=gl.job_id
-    success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
+
+    #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
+    def get_success_url(self):
+        return '../view_layer/{}'.format(self.object.job_id)
+    # success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 
