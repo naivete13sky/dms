@@ -827,6 +827,7 @@ class LayerListView(ListView):
                                   models.Layer._meta.get_field('drill_excellon2_number_format_A').verbose_name,
                                   models.Layer._meta.get_field('drill_excellon2_number_format_B').verbose_name,
                                 models.Layer._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                                models.Layer._meta.get_field('status').verbose_name,
                                   "标签",
                                   "操作",
                                   ]
@@ -861,6 +862,7 @@ def view_layer(request,job_id):
                           models.Layer._meta.get_field('drill_excellon2_number_format_A').verbose_name,
                           models.Layer._meta.get_field('drill_excellon2_number_format_B').verbose_name,
                           models.Layer._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                          models.Layer._meta.get_field('status').verbose_name,
                           "标签",
                           "操作",
                           ]

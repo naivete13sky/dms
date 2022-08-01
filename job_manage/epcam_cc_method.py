@@ -116,18 +116,19 @@ class EpGerberToODB:
                     print('原来：',file_param)
                     try:
                         layer_e2= models.Layer.objects.get(job=job_current,layer=file)
-                        print(layer_e2.layer)
-                        # print(file_param)
-                        file_param['units']=layer_e2.drill_excellon2_units
-                        file_param['zeroes_omitted'] = layer_e2.drill_excellon2_zeroes_omitted
-                        file_param['Number_format_integer'] = int(layer_e2.drill_excellon2_number_format_A)
-                        file_param['Number_format_decimal'] = int(layer_e2.drill_excellon2_number_format_B)
-                        file_param['tool_units'] = layer_e2.drill_excellon2_tool_units
+                        print(layer_e2.layer,layer_e2.status)
+                        if layer_e2.status=='published':
+                            pass
+                            file_param['units']=layer_e2.drill_excellon2_units
+                            file_param['zeroes_omitted'] = layer_e2.drill_excellon2_zeroes_omitted
+                            file_param['Number_format_integer'] = int(layer_e2.drill_excellon2_number_format_A)
+                            file_param['Number_format_decimal'] = int(layer_e2.drill_excellon2_number_format_B)
+                            file_param['tool_units'] = layer_e2.drill_excellon2_tool_units
                         print('现在：',file_param)
                         re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
                     except:
                         print("except:"*5)
-                        # re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
+                        re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
 
                 if file_format == 'Gerber274x' or file_format == 'DXF':
                     print(file)

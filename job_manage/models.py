@@ -121,6 +121,8 @@ class Layer(models.Model):
                                                   verbose_name="E2_tool")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_layer_user', null=True, blank=True,
                                verbose_name="负责人")
+    STATUS_CHOICES = (('draft', '草稿'), ('published', '正式'))
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],
                               verbose_name="备注", blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
