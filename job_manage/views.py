@@ -728,6 +728,69 @@ def gerber274x_to_odb_ep(request,job_id):
 
     return redirect('job_manage:JobListViewVs')
 
+def gerber274x_to_odb_ep2(request,job_id):
+    pass
+
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name,job.file_compressed)
+
+
+    #先拿到原始料号，放到临时文件夹，完成解压
+    temp_path=r'C:\cc\share\temp'
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
+    org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
+    shutil.copy(org_file_path,temp_path)
+    time.sleep(0.2)
+    rf = rarfile.RarFile(os.path.join(temp_path,str(job.file_compressed).split("/")[1]))
+    rf.extractall(temp_path)
+    temp_compressed=os.path.join(temp_path,str(job.file_compressed).split("/")[1])
+    if os.path.exists(temp_compressed):
+        os.remove(temp_compressed)
+    #epcam 导入
+    epcam.init()
+    file_path_gerber = os.listdir(temp_path)[0]
+    job_name = file_path_gerber + '_ep_'+str(int(time.time()))
+    step = 'orig'
+
+    # print(file_path_gerber)
+
+
+    file_path = os.path.join(r'C:\cc\share\temp',file_path_gerber)
+    out_path = temp_path
+
+
+    cc = EpGerberToODB()
+    cc.ep_gerber_to_odb2(job_name, step, file_path, out_path,job_id)
+    # #把悦谱转图压缩成tgz。
+    # ifn = os.path.join(r'C:\cc\share\temp',job_name)
+    # try:
+    #     ifn = ifn.split(sep='"')[1]
+    #     # print(ifn)
+    # except:
+    #     pass
+    # ofn = ifn + '.tgz'
+    # Tgz().maketgz(ofn, ifn)
+    #
+    # #把压缩好悦谱转图tzg放入相应Job里
+    # shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    # time.sleep(0.2)
+    #
+    # job.file_odb_current=('files/'+job_name+'.tgz')
+    # job.save()
+    # #删除ep.tzg
+    # if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
+    #     os.remove(os.path.join(temp_path,job_name+'.tgz'))
+    # # 删除temp_path
+    # if os.path.exists(temp_path):
+    #     shutil.rmtree(temp_path)
+
+
+
+    return redirect('job_manage:JobListViewVs')
+
+
 class LayerListView(ListView):
     queryset = models.Layer.objects.all()
     # model=models.Job
