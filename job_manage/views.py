@@ -384,6 +384,7 @@ class JobListView(ListView):
         job_field_verbose_name = [Job._meta.get_field('job_name').verbose_name,
                                   Job._meta.get_field('file_odb').verbose_name,
                                   Job._meta.get_field('file_compressed').verbose_name,
+                                  Job._meta.get_field('file_compressed_org').verbose_name,
                                   Job._meta.get_field('remark').verbose_name,
                                   Job._meta.get_field('author').verbose_name,
                                   Job._meta.get_field('from_object').verbose_name,
@@ -428,6 +429,7 @@ class JobListViewVs(ListView):
         context = super().get_context_data(**kwargs)
         job_field_verbose_name = [Job._meta.get_field('job_name').verbose_name,
                                   Job._meta.get_field('file_compressed').verbose_name,
+                                  Job._meta.get_field('file_compressed_org').verbose_name,
                                   Job._meta.get_field('file_odb').verbose_name,
                                   Job._meta.get_field('file_odb_current').verbose_name,
                                   Job._meta.get_field('file_odb_g').verbose_name,

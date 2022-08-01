@@ -57,6 +57,14 @@
                                 </td>
 
                                 <td>
+                                    {% if job.file_compressed_org %}
+                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed_org }}" onclick="window.location.href='/media/{{ job.file_compressed_org }}';"><i class="fa fa-download"></i>
+                                        </button>
+
+                                    {% endif %}
+                                </td>
+
+                                <td>
                                     {% if job.file_odb %}
                                         <button class="btn btn-transparent" title="EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
                                         </button>

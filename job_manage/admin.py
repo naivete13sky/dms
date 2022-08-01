@@ -15,7 +15,7 @@ admin.site.site_header = 'CAM料号管理系统'
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('job_name','file_odb','file_compressed','file_odb_current','file_odb_g','vs_result_ep','vs_result_g','author','from_object',)
+    list_display = ('job_name','file_compressed_org','file_compressed','file_odb','file_odb_current','file_odb_g','vs_result_ep','vs_result_g','author','from_object',)
 
     search_fields = ('job_name','author__username',)
     prepopulated_fields = {'remark': ('job_name',)}
