@@ -90,15 +90,15 @@ class Layer(models.Model):
     pass
     job = models.ForeignKey(to="job_manage.Job", on_delete=models.CASCADE,null=True,blank=True, related_name='job_manage_layer',verbose_name="料号名称")
 
-    layer=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],
+    layer=models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],
                             verbose_name="层名称")
-    layer_org=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+    layer_org=models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
                             verbose_name="原始层名称")
-    layer_file_type=models.CharField(max_length=10, choices=(('gerber274X', 'Gerber274-X'), ('gerber274D', 'Gerber274-D'), ('excellon2', 'Excellon2'),
+    layer_file_type=models.CharField(max_length=100, choices=(('gerber274X', 'Gerber274-X'), ('gerber274D', 'Gerber274-D'), ('excellon2', 'Excellon2'),
                                                          ('excellon1', 'Excellon1'),('dxf', 'DXF'),
                                                              ('else', '其它')), default='else',verbose_name="层文件类型")
 
-    layer_type = models.CharField(max_length=20, choices=(('signal_outter', '外层'),  ('signal_inner', '内层'),('solder', '防焊'),('silk', '丝印'),('paste', '锡膏'),
+    layer_type = models.CharField(max_length=100, choices=(('signal_outter', '外层'),  ('signal_inner', '内层'),('solder', '防焊'),('silk', '丝印'),('paste', '锡膏'),
     ('drill', '孔层'), ('rout', 'Rout'), ('slot', '槽孔'), ('else', '其它')), default='else', verbose_name="层类型")
     features_count=models.IntegerField(default=0,null=True,blank=True,
                                      validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],verbose_name="物件数")

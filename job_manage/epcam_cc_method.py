@@ -74,7 +74,7 @@ class EpGerberToODB:
         # print("*"*30,job_id)
         job_current = models.Job.objects.get(id=job_id)
         layer_all = models.Layer.objects.filter(job=job_current)
-        # print(layer_all)
+        print(layer_all)
 
         """转换Gerber文件
         :param     job(str):job名
@@ -111,25 +111,27 @@ class EpGerberToODB:
 
 
                 if file_format == 'Excellon2':
-                    print(file)
+                    # re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
+                    print(file,'=?',models.Layer.objects.get(job=job_current,layer=file))
+                    print('原来：',file_param)
                     try:
                         layer_e2= models.Layer.objects.get(job=job_current,layer=file)
-                        # print(layer_e2.layer)
+                        print(layer_e2.layer)
                         # print(file_param)
                         file_param['units']=layer_e2.drill_excellon2_units
                         file_param['zeroes_omitted'] = layer_e2.drill_excellon2_zeroes_omitted
-                        file_param['Number_format_integer'] = layer_e2.drill_excellon2_number_format_A
-                        file_param['Number_format_decimal'] = layer_e2.drill_excellon2_number_format_B
+                        file_param['Number_format_integer'] = int(layer_e2.drill_excellon2_number_format_A)
+                        file_param['Number_format_decimal'] = int(layer_e2.drill_excellon2_number_format_B)
                         file_param['tool_units'] = layer_e2.drill_excellon2_tool_units
-                        print(file_param)
+                        print('现在：',file_param)
+                        re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
                     except:
-                        re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',
-                                                  [])
+                        print("except:"*5)
+                        # re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
 
-                # if file_format == 'Gerber274x' or file_format == 'Excellon2' or file_format == 'DXF':
-                #     print(file)
-                #     re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',
-                #                                   [])  # translate
+                if file_format == 'Gerber274x' or file_format == 'DXF':
+                    print(file)
+                    re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])  # translate
 
 
     def ep_gerber_to_odb(self,job, step, file_path, out_path):
@@ -202,7 +204,7 @@ if __name__ == "__main__":
     epcam.init()
     job = 'test1'
     step = 'orig'
-    file_path = r'C:\job\test\gerber\760'
+    file_path = r'C:\Users\cheng.chen\Desktop\346414'
     out_path = r'C:\job\test\odb'
     cc=EpGerberToODB()
     cc.ep_gerber_to_odb(job, step, file_path, out_path)

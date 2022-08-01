@@ -730,6 +730,7 @@ def gerber274x_to_odb_ep(request,job_id):
 
 def gerber274x_to_odb_ep2(request,job_id):
     pass
+    #gerber274x_to_odb_ep2:孔参数取自数据库，而gerber274x_to_odb_ep是根据软件默认的参数导入的
 
     #找到job对象
     job=Job.objects.get(id=job_id)
@@ -763,28 +764,28 @@ def gerber274x_to_odb_ep2(request,job_id):
 
     cc = EpGerberToODB()
     cc.ep_gerber_to_odb2(job_name, step, file_path, out_path,job_id)
-    # #把悦谱转图压缩成tgz。
-    # ifn = os.path.join(r'C:\cc\share\temp',job_name)
-    # try:
-    #     ifn = ifn.split(sep='"')[1]
-    #     # print(ifn)
-    # except:
-    #     pass
-    # ofn = ifn + '.tgz'
-    # Tgz().maketgz(ofn, ifn)
-    #
-    # #把压缩好悦谱转图tzg放入相应Job里
-    # shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
-    # time.sleep(0.2)
-    #
-    # job.file_odb_current=('files/'+job_name+'.tgz')
-    # job.save()
-    # #删除ep.tzg
-    # if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
-    #     os.remove(os.path.join(temp_path,job_name+'.tgz'))
-    # # 删除temp_path
-    # if os.path.exists(temp_path):
-    #     shutil.rmtree(temp_path)
+    #把悦谱转图压缩成tgz。
+    ifn = os.path.join(r'C:\cc\share\temp',job_name)
+    try:
+        ifn = ifn.split(sep='"')[1]
+        # print(ifn)
+    except:
+        pass
+    ofn = ifn + '.tgz'
+    Tgz().maketgz(ofn, ifn)
+
+    #把压缩好悦谱转图tzg放入相应Job里
+    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    time.sleep(0.2)
+
+    job.file_odb_current=('files/'+job_name+'.tgz')
+    job.save()
+    #删除ep.tzg
+    if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
+        os.remove(os.path.join(temp_path,job_name+'.tgz'))
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
 
 
