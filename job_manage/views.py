@@ -45,6 +45,9 @@ import job_operation
 import layer_info
 from epcam_cc_method import EpGerberToODB
 import gl as gl
+from g_cc_method import Asw
+from django.conf import settings
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dms.settings")
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -815,7 +818,7 @@ def gerber274x_to_odb_g(request,job_id):
     if os.path.exists(temp_compressed):
         os.remove(temp_compressed)
     #g 导入
-    epcam.init()
+
     file_path_gerber = os.listdir(temp_path)[0]
     job_name = file_path_gerber + '_ep_'+str(int(time.time()))
     step = 'orig'
@@ -826,31 +829,24 @@ def gerber274x_to_odb_g(request,job_id):
     file_path = os.path.join(r'C:\cc\share\temp',file_path_gerber)
     out_path = temp_path
 
+    # print('gl:',settings.G_GETWAY_PATH)
+    cc = Asw(settings.G_GETWAY_PATH)
+    # cc.g_Gerber2Odb(job_name, step, file_path, out_path,job_id)
+    #输出tgz到指定目录
 
-    cc = EpGerberToODB()
-    cc.ep_gerber_to_odb2(job_name, step, file_path, out_path,job_id)
-    #把悦谱转图压缩成tgz。
-    ifn = os.path.join(r'C:\cc\share\temp',job_name)
-    try:
-        ifn = ifn.split(sep='"')[1]
-        # print(ifn)
-    except:
-        pass
-    ofn = ifn + '.tgz'
-    Tgz().maketgz(ofn, ifn)
 
-    #把压缩好悦谱转图tzg放入相应Job里
-    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
-    time.sleep(0.2)
-
-    job.file_odb_current=('files/'+job_name+'.tgz')
-    job.save()
-    #删除ep.tzg
-    if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
-        os.remove(os.path.join(temp_path,job_name+'.tgz'))
-    # 删除temp_path
-    if os.path.exists(temp_path):
-        shutil.rmtree(temp_path)
+    # #把g转图tzg放入相应Job里
+    # shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    # time.sleep(0.2)
+    #
+    # job.file_odb_current=('files/'+job_name+'.tgz')
+    # job.save()
+    # #删除ep.tzg
+    # if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
+    #     os.remove(os.path.join(temp_path,job_name+'.tgz'))
+    # # 删除temp_path
+    # if os.path.exists(temp_path):
+    #     shutil.rmtree(temp_path)
 
 
 

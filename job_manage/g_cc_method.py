@@ -10,11 +10,11 @@ import gl as gl
 LAYER_COMPARE_JSON = 'layer_compare.json'
 
 class Asw():
-    def __init__(self):
+    def __init__(self,gateway_path):
         # gateway_path=os.path.join(os.path.abspath(os.path.join(os.getcwd(), "..")),"method\g\gateway.exe")
-        gateway_path=gl.g_getway_path
+        self.gateway_path=gateway_path
         # print(gateway_path)
-        command = '{} 1'.format(gateway_path)
+        command = '{} 1'.format(self.gateway_path)
         self.process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
     def __del__(self):
@@ -476,7 +476,7 @@ class Compress():
 if __name__ == '__main__':
     pass
 
-    asw = Asw()
+    asw = Asw(gl.gateway_path)
     gerberList = ['C:/Users/cheng.chen/Desktop/742tbv01.1up\\BOT_MASK.art',
                   'C:/Users/cheng.chen/Desktop/742tbv01.1up\\BOT_PAST.art',
                   'C:/Users/cheng.chen/Desktop/742tbv01.1up\\BOT_SILK.art',

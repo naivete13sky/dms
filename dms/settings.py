@@ -212,3 +212,5 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
 )
 
+#g环境
+G_GETWAY_PATH=r"C:\cc\python\epwork\dms\job_manage\g\gateway.exe"
