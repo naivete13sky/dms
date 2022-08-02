@@ -499,5 +499,5 @@ if __name__ == '__main__':
     step = "orig"
     asw.g_Gerber2Odb(gerberList, job, step)
     #
-    asw.delete_job(job)
+    # asw.delete_job(job)
 
