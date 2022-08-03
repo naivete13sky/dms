@@ -39,6 +39,9 @@ urlpatterns = [
     path('LayerUpdateView/<int:pk>', views.LayerUpdateView.as_view(), name='LayerUpdateView'),
     path('LayerUpdateViewOneJob/<int:pk>', views.LayerUpdateViewOneJob.as_view(), name='LayerUpdateViewOneJob'),
 
+    path('vs_ep/<int:job_id>/', views.vs_ep,name='vs_ep'),
+    path('vs_g/<int:job_id>/', views.vs_g,name='vs_g'),
+
 
 
 # ]

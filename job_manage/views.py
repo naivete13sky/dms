@@ -1006,3 +1006,23 @@ class LayerUpdateViewOneJob(UpdateView):
         return '../view_layer/{}'.format(self.object.job_id)
     # success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 
+def vs_ep(request,job_id):
+    pass
+    print("悦谱VS",job_id)
+
+
+
+
+
+
+
+
+
+
+
+    return HttpResponse("悦谱VS"+str(job_id))
+
+def vs_g(request,job_id):
+    pass
+    print("G软件VS",job_id)
+    return HttpResponse("G软件VS"+str(job_id))

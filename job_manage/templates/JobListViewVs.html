@@ -106,8 +106,23 @@
 
                                 </td>
 
-                                <td>{{ job.vs_result_ep }}</td>
-                                <td>{{ job.vs_result_g }}</td>
+                                <td>
+                                    {% if job.vs_result_ep == 'none' %}
+                                        无信息
+                                        <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_ep/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
+                                        </button>
+                                    {% endif %}
+
+
+                                </td>
+                                <td>
+                                    {% if job.vs_result_g == 'none' %}
+                                        无信息
+                                        <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_g/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
+                                        </button>
+                                    {% endif %}
+
+                                </td>
                                 <td>
                                     <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>
 
