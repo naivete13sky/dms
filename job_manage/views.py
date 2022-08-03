@@ -1009,8 +1009,51 @@ class LayerUpdateViewOneJob(UpdateView):
 def vs_ep(request,job_id):
     pass
     print("悦谱VS",job_id)
+    job = Job.objects.get(id=job_id)
+    print(job.job_name, job.file_odb_current,job.file_odb_g)
+
+    #拿到job_ep和job_g
+    temp_path = r'C:\cc\share\temp'
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
+    job_ep_path=(os.path.join(os.getcwd(),r'media',str(job.file_odb_current))).replace(r'/','\\')
+    shutil.copy(job_ep_path,temp_path)
+    time.sleep(0.2)
+    job_operation.untgz(os.path.join(temp_path,str(job.file_odb_current).split('/')[-1]),temp_path)
+
+    job_g_path = (os.path.join(os.getcwd(), r'media', str(job.file_odb_g))).replace(r'/', '\\')
+    shutil.copy(job_g_path, temp_path)
+    time.sleep(0.2)
+    job_operation.untgz(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1]), temp_path)
+
+    epcam.init()
+    #打开job_ep
+    # print("ffff",job.file_odb_current,str(job.file_odb_current).split('/')[-1])
+    job_ep_name=str(job.file_odb_current).split('/')[-1]
+    new_job_path_ep = os.path.join(temp_path, job_ep_name)
+    job_operation.open_job(temp_path, job_ep_name)
+
+    job_g_name = str(job.file_odb_g).split('/')[-1]
+    new_job_path_ep = os.path.join(temp_path, job_g_name)
+    job_operation.open_job(temp_path, job_g_name)
 
 
+
+
+
+    tol = 0.9 * 25400
+    isGlobal = True
+    consider_sr = True
+    map_layer_res = 200 * 25400
+    all_result = {}  # 存放所有层比对结果
+    all_layer = job_operation.get_all_layers(job_ep_name)
+    print(all_layer)
+    # for layer in all_layer:
+    #     layer_result = epcam_api.layer_compare_point(job, step, layer, job, step, layer, tol, isGlobal, consider_sr,map_layer_res)
+    #     all_result[layer] = layer_result
+    # print("*" * 100)
+    # print(all_result)
+    print("*" * 100)
 
 
 
