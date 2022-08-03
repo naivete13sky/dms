@@ -8,6 +8,7 @@ import time
 import linecache
 import gl as gl
 LAYER_COMPARE_JSON = 'layer_compare.json'
+from job_manage import models
 
 class Asw():
     def __init__(self,gateway_path):
@@ -323,6 +324,9 @@ class Asw():
             separator = paras['separator']
             tool_units = paras['tool_units']
             layer = paras['layer']
+            print("layer"*10,layer)
+            layer=layer.replace(' ','-')
+            print("layer" * 10, layer)
             wheel = paras['wheel']
             wheel_template = paras['wheel_template']
             nf_comp = paras['nf_comp']
@@ -343,6 +347,130 @@ class Asw():
         # if not os.path.exists(path):
         #     print('{} does not exist'.format(path))
         #     return False
+
+        trans_COM = 'COM input_manual_set,'
+        trans_COM += 'path={},job={},step={},format={},data_type={},units={},coordinates={},zeroes={},'.format(path.replace("\\","/"),
+                                                                                                               job,
+                                                                                                               step,
+                                                                                                               format,
+                                                                                                               data_type,
+                                                                                                               units,
+                                                                                                               coordinates,
+                                                                                                               zeroes)
+        trans_COM += 'nf1={},nf2={},decimal={},separator={},tool_units={},layer={},wheel={},wheel_template={},'.format(
+            nf1, nf2, decimal, separator, tool_units, layer, wheel, wheel_template)
+        trans_COM += 'nf_comp={},multiplier={},text_line_width={},signed_coords={},break_sr={},drill_only={},'.format(
+            nf_comp, multiplier, text_line_width, signed_coords, break_sr, drill_only)
+        trans_COM += 'merge_by_rule={},threshold={},resolution={}'.format(merge_by_rule, threshold, resolution)
+
+        cmd_list1 = []
+        cmd_list2 = []
+        # trans_COM = 'COM input_manual_set,path=C:/Users/EPSZ15/Desktop/2222/YH-DT3.9-FM1921_64X64-8SF2-04.GTL,job=6566,step=777,format=Gerber274x,data_type=ascii,units=mm,coordinates=absolute,zeroes=leading,nf1=4,nf2=4,decimal=no,separator=*,tool_units=inch,layer=yh-dt3.9-fm1921_64x64-8sf2-04.gtl,wheel=,wheel_template=,nf_comp=0,multiplier=1,text_line_width=0.0024,signed_coords=no,break_sr=yes,drill_only=no,merge_by_rule=no,threshold=200,resolution=3'
+        if _type == 0:
+            cmd_list1 = [
+                'COM input_manual_reset',
+                # 'COM input_manual_set,path={},job={},step={},format={},data_type{},units={},coordinates={},zeroes={},nf1={},nf2={},decimal={},separator={},\
+                #     tool_units={},layer={},wheel={},wheel_template={},nf_comp={},multiplier={},text_line_width={},signed_coords={},break_sr={},drill_only={},\
+                #     merge_by_rule={},threshold={},resolution={}'.format(path, job, step, format, data_type, units, coordinates, zeroes, nf1, nf2, decimal,
+                #     separator, tool_units, layer, wheel, wheel_template, nf_comp, multiplier, text_line_width, signed_coords, break_sr, drill_only, merge_by_rule,
+                #     threshold, resolution),
+                trans_COM,
+                ('COM input_manual,script_path={}'.format(''))
+            ]
+            cmd_list2 = [
+                'COM input_manual_reset',
+                trans_COM,
+                'COM input_manual,script_path={}'.format('')
+            ]
+        else:
+            cmd_list1 = [
+                'COM save_job,job={},override=no'.format(job)
+            ]
+            cmd_list2 = [
+                'COM save_job,job={},override=no'.format(job)
+            ]
+
+        for cmd in cmd_list1:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            if ret != 0:
+                print('inner error')
+                return False
+        return True
+
+    def Gerber2ODB2(self, paras, _type,job_id):
+        # print("*"*100,"gerber2odb")
+
+
+
+        try:
+            path = paras['path']
+            job = paras['job']
+            step = paras['step']
+            format = paras['format']
+            data_type = paras['data_type']
+            units = paras['units']
+            coordinates = paras['coordinates']
+            zeroes = paras['zeroes']
+            nf1 = paras['nf1']
+            nf2 = paras['nf2']
+            decimal = paras['decimal']
+            separator = paras['separator']
+            tool_units = paras['tool_units']
+            layer = paras['layer']
+            print("layer"*10,layer)
+            layer=layer.replace(' ','-')
+            print("layer" * 10, layer)
+            wheel = paras['wheel']
+            wheel_template = paras['wheel_template']
+            nf_comp = paras['nf_comp']
+            multiplier = paras['multiplier']
+            text_line_width = paras['text_line_width']
+            signed_coords = paras['signed_coords']
+            break_sr = paras['break_sr']
+            drill_only = paras['drill_only']
+            merge_by_rule = paras['merge_by_rule']
+            threshold = paras['threshold']
+            resolution = paras['resolution']
+        except Exception as e:
+            print(e)
+            return False
+
+        try:
+            print("开始定位"*10)
+            job_current = models.Job.objects.get(id=job_id)
+            layer_all = models.Layer.objects.filter(job=job_current)
+            print(layer_all)
+            print(path.replace(' ', '-'))
+            print(os.path.basename(path).replace(' ', '-'))
+            layer_e2 = models.Layer.objects.get(job=job_current, layer=os.path.basename(path).replace(' ', '-'))
+            print('*'*100,layer_e2)
+            print("*"*100,layer_e2.layer_file_type)
+            if layer_e2.status == 'published' and layer_e2.layer_file_type=='excellon2':
+                pass
+                print("我是Excellon2!!!!!")
+                format='Excellon2'
+                units=layer_e2.drill_excellon2_units.lower()
+                zeroes=layer_e2.drill_excellon2_zeroes_omitted
+                nf1 = int(layer_e2.drill_excellon2_number_format_A)
+                nf2 = int(layer_e2.drill_excellon2_number_format_B)
+                tool_units = layer_e2.drill_excellon2_tool_units.lower()
+                separator='nl'
+            else:
+                print("我不是孔Excellon2!")
+
+            print("结束定位" * 10)
+        except:
+            pass
+            print("有异常啊！")
+        # print("p"*100,path)
+
+        # if not os.path.exists(path):
+        #     print('{} does not exist'.format(path))
+        #     return False
+
+
+
 
         trans_COM = 'COM input_manual_set,'
         trans_COM += 'path={},job={},step={},format={},data_type={},units={},coordinates={},zeroes={},'.format(path.replace("\\","/"),
@@ -439,6 +567,70 @@ class Asw():
         self.Gerber2ODB(paras, 1)
         return results
 
+    def g_Gerber2Odb2(self,job_name, step, gerberList_path, out_path,job_id):
+        paras = {}
+        paras['path'] = ''
+        paras['job'] = job_name
+        paras['step'] = step
+        paras['format'] = 'Gerber274x'
+        paras['data_type'] = 'ascii'
+        paras['layer'] = ''
+        paras['units'] = 'mm'
+        paras['coordinates'] = 'absolute'
+        paras['zeroes'] = 'leading'
+        paras['nf1'] = '4'
+        paras['nf2'] = '4'
+        paras['decimal'] = 'no'
+        paras['separator'] = '*'
+        paras['tool_units'] = 'inch'
+        paras['wheel'] = ''
+        paras['wheel_template'] = ''
+        paras['nf_comp'] = '0'
+        paras['multiplier'] = '1'
+        paras['text_line_width'] = '0.0024'
+        paras['signed_coords'] = 'no'
+        paras['break_sr'] = 'yes'
+        paras['drill_only'] = 'no'
+        paras['merge_by_rule'] = 'no'
+        paras['threshold'] = '200'
+        paras['resolution'] = '3'
+        # 先创建job, step
+        jobpath = r'C:\genesis\fw\jobs' + '/' + job_name
+        # print("jobpath"*30,jobpath)
+        results = []
+        if os.path.exists(jobpath):
+            shutil.rmtree(jobpath)
+        self.Create_Entity(job_name, step)
+        for gerberPath in gerberList_path:
+            # print("g"*100,gerberPath)
+            result = {'gerber': gerberPath}
+            paras['path'] = gerberPath
+            paras['layer'] = os.path.basename(gerberPath).lower()
+            ret = self.Gerber2ODB2(paras, 0,job_id)
+            result['result'] = ret
+            results.append(result)
+        self.Gerber2ODB2(paras, 1,job_id)#保存
+        return results
+
+    def g_export(self,job,export_to_path):
+        pass
+        'COM export_job,job=test-zm,path=Z:/share/temp,mode=tar_gzip,submode=full,overwrite=yes'
+        cmd_list1 = [
+            # 'COM abc',
+            'COM export_job,job={},path={},mode=tar_gzip,submode=full,overwrite=yes'.format(job,export_to_path),
+
+        ]
+
+        for cmd in cmd_list1:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            print("*" * 100, ret)
+            if ret != 0:
+                print('inner error')
+                return False
+        return True
+
+
 class GetParas():
     pass
     def get_paras_compare(*, jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,map_layer_res):
@@ -472,32 +664,33 @@ class Compress():
         return "uncompress finish!"
 
 
+def getFlist(path):
+    for root, dirs, files in os.walk(path):
+        print('root_dir:', root)  #当前路径
+        print('sub_dirs:', dirs)   #子文件夹
+        print('files:', files)     #文件名称，返回list类型
+    return files
+
+
 
 if __name__ == '__main__':
     pass
-
     asw = Asw(gl.gateway_path)
-    gerberList = ['C:/Users/cheng.chen/Desktop/742tbv01.1up\\BOT_MASK.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\BOT_PAST.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\BOT_SILK.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\DRILL.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L1-TOP.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L10-BOT.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L2-GND1.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L3-INNER1.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L4-POW.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L5-INNER2.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L6-GND2.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L7-INNER3.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L8-INNER4.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\L9-GND3.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\PCB-PER742-TB-V0.1-1-10.drl',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\TOP_MASK.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\TOP_PAST.art',
-                  'C:/Users/cheng.chen/Desktop/742tbv01.1up\\TOP_SILK.art']
+    gerberList = [
+                    'C:/Users/cheng.chen/Desktop/346414\\Statische Ansteuerung 18.07.21.gbl',
+                  ]
+
+    gerberList2=getFlist(r'C:\Users\cheng.chen\Desktop\346414')
+    print(gerberList2)
+    gerberList_path=[]
+    for each in gerberList2:
+        gerberList_path.append(os.path.join(r'C:\Users\cheng.chen\Desktop\346414',each))
+    print(gerberList_path)
     job = 'temp_g'
     step = "orig"
-    asw.g_Gerber2Odb(gerberList, job, step)
+    asw.g_Gerber2Odb(gerberList_path, job, step)
     #
     # asw.delete_job(job)
+    'COM export_job,job=test-zm,path=Z:/share/temp,mode=tar_gzip,submode=full,overwrite=yes'
+    asw.g_export(job,r'Z:/share/temp')
 

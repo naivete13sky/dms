@@ -662,6 +662,7 @@ def get_file_name_from_org(request,job_id):
                 os.rename(path,os.path.join(temp_path,file_path_gerber,'unknow' + str(index)))
                 file_name='unknow' + str(index)
                 index=index+1
+            file_name=file_name.replace(' ','-')
             layer_new = models.Layer()
             layer_new.job=job
             layer_new.layer=file_name
@@ -796,6 +797,13 @@ def gerber274x_to_odb_ep2(request,job_id):
 
     return redirect('job_manage:JobListViewVs')
 
+def getFlist(path):
+    for root, dirs, files in os.walk(path):
+        print('root_dir:', root)  #当前路径
+        print('sub_dirs:', dirs)   #子文件夹
+        print('files:', files)     #文件名称，返回list类型
+    return files
+
 def gerber274x_to_odb_g(request,job_id):
     pass
     #远程调用G软件
@@ -827,26 +835,35 @@ def gerber274x_to_odb_g(request,job_id):
 
 
     file_path = os.path.join(r'C:\cc\share\temp',file_path_gerber)
+    gerberList = getFlist(file_path)
+    print(gerberList)
+    g_temp_path=r'Z:/share/temp'
+    gerberList_path = []
+    for each in gerberList:
+        gerberList_path.append(os.path.join(g_temp_path,file_path_gerber, each))
+    print(gerberList_path)
     out_path = temp_path
 
     # print('gl:',settings.G_GETWAY_PATH)
     cc = Asw(settings.G_GETWAY_PATH)
-    # cc.g_Gerber2Odb(job_name, step, file_path, out_path,job_id)
+    cc.g_Gerber2Odb2(job_name, step, gerberList_path, out_path,job_id)
     #输出tgz到指定目录
+    cc.g_export(job_name, r'Z:/share/temp')
+    #在g软件中删除此料
+    cc.delete_job(job_name)
 
+    #把g转图tzg放入相应Job里
+    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    time.sleep(0.2)
 
-    # #把g转图tzg放入相应Job里
-    # shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
-    # time.sleep(0.2)
-    #
-    # job.file_odb_current=('files/'+job_name+'.tgz')
-    # job.save()
-    # #删除ep.tzg
-    # if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
-    #     os.remove(os.path.join(temp_path,job_name+'.tgz'))
-    # # 删除temp_path
-    # if os.path.exists(temp_path):
-    #     shutil.rmtree(temp_path)
+    job.file_odb_g=('files/'+job_name+'.tgz')
+    job.save()
+    #删除ep.tzg
+    if os.path.exists(os.path.join(temp_path,job_name+'.tgz')):
+        os.remove(os.path.join(temp_path,job_name+'.tgz'))
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
 
 
