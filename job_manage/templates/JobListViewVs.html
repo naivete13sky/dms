@@ -50,10 +50,16 @@
                                         <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
                                         </button>
 
+
+
+                                    {% endif %}
+                                    {% if job.bool_layer_info == 'false' %}
                                         <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org/{{ job.id }}';"><i class="fa fa-list"></i>
                                         </button>
 
                                     {% endif %}
+
+
                                 </td>
 
                                 <td>

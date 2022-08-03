@@ -38,6 +38,7 @@ class Job(models.Model):
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
     job_type = models.CharField(max_length=10, choices=(('common', '普通板'), ('hdi', 'HDI'), ('led', 'LED板'), ('else', '其它')), default='common',
                                 verbose_name="料号类型")
+    bool_layer_info=models.CharField(max_length=10, choices=(('true', 'true'), ('false', 'false')), default='false',null=True,blank=True,verbose_name="是否有层别信息")
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True,null=True)
 
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs',null=True,blank=True,verbose_name="负责人")

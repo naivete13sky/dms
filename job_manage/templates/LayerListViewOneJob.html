@@ -10,7 +10,11 @@
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增层别</a></h4>
+                    <h4>料号名称：{{ job.job_name }}</h4>
+
+                    <h4><i class="fa fa-list" aria-hidden="true"></i><a href='../../get_file_name_from_org/{{ job.id }}'>生成所有层别名称</a></h4>
+                    <h4><i class="fa fa-list" aria-hidden="true"></i><a href='../../delete_all_layer_info/{{ job.id }}'>删除所有层别信息，慎用！</a></h4>
+                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增单个层别</a></h4>
 
                     <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}

@@ -35,6 +35,7 @@ urlpatterns = [
     path('LayerListView',login_required(views.LayerListView.as_view()),name='LayerListView'),
     path('view_layer/<int:job_id>/', views.view_layer,name='view_layer'),
     path('get_file_name_from_org/<int:job_id>/', views.get_file_name_from_org,name='get_file_name_from_org'),
+    path('delete_all_layer_info/<int:job_id>/', views.delete_all_layer_info,name='delete_all_layer_info'),
     path('LayerUpdateView/<int:pk>', views.LayerUpdateView.as_view(), name='LayerUpdateView'),
     path('LayerUpdateViewOneJob/<int:pk>', views.LayerUpdateViewOneJob.as_view(), name='LayerUpdateViewOneJob'),
 

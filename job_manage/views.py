@@ -672,7 +672,26 @@ def get_file_name_from_org(request,job_id):
     if os.path.exists(temp_path):
         shutil.rmtree(temp_path)
 
-    return redirect('job_manage:JobListViewVs')
+    job.bool_layer_info='true'
+    job.save()
+    # return redirect('job_manage:JobListViewVs')
+    return redirect('../../view_layer/{}'.format(job_id))
+
+
+def delete_all_layer_info(request,job_id):
+    pass
+    print(job_id)
+    # 找到job对象
+    job = Job.objects.get(id=job_id)
+    #先删除原来已有的层信息
+    layer_old=models.Layer.objects.filter(job=job)
+    print(layer_old)
+    layer_old.delete()
+    print(job.job_name, job.file_compressed)
+    job.bool_layer_info='false'
+    job.save()
+    # return redirect('job_manage:JobListViewVs')
+    return redirect('../../view_layer/{}'.format(job_id))
 
 def gerber274x_to_odb_ep(request,job_id):
     pass
@@ -946,7 +965,7 @@ def view_layer(request,job_id):
 
 
     # return redirect('job_manage:LayerListView')
-    return render(request, 'LayerListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'layers': layers,})
+    return render(request, 'LayerListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'layers': layers,'job':job})
 
 class LayerUpdateView(UpdateView):
     """
