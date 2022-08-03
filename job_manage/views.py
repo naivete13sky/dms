@@ -828,7 +828,7 @@ def gerber274x_to_odb_g(request,job_id):
     #g 导入
 
     file_path_gerber = os.listdir(temp_path)[0]
-    job_name = file_path_gerber + '_ep_'+str(int(time.time()))
+    job_name = file_path_gerber + '_g_'+str(int(time.time()))
     step = 'orig'
 
     # print(file_path_gerber)
