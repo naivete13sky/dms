@@ -1012,7 +1012,7 @@ class LayerUpdateViewOneJob(UpdateView):
 
 def vs_ep(request,job_id):
     pass
-    vs_time='比对时间戳'+str(int(time.time()))
+    vs_time=str(int(time.time()))
 
     print("悦谱VS",job_id)
     job = Job.objects.get(id=job_id)
@@ -1088,6 +1088,7 @@ def vs_ep(request,job_id):
                 new_vs.vs_method='ep'
                 new_vs.layer_file_type=each.layer_file_type
                 new_vs.layer_type=each.layer_type
+                new_vs.vs_time=vs_time
                 try:
                     if len(layer_result_dict["result"])==0:
                         each.vs_result_ep='passed'
@@ -1099,6 +1100,7 @@ def vs_ep(request,job_id):
                 except:
                     pass
                     print("异常！")
+                each.vs_time=vs_time
                 each.save()
                 new_vs.save()
     pass
@@ -1108,12 +1110,17 @@ def vs_ep(request,job_id):
     if ep_vs_total_result_flag==False:
         pass
         job.vs_result_ep='failed'
+    job.vs_time=vs_time
     job.save()
 
 
     print("*" * 100)
     print(all_result)
     print("*" * 100)
+
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListViewVs')
@@ -1161,6 +1168,9 @@ class VsListView(ListView):
                                   models.Vs._meta.get_field('drill_excellon2_number_format_B').verbose_name,
                                 models.Vs._meta.get_field('drill_excellon2_tool_units').verbose_name,
                                 models.Vs._meta.get_field('status').verbose_name,
+                              models.Vs._meta.get_field('vs_time').verbose_name,
+                              models.Vs._meta.get_field('create_time').verbose_name,
+                              models.Vs._meta.get_field('updated').verbose_name,
                                   "标签",
                                   "操作",
                                   ]
@@ -1175,3 +1185,35 @@ class VsListView(ListView):
                 Q(job__job_name__contains=query))
         return context
 
+def view_vs(request,job_id):
+    pass
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name,job.file_compressed)
+    vs = models.Vs.objects.filter(job=job,vs_time=job.vs_time)
+
+    field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
+                          models.Vs._meta.get_field('layer').verbose_name,
+                          models.Vs._meta.get_field('layer_org').verbose_name,
+                          models.Vs._meta.get_field('vs_result').verbose_name,
+                          models.Vs._meta.get_field('vs_result_detail').verbose_name,
+                          models.Vs._meta.get_field('vs_method').verbose_name,
+                          models.Vs._meta.get_field('layer_file_type').verbose_name,
+                          models.Vs._meta.get_field('layer_type').verbose_name,
+                          models.Vs._meta.get_field('features_count').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_units').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
+                          # Job._meta.get_field('publish').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_number_format_A').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_number_format_B').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                          models.Vs._meta.get_field('status').verbose_name,
+                          models.Vs._meta.get_field('vs_time').verbose_name,
+                          models.Vs._meta.get_field('create_time').verbose_name,
+                          models.Vs._meta.get_field('updated').verbose_name,
+                          "标签",
+                          "操作",
+                          ]
+
+    # return redirect('job_manage:LayerListView')
+    return render(request, 'VsListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'vs': vs,'job':job})

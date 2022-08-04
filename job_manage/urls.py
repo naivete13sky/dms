@@ -43,6 +43,7 @@ urlpatterns = [
     path('vs_g/<int:job_id>/', views.vs_g,name='vs_g'),
 
     path('VsListView',login_required(views.VsListView.as_view()),name='VsListView'),
+    path('view_vs/<int:job_id>/', views.view_vs,name='view_vs'),
 
 
 
