@@ -44,6 +44,7 @@ urlpatterns = [
 
     path('VsListView',login_required(views.VsListView.as_view()),name='VsListView'),
     path('view_vs/<int:job_id>/', views.view_vs,name='view_vs'),
+    path('view_vs_one_layer/<int:job_id>/<str:layer_org>/', views.view_vs_one_layer,name='view_vs_one_layer'),
 
 
 

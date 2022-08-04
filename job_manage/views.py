@@ -458,6 +458,9 @@ class JobListViewVs(ListView):
                                   "操作",
                                   ]
         context['job_field_verbose_name'] = job_field_verbose_name# 表头用
+
+
+
         query=self.request.GET.get('query',False)
         if query:
             # context['cc'] = query
@@ -1125,9 +1128,9 @@ def vs_ep(request,job_id):
     print(all_result)
     print("*" * 100)
 
-    # # 删除temp_path
-    # if os.path.exists(temp_path):
-    #     shutil.rmtree(temp_path)
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListViewVs')
@@ -1198,6 +1201,39 @@ def view_vs(request,job_id):
     job=Job.objects.get(id=job_id)
     print(job.job_name,job.file_compressed)
     vs = models.Vs.objects.filter(job=job,vs_time=job.vs_time)
+
+    field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
+                          models.Vs._meta.get_field('layer').verbose_name,
+                          models.Vs._meta.get_field('layer_org').verbose_name,
+                          models.Vs._meta.get_field('vs_result').verbose_name,
+                          models.Vs._meta.get_field('vs_result_detail').verbose_name,
+                          models.Vs._meta.get_field('vs_method').verbose_name,
+                          models.Vs._meta.get_field('layer_file_type').verbose_name,
+                          models.Vs._meta.get_field('layer_type').verbose_name,
+                          models.Vs._meta.get_field('features_count').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_units').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
+                          # Job._meta.get_field('publish').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_number_format_A').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_number_format_B').verbose_name,
+                          models.Vs._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                          models.Vs._meta.get_field('status').verbose_name,
+                          models.Vs._meta.get_field('vs_time').verbose_name,
+                          models.Vs._meta.get_field('create_time').verbose_name,
+                          models.Vs._meta.get_field('updated').verbose_name,
+                          "标签",
+                          "操作",
+                          ]
+
+    # return redirect('job_manage:LayerListView')
+    return render(request, 'VsListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'vs': vs,'job':job})
+
+def view_vs_one_layer(request,job_id,layer_org):
+    pass
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name,job.file_compressed)
+    vs = models.Vs.objects.filter(job=job,vs_time=job.vs_time,layer_org=layer_org)
 
     field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
                           models.Vs._meta.get_field('layer').verbose_name,
