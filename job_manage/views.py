@@ -1012,6 +1012,7 @@ class LayerUpdateViewOneJob(UpdateView):
 
 def vs_ep(request,job_id):
     pass
+    ep_vs_total_result_flag = True  # True表示最新一次悦谱比对通过
     vs_time=str(int(time.time()))
 
     print("悦谱VS",job_id)
@@ -1034,13 +1035,15 @@ def vs_ep(request,job_id):
 
     epcam.init()
     #打开job_ep
-    job_ep_name=str(job.file_odb_current).split('/')[-1].split('.')[0]
+    job_ep_name=str(job.file_odb_current).split('/')[-1][:-4]
     new_job_path_ep = os.path.join(temp_path, job_ep_name)
     print("temp_path:", temp_path, "job_ep_name:", job_ep_name)
-    job_operation.open_job(temp_path, job_ep_name)
+    res=job_operation.open_job(temp_path, job_ep_name)
+    print("open ep tgz:",res)
+
 
     # 打开job_g
-    job_g_name = str(job.file_odb_g).split('/')[-1].split('.')[0]
+    job_g_name = str(job.file_odb_g).split('/')[-1][:-4]
     new_job_path_g = os.path.join(temp_path, job_g_name)
     print("temp_path:", temp_path, "job_g_name:", job_g_name)
     job_operation.open_job(temp_path, job_g_name)
@@ -1063,9 +1066,13 @@ def vs_ep(request,job_id):
 
     #以为悦谱解析好的为主，来VS
     all_layer = job_operation.get_all_layers(job_ep_name)
-    print(all_layer)
+    print('悦谱tgz中的层信息：',all_layer)
+    if len(all_layer)==0:
+        pass
 
-    ep_vs_total_result_flag=True#True表示最新一次悦谱比对通过
+        ep_vs_total_result_flag = False
+
+
     for layer in all_layer:
         print("ep_layer:",layer)
         layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
@@ -1118,9 +1125,9 @@ def vs_ep(request,job_id):
     print(all_result)
     print("*" * 100)
 
-    # 删除temp_path
-    if os.path.exists(temp_path):
-        shutil.rmtree(temp_path)
+    # # 删除temp_path
+    # if os.path.exists(temp_path):
+    #     shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListViewVs')
