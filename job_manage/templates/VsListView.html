@@ -38,9 +38,9 @@
                             {% for each in vs %}
                                 <tr>
                                 <td>
-                                    <a href="{{ job.get_absolute_url }}" title="{{ layer.job }}">
+                                    <a href="{{ job.get_absolute_url }}" title="{{ each.job }}">
 
-                                        {{ layer.job|slice:"20" }}
+                                        {{ each.job|slice:"20" }}
                                     </a>
 
 

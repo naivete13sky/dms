@@ -107,11 +107,20 @@
                                 </td>
 
                                 <td>
-                                    {% if job.vs_result_ep == 'none' %}
-                                        无信息
-                                        <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_ep/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
-                                        </button>
+                                    {% if job.vs_result_ep == 'passed' %}
+                                        通过
                                     {% endif %}
+
+                                    {% if job.vs_result_ep == 'failed' %}
+                                        失败
+                                    {% endif %}
+
+                                    {% if job.vs_result_ep == 'none' %}
+                                        未比对
+                                    {% endif %}
+
+                                    <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_ep/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
+                                        </button>
 
 
                                 </td>

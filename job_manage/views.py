@@ -1060,16 +1060,12 @@ def vs_ep(request,job_id):
     #原始层文件信息，最全的
     all_layer_from_org = models.Layer.objects.filter(job=job)
     print("all_layer_from_org:", all_layer_from_org)
-    all_layer_org_from_org_file_list=[]
-    for each in all_layer_from_org:
-        all_layer_org_from_org_file_list.append(each.layer_org)
-        # all_layer_org_from_org_file_list.append(str(each.layer_org).lower())
-    print("all_layer_org_from_org_file_list:",all_layer_org_from_org_file_list)
-    for each in all_layer_from_org:
-        print("each:",each)
+
     #以为悦谱解析好的为主，来VS
     all_layer = job_operation.get_all_layers(job_ep_name)
     print(all_layer)
+
+    ep_vs_total_result_flag=True#True表示最新一次悦谱比对通过
     for layer in all_layer:
         print("ep_layer:",layer)
         layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
@@ -1084,35 +1080,44 @@ def vs_ep(request,job_id):
                 layer_result_dict=json.loads(layer_result)
                 print(layer_result_dict)
                 print(len(layer_result_dict["result"]))
+                new_vs=models.Vs()
+                new_vs.job=job
+                new_vs.layer = each.layer
+                new_vs.layer_org=each.layer_org
+                new_vs.vs_result_detail=str(layer_result_dict)
+                new_vs.vs_method='ep'
+                new_vs.layer_file_type=each.layer_file_type
+                new_vs.layer_type=each.layer_type
                 try:
                     if len(layer_result_dict["result"])==0:
                         each.vs_result_ep='passed'
+                        new_vs.vs_result ='passed'
                     if len(layer_result_dict["result"])>0:
                         each.vs_result_ep = 'failed'
+                        new_vs.vs_result = 'failed'
+                        ep_vs_total_result_flag=False
                 except:
                     pass
                     print("异常！")
                 each.save()
-
-
+                new_vs.save()
+    pass
+    if ep_vs_total_result_flag==True:
+        pass
+        job.vs_result_ep='passed'
+    if ep_vs_total_result_flag==False:
+        pass
+        job.vs_result_ep='failed'
+    job.save()
 
 
     print("*" * 100)
     print(all_result)
     print("*" * 100)
 
+    # return HttpResponse("悦谱VS"+str(job_id))
+    return redirect('job_manage:JobListViewVs')
 
-
-
-
-
-
-
-
-
-
-
-    return HttpResponse("悦谱VS"+str(job_id))
 
 def vs_g(request,job_id):
     pass
