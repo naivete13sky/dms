@@ -3,14 +3,14 @@
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
     <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:JobListView" %}>料号管理</a></li>
-    <li><a>层别查询</a></li>
+    <li><a>VS结果查询</a></li>
 {% endblock %}
 {% block main_content %}
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增层别</a></h4>
+                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增VS结果</a></h4>
 
                     <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
@@ -35,7 +35,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for layer in layers %}
+                            {% for each in vs %}
                                 <tr>
                                 <td>
                                     <a href="{{ job.get_absolute_url }}" title="{{ layer.job }}">
@@ -46,20 +46,21 @@
 
                                 </td>
 
-                                <td>{{ layer.layer }}</td>
-                                <td>{{ layer.layer_org }}</td>
-                                <td>{{ layer.vs_result_ep }}</td>
-                                <td>{{ layer.vs_result_g }}</td>
-                                <td>{{ layer.layer_file_type }}</td>
-                                <td>{{ layer.layer_type }}</td>
-                                <td>{{ layer.features_count }}</td>
-                                <td>{{ layer.drill_excellon2_units }}</td>
+                                <td>{{ each.layer }}</td>
+                                <td>{{ each.layer_org }}</td>
+                                <td>{{ each.vs_result }}</td>
+                                <td>{{ each.vs_result_detail }}</td>
+                                <td>{{ each.vs_method }}</td>
+                                <td>{{ each.layer_file_type }}</td>
+                                <td>{{ each.layer_type }}</td>
+                                <td>{{ each.features_count }}</td>
+                                <td>{{ each.drill_excellon2_units }}</td>
 
-                                <td>{{ layer.drill_excellon2_zeroes_omitted }}</td>
-                                <td>{{ layer.drill_excellon2_number_format_A }}</td>
-                                <td>{{ layer.drill_excellon2_number_format_B }}</td>
-                                <td>{{ layer.drill_excellon2_tool_units }}</td>
-                                <td>{{ layer.status }}</td>
+                                <td>{{ each.drill_excellon2_zeroes_omitted }}</td>
+                                <td>{{ each.drill_excellon2_number_format_A }}</td>
+                                <td>{{ each.drill_excellon2_number_format_B }}</td>
+                                <td>{{ each.drill_excellon2_tool_units }}</td>
+                                <td>{{ each.status }}</td>
 {#                                <td>{{ job.create_time }}</td>#}
 {#                                <td>{{ job.updated }}</td>#}
                                 <td>

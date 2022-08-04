@@ -914,6 +914,8 @@ class LayerListView(ListView):
         field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
                                   models.Layer._meta.get_field('layer').verbose_name,
                               models.Layer._meta.get_field('layer_org').verbose_name,
+                              models.Layer._meta.get_field('vs_result_ep').verbose_name,
+                              models.Layer._meta.get_field('vs_result_g').verbose_name,
                                   models.Layer._meta.get_field('layer_file_type').verbose_name,
                                   models.Layer._meta.get_field('layer_type').verbose_name,
                                 models.Layer._meta.get_field('features_count').verbose_name,
@@ -949,6 +951,8 @@ def view_layer(request,job_id):
     field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
                           models.Layer._meta.get_field('layer').verbose_name,
                           models.Layer._meta.get_field('layer_org').verbose_name,
+                          models.Layer._meta.get_field('vs_result_ep').verbose_name,
+                          models.Layer._meta.get_field('vs_result_g').verbose_name,
                           models.Layer._meta.get_field('layer_file_type').verbose_name,
                           models.Layer._meta.get_field('layer_type').verbose_name,
                           models.Layer._meta.get_field('features_count').verbose_name,
@@ -1008,6 +1012,8 @@ class LayerUpdateViewOneJob(UpdateView):
 
 def vs_ep(request,job_id):
     pass
+    vs_time='比对时间戳'+str(int(time.time()))
+
     print("悦谱VS",job_id)
     job = Job.objects.get(id=job_id)
     print(job.job_name, job.file_odb_current,job.file_odb_g)
@@ -1047,15 +1053,56 @@ def vs_ep(request,job_id):
     consider_sr = True
     map_layer_res = 200 * 25400
     all_result = {}  # 存放所有层比对结果
+
+
+    step="orig"
+
+    #原始层文件信息，最全的
+    all_layer_from_org = models.Layer.objects.filter(job=job)
+    print("all_layer_from_org:", all_layer_from_org)
+    all_layer_org_from_org_file_list=[]
+    for each in all_layer_from_org:
+        all_layer_org_from_org_file_list.append(each.layer_org)
+        # all_layer_org_from_org_file_list.append(str(each.layer_org).lower())
+    print("all_layer_org_from_org_file_list:",all_layer_org_from_org_file_list)
+    for each in all_layer_from_org:
+        print("each:",each)
+    #以为悦谱解析好的为主，来VS
     all_layer = job_operation.get_all_layers(job_ep_name)
     print(all_layer)
-    step="orig"
     for layer in all_layer:
+        print("ep_layer:",layer)
         layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
         all_result[layer] = layer_result
+        # for each in all_layer_org_from_org_file_list:
+        #     if layer == str(each).lower():
+        #         print("I find it!!!!!!!!!!!!!!")
+        for each in all_layer_from_org:
+            if layer == str(each.layer_org).lower():
+                print("I find it!!!!!!!!!!!!!!")
+                print(layer_result,type(layer_result))
+                layer_result_dict=json.loads(layer_result)
+                print(layer_result_dict)
+                print(len(layer_result_dict["result"]))
+                try:
+                    if len(layer_result_dict["result"])==0:
+                        each.vs_result_ep='passed'
+                    if len(layer_result_dict["result"])>0:
+                        each.vs_result_ep = 'failed'
+                except:
+                    pass
+                    print("异常！")
+                each.save()
+
+
+
+
     print("*" * 100)
     print(all_result)
     print("*" * 100)
+
+
+
 
 
 
@@ -1071,3 +1118,55 @@ def vs_g(request,job_id):
     pass
     print("G软件VS",job_id)
     return HttpResponse("G软件VS"+str(job_id))
+
+class VsListView(ListView):
+    queryset = models.Vs.objects.all()
+    # model=models.Job
+    context_object_name = 'vs'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = 'VsListView.html'
+
+    # def get_queryset(self):
+    #     query = self.request.GET.get('query', '')
+    #     new_context = models.Job.objects.filter(
+    #             Q(job_name__contains=query) |
+    #             Q(author__username__contains=query))
+    #     return new_context
+    # def get_queryset(self):  # 重写get_queryset方法
+    #     # 获取所有is_deleted为False的用户，并且以时间倒序返回数据
+    #     return UserProfile.objects.filter(is_deleted=False).order_by('-create_time')
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
+                                  models.Vs._meta.get_field('layer').verbose_name,
+                              models.Vs._meta.get_field('layer_org').verbose_name,
+                              models.Vs._meta.get_field('vs_result').verbose_name,
+                              models.Vs._meta.get_field('vs_result_detail').verbose_name,
+                              models.Vs._meta.get_field('vs_method').verbose_name,
+                                  models.Vs._meta.get_field('layer_file_type').verbose_name,
+                                  models.Vs._meta.get_field('layer_type').verbose_name,
+                                models.Vs._meta.get_field('features_count').verbose_name,
+                                  models.Vs._meta.get_field('drill_excellon2_units').verbose_name,
+                                  models.Vs._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
+                                  # Job._meta.get_field('publish').verbose_name,
+                                  models.Vs._meta.get_field('drill_excellon2_number_format_A').verbose_name,
+                                  models.Vs._meta.get_field('drill_excellon2_number_format_B').verbose_name,
+                                models.Vs._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                                models.Vs._meta.get_field('status').verbose_name,
+                                  "标签",
+                                  "操作",
+                                  ]
+        context['field_verbose_name'] = field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            # context['cc'] = query
+            # print(query)
+            # context['query'] = query
+            context['vs'] = models.Vs.objects.filter(
+                Q(layer__contains=query) |
+                Q(job__job_name__contains=query))
+        return context
+

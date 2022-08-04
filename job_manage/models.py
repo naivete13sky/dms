@@ -23,8 +23,8 @@ class Job(models.Model):
                                                            ('odb++', 'ODB++'), ('else', '其它')), default='else',verbose_name="原始料号类型")
     file_odb_current = models.FileField(upload_to='files', blank=True, null=True, verbose_name="最新-EP-ODB++")
     file_odb_g = models.FileField(upload_to='files', blank=True, null=True, verbose_name="G-ODB++")
-    vs_result_ep=models.CharField(max_length=10, choices=(('success', '成功'), ('failed', '失败'), ('none', '未比对')), default='none',verbose_name="悦谱比图结果")
-    vs_result_g = models.CharField(max_length=10, choices=(('success', '成功'), ('failed', '失败'), ('none', '未比对')),
+    vs_result_ep=models.CharField(max_length=10, choices=(('passed', '成功'), ('failed', '失败'), ('none', '未比对')), default='none',verbose_name="悦谱比图结果")
+    vs_result_g = models.CharField(max_length=10, choices=(('passed', '成功'), ('failed', '失败'), ('none', '未比对')),
                                     default='none',verbose_name="G软件比图结果")
     # drill_excellon2_units=models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM')), default='Inch',verbose_name="E2_units")
     # drill_excellon2_zeroes_omitted = models.CharField(max_length=10, choices=(('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', 'None')), default='Leading',verbose_name="E2省零")
@@ -96,6 +96,11 @@ class Layer(models.Model):
                             verbose_name="层名称")
     layer_org=models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
                             verbose_name="原始层名称")
+    vs_result_ep = models.CharField(max_length=10, choices=(('passed', '通过'), ('failed', '失败'), ('none', '未比对')),
+                                 default='none', null=True, blank=True, verbose_name="悦谱比对结果")
+    vs_result_g = models.CharField(max_length=10, choices=(('passed', '通过'), ('failed', '失败'), ('none', '未比对')),
+                                    default='none', null=True, blank=True, verbose_name="G软件比对结果")
+
     layer_file_type=models.CharField(max_length=100, choices=(('gerber274X', 'Gerber274-X'), ('gerber274D', 'Gerber274-D'), ('excellon2', 'Excellon2'),
                                                          ('excellon1', 'Excellon1'),('dxf', 'DXF'),
                                                              ('else', '其它')), default='else',verbose_name="层文件类型")
@@ -130,6 +135,61 @@ class Layer(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     class Meta:
         db_table = 'layer'
+        ordering = ('-create_time',)
+    # def get_absolute_url(self):
+    #     return reverse('job_manage:JobFormView', args=[self.id, ])
+    def __str__(self):
+        # Return a string that represents the instance
+        return self.layer
+
+class Vs(models.Model):
+    pass
+    job = models.ForeignKey(to="job_manage.Job", on_delete=models.CASCADE,null=True,blank=True, related_name='job_manage_vs',verbose_name="料号名称")
+
+    layer=models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],
+                            verbose_name="层名称")
+    layer_org=models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+                            verbose_name="原始层名称")
+    vs_result=models.CharField(max_length=10, choices=(('passed', '通过'), ('failed', '失败'), ('none', '未比对')), default='none',null=True,blank=True,verbose_name="比对结果")
+    vs_result_detail=models.CharField(max_length=100000, validators=[validators.MinLengthValidator(limit_value=0)],
+                            null=True,blank=True,verbose_name="比对详细信息")
+
+    vs_method = models.CharField(max_length=10, choices=(('ep', '悦谱'), ('g', 'G软件'), ('none', 'none')),
+                                    default='none', null=True, blank=True, verbose_name="比对方法")
+    layer_file_type=models.CharField(max_length=100, choices=(('gerber274X', 'Gerber274-X'), ('gerber274D', 'Gerber274-D'), ('excellon2', 'Excellon2'),
+                                                         ('excellon1', 'Excellon1'),('dxf', 'DXF'),
+                                                             ('else', '其它')), default='else',verbose_name="层文件类型")
+
+    layer_type = models.CharField(max_length=100, choices=(('signal_outter', '外层'),  ('signal_inner', '内层'),('solder', '防焊'),('silk', '丝印'),('paste', '锡膏'),
+    ('drill', '孔层'), ('rout', 'Rout'), ('slot', '槽孔'), ('else', '其它')), default='else', verbose_name="层类型")
+    features_count=models.IntegerField(default=0,null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],verbose_name="物件数")
+
+
+    drill_excellon2_units = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('none', '未记录')), default='none',
+                                             verbose_name="E2_units")
+    drill_excellon2_zeroes_omitted = models.CharField(max_length=10, choices=(
+    ('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', '未记录')), default='none', verbose_name="E2省零")
+    drill_excellon2_number_format_A = models.CharField(max_length=10, choices=(
+    ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('none', '未记录')),
+                                                       default='none', verbose_name="E2_format_A")
+    drill_excellon2_number_format_B = models.CharField(max_length=10, choices=(
+        ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('none', '未记录')),
+                                                       default='none', verbose_name="E2_format_B")
+    drill_excellon2_tool_units = models.CharField(max_length=10,
+                                                  choices=(('Inch', 'Inch'), ('MM', 'MM'), ('Mils', 'Mils'), ('none', '未记录')),
+                                                  default='none',
+                                                  verbose_name="E2_tool")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_vs_user', null=True, blank=True,
+                               verbose_name="负责人")
+    STATUS_CHOICES = (('draft', '草稿'), ('published', '正式'))
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],
+                              verbose_name="备注", blank=True, null=True)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    updated = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    class Meta:
+        db_table = 'vs'
         ordering = ('-create_time',)
     # def get_absolute_url(self):
     #     return reverse('job_manage:JobFormView', args=[self.id, ])
