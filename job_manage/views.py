@@ -1028,15 +1028,16 @@ def vs_ep(request,job_id):
 
     epcam.init()
     #打开job_ep
-    # print("ffff",job.file_odb_current,str(job.file_odb_current).split('/')[-1])
-    job_ep_name=str(job.file_odb_current).split('/')[-1]
+    job_ep_name=str(job.file_odb_current).split('/')[-1].split('.')[0]
     new_job_path_ep = os.path.join(temp_path, job_ep_name)
+    print("temp_path:", temp_path, "job_ep_name:", job_ep_name)
     job_operation.open_job(temp_path, job_ep_name)
 
-    job_g_name = str(job.file_odb_g).split('/')[-1]
-    new_job_path_ep = os.path.join(temp_path, job_g_name)
+    # 打开job_g
+    job_g_name = str(job.file_odb_g).split('/')[-1].split('.')[0]
+    new_job_path_g = os.path.join(temp_path, job_g_name)
+    print("temp_path:", temp_path, "job_g_name:", job_g_name)
     job_operation.open_job(temp_path, job_g_name)
-
 
 
 
@@ -1048,11 +1049,12 @@ def vs_ep(request,job_id):
     all_result = {}  # 存放所有层比对结果
     all_layer = job_operation.get_all_layers(job_ep_name)
     print(all_layer)
-    # for layer in all_layer:
-    #     layer_result = epcam_api.layer_compare_point(job, step, layer, job, step, layer, tol, isGlobal, consider_sr,map_layer_res)
-    #     all_result[layer] = layer_result
-    # print("*" * 100)
-    # print(all_result)
+    step="orig"
+    for layer in all_layer:
+        layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
+        all_result[layer] = layer_result
+    print("*" * 100)
+    print(all_result)
     print("*" * 100)
 
 
