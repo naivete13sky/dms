@@ -11,9 +11,9 @@
 {#        <span class="logo">Bookmarks</span>#}
         {% if request.user.is_authenticated %}
             <ul class="menu">
-        <li {% if section == 'dashboard' %}class="selected"{% endif %}><a href="{% url 'dashboard' %}">My dashboard</a></li>
-        <li {% if section == 'images' %}class="selected"{% endif %}><a href="#">Images</a></li>
-        <li {% if section == 'people' %}class="selected"{% endif %}><a href="#">People</a></li>
+        <li {% if section == 'dashboard' %}class="selected"{% endif %}><a href="{% url 'dashboard' %}">我的空间</a></li>
+        <li {% if section == 'images' %}class="selected"{% endif %}><a href="#">头像</a></li>
+        <li {% if section == 'people' %}class="selected"{% endif %}><a href="#">个人</a></li>
     </ul>
         {% endif %}
 

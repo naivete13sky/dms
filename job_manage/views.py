@@ -1237,11 +1237,6 @@ def view_vs_one_layer(request,job_id,layer_org):
 
 
 def test(request):
-
-
     if request.user.is_authenticated:
         print(request.user.first_name,'|',request.user.username)
-
-
-
     return HttpResponse("abc")
