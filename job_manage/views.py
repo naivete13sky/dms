@@ -1187,9 +1187,6 @@ class VsListView(ListView):
         context['field_verbose_name'] = field_verbose_name# 表头用
         query=self.request.GET.get('query',False)
         if query:
-            # context['cc'] = query
-            # print(query)
-            # context['query'] = query
             context['vs'] = models.Vs.objects.filter(
                 Q(layer__contains=query) |
                 Q(job__job_name__contains=query))
