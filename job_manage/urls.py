@@ -47,6 +47,7 @@ urlpatterns = [
     path('view_vs/<int:job_id>/', views.view_vs,name='view_vs'),
     path('view_vs_one_layer/<int:job_id>/<str:layer_org>/', views.view_vs_one_layer,name='view_vs_one_layer'),
 
+    path('test', views.test,name='test'),
 
 
 # ]
