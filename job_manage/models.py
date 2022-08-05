@@ -114,20 +114,36 @@ class Layer(models.Model):
                                      validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],verbose_name="物件数")
 
 
-    drill_excellon2_units = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('none', '未记录')), default='none',
-                                             verbose_name="E2_units")
-    drill_excellon2_zeroes_omitted = models.CharField(max_length=10, choices=(
-    ('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', '未记录')), default='none', verbose_name="E2省零")
-    drill_excellon2_number_format_A = models.CharField(max_length=10, choices=(
+    units_ep = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('none', '未记录')), default='none',
+                                             verbose_name="units_EP")
+    zeroes_omitted_ep = models.CharField(max_length=10, choices=(
+    ('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', '未记录')), default='none', verbose_name="省零EP")
+    number_format_A_ep = models.CharField(max_length=10, choices=(
     ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('none', '未记录')),
-                                                       default='none', verbose_name="E2_format_A")
-    drill_excellon2_number_format_B = models.CharField(max_length=10, choices=(
+                                                       default='none', verbose_name="整数EP")
+    number_format_B_ep = models.CharField(max_length=10, choices=(
         ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('none', '未记录')),
-                                                       default='none', verbose_name="E2_format_B")
-    drill_excellon2_tool_units = models.CharField(max_length=10,
+                                                       default='none', verbose_name="小数EP")
+    tool_units_ep = models.CharField(max_length=10,
                                                   choices=(('Inch', 'Inch'), ('MM', 'MM'), ('Mils', 'Mils'), ('none', '未记录')),
                                                   default='none',
-                                                  verbose_name="E2_tool")
+                                                  verbose_name="Tool_units_EP")
+
+    units_g = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('none', '未记录')),
+                                default='none',verbose_name="units_G")
+    zeroes_omitted_g = models.CharField(max_length=10, choices=(
+        ('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', '未记录')), default='none', verbose_name="省零G")
+    number_format_A_g = models.CharField(max_length=10, choices=(
+        ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'),
+        ('none', '未记录')),default='none', verbose_name="整数G")
+    number_format_B_g = models.CharField(max_length=10, choices=(
+        ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'),
+        ('none', '未记录')), default='none', verbose_name="小数G")
+    tool_units_g = models.CharField(max_length=10,
+                                     choices=(('Inch', 'Inch'), ('MM', 'MM'), ('Mils', 'Mils'), ('none', '未记录')),
+                                     default='none',
+                                     verbose_name="Tool_units_G")
+
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_layer_user', null=True, blank=True,
                                verbose_name="负责人")
     STATUS_CHOICES = (('draft', '草稿'), ('published', '正式'))
@@ -171,20 +187,7 @@ class Vs(models.Model):
                                      validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],verbose_name="物件数")
 
 
-    drill_excellon2_units = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('none', '未记录')), default='none',
-                                             verbose_name="E2_units")
-    drill_excellon2_zeroes_omitted = models.CharField(max_length=10, choices=(
-    ('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', '未记录')), default='none', verbose_name="E2省零")
-    drill_excellon2_number_format_A = models.CharField(max_length=10, choices=(
-    ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('none', '未记录')),
-                                                       default='none', verbose_name="E2_format_A")
-    drill_excellon2_number_format_B = models.CharField(max_length=10, choices=(
-        ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('none', '未记录')),
-                                                       default='none', verbose_name="E2_format_B")
-    drill_excellon2_tool_units = models.CharField(max_length=10,
-                                                  choices=(('Inch', 'Inch'), ('MM', 'MM'), ('Mils', 'Mils'), ('none', '未记录')),
-                                                  default='none',
-                                                  verbose_name="E2_tool")
+
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_vs_user', null=True, blank=True,
                                verbose_name="负责人")
     STATUS_CHOICES = (('draft', '草稿'), ('published', '正式'))

@@ -363,7 +363,7 @@ def job_list(request,tag_slug=None):
     return render(request, 'list.html', {'page': page, 'jobs': jobs,'tag': tag})
 
 
-class JobListView(ListView):
+class JobListViewVs(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
     context_object_name = 'jobs'
@@ -409,23 +409,13 @@ class JobListView(ListView):
                 Q(author__username__contains=query))
         return context
 
-class JobListViewVs(ListView):
+class JobListView(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
     context_object_name = 'jobs'
     paginate_by = 10
     # ordering = ['-publish']
-    template_name = 'JobListViewVs.html'
-
-    # def get_queryset(self):
-    #     query = self.request.GET.get('query', '')
-    #     new_context = models.Job.objects.filter(
-    #             Q(job_name__contains=query) |
-    #             Q(author__username__contains=query))
-    #     return new_context
-    # def get_queryset(self):  # 重写get_queryset方法
-    #     # 获取所有is_deleted为False的用户，并且以时间倒序返回数据
-    #     return UserProfile.objects.filter(is_deleted=False).order_by('-create_time')
+    template_name = 'JobListView.html'
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -436,18 +426,9 @@ class JobListViewVs(ListView):
                                   Job._meta.get_field('file_odb').verbose_name,
                                   Job._meta.get_field('file_odb_current').verbose_name,
                                   Job._meta.get_field('file_odb_g').verbose_name,
-
                                   Job._meta.get_field('vs_result_ep').verbose_name,
                                   Job._meta.get_field('vs_result_g').verbose_name,
                                   '层别信息',
-
-                                  # Job._meta.get_field('drill_excellon2_units').verbose_name,
-                                  # Job._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
-                                  # Job._meta.get_field('drill_excellon2_number_format_A').verbose_name,
-                                  # Job._meta.get_field('drill_excellon2_number_format_B').verbose_name,
-                                  # Job._meta.get_field('drill_excellon2_tool_units').verbose_name,
-
-
                                   Job._meta.get_field('remark').verbose_name,
                                   Job._meta.get_field('author').verbose_name,
                                   Job._meta.get_field('from_object').verbose_name,
@@ -577,7 +558,7 @@ class JobCreateView(CreateView):
     template_name = "JobCreateView.html"
     fields = "__all__"
     # success_url = 'JobListView'
-    success_url = 'JobListViewVs'
+    success_url = 'JobListView'
 
 class JobUpdateView(UpdateView):
     """
@@ -597,7 +578,7 @@ class JobUpdateViewVs(UpdateView):
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'JobUpdateView.html'
-    success_url = '../JobListViewVs' # 修改成功后跳转的链接
+    success_url = '../JobListView' # 修改成功后跳转的链接
 
 class JobDeleteView(DeleteView):
   """
@@ -755,7 +736,7 @@ def gerber274x_to_odb_ep(request,job_id):
 
 
 
-    return redirect('job_manage:JobListViewVs')
+    return redirect('job_manage:JobListView')
 
 def gerber274x_to_odb_ep2(request,job_id):
     pass
@@ -818,7 +799,7 @@ def gerber274x_to_odb_ep2(request,job_id):
 
 
 
-    return redirect('job_manage:JobListViewVs')
+    return redirect('job_manage:JobListView')
 
 def getFlist(path):
     for root, dirs, files in os.walk(path):
@@ -890,7 +871,7 @@ def gerber274x_to_odb_g(request,job_id):
 
 
 
-    return redirect('job_manage:JobListViewVs')
+    return redirect('job_manage:JobListView')
 
 
 class LayerListView(ListView):
@@ -915,23 +896,27 @@ class LayerListView(ListView):
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
         field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
-                                  models.Layer._meta.get_field('layer').verbose_name,
+                              models.Layer._meta.get_field('layer').verbose_name,
                               models.Layer._meta.get_field('layer_org').verbose_name,
                               models.Layer._meta.get_field('vs_result_ep').verbose_name,
                               models.Layer._meta.get_field('vs_result_g').verbose_name,
-                                  models.Layer._meta.get_field('layer_file_type').verbose_name,
-                                  models.Layer._meta.get_field('layer_type').verbose_name,
-                                models.Layer._meta.get_field('features_count').verbose_name,
-                                  models.Layer._meta.get_field('drill_excellon2_units').verbose_name,
-                                  models.Layer._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
-                                  # Job._meta.get_field('publish').verbose_name,
-                                  models.Layer._meta.get_field('drill_excellon2_number_format_A').verbose_name,
-                                  models.Layer._meta.get_field('drill_excellon2_number_format_B').verbose_name,
-                                models.Layer._meta.get_field('drill_excellon2_tool_units').verbose_name,
-                                models.Layer._meta.get_field('status').verbose_name,
-                                  "标签",
-                                  "操作",
-                                  ]
+                              models.Layer._meta.get_field('layer_file_type').verbose_name,
+                              models.Layer._meta.get_field('layer_type').verbose_name,
+                              models.Layer._meta.get_field('features_count').verbose_name,
+                              models.Layer._meta.get_field('units_ep').verbose_name,
+                              models.Layer._meta.get_field('zeroes_omitted_ep').verbose_name,
+                              models.Layer._meta.get_field('number_format_A_ep').verbose_name,
+                              models.Layer._meta.get_field('number_format_B_ep').verbose_name,
+                              models.Layer._meta.get_field('tool_units_ep').verbose_name,
+                              models.Layer._meta.get_field('units_g').verbose_name,
+                              models.Layer._meta.get_field('zeroes_omitted_g').verbose_name,
+                              models.Layer._meta.get_field('number_format_A_g').verbose_name,
+                              models.Layer._meta.get_field('number_format_B_g').verbose_name,
+                              models.Layer._meta.get_field('tool_units_g').verbose_name,
+                              models.Layer._meta.get_field('status').verbose_name,
+                              "标签",
+                              "操作",
+                              ]
         context['field_verbose_name'] = field_verbose_name# 表头用
         query=self.request.GET.get('query',False)
         if query:
@@ -959,12 +944,16 @@ def view_layer(request,job_id):
                           models.Layer._meta.get_field('layer_file_type').verbose_name,
                           models.Layer._meta.get_field('layer_type').verbose_name,
                           models.Layer._meta.get_field('features_count').verbose_name,
-                          models.Layer._meta.get_field('drill_excellon2_units').verbose_name,
-                          models.Layer._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
-                          # Job._meta.get_field('publish').verbose_name,
-                          models.Layer._meta.get_field('drill_excellon2_number_format_A').verbose_name,
-                          models.Layer._meta.get_field('drill_excellon2_number_format_B').verbose_name,
-                          models.Layer._meta.get_field('drill_excellon2_tool_units').verbose_name,
+                          models.Layer._meta.get_field('units_ep').verbose_name,
+                          models.Layer._meta.get_field('zeroes_omitted_ep').verbose_name,
+                          models.Layer._meta.get_field('number_format_A_ep').verbose_name,
+                          models.Layer._meta.get_field('number_format_B_ep').verbose_name,
+                          models.Layer._meta.get_field('tool_units_ep').verbose_name,
+                          models.Layer._meta.get_field('units_g').verbose_name,
+                          models.Layer._meta.get_field('zeroes_omitted_g').verbose_name,
+                          models.Layer._meta.get_field('number_format_A_g').verbose_name,
+                          models.Layer._meta.get_field('number_format_B_g').verbose_name,
+                          models.Layer._meta.get_field('tool_units_g').verbose_name,
                           models.Layer._meta.get_field('status').verbose_name,
                           "标签",
                           "操作",
@@ -1133,7 +1122,7 @@ def vs_ep(request,job_id):
         shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
-    return redirect('job_manage:JobListViewVs')
+    return redirect('job_manage:JobListView')
 
 
 def vs_g(request,job_id):
@@ -1163,26 +1152,20 @@ class VsListView(ListView):
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
         field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
-                                  models.Vs._meta.get_field('layer').verbose_name,
+                              models.Vs._meta.get_field('layer').verbose_name,
                               models.Vs._meta.get_field('layer_org').verbose_name,
                               models.Vs._meta.get_field('vs_result').verbose_name,
                               models.Vs._meta.get_field('vs_result_detail').verbose_name,
                               models.Vs._meta.get_field('vs_method').verbose_name,
-                                  models.Vs._meta.get_field('layer_file_type').verbose_name,
-                                  models.Vs._meta.get_field('layer_type').verbose_name,
-                                models.Vs._meta.get_field('features_count').verbose_name,
-                                  models.Vs._meta.get_field('drill_excellon2_units').verbose_name,
-                                  models.Vs._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
-                                  # Job._meta.get_field('publish').verbose_name,
-                                  models.Vs._meta.get_field('drill_excellon2_number_format_A').verbose_name,
-                                  models.Vs._meta.get_field('drill_excellon2_number_format_B').verbose_name,
-                                models.Vs._meta.get_field('drill_excellon2_tool_units').verbose_name,
-                                models.Vs._meta.get_field('status').verbose_name,
+                              models.Vs._meta.get_field('layer_file_type').verbose_name,
+                              models.Vs._meta.get_field('layer_type').verbose_name,
+                              models.Vs._meta.get_field('features_count').verbose_name,
+                              models.Vs._meta.get_field('status').verbose_name,
                               models.Vs._meta.get_field('vs_time').verbose_name,
                               models.Vs._meta.get_field('create_time').verbose_name,
                               models.Vs._meta.get_field('updated').verbose_name,
-                                  "标签",
-                                  "操作",
+                              "标签",
+                              "操作",
                                   ]
         context['field_verbose_name'] = field_verbose_name# 表头用
         query=self.request.GET.get('query',False)
@@ -1208,12 +1191,6 @@ def view_vs(request,job_id):
                           models.Vs._meta.get_field('layer_file_type').verbose_name,
                           models.Vs._meta.get_field('layer_type').verbose_name,
                           models.Vs._meta.get_field('features_count').verbose_name,
-                          models.Vs._meta.get_field('drill_excellon2_units').verbose_name,
-                          models.Vs._meta.get_field('drill_excellon2_zeroes_omitted').verbose_name,
-                          # Job._meta.get_field('publish').verbose_name,
-                          models.Vs._meta.get_field('drill_excellon2_number_format_A').verbose_name,
-                          models.Vs._meta.get_field('drill_excellon2_number_format_B').verbose_name,
-                          models.Vs._meta.get_field('drill_excellon2_tool_units').verbose_name,
                           models.Vs._meta.get_field('status').verbose_name,
                           models.Vs._meta.get_field('vs_time').verbose_name,
                           models.Vs._meta.get_field('create_time').verbose_name,

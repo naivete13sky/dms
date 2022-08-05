@@ -46,23 +46,110 @@
                                 </td>
 
                                 <td>
-                                    {% if job.file_odb %}
-                                        <button class="btn btn-transparent" title="ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
-                                        </button>
-                                    {% endif %}
-                                </td>
-                                <td>
                                     {% if job.file_compressed %}
                                         <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
                                         </button>
+
+
+
                                     {% endif %}
+                                    {% if job.bool_layer_info == 'false' %}
+                                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org/{{ job.id }}';"><i class="fa fa-list"></i>
+                                        </button>
+
+                                    {% endif %}
+
+
                                 </td>
+
                                 <td>
                                     {% if job.file_compressed_org %}
                                         <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed_org }}" onclick="window.location.href='/media/{{ job.file_compressed_org }}';"><i class="fa fa-download"></i>
                                         </button>
+
                                     {% endif %}
                                 </td>
+
+                                <td>
+                                    {% if job.file_odb %}
+                                        <button class="btn btn-transparent" title="EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if job.file_odb_current %}
+{#                                        {{ job.file_odb_current }}#}
+                                        <button class="btn btn-transparent" title="最新EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb_current }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if not job.file_odb_current %}
+                                        <button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='gerber274x_to_odb_ep2/{{ job.id }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="G-ODB下载：{{ job.file_odb_g}}" onclick="window.location.href='/media/{{ job.file_odb_g }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if not job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="生成G软件转图" onclick="window.location.href='gerber274x_to_odb_g/{{ job.id }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    {% if job.vs_result_ep == 'passed' %}
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_ep == 'failed' %}
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                            <i class="fa fa-asterisk"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_ep == 'none' %}
+                                        未比对
+
+                                    {% endif %}
+
+                                    <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_ep/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
+                                        </button>
+
+
+                                </td>
+                                <td>
+                                    {% if job.vs_result_g == 'none' %}
+                                        无信息
+                                        <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_g/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
+                                        </button>
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>
+
+                                    </button>
+                                </td>
+
+{#                                <td>{{ job.drill_excellon2_units }}</td>#}
+{#                                <td>{{ job.drill_excellon2_zeroes_omitted }}</td>#}
+{#                                <td>{{ job.drill_excellon2_number_format_A }}</td>#}
+{#                                <td>{{ job.drill_excellon2_number_format_B }}</td>#}
+{#                                <td>{{ job.drill_excellon2_tool_units }}</td>#}
+
+
                                 <td>{{ job.remark }}</td>
                                 <td>{{ job.author }}</td>
                                 <td>{{ job.from_object }}</td>

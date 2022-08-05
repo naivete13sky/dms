@@ -121,11 +121,11 @@ class EpGerberToODB:
                         print(layer_e2.layer,layer_e2.status)
                         if layer_e2.status=='published':
                             pass
-                            file_param['units']=layer_e2.drill_excellon2_units
-                            file_param['zeroes_omitted'] = layer_e2.drill_excellon2_zeroes_omitted
-                            file_param['Number_format_integer'] = int(layer_e2.drill_excellon2_number_format_A)
-                            file_param['Number_format_decimal'] = int(layer_e2.drill_excellon2_number_format_B)
-                            file_param['tool_units'] = layer_e2.drill_excellon2_tool_units
+                            file_param['units']=layer_e2.units_ep
+                            file_param['zeroes_omitted'] = layer_e2.zeroes_omitted_ep
+                            file_param['Number_format_integer'] = int(layer_e2.number_format_A_ep)
+                            file_param['Number_format_decimal'] = int(layer_e2.number_format_B_ep)
+                            file_param['tool_units'] = layer_e2.tool_units_ep
                         print('现在：',file_param)
                         re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
                     except:

@@ -450,15 +450,15 @@ class Asw():
                 pass
                 print("我是Excellon2!!!!!")
                 format='Excellon2'
-                units=layer_e2.drill_excellon2_units.lower()
-                zeroes=layer_e2.drill_excellon2_zeroes_omitted.lower()
-                nf1 = int(layer_e2.drill_excellon2_number_format_A)
-                nf2 = int(layer_e2.drill_excellon2_number_format_B)
+                units=layer_e2.units_g.lower()
+                zeroes=layer_e2.zeroes_omitted_g.lower()
+                nf1 = int(layer_e2.number_format_A_g)
+                nf2 = int(layer_e2.number_format_B_g)
                 #g软件的tool_units没有mils选项
-                if layer_e2.drill_excellon2_tool_units.lower() == 'mils':
+                if layer_e2.tool_units_g.lower() == 'mils':
                     tool_units = 'inch'
                 else:
-                    tool_units = layer_e2.drill_excellon2_tool_units.lower()
+                    tool_units = layer_e2.tool_units_g.lower()
 
                 separator='nl'
             else:
