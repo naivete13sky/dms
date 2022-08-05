@@ -557,7 +557,7 @@ class JobCreateView(CreateView):
     model=Job
     template_name = "JobCreateView.html"
     fields = "__all__"
-    # success_url = 'JobListView'
+
     success_url = 'JobListView'
 
 class JobUpdateView(UpdateView):
