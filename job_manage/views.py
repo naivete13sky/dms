@@ -558,6 +558,15 @@ class JobCreateView(CreateView):
     template_name = "JobCreateView.html"
     fields = "__all__"
 
+    def get_initial(self):
+        # Get the initial dictionary from the superclass method
+        initial = super(JobCreateView, self).get_initial()
+        # Copy the dictionary so we don't accidentally change a mutable dict
+        initial = initial.copy()
+        initial['author'] = self.request.user
+        # etc...
+        return initial
+
     success_url = 'JobListView'
 
 class JobUpdateView(UpdateView):
