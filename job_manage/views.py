@@ -1163,8 +1163,8 @@ def vs_ep(request,job_id):
     print("*" * 100)
 
     # 删除temp_path
-    # if os.path.exists(temp_path):
-    #     shutil.rmtree(temp_path)
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
