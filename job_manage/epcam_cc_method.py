@@ -196,6 +196,7 @@ class EpGerberToODB:
         job_operation.create_step(job, step)
         job_operation.save_job(job)
         index = 1
+        print("*"*100,job, step, file_path, index,job_id)
         self.Traverse_Gerber2(job, step, file_path, index,job_id)
         job_operation.save_job(job)
         all_layer = layer_info.get_all_layer_name(job)  # 获得料号下所有layer

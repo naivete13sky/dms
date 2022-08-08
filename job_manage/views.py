@@ -619,7 +619,7 @@ def get_file_name_from_org(request,job_id):
     print(job.job_name, job.file_compressed)
 
     # 先拿到原始料号，放到临时文件夹，完成解压
-    temp_path = r'C:\cc\share\temp'
+    temp_path = r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
     org_file_path = (os.path.join(os.getcwd(), r'media', str(job.file_compressed))).replace(r'/', '\\')
@@ -696,7 +696,8 @@ def gerber274x_to_odb_ep(request,job_id):
 
 
     #先拿到原始料号，放到临时文件夹，完成解压
-    temp_path=r'C:\cc\share\temp'
+    temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
+    print("*"*100,temp_path)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
     org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
@@ -716,12 +717,12 @@ def gerber274x_to_odb_ep(request,job_id):
     # print(file_path_gerber)
 
 
-    file_path = os.path.join(r'C:\cc\share\temp',file_path_gerber)
+    file_path = os.path.join(temp_path,file_path_gerber)
     out_path = temp_path
     cc = EpGerberToODB()
     cc.ep_gerber_to_odb(job_name, step, file_path, out_path)
     #把悦谱转图压缩成tgz。
-    ifn = os.path.join(r'C:\cc\share\temp',job_name)
+    ifn = os.path.join(temp_path,job_name)
     try:
         ifn = ifn.split(sep='"')[1]
         # print(ifn)
@@ -757,7 +758,7 @@ def gerber274x_to_odb_ep2(request,job_id):
 
 
     #先拿到原始料号，放到临时文件夹，完成解压
-    temp_path=r'C:\cc\share\temp'
+    temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
     org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
@@ -777,14 +778,15 @@ def gerber274x_to_odb_ep2(request,job_id):
     # print(file_path_gerber)
 
 
-    file_path = os.path.join(r'C:\cc\share\temp',file_path_gerber)
+    file_path = os.path.join(temp_path,file_path_gerber)
     out_path = temp_path
 
 
     cc = EpGerberToODB()
+    print("*"*100,job_name, step, file_path, out_path,job_id)
     cc.ep_gerber_to_odb2(job_name, step, file_path, out_path,job_id)
     #把悦谱转图压缩成tgz。
-    ifn = os.path.join(r'C:\cc\share\temp',job_name)
+    ifn = os.path.join(temp_path,job_name)
     try:
         ifn = ifn.split(sep='"')[1]
         # print(ifn)
@@ -827,7 +829,7 @@ def gerber274x_to_odb_g(request,job_id):
 
 
     #先拿到原始料号，放到临时文件夹，完成解压
-    temp_path=r'C:\cc\share\temp'
+    temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
     org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
@@ -847,10 +849,10 @@ def gerber274x_to_odb_g(request,job_id):
     # print(file_path_gerber)
 
 
-    file_path = os.path.join(r'C:\cc\share\temp',file_path_gerber)
+    file_path = os.path.join(temp_path,file_path_gerber)
     gerberList = getFlist(file_path)
     print(gerberList)
-    g_temp_path=r'Z:/share/temp'
+    g_temp_path=r'Z:/share/temp'+"_"+str(request.user)+"_"+str(job_id)
     gerberList_path = []
     for each in gerberList:
         gerberList_path.append(os.path.join(g_temp_path,file_path_gerber, each))
@@ -861,7 +863,7 @@ def gerber274x_to_odb_g(request,job_id):
     cc = Asw(settings.G_GETWAY_PATH)
     cc.g_Gerber2Odb2(job_name, step, gerberList_path, out_path,job_id)
     #输出tgz到指定目录
-    cc.g_export(job_name, r'Z:/share/temp')
+    cc.g_export(job_name, g_temp_path)
     #在g软件中删除此料
     cc.delete_job(job_name)
 
@@ -1021,7 +1023,7 @@ def vs_ep(request,job_id):
     print(job.job_name, job.file_odb_current,job.file_odb_g)
 
     #拿到job_ep和job_g
-    temp_path = r'C:\cc\share\temp'
+    temp_path = r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
     job_ep_path=(os.path.join(os.getcwd(),r'media',str(job.file_odb_current))).replace(r'/','\\')
