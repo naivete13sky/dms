@@ -64,7 +64,9 @@ def file_download_odb(request,order):
     print("*"*30,order)
     excel_name = str(request.path_info).replace("/router_job_odb/","")
     print(excel_name)
-    pwd = os.getcwd()
+    # pwd = os.getcwd()
+    pwd=settings.PROJECT_PATH
+
     the_file_name = excel_name
     filename = pwd + r"\router_job_odb\\" + excel_name
     # filename=request.path_info
@@ -80,7 +82,8 @@ def file_download(request,order):
     print("*"*30,order)
     excel_name = str(request.path_info).replace("/media/files/","")
     print(excel_name)
-    pwd = os.getcwd()
+    # pwd = os.getcwd()
+    pwd=settings.PROJECT_PATH
     the_file_name = excel_name
     filename = pwd + r"\media\files\\" + excel_name
     # filename=request.path_info
@@ -623,7 +626,7 @@ def get_file_name_from_org(request,job_id):
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
     # org_file_path = (os.path.join(os.getcwd(), r'media', str(job.file_compressed))).replace(r'/', '\\')
-    org_file_path = (os.path.join(r'C:\cc\python\epwork\dms', r'media', str(job.file_compressed))).replace(r'/', '\\')
+    org_file_path = (os.path.join(settings.PROJECT_PATH, r'media', str(job.file_compressed))).replace(r'/', '\\')
     shutil.copy(org_file_path, temp_path)
     time.sleep(0.2)
     rf = rarfile.RarFile(os.path.join(temp_path, str(job.file_compressed).split("/")[1]))
@@ -701,7 +704,7 @@ def gerber274x_to_odb_ep(request,job_id):
     print("*"*100,temp_path)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
-    org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
+    org_file_path=(os.path.join(settings.PROJECT_PATH,r'media',str(job.file_compressed))).replace(r'/','\\')
     shutil.copy(org_file_path,temp_path)
     time.sleep(0.2)
     rf = rarfile.RarFile(os.path.join(temp_path,str(job.file_compressed).split("/")[1]))
@@ -733,7 +736,7 @@ def gerber274x_to_odb_ep(request,job_id):
     Tgz().maketgz(ofn, ifn)
 
     #把压缩好悦谱转图tzg放入相应Job里
-    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(settings.PROJECT_PATH,r'media\files'))
     time.sleep(0.2)
 
     job.file_odb_current=('files/'+job_name+'.tgz')
@@ -762,7 +765,7 @@ def gerber274x_to_odb_ep2(request,job_id):
     temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
-    org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
+    org_file_path=(os.path.join(settings.PROJECT_PATH,r'media',str(job.file_compressed))).replace(r'/','\\')
     shutil.copy(org_file_path,temp_path)
     time.sleep(0.2)
     rf = rarfile.RarFile(os.path.join(temp_path,str(job.file_compressed).split("/")[1]))
@@ -797,7 +800,7 @@ def gerber274x_to_odb_ep2(request,job_id):
     Tgz().maketgz(ofn, ifn)
 
     #把压缩好悦谱转图tzg放入相应Job里
-    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(settings.PROJECT_PATH,r'media\files'))
     time.sleep(0.2)
 
     job.file_odb_current=('files/'+job_name+'.tgz')
@@ -833,7 +836,7 @@ def gerber274x_to_odb_g(request,job_id):
     temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
-    org_file_path=(os.path.join(os.getcwd(),r'media',str(job.file_compressed))).replace(r'/','\\')
+    org_file_path=(os.path.join(settings.PROJECT_PATH,r'media',str(job.file_compressed))).replace(r'/','\\')
     shutil.copy(org_file_path,temp_path)
     time.sleep(0.2)
     rf = rarfile.RarFile(os.path.join(temp_path,str(job.file_compressed).split("/")[1]))
@@ -869,7 +872,7 @@ def gerber274x_to_odb_g(request,job_id):
     cc.delete_job(job_name)
 
     #把g转图tzg放入相应Job里
-    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(os.getcwd(),r'media\files'))
+    shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(settings.PROJECT_PATH,r'media\files'))
     time.sleep(0.2)
 
     job.file_odb_g=('files/'+job_name+'.tgz')
@@ -1027,12 +1030,12 @@ def vs_ep(request,job_id):
     temp_path = r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
-    job_ep_path=(os.path.join(os.getcwd(),r'media',str(job.file_odb_current))).replace(r'/','\\')
+    job_ep_path=(os.path.join(settings.PROJECT_PATH,r'media',str(job.file_odb_current))).replace(r'/','\\')
     shutil.copy(job_ep_path,temp_path)
     time.sleep(0.2)
     job_operation.untgz(os.path.join(temp_path,str(job.file_odb_current).split('/')[-1]),temp_path)
 
-    job_g_path = (os.path.join(os.getcwd(), r'media', str(job.file_odb_g))).replace(r'/', '\\')
+    job_g_path = (os.path.join(settings.PROJECT_PATH, r'media', str(job.file_odb_g))).replace(r'/', '\\')
     shutil.copy(job_g_path, temp_path)
     time.sleep(0.2)
     job_operation.untgz(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1]), temp_path)
