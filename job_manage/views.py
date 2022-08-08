@@ -622,7 +622,8 @@ def get_file_name_from_org(request,job_id):
     temp_path = r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
-    org_file_path = (os.path.join(os.getcwd(), r'media', str(job.file_compressed))).replace(r'/', '\\')
+    # org_file_path = (os.path.join(os.getcwd(), r'media', str(job.file_compressed))).replace(r'/', '\\')
+    org_file_path = (os.path.join(r'C:\cc\python\epwork\dms', r'media', str(job.file_compressed))).replace(r'/', '\\')
     shutil.copy(org_file_path, temp_path)
     time.sleep(0.2)
     rf = rarfile.RarFile(os.path.join(temp_path, str(job.file_compressed).split("/")[1]))
