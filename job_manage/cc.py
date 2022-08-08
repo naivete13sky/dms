@@ -1,5 +1,6 @@
 import sys
 import json
+import time
 from time import sleep
 import pytest
 from os.path import dirname, abspath
@@ -114,15 +115,100 @@ class EpGerberToODB:
         print(all_result)
         print("*" * 100)
 
-
-
-
-if __name__ == "__main__":
+def test_gerber_to_odb_ep():
     pass
     epcam.init()
     job = 'test1'
     step = 'orig'
     file_path = r'C:\Users\cheng.chen\Desktop\742tbv01.1up'
     out_path = r'C:\job\test\odb'
-    cc=EpGerberToODB()
+    cc = EpGerberToODB()
     cc.ep_gerber_to_odb(job, step, file_path, out_path)
+
+
+def vs_ep_1():
+    pass
+    ep_vs_total_result_flag = True  # True表示最新一次悦谱比对通过
+    vs_time=str(int(time.time()))
+
+
+
+    #拿到job_ep和job_g
+    temp_path = r'C:\cc\share\temp'
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
+    job_ep_path=r'C:\Users\cheng.chen\Desktop\0808\rd-pfv-tcbe-ep.tgz'
+    shutil.copy(job_ep_path,temp_path)
+    time.sleep(0.2)
+    job_operation.untgz(os.path.join(temp_path,r'rd-pfv-tcbe-ep.tgz'),temp_path)
+
+    job_g_path = r'C:\Users\cheng.chen\Desktop\0808\rd-pfv-tcbe-g.tgz'
+    shutil.copy(job_g_path, temp_path)
+    time.sleep(0.2)
+    job_operation.untgz(os.path.join(temp_path, r'rd-pfv-tcbe-g.tgz'), temp_path)
+
+    epcam.init()
+    #打开job_ep
+    job_ep_name=r'rd-pfv-tcbe-ra1.0-1640160611796_ep_1659950767'
+    new_job_path_ep = os.path.join(temp_path, job_ep_name)
+    print("temp_path:", temp_path, "job_ep_name:", job_ep_name)
+    res=job_operation.open_job(temp_path, job_ep_name)
+    print("open ep tgz:",res)
+
+
+    # 打开job_g
+    job_g_name = r'1640160611796_g'
+    new_job_path_g = os.path.join(temp_path, job_g_name)
+    print("temp_path:", temp_path, "job_g_name:", job_g_name)
+    job_operation.open_job(temp_path, job_g_name)
+    print("open g tgz:", res)
+
+
+
+
+    tol = 0.9 * 25400
+    isGlobal = True
+    consider_sr = True
+    map_layer_res = 200 * 25400
+    all_result = {}  # 存放所有层比对结果
+    step="orig"
+
+
+    #以为悦谱解析好的为主，来VS
+    all_layer = job_operation.get_all_layers(job_ep_name)
+    print('悦谱tgz中的层信息：',all_layer)
+    if len(all_layer)==0:
+        pass
+        ep_vs_total_result_flag = False
+
+    for layer in all_layer:
+        print("*" * 100)
+        print("ep_layer:",layer)
+
+        layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
+        all_result[layer] = layer_result
+
+        print(layer_result)
+        print("*" * 100)
+
+
+
+
+
+    print("*" * 100)
+    print(all_result)
+    print("*" * 100)
+
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
+
+
+
+
+
+if __name__ == "__main__":
+    pass
+    # test_gerber_to_odb_ep()
+    vs_ep_1()
+

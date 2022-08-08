@@ -1030,31 +1030,60 @@ def vs_ep(request,job_id):
     temp_path = r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
     if not os.path.exists(temp_path):
         os.mkdir(temp_path)
+    if not os.path.exists(os.path.join(temp_path,'ep')):
+        os.mkdir(os.path.join(temp_path,'ep'))
+    if not os.path.exists(os.path.join(temp_path,'g')):
+        os.mkdir(os.path.join(temp_path,'g'))
+
     job_ep_path=(os.path.join(settings.PROJECT_PATH,r'media',str(job.file_odb_current))).replace(r'/','\\')
-    shutil.copy(job_ep_path,temp_path)
+    temp_ep_path=os.path.join(temp_path,'ep')
+    shutil.copy(job_ep_path,temp_ep_path)
     time.sleep(0.2)
-    job_operation.untgz(os.path.join(temp_path,str(job.file_odb_current).split('/')[-1]),temp_path)
+    ep_tgz_file = os.listdir(temp_ep_path)[0]
+    print("ep_tgz_file:",ep_tgz_file)
+    job_operation.untgz(os.path.join(temp_ep_path,str(job.file_odb_current).split('/')[-1]),temp_ep_path)
+    if os.path.exists(os.path.join(temp_ep_path,str(job.file_odb_current).split('/')[-1])):
+        os.remove(os.path.join(temp_ep_path,str(job.file_odb_current).split('/')[-1]))
+    print("ep_tgz_file_now:",os.listdir(temp_ep_path)[0])
 
     job_g_path = (os.path.join(settings.PROJECT_PATH, r'media', str(job.file_odb_g))).replace(r'/', '\\')
-    shutil.copy(job_g_path, temp_path)
+    temp_g_path = os.path.join(temp_path, 'g')
+    shutil.copy(job_g_path, temp_g_path)
     time.sleep(0.2)
-    job_operation.untgz(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1]), temp_path)
+    g_tgz_file = os.listdir(temp_g_path)[0]
+    print("g_tgz_file:", g_tgz_file)
+    job_operation.untgz(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1]), temp_g_path)
+    if os.path.exists(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1])):
+        os.remove(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1]))
+    print("g_tgz_file_now:", os.listdir(temp_g_path)[0])
 
     epcam.init()
     #打开job_ep
-    job_ep_name=str(job.file_odb_current).split('/')[-1][:-4]
-    new_job_path_ep = os.path.join(temp_path, job_ep_name)
-    print("temp_path:", temp_path, "job_ep_name:", job_ep_name)
-    res=job_operation.open_job(temp_path, job_ep_name)
+    # job_ep_name=str(job.file_odb_current).split('/')[-1][:-4]
+    job_ep_name=os.listdir(temp_ep_path)[0]
+    new_job_path_ep = os.path.join(temp_ep_path, job_ep_name)
+    print("temp_ep_path:", temp_ep_path, "job_ep_name:", job_ep_name)
+    res=job_operation.open_job(temp_ep_path, job_ep_name)
     print("open ep tgz:",res)
+    print("job_ep_layer:", job_operation.get_all_layers(job_ep_name))
+    if len(job_operation.get_all_layers(job_ep_name))==0:
+        pass
+        ep_vs_total_result_flag=False
+        return HttpResponse("最新-EP-ODB++打开失败！！！！！")
 
 
     # 打开job_g
-    job_g_name = str(job.file_odb_g).split('/')[-1][:-4]
-    new_job_path_g = os.path.join(temp_path, job_g_name)
-    print("temp_path:", temp_path, "job_g_name:", job_g_name)
-    job_operation.open_job(temp_path, job_g_name)
-
+    # job_g_name = str(job.file_odb_g).split('/')[-1][:-4]
+    job_g_name = os.listdir(temp_g_path)[0]
+    new_job_path_g = os.path.join(temp_g_path, job_g_name)
+    print("temp_g_path:", temp_g_path, "job_g_name:", job_g_name)
+    job_operation.open_job(temp_g_path, job_g_name)
+    print("open gp tgz:", res)
+    print("job_g_layer:",job_operation.get_all_layers(job_g_name))
+    if len(job_operation.get_all_layers(job_g_name))==0:
+        pass
+        ep_vs_total_result_flag=False
+        return HttpResponse("G-ODB++打开失败！！！！！")
 
 
 
@@ -1082,6 +1111,7 @@ def vs_ep(request,job_id):
 
     for layer in all_layer:
         print("ep_layer:",layer)
+        print("比对参数",job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
         layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
         all_result[layer] = layer_result
         # for each in all_layer_org_from_org_file_list:
@@ -1133,8 +1163,8 @@ def vs_ep(request,job_id):
     print("*" * 100)
 
     # 删除temp_path
-    if os.path.exists(temp_path):
-        shutil.rmtree(temp_path)
+    # if os.path.exists(temp_path):
+    #     shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
