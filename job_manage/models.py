@@ -99,6 +99,8 @@ class Layer(models.Model):
                             verbose_name="层名称")
     layer_org=models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
                             verbose_name="原始层名称")
+    vs_result_manual = models.CharField(max_length=10, choices=(('passed', '通过'), ('failed', '失败'), ('none', '未比对')),
+                                    default='none', null=True, blank=True, verbose_name="人工比对结果")
     vs_result_ep = models.CharField(max_length=10, choices=(('passed', '通过'), ('failed', '失败'), ('none', '未比对')),
                                  default='none', null=True, blank=True, verbose_name="悦谱比对结果")
     vs_result_g = models.CharField(max_length=10, choices=(('passed', '通过'), ('failed', '失败'), ('none', '未比对')),
