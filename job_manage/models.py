@@ -163,8 +163,10 @@ class Layer(models.Model):
     class Meta:
         db_table = 'layer'
         ordering = ('-create_time',)
-    # def get_absolute_url(self):
-    #     return reverse('job_manage:JobFormView', args=[self.id, ])
+
+    def get_absolute_url(self):
+        return reverse('job_manage:LayerFormView', args=[self.id, ])
+
     def __str__(self):
         # Return a string that represents the instance
         return self.layer

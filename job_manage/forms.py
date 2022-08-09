@@ -192,3 +192,13 @@ class LayerForm(forms.ModelForm):
         model=Layer
         fields = '__all__'
         # fields = ['file_odb']
+
+
+class LayerFormsReadOnly(forms.ModelForm):
+    class Meta:
+        model = Layer
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(LayerFormsReadOnly, self).__init__(*args, **kwargs)
+            for name, field in self.fields.iteritems():
+                field.widget.attrs['readonly'] = 'true'

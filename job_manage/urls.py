@@ -39,6 +39,7 @@ urlpatterns = [
     path('delete_all_layer_info/<int:job_id>/', views.delete_all_layer_info,name='delete_all_layer_info'),
     path('LayerUpdateView/<int:pk>', views.LayerUpdateView.as_view(), name='LayerUpdateView'),
     path('LayerUpdateViewOneJob/<int:pk>', views.LayerUpdateViewOneJob.as_view(), name='LayerUpdateViewOneJob'),
+    re_path('LayerFormView/(?P<parm>\w+)/', views.LayerFormView.as_view(), name='LayerFormView'),
 
     path('vs_ep/<int:job_id>/', views.vs_ep,name='vs_ep'),
     path('vs_g/<int:job_id>/', views.vs_g,name='vs_g'),

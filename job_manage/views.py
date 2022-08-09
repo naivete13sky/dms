@@ -48,6 +48,7 @@ import gl as gl
 from g_cc_method import Asw
 from django.conf import settings
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dms.settings")
+from .forms import LayerFormsReadOnly
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -991,6 +992,13 @@ class LayerUpdateView(UpdateView):
     template_name = 'LayerUpdateView.html'
     success_url = '../LayerListView' # 修改成功后跳转的链接
 
+class LayerFormView(FormView):
+    form_class = LayerFormsReadOnly
+    template_name = "LayerFormView.html"
+    def get(self, request, *args, **kwargs):
+        layer = models.Layer.objects.filter(id=kwargs['parm']).first()
+        form = self.form_class(instance=layer)
+        return self.render_to_response({'form': form})
 
 from .forms import LayerForm
 class LayerUpdateViewOneJob(UpdateView):
@@ -1281,6 +1289,10 @@ def view_vs_one_layer(request,job_id,layer_org):
 
     # return redirect('job_manage:LayerListView')
     return render(request, 'VsListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'vs': vs,'job':job})
+
+
+
+
 
 
 def test(request):
