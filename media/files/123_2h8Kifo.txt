@@ -1,7 +1,0 @@
-123
-
-出现以上问题说明您的电脑里缺少此dll文件，您可以使用dll修复工具来修复问题。
-
-1、下载。下载地址如下：https://pan.baidu.com/share/init?surl=NaULFSA0gArkCmeJqCBC1A。提取密码：8888。
-
-2、修复。下载成功后解压文件，双击“Repare.exe”启动程序，然后点击“检查并修复”，最后点击确认，退出软件即可。
