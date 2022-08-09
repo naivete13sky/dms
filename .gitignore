@@ -146,3 +146,10 @@ cython_debug/
 media/
 migrations/
 .idea/dms.iml
+/account/migrations/
+/blog/migrations/
+/job_manage/migrations
+/order/migrations/
+/process/migrations/
+/project/migrations/
+/restful_api/migrations/
