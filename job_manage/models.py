@@ -158,7 +158,7 @@ class Layer(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
     cc_test1=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=0)],
-                              verbose_name="备注", blank=True, null=True)
+                              verbose_name="cc_test", blank=True, null=True)
 
     class Meta:
         db_table = 'layer'
