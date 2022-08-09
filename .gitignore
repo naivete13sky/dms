@@ -153,3 +153,4 @@ migrations/
 /process/migrations/
 /project/migrations/
 /restful_api/migrations/
+.idea/*
