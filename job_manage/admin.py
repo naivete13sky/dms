@@ -38,7 +38,7 @@ class ShareAccountAdmin(admin.ModelAdmin):
 
 @admin.register(Layer)
 class LayerAdmin(admin.ModelAdmin):
-    list_display = ('job','layer','layer_org','vs_result_ep','vs_result_g','layer_file_type','layer_type','units_ep','zeroes_omitted_ep',
+    list_display = ('job','layer','layer_org','vs_result_manual','vs_result_ep','vs_result_g','layer_file_type','layer_type','units_ep','zeroes_omitted_ep',
                     'number_format_A_ep','number_format_B_ep','tool_units_ep','units_g','zeroes_omitted_g',
                     'number_format_A_g','number_format_B_g','tool_units_g',)
 
