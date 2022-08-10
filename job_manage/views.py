@@ -676,6 +676,24 @@ def get_file_name_from_org(request,job_id):
     # return redirect('job_manage:JobListViewVs')
     return redirect('../../view_layer/{}'.format(job_id))
 
+def get_file_name_from_org_on(request,job_id):
+    pass
+    print(job_id)
+    # 找到job对象
+    job = Job.objects.get(id=job_id)
+    # #先删除原来已有的层信息
+    # layer_old=models.Layer.objects.filter(job=job)
+    # print(layer_old)
+    # layer_old.delete()
+
+
+    print(job.job_name, job.file_compressed)
+
+    #false时就在前端显示生成的按钮。
+    job.bool_layer_info='false'
+    job.save()
+    # return redirect('job_manage:JobListViewVs')
+    return redirect('../../JobListView')
 
 def delete_all_layer_info(request,job_id):
     pass

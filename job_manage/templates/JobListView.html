@@ -59,6 +59,12 @@
 
                                     {% endif %}
 
+                                    {% if job.bool_layer_info == 'true' %}
+                                        <button class="btn btn-transparent" title="打开生成层别名称入口：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org_on/{{ job.id }}';"><i class="fa fa-toggle-on"></i>
+                                        </button>
+
+                                    {% endif %}
+
 
                                 </td>
 
