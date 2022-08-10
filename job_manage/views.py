@@ -424,7 +424,8 @@ class JobListView(ListView):
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
-        job_field_verbose_name = [Job._meta.get_field('job_name').verbose_name,
+        job_field_verbose_name = [Job._meta.get_field('id').verbose_name,
+                                  Job._meta.get_field('job_name').verbose_name,
                                   Job._meta.get_field('file_compressed').verbose_name,
                                   Job._meta.get_field('file_compressed_org').verbose_name,
                                   Job._meta.get_field('file_odb').verbose_name,
@@ -452,6 +453,7 @@ class JobListView(ListView):
             # print(query)
             # context['query'] = query
             context['jobs'] = models.Job.objects.filter(
+                Q(id__contains=query) |
                 Q(job_name__contains=query) |
                 Q(from_object__contains=query) |
                 Q(author__username__contains=query))
