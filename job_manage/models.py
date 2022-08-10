@@ -39,7 +39,7 @@ class Job(models.Model):
     job_type = models.CharField(max_length=10, choices=(('common', '普通板'), ('hdi', 'HDI'), ('led', 'LED板'), ('else', '其它')), default='common',
                                 verbose_name="料号类型")
     bool_layer_info=models.CharField(max_length=10, choices=(('true', 'true'), ('false', 'false')), default='false',null=True,blank=True,verbose_name="是否有层别信息")
-    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="备注",blank=True,null=True)
+    remark = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],verbose_name="备注",blank=True,null=True)
 
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_jobs',null=True,blank=True,verbose_name="负责人")
     from_object=models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=2)],null=True,blank=True,verbose_name="料号来源")
@@ -152,7 +152,7 @@ class Layer(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     vs_time = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=0)],
                                null=True, blank=True, verbose_name="比对时间戳")
-    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],
+    remark = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],
                               verbose_name="备注", blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updated = models.DateTimeField(auto_now=True, verbose_name='更新时间')
@@ -203,7 +203,7 @@ class Vs(models.Model):
     vs_time=models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=0)],
                             null=True, blank=True,verbose_name="比对时间戳")
 
-    remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=1)],
+    remark = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],
                               verbose_name="备注", blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updated = models.DateTimeField(auto_now=True, verbose_name='更新时间')
