@@ -49,6 +49,10 @@ from g_cc_method import Asw
 from django.conf import settings
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dms.settings")
 from .forms import LayerFormsReadOnly
+from django.http import HttpResponseRedirect
+
+
+
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -1389,10 +1393,20 @@ class BugCreateView(CreateView):
             # etc...
         return initial
 
+    #get方法
     def get_success_url(self):
         return '../BugListView?which_one={}'.format(models.Job.objects.filter(id=self.object.job_id)[0].job_name)
     # success_url = 'BugListView'
 
+    #重写保存时的方法
+    def form_valid(self, form):
+        self.object = form.save()
+        # do something with self.object
+        print("保存时做点啥")
+        self.object.bug="Bug名称1"
+        self.object.save()
+
+        return HttpResponseRedirect(self.get_success_url())
 
 
 
