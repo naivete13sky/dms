@@ -1389,7 +1389,10 @@ class BugCreateView(CreateView):
             # etc...
         return initial
 
-    success_url = 'BugListView'
+    def get_success_url(self):
+        return '../BugListView?which_one={}'.format(models.Job.objects.filter(id=self.object.job_id)[0].job_name)
+    # success_url = 'BugListView'
+
 
 
 
