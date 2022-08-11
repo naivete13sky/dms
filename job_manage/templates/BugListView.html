@@ -10,7 +10,19 @@
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增Bug</a></h4>
+{#                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:BugCreateView" %}>新增Bug</a></h4>#}
+                    <h4>当前料号：{{ job_name }}</h4>
+                    <form action={% url "job_manage:BugCreateView" %} class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="hidden" value={{ job_name }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-transparent" title="新增Bug" ><i class="fa fa-plus"></i>
+
+                            </button>
+                        </div>
+                    </form>
 
                     <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}

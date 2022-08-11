@@ -51,7 +51,7 @@ urlpatterns = [
     path('view_vs_one_layer/<int:job_id>/<str:layer_org>/', views.view_vs_one_layer,name='view_vs_one_layer'),
 
     path('BugListView',login_required(views.BugListView.as_view()),name='BugListView'),
-    # path('BugCreateView', views.BugCreateView.as_view(), name='BugCreateView'),
+    path('BugCreateView', views.BugCreateView.as_view(), name='BugCreateView'),
 
     path('test', views.test,name='test'),
 

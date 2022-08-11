@@ -1363,9 +1363,33 @@ class BugListView(ListView):
                 Q(job__job_name=which_one)
             )
 
+            current_job_name=models.Job.objects.filter(job_name=which_one)[0]
+            print(current_job_name.job_name)
+
+            context['job_name'] = current_job_name.job_name
+
         return context
 
+class BugCreateView(CreateView):
+    model=models.Bug
+    template_name = "BugCreateView.html"
+    fields = "__all__"
 
+    def get_initial(self, *args, **kwargs):
+        print("get_initial:",self.request.user)
+        print("get_initial:", self.request.GET.get('which_one', False))
+        # Get the initial dictionary from the superclass method
+        initial = super(BugCreateView, self).get_initial()
+        # Copy the dictionary so we don't accidentally change a mutable dict
+        initial = initial.copy()
+        if self.request.GET.get('which_one', False):
+            job=models.Job.objects.filter(job_name=self.request.GET.get('which_one', False))[0]
+            print("job",job)
+            initial['job'] = job
+            # etc...
+        return initial
+
+    success_url = 'BugListView'
 
 
 

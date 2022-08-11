@@ -1,0 +1,34 @@
+{% extends 'index_base.html' %}
+{% load static  %}
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:job_view" %}>料号管理</a></li>
+{#    <li><a href={% url "FactoryRuleListView" %}>料号</a></li>#}
+    <li><a>创建Bug</a></li>
+{% endblock %}
+{% block main_content %}
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <form action="" method="post" novalidate enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <input type="submit" value="新增">
+                            </form>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<script src={% static "javascripts/jquery.min.js" %}></script>
+
