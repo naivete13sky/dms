@@ -50,7 +50,7 @@ from django.conf import settings
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dms.settings")
 from .forms import LayerFormsReadOnly
 from django.http import HttpResponseRedirect
-
+from sqlalchemy import create_engine
 
 
 
@@ -1403,6 +1403,20 @@ class BugCreateView(CreateView):
         self.object = form.save()
         # do something with self.object
         print("保存时做点啥")
+
+        engine = create_engine("mysql+mysqlconnector://chencheng:hWx9pWk5d5J@10.97.80.36:3336/zentao")
+        sql = '''SELECT a.*,b.name productname,c.realname createbywho,d.realname assignedtowho from zt_bug a
+            LEFT JOIN zt_product b on a.product=b.id
+            LEFT JOIN zt_user c on a.openedBy=c.account
+            LEFT JOIN zt_user d on a.assignedTo=d.account
+            where a.deleted='0'
+            '''
+        sql = '''SELECT a.* from zt_bug a
+where a.id=1264
+        '''
+        bug_pd = pd.read_sql_query(sql, engine)
+        print(bug_pd['title'])
+
         self.object.bug="Bug名称1"
         self.object.save()
 
