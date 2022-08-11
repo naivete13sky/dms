@@ -26,15 +26,7 @@ class Job(models.Model):
     vs_result_ep=models.CharField(max_length=10, choices=(('passed', '成功'), ('failed', '失败'), ('none', '未比对')), default='none',verbose_name="悦谱比图结果")
     vs_result_g = models.CharField(max_length=10, choices=(('passed', '成功'), ('failed', '失败'), ('none', '未比对')),
                                     default='none',verbose_name="G软件比图结果")
-    # drill_excellon2_units=models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM')), default='Inch',verbose_name="E2_units")
-    # drill_excellon2_zeroes_omitted = models.CharField(max_length=10, choices=(('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', 'None')), default='Leading',verbose_name="E2省零")
-    # drill_excellon2_number_format_A = models.CharField(max_length=10, choices=(('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8')),
-    #                                                    default='2',verbose_name="E2_format_A")
-    # drill_excellon2_number_format_B = models.CharField(max_length=10, choices=(
-    # ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8')),
-    #                                                    default='5', verbose_name="E2_format_B")
-    # drill_excellon2_tool_units = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('Mils', 'Mils')), default='Mils',
-    #                                          verbose_name="E2_tool")
+    bug_info = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=0)],blank=True, null=True,verbose_name="Bug信息")
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
     job_type = models.CharField(max_length=10, choices=(('common', '普通板'), ('hdi', 'HDI'), ('led', 'LED板'), ('else', '其它')), default='common',
                                 verbose_name="料号类型")
@@ -215,3 +207,43 @@ class Vs(models.Model):
     def __str__(self):
         # Return a string that represents the instance
         return self.layer
+
+
+class Bug(models.Model):
+    pass
+    job = models.ForeignKey(to="job_manage.Job", on_delete=models.CASCADE,null=True,blank=True, related_name='job_manage_bug',verbose_name="料号名称")
+    bug=models.CharField(max_length=200, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+                            verbose_name="Bug名称")
+    bug_zentao_id=models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=1)],
+                            verbose_name="禅道ID")
+    bug_zentao_pri = models.CharField(max_length=10, choices=(('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('none', 'none')),
+                                    default='none', null=True, blank=True, verbose_name="优先级")
+    bug_zentao_status = models.CharField(max_length=10, choices=(('active', '激活'), ('closed', '已关闭'), ('resloved', '已解决'), ('none', 'none')),
+                                      default='none', null=True, blank=True, verbose_name="禅道状态")
+    bug_creator = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+                           verbose_name="创建者")
+    bug_create_date = models.DateTimeField(null=True,blank=True,verbose_name='禅道创建时间')
+    bug_assigned_to = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+                                   verbose_name="指派给")
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_bug_user', null=True, blank=True,
+                               verbose_name="负责人")
+    status = models.CharField(max_length=10, choices=(('draft', '草稿'), ('published', '正式')), default='draft',null=True,blank=True,verbose_name="发布状态")
+    refresh_time = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=0)],
+                               null=True, blank=True, verbose_name="刷新时间戳")
+    remark = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],
+                              verbose_name="备注", blank=True, null=True)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    updated = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+
+
+    class Meta:
+        db_table = 'bug'
+        ordering = ('-create_time',)
+
+    def get_absolute_url(self):
+        return reverse('job_manage:LayerFormView', args=[self.id, ])
+
+    def __str__(self):
+        # Return a string that represents the instance
+        return self.bug_zentao_id

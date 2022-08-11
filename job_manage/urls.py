@@ -35,6 +35,7 @@ urlpatterns = [
 
     path('LayerListView',login_required(views.LayerListView.as_view()),name='LayerListView'),
     path('view_layer/<int:job_id>/', views.view_layer,name='view_layer'),
+
     path('get_file_name_from_org/<int:job_id>/', views.get_file_name_from_org,name='get_file_name_from_org'),
     path('get_file_name_from_org_on/<int:job_id>/', views.get_file_name_from_org_on,name='get_file_name_from_org_on'),
     path('delete_all_layer_info/<int:job_id>/', views.delete_all_layer_info,name='delete_all_layer_info'),
@@ -48,6 +49,9 @@ urlpatterns = [
     path('VsListView',login_required(views.VsListView.as_view()),name='VsListView'),
     path('view_vs/<int:job_id>/', views.view_vs,name='view_vs'),
     path('view_vs_one_layer/<int:job_id>/<str:layer_org>/', views.view_vs_one_layer,name='view_vs_one_layer'),
+
+    path('BugListView',login_required(views.BugListView.as_view()),name='BugListView'),
+    # path('BugCreateView', views.BugCreateView.as_view(), name='BugCreateView'),
 
     path('test', views.test,name='test'),
 

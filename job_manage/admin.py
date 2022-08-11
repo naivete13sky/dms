@@ -9,7 +9,7 @@ from django.contrib import admin
 # admin.site.register(Order)
 
 from django.contrib import admin
-from .models import Job,ShareAccount,Layer,Vs
+from .models import Job,ShareAccount,Layer,Vs,Bug
 # from .views import list_all_job
 admin.site.site_header = 'CAM料号管理系统'
 
@@ -53,5 +53,15 @@ class VsAdmin(admin.ModelAdmin):
 
     search_fields = ('job','layer','layer_file_type','layer_type')
     prepopulated_fields = {'remark': ('layer',)}
+    # ordering = ('recipe_status', 'receive_date',)
+    list_per_page = 10
+
+@admin.register(Bug)
+class BugAdmin(admin.ModelAdmin):
+    list_display = ('job','bug','bug_zentao_id','bug_zentao_pri','bug_zentao_status','bug_creator','bug_create_date','bug_assigned_to',
+                    'author','status','refresh_time','remark','create_time','updated',)
+
+    search_fields = ('job','bug','bug_zentao_pri','status')
+    prepopulated_fields = {'remark': ('bug',)}
     # ordering = ('recipe_status', 'receive_date',)
     list_per_page = 10

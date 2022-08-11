@@ -434,6 +434,7 @@ class JobListView(ListView):
                                   Job._meta.get_field('vs_result_ep').verbose_name,
                                   Job._meta.get_field('vs_result_g').verbose_name,
                                   '层别信息',
+                                  Job._meta.get_field('bug_info').verbose_name,
                                   Job._meta.get_field('remark').verbose_name,
                                   Job._meta.get_field('author').verbose_name,
                                   Job._meta.get_field('from_object').verbose_name,
@@ -1310,6 +1311,59 @@ def view_vs_one_layer(request,job_id,layer_org):
     # return redirect('job_manage:LayerListView')
     return render(request, 'VsListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'vs': vs,'job':job})
 
+
+class BugListView(ListView):
+    queryset = models.Bug.objects.all()
+    # model=models.Job
+    context_object_name = 'bugs'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = 'BugListView.html'
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        field_verbose_name = [models.Bug._meta.get_field('job').verbose_name,
+                              models.Bug._meta.get_field('bug').verbose_name,
+                              models.Bug._meta.get_field('bug_zentao_id').verbose_name,
+                              models.Bug._meta.get_field('bug_zentao_pri').verbose_name,
+                              models.Bug._meta.get_field('bug_zentao_status').verbose_name,
+                              models.Bug._meta.get_field('bug_creator').verbose_name,
+                              models.Bug._meta.get_field('bug_create_date').verbose_name,
+                              models.Bug._meta.get_field('bug_assigned_to').verbose_name,
+                              models.Bug._meta.get_field('author').verbose_name,
+                              models.Bug._meta.get_field('status').verbose_name,
+                              models.Bug._meta.get_field('refresh_time').verbose_name,
+                              models.Bug._meta.get_field('remark').verbose_name,
+                              models.Bug._meta.get_field('create_time').verbose_name,
+                              models.Bug._meta.get_field('updated').verbose_name,
+                              "标签",
+                              "操作",
+                                  ]
+        context['field_verbose_name'] = field_verbose_name# 表头用
+
+
+        #筛选用
+        query=self.request.GET.get('query',False)
+        if query:
+            # context['cc'] = query
+            # print(query)
+            # context['query'] = query
+            context['bugs'] = models.Bug.objects.filter(
+                Q(id__contains=query) |
+                Q(job__job_name__contains=query) |
+                # Q(from_object__contains=query) |
+                Q(author__username__contains=query))
+
+        # 筛选用
+        which_one = self.request.GET.get('which_one', False)
+        if which_one:
+            print("which_one:",which_one)
+            context['bugs'] = models.Bug.objects.filter(
+                Q(job__job_name=which_one)
+            )
+
+        return context
 
 
 

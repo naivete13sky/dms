@@ -151,11 +151,22 @@
                                     </button>
                                 </td>
 
-{#                                <td>{{ job.drill_excellon2_units }}</td>#}
-{#                                <td>{{ job.drill_excellon2_zeroes_omitted }}</td>#}
-{#                                <td>{{ job.drill_excellon2_number_format_A }}</td>#}
-{#                                <td>{{ job.drill_excellon2_number_format_B }}</td>#}
-{#                                <td>{{ job.drill_excellon2_tool_units }}</td>#}
+                                <td>
+                                    <form action="../../BugListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.job_name }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看Bug" ><i class="fa fa-bug"></i>
+
+                                    </button>
+                                        </div>
+                                    </form>
+
+                                </td>
+
+
 
 
                                 <td>{{ job.remark }}</td>
