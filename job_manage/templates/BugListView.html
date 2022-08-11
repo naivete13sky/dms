@@ -64,11 +64,11 @@
                                 <td>{{ each.bug_assigned_to }}</td>
                                 <td>{{ each.author }}</td>
 
-                                <td>{{ job.status }}</td>
-                                <td>{{ job.refresh_time }}</td>
-                                <td>{{ job.remark }}</td>
-                                <td>{{ job.create_time }}</td>
-                                <td>{{ job.updated }}</td>
+                                <td>{{ each.status }}</td>
+                                <td>{{ each.refresh_time }}</td>
+                                <td>{{ each.remark }}</td>
+                                <td>{{ each.create_time }}</td>
+                                <td>{{ each.updated }}</td>
                                 <td>
                                     {% for tag in job.tags.all %}
                                         <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>

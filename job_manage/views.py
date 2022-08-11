@@ -1415,9 +1415,18 @@ class BugCreateView(CreateView):
 where a.id=1264
         '''
         bug_pd = pd.read_sql_query(sql, engine)
-        print(bug_pd['title'])
+        print(bug_pd['title'][0])
 
-        self.object.bug="Bug名称1"
+        self.object.bug=bug_pd['title'][0]
+        self.object.bug_zentao_pri=bug_pd['pri'][0]
+        self.object.bug_zentao_status = bug_pd['status'][0]
+        self.object.bug_creator = bug_pd['openedBy'][0]
+        self.object.bug_create_date = bug_pd['openedDate'][0]
+        self.object.bug_assigned_to = bug_pd['assignedTo'][0]
+
+        self.object.author= self.request.user
+        self.object.refresh_time = str(int(time.time()))
+
         self.object.save()
 
         return HttpResponseRedirect(self.get_success_url())
