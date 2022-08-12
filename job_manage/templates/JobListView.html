@@ -146,9 +146,22 @@
 
                                 </td>
                                 <td>
-                                    <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>
+{#                                    <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>#}
+{##}
+{#                                    </button>#}
 
-                                    </button>
+                                    <form action="../../LayerListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看层别信息" ><i class="fa fa-eye"></i>
+
+                                            </button>
+                                        </div>
+                                    </form>
+
                                 </td>
 
                                 <td>

@@ -368,7 +368,6 @@ def job_list(request,tag_slug=None):
     # return render(request, 'blog/post/list.html', {'posts': posts})
     return render(request, 'list.html', {'page': page, 'jobs': jobs,'tag': tag})
 
-
 class JobListViewVs(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
@@ -921,8 +920,6 @@ class LayerListView(ListView):
     # ordering = ['-publish']
     template_name = 'LayerListView.html'
 
-
-
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
@@ -955,6 +952,20 @@ class LayerListView(ListView):
             context['layers'] = models.Layer.objects.filter(
                 Q(layer__contains=query) |
                 Q(job__job_name__contains=query))
+
+        # 筛选用
+        which_one = self.request.GET.get('which_one', False)
+        if which_one:
+            print("which_one:", which_one)
+            context['layers'] = models.Layer.objects.filter(
+                Q(job__id=which_one)
+            )
+
+            current_job_name = models.Job.objects.get(id=which_one)
+            print(current_job_name.job_name)
+            context['job_id'] = current_job_name.id
+            context['job_name'] = current_job_name.job_name
+
         return context
 
 def view_layer(request,job_id):
@@ -999,8 +1010,6 @@ def layer_set_vs_result_manual(request):
     pass
     print("layer_set_vs_result_manual")
 
-
-
 class LayerUpdateView(UpdateView):
     """
     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
@@ -1009,7 +1018,22 @@ class LayerUpdateView(UpdateView):
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'LayerUpdateView.html'
-    success_url = '../LayerListView' # 修改成功后跳转的链接
+    # success_url = '../LayerListView' # 修改成功后跳转的链接
+    def get(self, request, *args, **kwargs):
+        global job_id
+        layer_update = models.Layer.objects.get(id=self.kwargs['pk'])
+        # initial = {'name': adv_positin.name}
+        # form = self.form_class(initial)
+        form=LayerForm(instance=layer_update)
+        # print("*pk"*30,self.kwargs['pk'])
+        self.job_id = layer_update.job_id
+
+
+        return render(request, 'LayerUpdateView.html', {'form':form})
+
+    #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
+    def get_success_url(self):
+        return '../LayerListView?which_one={}'.format(self.object.job_id)
 
 class LayerFormView(FormView):
     form_class = LayerFormsReadOnly
@@ -1436,7 +1460,7 @@ class BugUpdateView(UpdateView):
     model = models.Bug
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
-    template_name = 'LayerUpdateView.html'
+    template_name = 'BugUpdateView.html'
 
     def get(self, request, *args, **kwargs):
         global job_id
