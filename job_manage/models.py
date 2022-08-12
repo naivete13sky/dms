@@ -220,7 +220,7 @@ class Bug(models.Model):
                                     default='none', null=True, blank=True, verbose_name="优先级")
     bug_zentao_status = models.CharField(max_length=10, choices=(('active', '激活'), ('closed', '已关闭'), ('resloved', '已解决'), ('none', 'none')),
                                       default='none', null=True, blank=True, verbose_name="禅道状态")
-    bug_creator = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+    bug_creator = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
                            verbose_name="创建者")
     bug_create_date = models.DateTimeField(null=True,blank=True,verbose_name='禅道创建时间')
     bug_assigned_to = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,

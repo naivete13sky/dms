@@ -1365,9 +1365,9 @@ class BugListView(ListView):
                 Q(job__id=which_one)
             )
 
-            current_job_name=models.Job.objects.filter(id=which_one)[0]
+            current_job_name=models.Job.objects.get(id=which_one)
             print(current_job_name.job_name)
-
+            context['job_id'] = current_job_name.id
             context['job_name'] = current_job_name.job_name
 
         return context
@@ -1385,7 +1385,7 @@ class BugCreateView(CreateView):
         # Copy the dictionary so we don't accidentally change a mutable dict
         initial = initial.copy()
         if self.request.GET.get('which_one', False):
-            job=models.Job.objects.filter(job_name=self.request.GET.get('which_one', False))[0]
+            job=models.Job.objects.filter(id=self.request.GET.get('which_one', False))[0]
             print("job",job)
             initial['job'] = job
             # etc...
@@ -1403,18 +1403,22 @@ class BugCreateView(CreateView):
         print("保存时做点啥")
 
         engine = create_engine("mysql+mysqlconnector://chencheng:hWx9pWk5d5J@10.97.80.36:3336/zentao")
-        sql = '''SELECT a.*,b.name productname,c.realname createbywho,d.realname assignedtowho from zt_bug a
-            LEFT JOIN zt_product b on a.product=b.id
-            LEFT JOIN zt_user c on a.openedBy=c.account
-            LEFT JOIN zt_user d on a.assignedTo=d.account
-            where a.deleted='0'
-            '''
-        sql = '''SELECT a.* from zt_bug a
-where a.id=1264
-        '''
-        bug_pd = pd.read_sql_query(sql, engine)
-        print(bug_pd['title'][0])
+        # sql = '''SELECT a.*,b.name productname,c.realname createbywho,d.realname assignedtowho from zt_bug a
+        #     LEFT JOIN zt_product b on a.product=b.id
+        #     LEFT JOIN zt_user c on a.openedBy=c.account
+        #     LEFT JOIN zt_user d on a.assignedTo=d.account
+        #     where a.deleted='0'
+        #     '''
+        # print("self.object.job_id:",self.object.job_id)
+        # print("self.object.bug_zentao_id:", self.object.bug_zentao_id)
 
+        sql = '''SELECT a.* from zt_bug a where a.id={}
+        '''.format(int(self.object.bug_zentao_id))
+        # sql = '''SELECT a.* from zt_bug a where a.id=4
+        #        '''
+        bug_pd = pd.read_sql_query(sql, engine)
+        # print("bug_pd['title'][0]:",bug_pd['title'][0])
+        # print("bug_pd['openedBy'][0]:", bug_pd['openedBy'][0])
         self.object.bug=bug_pd['title'][0]
         self.object.bug_zentao_pri=bug_pd['pri'][0]
         self.object.bug_zentao_status = bug_pd['status'][0]
@@ -1474,6 +1478,36 @@ class BugDeleteView(DeleteView):
    # namespace:url_name
   success_url = reverse_lazy('job_manage:BugListView')
 
+def refresh_bug_info(request,job_id):
+    pass
+    #找到job对象
+    job=models.Job.objects.get(id=job_id)
+    print(job.job_name)
+    bugs = models.Bug.objects.filter(job=job)
+    print("bugs",bugs)
+    engine = create_engine("mysql+mysqlconnector://chencheng:hWx9pWk5d5J@10.97.80.36:3336/zentao")
+
+    for each in bugs:
+        # print(each)
+        sql = '''SELECT a.* from zt_bug a
+            where a.id=1264
+                    '''
+        bug_pd = pd.read_sql_query(sql, engine)
+        # print(bug_pd['title'][0])
+
+        each.bug = bug_pd['title'][0]
+        each.bug_zentao_pri = bug_pd['pri'][0]
+        each.bug_zentao_status = bug_pd['status'][0]
+        each.bug_creator = bug_pd['openedBy'][0]
+        each.bug_create_date = bug_pd['openedDate'][0]
+        each.bug_assigned_to = bug_pd['assignedTo'][0]
+        each.refresh_time = str(int(time.time()))
+
+        each.save()
+
+
+    return redirect('../../BugListView?which_one={}'.format(models.Job.objects.get(id=job_id).id))
+    # return render(request, 'BugListView.html', {'field_verbose_name': field_verbose_name, 'vs': vs,'job':job})
 
 
 def test(request):
