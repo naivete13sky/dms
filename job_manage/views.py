@@ -921,15 +921,7 @@ class LayerListView(ListView):
     # ordering = ['-publish']
     template_name = 'LayerListView.html'
 
-    # def get_queryset(self):
-    #     query = self.request.GET.get('query', '')
-    #     new_context = models.Job.objects.filter(
-    #             Q(job_name__contains=query) |
-    #             Q(author__username__contains=query))
-    #     return new_context
-    # def get_queryset(self):  # 重写get_queryset方法
-    #     # 获取所有is_deleted为False的用户，并且以时间倒序返回数据
-    #     return UserProfile.objects.filter(is_deleted=False).order_by('-create_time')
+
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -960,9 +952,6 @@ class LayerListView(ListView):
         context['field_verbose_name'] = field_verbose_name# 表头用
         query=self.request.GET.get('query',False)
         if query:
-            # context['cc'] = query
-            # print(query)
-            # context['query'] = query
             context['layers'] = models.Layer.objects.filter(
                 Q(layer__contains=query) |
                 Q(job__job_name__contains=query))
@@ -976,7 +965,8 @@ def view_layer(request,job_id):
     print(job.job_name,job.file_compressed)
     layers = models.Layer.objects.filter(job=job)
 
-    field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
+    field_verbose_name = ['多选',
+        models.Layer._meta.get_field('job').verbose_name,
                           models.Layer._meta.get_field('layer').verbose_name,
                           models.Layer._meta.get_field('layer_org').verbose_name,
                           models.Layer._meta.get_field('vs_result_manual').verbose_name,
@@ -1004,6 +994,12 @@ def view_layer(request,job_id):
 
     # return redirect('job_manage:LayerListView')
     return render(request, 'LayerListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'layers': layers,'job':job})
+
+def layer_set_vs_result_manual(request):
+    pass
+    print("layer_set_vs_result_manual")
+
+
 
 class LayerUpdateView(UpdateView):
     """
