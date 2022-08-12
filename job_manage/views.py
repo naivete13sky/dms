@@ -1544,16 +1544,25 @@ def test(request):
         print(request.user.first_name,'|',request.user.username)
     return HttpResponse("abc")
 
-# def is_ajax(request):
-#     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 def test_ajax_index(request):
     pass
     return render(request, 'test_ajax_index.html')
 
 def test_ajax_add(request):
-    a = request.GET['a']
-    b = request.GET['b']
-    a = int(a)
-    b = int(b)
-    return HttpResponse(str(a+b))
+    if request.method == 'GET':
+        a = request.GET['a']
+        b = request.GET['b']
+        a = int(a)
+        b = int(b)
+        return HttpResponse(str(a+b))
+
+
+def test_ajax_add2(request):
+    if request.method == 'POST':
+        a = request.POST['a']
+        b = request.POST['b']
+        a = int(a)
+        b = int(b)
+        return HttpResponse(str(a+b))
+    return render(request, 'test_ajax_add2.html')
