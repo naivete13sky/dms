@@ -923,14 +923,6 @@ class LayerListView(ListView):
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
-        if self.request.method == 'POST':
-            num1 = self.request.POST.get('num1', 0)
-            num2 = self.request.POST.get('num2', 0)
-            num = int(num1) + int(num2)
-            print("num:", num)
-            context['num'] = num
-        # return render(self.request, 'LayerListView.html',)  # GET请求返回error.html界面
-
         field_verbose_name = ['多选',
                               models.Layer._meta.get_field('job').verbose_name,
                               models.Layer._meta.get_field('layer').verbose_name,
@@ -974,6 +966,40 @@ class LayerListView(ListView):
             print(current_job_name.job_name)
             context['job_id'] = current_job_name.id
             context['job_name'] = current_job_name.job_name
+
+        #层别信息全选，准备批量设置用的
+        select_all=self.request.GET.get('select_all', False)
+        if select_all:
+            pass
+            print("准备全选啦！")
+            # print(self.request.GET.get('which_one', False))
+            context['layers'] = models.Layer.objects.filter(
+                Q(job__id=which_one)
+            )
+
+            current_job_name = models.Job.objects.get(id=which_one)
+            print(current_job_name.job_name)
+            context['job_id'] = current_job_name.id
+            context['job_name'] = current_job_name.job_name
+            context['select_all_type'] = "select_all"
+
+        # 层别信息全选，准备批量设置用的
+        unselect_all = self.request.GET.get('unselect_all', False)
+        if unselect_all:
+            pass
+            print("准备全选啦！")
+            # print(self.request.GET.get('which_one', False))
+            context['layers'] = models.Layer.objects.filter(
+                Q(job__id=which_one)
+            )
+
+            current_job_name = models.Job.objects.get(id=which_one)
+            print(current_job_name.job_name)
+            context['job_id'] = current_job_name.id
+            context['job_name'] = current_job_name.job_name
+            context['select_all_type'] = "unselect_all"
+
+
 
         return context
 

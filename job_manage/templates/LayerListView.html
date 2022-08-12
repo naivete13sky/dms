@@ -38,7 +38,14 @@
                             {% for layer in layers %}
                                 <tr>
                                 <td>
-                                    <input type="checkbox" name={{ layer.id }} value={{ layer.id }}>
+                                    {% if select_all_type == "select_all" %}
+                                        <input type="checkbox" name={{ layer.id }} value={{ layer.id }} checked>
+                                    {% endif %}
+
+                                    {% if select_all_type != "select_all" %}
+                                        <input type="checkbox" name={{ layer.id }} value={{ layer.id }} >
+                                    {% endif %}
+
                                 </td>
 
                                 <td>
@@ -115,18 +122,24 @@
                         {% include 'pagination.html' with page=page_obj %}
 
                         <br>
-                        <form action="" method="post" novalidate enctype="multipart/form-data">
-                            <input type="submit" name="select_all" value="全部选中">
+
+
+                        <form  method="get" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                            <input type="submit" name="select_all" id='select_all' value="全部选择"/>
                         </form>
 
-                        <form action="" method="post" novalidate enctype="multipart/form-data">
-                            <input type="submit" value="全部取消">
+                        <form  method="get" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                            <input type="submit" name="unselect_all" id='unselect_all' value="全部取消"/>
                         </form>
 
 
 
-
                         <form action="" method="post" novalidate enctype="multipart/form-data">
+                            {% csrf_token %}
                             批量设置人工比对结果：
                             <select>
                                 <option value ="none">none</option>
