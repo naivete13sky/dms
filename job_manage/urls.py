@@ -53,6 +53,7 @@ urlpatterns = [
     path('BugListView',login_required(views.BugListView.as_view()),name='BugListView'),
     path('BugCreateView', views.BugCreateView.as_view(), name='BugCreateView'),
     path('BugUpdateView/<int:pk>', views.BugUpdateView.as_view(), name='BugUpdateView'),
+    re_path('BugFormView/(?P<parm>\w+)/', login_required(views.BugFormView.as_view()), name='BugFormView'),
 
     path('test', views.test,name='test'),
 

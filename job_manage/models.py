@@ -242,7 +242,7 @@ class Bug(models.Model):
         ordering = ('-create_time',)
 
     def get_absolute_url(self):
-        return reverse('job_manage:LayerFormView', args=[self.id, ])
+        return reverse('job_manage:BugFormView', args=[self.id, ])
 
     def __str__(self):
         # Return a string that represents the instance

@@ -16,7 +16,7 @@ import rarfile
 from pathlib import Path
 from django.db.models import Q
 from dms.settings import MEDIA_URL
-from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm,BugForm
+from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm,BugForm,BugFormsReadOnly
 from job_manage import models
 from django.contrib.sites.models import Site
 from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
@@ -1455,6 +1455,15 @@ class BugUpdateView(UpdateView):
         return '../BugListView?which_one={}'.format(self.object.job_id)
     # success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 
+class BugFormView(FormView):
+    form_class = BugFormsReadOnly
+    template_name = "BugFormView.html"
+
+    def get(self, request, *args, **kwargs):
+        # print('get url parms: ' + kwargs['parm'])
+        bug = models.Bug.objects.filter(id=kwargs['parm']).first()
+        form = self.form_class(instance=bug)
+        return self.render_to_response({'form': form})
 
 def test(request):
     if request.user.is_authenticated:
