@@ -223,7 +223,7 @@ class Bug(models.Model):
     bug_creator = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
                            verbose_name="创建者")
     bug_create_date = models.DateTimeField(null=True,blank=True,verbose_name='禅道创建时间')
-    bug_assigned_to = models.CharField(max_length=10, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
+    bug_assigned_to = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
                                    verbose_name="指派给")
 
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_manage_bug_user', null=True, blank=True,
