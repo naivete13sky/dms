@@ -1490,8 +1490,8 @@ def refresh_bug_info(request,job_id):
     for each in bugs:
         # print(each)
         sql = '''SELECT a.* from zt_bug a
-            where a.id=1264
-                    '''
+            where a.id={}
+                    '''.format(int(each.bug_zentao_id))
         bug_pd = pd.read_sql_query(sql, engine)
         # print(bug_pd['title'][0])
 
