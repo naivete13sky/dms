@@ -1465,6 +1465,17 @@ class BugFormView(FormView):
         form = self.form_class(instance=bug)
         return self.render_to_response({'form': form})
 
+class BugDeleteView(DeleteView):
+  model = models.Bug
+  template_name = 'BugDeleteView.html'
+  # template_name_field = ''
+  # template_name_suffix = ''
+  # book_delete.html为models.py中__str__的返回值
+   # namespace:url_name
+  success_url = reverse_lazy('job_manage:BugListView')
+
+
+
 def test(request):
     if request.user.is_authenticated:
         print(request.user.first_name,'|',request.user.username)
