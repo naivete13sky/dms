@@ -923,7 +923,16 @@ class LayerListView(ListView):
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
-        field_verbose_name = [models.Layer._meta.get_field('job').verbose_name,
+        if self.request.method == 'POST':
+            num1 = self.request.POST.get('num1', 0)
+            num2 = self.request.POST.get('num2', 0)
+            num = int(num1) + int(num2)
+            print("num:", num)
+            context['num'] = num
+        # return render(self.request, 'LayerListView.html',)  # GET请求返回error.html界面
+
+        field_verbose_name = ['多选',
+                              models.Layer._meta.get_field('job').verbose_name,
                               models.Layer._meta.get_field('layer').verbose_name,
                               models.Layer._meta.get_field('layer_org').verbose_name,
                               models.Layer._meta.get_field('vs_result_manual').verbose_name,
@@ -1535,4 +1544,16 @@ def test(request):
         print(request.user.first_name,'|',request.user.username)
     return HttpResponse("abc")
 
+# def is_ajax(request):
+#     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+def test_ajax_index(request):
+    pass
+    return render(request, 'test_ajax_index.html')
+
+def test_ajax_add(request):
+    a = request.GET['a']
+    b = request.GET['b']
+    a = int(a)
+    b = int(b)
+    return HttpResponse(str(a+b))

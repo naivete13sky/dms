@@ -38,6 +38,10 @@
                             {% for layer in layers %}
                                 <tr>
                                 <td>
+                                    <input type="checkbox" name={{ layer.id }} value={{ layer.id }}>
+                                </td>
+
+                                <td>
                                     <a href="{{ job.get_absolute_url }}" title="{{ layer.job }}">
 
                                         {{ layer.job|slice:"20" }}
@@ -109,6 +113,34 @@
                             </tbody>
                         </table>
                         {% include 'pagination.html' with page=page_obj %}
+
+                        <br>
+                        <form action="" method="post" novalidate enctype="multipart/form-data">
+                            <input type="submit" name="select_all" value="全部选中">
+                        </form>
+
+                        <form action="" method="post" novalidate enctype="multipart/form-data">
+                            <input type="submit" value="全部取消">
+                        </form>
+
+
+
+
+                        <form action="" method="post" novalidate enctype="multipart/form-data">
+                            批量设置人工比对结果：
+                            <select>
+                                <option value ="none">none</option>
+                                <option value ="passed">passed</option>
+                                <option value ="failed">failed</option>
+
+
+                            </select>
+
+                            <input type="submit" value="确认">
+                        </form>
+
+
+
                     </div>
                 </div>
             </div>
