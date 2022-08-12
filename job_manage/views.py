@@ -1452,7 +1452,7 @@ class BugUpdateView(UpdateView):
 
     #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
     def get_success_url(self):
-        return '../BugListView/{}'.format(self.object.job_id)
+        return '../BugListView?which_one={}'.format(self.object.job_id)
     # success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 
 
@@ -1460,3 +1460,5 @@ def test(request):
     if request.user.is_authenticated:
         print(request.user.first_name,'|',request.user.username)
     return HttpResponse("abc")
+
+
