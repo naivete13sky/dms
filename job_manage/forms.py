@@ -1,39 +1,40 @@
 from django import forms
 from django.forms import widgets
-class UserForm(forms.Form):
-     username = forms.CharField(min_length=4, label='用户名',
-                   widget=widgets.TextInput(attrs={"class": "form-control"}),
-                   error_messages={
-                     "required": "用户名不能为空",
-                   })
-     pwd = forms.CharField(min_length=4, label='密码',
-                error_messages={
-                  "required": "密码不能为空",
-                },
-                widget=widgets.PasswordInput(attrs={"class": "form-control"}))
-     r_pwd = forms.CharField(min_length=4, label='确认密码',
-                 widget=widgets.PasswordInput(attrs={"class": "form-control"}),
-                 error_messages={
-                   "required": "密码不能为空",
-                 })
-     email = forms.EmailField(label='邮箱',
-                 widget=widgets.EmailInput(attrs={"class": "form-control"}),
-                 error_messages={
-                   "required": '邮箱不能为空',
-                   "invalid": "邮箱格式错误",
-                 })
-     tel = forms.CharField(label='手机号',
-                widget=widgets.TextInput(attrs={"class": "form-control"}),
-                )
 from job_manage import models
 from django.forms import ModelForm
 from django.forms.widgets import Textarea
 from django import forms
-from .models import Job,ShareAccount,Layer
+from .models import Job,ShareAccount,Layer,Bug
 from .models import Register
 # forms.Form:代表着为导入表单
 # forms.ModelForm:代表着导入模型的表单
 
+
+class UserForm(forms.Form):
+    username = forms.CharField(min_length=4, label='用户名',
+                               widget=widgets.TextInput(attrs={"class": "form-control"}),
+                               error_messages={
+                                   "required": "用户名不能为空",
+                               })
+    pwd = forms.CharField(min_length=4, label='密码',
+                          error_messages={
+                              "required": "密码不能为空",
+                          },
+                          widget=widgets.PasswordInput(attrs={"class": "form-control"}))
+    r_pwd = forms.CharField(min_length=4, label='确认密码',
+                            widget=widgets.PasswordInput(attrs={"class": "form-control"}),
+                            error_messages={
+                                "required": "密码不能为空",
+                            })
+    email = forms.EmailField(label='邮箱',
+                             widget=widgets.EmailInput(attrs={"class": "form-control"}),
+                             error_messages={
+                                 "required": '邮箱不能为空',
+                                 "invalid": "邮箱格式错误",
+                             })
+    tel = forms.CharField(label='手机号',
+                          widget=widgets.TextInput(attrs={"class": "form-control"}),
+                          )
 
 class UploadForms(forms.ModelForm):
     """
@@ -202,3 +203,10 @@ class LayerFormsReadOnly(forms.ModelForm):
             super(LayerFormsReadOnly, self).__init__(*args, **kwargs)
             for name, field in self.fields.iteritems():
                 field.widget.attrs['readonly'] = 'true'
+
+class BugForm(forms.ModelForm):
+    pass
+    class Meta:
+        model=Bug
+        fields = '__all__'
+        # fields = ['file_odb']

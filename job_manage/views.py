@@ -16,14 +16,13 @@ import rarfile
 from pathlib import Path
 from django.db.models import Q
 from dms.settings import MEDIA_URL
-from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm
+from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm,BugForm
 from job_manage import models
 from django.contrib.sites.models import Site
 from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from taggit.models import Tag
-
 from os.path import dirname, abspath
 import os,sys,json,shutil
 path = os.path.dirname(os.path.realpath(__file__)) + r'/epcam'
@@ -31,7 +30,6 @@ sys.path.append(path)
 import epcam
 import epcam_api
 from cc_method import Tgz
-
 import re
 base_path = dirname(dirname(abspath(__file__)))
 sys.path.insert(0, base_path)
@@ -1364,10 +1362,10 @@ class BugListView(ListView):
         if which_one:
             print("which_one:",which_one)
             context['bugs'] = models.Bug.objects.filter(
-                Q(job__job_name=which_one)
+                Q(job__id=which_one)
             )
 
-            current_job_name=models.Job.objects.filter(job_name=which_one)[0]
+            current_job_name=models.Job.objects.filter(id=which_one)[0]
             print(current_job_name.job_name)
 
             context['job_name'] = current_job_name.job_name
@@ -1395,7 +1393,7 @@ class BugCreateView(CreateView):
 
     #get方法
     def get_success_url(self):
-        return '../BugListView?which_one={}'.format(models.Job.objects.filter(id=self.object.job_id)[0].job_name)
+        return '../BugListView?which_one={}'.format(models.Job.objects.get(id=self.object.job_id).id)
     # success_url = 'BugListView'
 
     #重写保存时的方法
@@ -1431,6 +1429,31 @@ where a.id=1264
 
         return HttpResponseRedirect(self.get_success_url())
 
+class BugUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = models.Bug
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'LayerUpdateView.html'
+
+    def get(self, request, *args, **kwargs):
+        global job_id
+        bug_update = models.Bug.objects.get(id=self.kwargs['pk'])
+        # initial = {'name': adv_positin.name}
+        # form = self.form_class(initial)
+        form=BugForm(instance=bug_update)
+        # print("*pk"*30,self.kwargs['pk'])
+        self.job_id = bug_update.job_id
+
+
+        return render(request, 'BugUpdateView.html', {'form':form})
+
+    #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
+    def get_success_url(self):
+        return '../BugListView/{}'.format(self.object.job_id)
+    # success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 
 
 def test(request):
