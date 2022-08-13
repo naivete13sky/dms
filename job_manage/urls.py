@@ -64,6 +64,15 @@ urlpatterns = [
     path('test_ajax_index', views.test_ajax_index,name='test_ajax_index'),
     path('test_ajax_add/', views.test_ajax_add,name='test_ajax_add'),
     path('test_ajax_add2/', views.test_ajax_add2,name='test_ajax_add2'),
+    path('test_ajax_checkbox/', views.test_ajax_checkbox,name='test_ajax_checkbox'),#not ok
+    path('test_ajax_post1/', views.test_ajax_post1,name='test_ajax_post1'),#not ok
+    path('test_ajax_HttpResponse/', views.test_ajax_HttpResponse,name='test_ajax_HttpResponse'),
+    path('test_ajax_HttpResponse_json/', views.test_ajax_HttpResponse_json,name='test_ajax_HttpResponse_json'),
+    path('test_ajax_JsonResponse_json/', views.test_ajax_JsonResponse_json,name='test_ajax_JsonResponse_json'),
+    path('test_ajax_HttpResponse_front_not_Deserialization/', views.test_ajax_HttpResponse_front_not_Deserialization,name='test_ajax_HttpResponse_front_not_Deserialization'),
+    #在和form表单一块用的时候,form表单里不能写button 和input type="submit",因为在form表单里都是提交，和ajax一块用时form提交一次，ajax再提交一次，就会有问题。所以在form表单中使用<input type='button'>, 要么不用form表单
+    path('test_ajax_post/', views.test_ajax_post,name='test_ajax_post'),
+    path('test_ajax_upload/', views.test_ajax_upload,name='test_ajax_upload'),
 
 
 # ]

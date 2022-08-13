@@ -49,7 +49,7 @@ from django.conf import settings
 from .forms import LayerFormsReadOnly
 from django.http import HttpResponseRedirect
 from sqlalchemy import create_engine
-
+from django.http import  JsonResponse
 
 
 def readFile(filename,chunk_size=512):
@@ -923,7 +923,7 @@ class LayerListView(ListView):
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
-        field_verbose_name = ['多选',
+        field_verbose_name = [
                               models.Layer._meta.get_field('job').verbose_name,
                               models.Layer._meta.get_field('layer').verbose_name,
                               models.Layer._meta.get_field('layer_org').verbose_name,
@@ -1592,3 +1592,109 @@ def test_ajax_add2(request):
         b = int(b)
         return HttpResponse(str(a+b))
     return render(request, 'test_ajax_add2.html')
+
+def test_ajax_checkbox(request):
+    pass
+    if request.method == 'POST':
+        print("POST!!!")
+        # a = request.POST['a']
+        # b = request.POST['b']
+        # a = int(a)
+        # b = int(b)
+        # return HttpResponse(str(a+b))
+        return HttpResponse("abc")
+    return render(request, 'test_ajax_checkbox.html')
+
+def test_ajax_post1(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        ret = models.User.objects.filter(username=name)
+        res = {"state": True, "msg": ""}
+        if ret:
+            res["state"] = False
+            res["msg"] = "用户存在"
+        import json
+        return HttpResponse(json.dumps(res))
+    return render(request, 'test_ajax_post1.html')
+
+def test_ajax_HttpResponse(request):
+    if request.method == 'POST':  # if request.is_ajax(): 判断是不是ajax请求
+        n1 = request.POST.get('num1')
+        n2 = request.POST.get('num2')
+        n3 = int(n1) + int(n2)
+        return HttpResponse(n3)
+    return render(request, 'test_ajax_HttpResponse.html')
+
+# def is_ajax(request):
+#     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+def test_ajax_HttpResponse_json(request):
+    if request.method == 'POST':
+    # if request.is_ajax():
+        n1 = request.POST.get('num1')
+        n2 = request.POST.get('num2')
+        n3 = int(n1) + int(n2)
+        res_dict = {'username': 'Hans', 'n3': n3}
+        import json
+        # 序列化成json类型的字符串
+        res_dict = json.dumps(res_dict)
+        return HttpResponse(res_dict)
+    return render(request, 'test_ajax_HttpResponse_json.html')
+
+def test_ajax_JsonResponse_json(request):
+    if request.method == 'POST':
+    # if request.is_ajax():
+        n1 = request.POST.get('num1')
+        n2 = request.POST.get('num2')
+        n3 = int(n1) + int(n2)
+        res_dict = {'username': 'Hans', 'n3': n3}
+        return JsonResponse(res_dict)
+    return render(request, 'test_ajax_JsonResponse_json.html')
+
+def test_ajax_HttpResponse_front_not_Deserialization(request):
+    if request.method == 'POST':
+        n1 = request.POST.get('num1')
+        n2 = request.POST.get('num2')
+        n3 = int(n1) + int(n2)
+        res_dict = {'username': 'Hans', 'n3': n3}
+        print(res_dict)
+        import json
+        res_dict = json.dumps(res_dict)
+        return HttpResponse(res_dict)
+    return render(request, 'test_ajax_HttpResponse_front_not_Deserialization.html')
+
+def test_ajax_post(request):
+    if request.method == 'POST':
+    # if request.is_ajax():
+        name = request.POST.get('username')
+        pwd = request.POST.get('password')
+        print(name,pwd)
+        # res = models.User.objects.filter(username=name, password=pwd)
+        res = models.User.objects.filter(username=name)
+        print(res)
+        data_dict = {'status': 100, 'msg': None}
+        if res:
+            data_dict['msg'] = "验证成功"
+        else:
+            data_dict['status'] = 101
+            data_dict['msg'] = "验证失败"
+
+        return JsonResponse(data_dict)
+    return render(request, "test_ajax_post.html")
+
+# ajax上传文件
+def test_ajax_upload(request):
+    if request.method=='POST':
+        name = request.POST.get('username')
+        psd = request.POST.get('password')
+        print(name,psd)
+        file_obj = request.FILES.get('file')
+        file_name = file_obj.name
+        print('>>>>',file_name)
+        # 拼接绝对路径
+        file_path = os.path.join(settings.BASE_DIR, 'upload', file_name)
+        with open(file_path, 'wb')as f:
+            for chunk in file_obj.chunks():#chunks()每次读取数据默认我64k
+                f.write(chunk)
+        return HttpResponse('ajax上传文件')
+    return render(request, 'test_ajax_upload.html')

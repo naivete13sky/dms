@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form>
+                {% csrf_token %}
+                username:<input type="text" id="user" class="form-control">
+                password:<input type="password" id="pwd" class="form-control">
+                <input type="button" id="btn" value="提交" class="btn btn-success"><span id="sp1" ></span>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    $('#btn').click(function (){
+       var username=$("#user").val();
+       var password=$("#pwd").val();
+
+       console.log(username, password);
+
+       $.ajax({
+            url:"/test_ajax_post/",
+            method:"post",
+            data:{username:username, password:password,
+            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
+            },
+            success:function (DATA){
+                if (DATA.status == 100){
+                    location.href="https://www.jd.com"
+                }
+                else {
+                    $("#sp1").html(DATA.msg).css({'color':'red'})
+                }
+            }
+
+       })
+    })
+
+</script>
+
+</body>

@@ -24,117 +24,133 @@
 {#                    {{ cc }}#}
 
                     <div class="table-responsive">
-                        <table id="responsive-table" class="data-table table table-striped  table-hover" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                {% for each in field_verbose_name %}
-                                    <th>{{ each }}</th>
-
-                                {% endfor  %}
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for layer in layers %}
+                        <script type="text/javascript">
+                            // 选择状态，开始默认的是没有选中
+                            var selectState = false;
+                            // 全选或者全取消
+                            function AllCheck(thisform){
+                                for (var i = 0; i < thisform.elements.length; i++){
+                                    // 提取控件
+                                    var checkbox = thisform.elements[i];
+                                    // 修改每个checkbox的状态
+                                    checkbox.checked = !selectState;
+                                }
+                            selectState = !selectState;
+                            }
+                        </script>
+                        <form>
+                            <table id="responsive-table" class="data-table table table-striped  table-hover" cellspacing="0" width="100%">
+                                <thead>
                                 <tr>
-                                <td>
-                                    {% if select_all_type == "select_all" %}
-                                        <input type="checkbox" name={{ layer.id }} value={{ layer.id }} checked>
-                                    {% endif %}
+                                    <th>isselected<input type="checkbox" name="cbtest" onclick="AllCheck(this.form)"></th>
+                                    {% for each in field_verbose_name %}
+                                        <th>{{ each }}</th>
 
-                                    {% if select_all_type != "select_all" %}
-                                        <input type="checkbox" name={{ layer.id }} value={{ layer.id }} >
-                                    {% endif %}
+                                    {% endfor  %}
 
-                                </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for layer in layers %}
+                                    <tr>
+                                    <td>
+                                        {% if select_all_type == "select_all" %}
+                                            <input type="checkbox" name={{ layer.id }} value={{ layer.id }} checked>
+                                        {% endif %}
 
-                                <td>
-                                    <a href="{{ job.get_absolute_url }}" title="{{ layer.job }}">
+                                        {% if select_all_type != "select_all" %}
+                                            <input type="checkbox" name={{ layer.id }} value={{ layer.id }} >
+                                        {% endif %}
 
-                                        {{ layer.job|slice:"20" }}
-                                    </a>
+                                    </td>
 
+                                    <td>
+                                        <a href="{{ job.get_absolute_url }}" title="{{ layer.job }}">
 
-                                </td>
-
-                                <td>{{ layer.layer }}</td>
-                                <td>{{ layer.layer_org }}</td>
-                                <td>{{ layer.vs_result_manual }}</td>
-                                <td>{{ layer.vs_result_ep }}</td>
-                                <td>{{ layer.vs_result_g }}</td>
-                                <td>{{ layer.layer_file_type }}</td>
-                                <td>{{ layer.layer_type }}</td>
-                                <td>{{ layer.features_count }}</td>
-
-                                <td>{{ layer.units_ep }}</td>
-                                <td>{{ layer.zeroes_omitted_ep }}</td>
-                                <td>{{ layer.number_format_A_ep }}</td>
-                                <td>{{ layer.number_format_B_ep }}</td>
-                                <td>{{ layer.tool_units_ep }}</td>
-
-                                <td>{{ layer.units_g }}</td>
-                                <td>{{ layer.zeroes_omitted_g }}</td>
-                                <td>{{ layer.number_format_A_g }}</td>
-                                <td>{{ layer.number_format_B_g }}</td>
-                                <td>{{ layer.tool_units_g }}</td>
-
-                                <td>{{ layer.status }}</td>
-{#                                <td>{{ job.create_time }}</td>#}
-{#                                <td>{{ job.updated }}</td>#}
-                                <td>
-                                    {% for tag in job.tags.all %}
-                                        <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
-                                        {% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                    {% if tag %}
-                                        <h2>Posts tagged with "{{ tag.name }}"</h2>
-                                    {% endif %}
-                                </td>
-
-                                <td>
-                                    <div class="btn-group btn-group-xs">
-                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='../../LayerUpdateView/{{ layer.id }}';"><i class="fa fa-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
-{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
-                                        </button>
-
-                                        <button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/{{ job.id }}';"><i class="fa fa-times"></i>
-                                        </button>
-
-                                        <button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/{{ job.id }}';"><i class="fa fa-share-alt"></i>
-                                        </button>
-
-                                        <button class="btn btn-transparent" title="分析" onclick="window.location.href='job_analysis';"><i class="fa fa-server"></i>
-                                        </button>
-
-                                    </div>
-                                </td>
-                            </tr>
+                                            {{ layer.job|slice:"20" }}
+                                        </a>
 
 
-                            {% endfor %}
+                                    </td>
+
+                                    <td>{{ layer.layer }}</td>
+                                    <td>{{ layer.layer_org }}</td>
+                                    <td>{{ layer.vs_result_manual }}</td>
+                                    <td>{{ layer.vs_result_ep }}</td>
+                                    <td>{{ layer.vs_result_g }}</td>
+                                    <td>{{ layer.layer_file_type }}</td>
+                                    <td>{{ layer.layer_type }}</td>
+                                    <td>{{ layer.features_count }}</td>
+
+                                    <td>{{ layer.units_ep }}</td>
+                                    <td>{{ layer.zeroes_omitted_ep }}</td>
+                                    <td>{{ layer.number_format_A_ep }}</td>
+                                    <td>{{ layer.number_format_B_ep }}</td>
+                                    <td>{{ layer.tool_units_ep }}</td>
+
+                                    <td>{{ layer.units_g }}</td>
+                                    <td>{{ layer.zeroes_omitted_g }}</td>
+                                    <td>{{ layer.number_format_A_g }}</td>
+                                    <td>{{ layer.number_format_B_g }}</td>
+                                    <td>{{ layer.tool_units_g }}</td>
+
+                                    <td>{{ layer.status }}</td>
+    {#                                <td>{{ job.create_time }}</td>#}
+    {#                                <td>{{ job.updated }}</td>#}
+                                    <td>
+                                        {% for tag in job.tags.all %}
+                                            <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
+                                            {% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        {% if tag %}
+                                            <h2>Posts tagged with "{{ tag.name }}"</h2>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <div class="btn-group btn-group-xs">
+                                            <button class="btn btn-transparent" title="编辑" onclick="window.location.href='../../LayerUpdateView/{{ layer.id }}';"><i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
+    {#                                                                        <a href="job/{{ job.id }}">查看</a>#}
+                                            </button>
+
+                                            <button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/{{ job.id }}';"><i class="fa fa-times"></i>
+                                            </button>
+
+                                            <button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/{{ job.id }}';"><i class="fa fa-share-alt"></i>
+                                            </button>
+
+                                            <button class="btn btn-transparent" title="分析" onclick="window.location.href='job_analysis';"><i class="fa fa-server"></i>
+                                            </button>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                {% endfor %}
 
 
 
-                            </tbody>
-                        </table>
-                        {% include 'pagination.html' with page=page_obj %}
-
+                                </tbody>
+                            </table>
+                            {% include 'pagination.html' with page=page_obj %}
+                        </form>
                         <br>
 
 
-                        <form  method="get" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
-                            <input type="submit" name="select_all" id='select_all' value="全部选择"/>
-                        </form>
-
-                        <form  method="get" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
-                            <input type="submit" name="unselect_all" id='unselect_all' value="全部取消"/>
-                        </form>
+{#                        <form  method="get" enctype="multipart/form-data">#}
+{#                            {% csrf_token %}#}
+{#                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">#}
+{#                            <input type="submit" name="select_all" id='select_all' value="全部选择"/>#}
+{#                        </form>#}
+{##}
+{#                        <form  method="get" enctype="multipart/form-data">#}
+{#                            {% csrf_token %}#}
+{#                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">#}
+{#                            <input type="submit" name="unselect_all" id='unselect_all' value="全部取消"/>#}
+{#                        </form>#}
 
 
 
@@ -151,6 +167,10 @@
 
                             <input type="submit" value="确认">
                         </form>
+
+
+
+
 
 
 

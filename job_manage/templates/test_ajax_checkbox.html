@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>实现checkbox权限功能并将选中行的数据发送到后端</title>
+</head>
+
+<body>
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        // 选择状态，开始默认的是没有选中
+         var selectState = false;
+          // 全选或者全取消
+         function AllCheck(thisform){
+            for (var i = 0; i < thisform.elements.length; i++){
+                // 提取控件
+                var checkbox = thisform.elements[i];
+                // 修改每个checkbox的状态
+                checkbox.checked = !selectState;
+            }
+            selectState = !selectState;
+          }
+
+          //通过dom判断该列的checkbox是否被选中，并获取该选中行的数据
+          function sendDataTo(id){
+              //获取该table中所有的input元素，是一个数组
+            var inputs = document.getElementById(id).getElementsByTagName("input");
+            var allData = new Array();
+            var num = 0;
+            for(var i = 0; i < inputs.length; i++){
+                // 判断该input中是否为checkbox
+                if(inputs[i].type == "checkbox" ){
+                    //判断该checkbox是否被选中，如果被选中获取table行中的指定元素
+                    if(inputs[i].checked){
+                        var checkRow = inputs[i];
+                        //tr对应table的行
+                        var tr = checkRow.parentNode.parentNode;
+                        //tds对应每一行中的对应的每一列
+                        var tds = tr.cells;　　　　　　　　　　　　　　// 组织要发送的数据
+                        var temp = new Array();
+                        temp[0] = tds[0].innerHTML;
+                        temp[1] = tds[2].getElementsByTagName("input")[0].value;
+                        allData[num] = temp;
+                        num++;
+                    }
+                }
+            };
+             var csrf = $("input[name='csrfmiddlewaretoken']").val();
+            //将数据使用ajax发送到后端，调用后端接口
+            $.ajax({
+                type:"POST",
+                //后端接口
+                url:"",
+                contentType:"application/json",
+                headers:{'X-CSRFToken': csrf},
+                dataType:"json",
+                //数据
+                data: JSON.stringify({shopInfo : allData}),
+                success:function(){
+                    alert("ok");
+                },
+                error: function(){
+                    alert("error");
+                }
+            });
+        }
+
+    </script>
+
+
+
+     <form>
+         {% csrf_token %}
+         <table border="1px" id="test">
+             <thead>
+                 <tr>
+                     <th>id</th>
+                     <th>name</th>
+                     <th>age</th>
+                     <th>isselected<input type="checkbox" name="cbtest" onclick="AllCheck(this.form)"></th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr>
+                     <td>1</td>
+                     <td>zy</td>
+                     <td>18</td>
+                     <td><input type="checkbox" name="cbtest"></td>
+                 </tr>
+                 <tr>
+                     <td>2</td>
+                     <td>junjun</td>
+                     <td>18</td>
+                     <td><input type="checkbox" name="cbtest"></td>
+                 </tr>
+             </tbody>
+         </table>
+         <input type="submit" name="sbtest" onclick="sendDataTo('test')">
+     </form>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <title>upload</title>
+</head>
+<body>
+<!--ajax上传文件-->
+<div>
+    {% csrf_token %}
+    用户名：<input type="text" id="username"><br>
+    密码：<input type="password" id="password"><br>
+    上传文件：<input type="file" id="file"><br>
+    <input type="button" id="submit" value="ajax上传文件">
+</div>
+</body>
+<script>
+    $(function () {
+        $('#submit').click(function () {
+            //ajax上传文件必须通过FormData对象传输数据
+            var formdata = new FormData();
+
+            var username = $('#username').val();
+            var psd = $('#password').val();
+            var csrf_data = $('input[name=csrfmiddlewaretoken]').val();
+            //获取上传文件对象(文件句柄)：定位对象，转成DOM对象，取值(文件对象列表)
+            var file = $('#file')[0].files[0];
+
+            formdata.append('username', username);
+            formdata.append('psd', psd);
+            formdata.append('csrfmiddlewaretoken', csrf_data);//csrf认证的键是固定的
+            formdata.append('file', file);
+
+            $.ajax({
+                url: "{% url 'job_manage:test_ajax_upload' %}",
+                type: 'post',
+                data: formdata,
+                processData: false,//不处理数据
+                contentType: false,//不设置内容类型，按原格式传输
+                success: function (response) {
+                    alert(response)
+                }
+            })
+        })
+    })
+</script>
+</html>

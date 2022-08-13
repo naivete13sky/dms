@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<p>ajax请求</p>
+<button class="s1">send_ajax</button>
+<p class="con"></p>
+<hr>
+{% csrf_token %} #方式一
+<p>用户名：<input type="text" id="user"><span class="error"></span></p>
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+</script>
+<script>
+  $(".s1").click(function(){
+    $.ajax({
+      url:"/test_ajax_post1/",
+      type:"get",
+      data:{},
+      success:function(data){
+        $(".con").html(data)
+      }
+    })
+  });
+  //下面改成post请求如何避免crsf错误呢
+     $("#user").blur(function () {
+    $.ajax({
+      url: "/test_ajax_post1/",
+      type: "post",
+      data: {"name": $("#user").val(),
+        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
+　　　　　　　headers:{"X-CSRFToken":$.cookie('csrftoken')},  //方式三
+      },
+　　　　　　　
+      success: function (data) {
+        console.log(data);
+        console.log(typeof data);
+        var data = JSON.parse(data);
+        console.log(data);
+        console.log(typeof data);
+        if (!data.state) {
+          $(".error").html(data.msg).css("color", "red")
+        }
+      }
+    })
+  });
+</script>
+</body>
+</html>
+

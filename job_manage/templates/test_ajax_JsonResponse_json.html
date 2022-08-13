@@ -1,0 +1,39 @@
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {% csrf_token %}
+            <input type="text" id="d1" >+
+            <input type="text" id="d2">=
+            <input type="text" id="d3">
+            <button id="d4" class="btn btn-warning">提交</button>
+        </div>
+    </div>
+</div>
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    $("#d4").click(function (){
+        var num1 = $("#d1").val();
+        var num2 = $("#d2").val();
+        console.log(num1, num2);
+
+        //拿到参数后使用Ajax向后提交
+        $.ajax({
+            url:"/test_ajax_JsonResponse_json/",  // 请求的地址
+            type:"post",    // 请求的方式,使用method()也可以
+            data:{num1:num1, num2:num2,
+                "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
+            },   //指定要提交给后端的数据
+            success: function (res){ // 接收后端返回的结果
+                // 后端返回的数据都放在res里面
+                console.log(res)
+                console.log(typeof(res))
+				// 后端使用JsonResponse直接返回一个对象，所以不用使用json反序列化(Django1.11依然要反序列化)，直接使用
+                $('#d3').val(res.n3)
+            }
+        });
+
+    })
+</script>
+</body>
+
