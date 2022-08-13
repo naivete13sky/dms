@@ -11,6 +11,9 @@
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
+                    <h4>当前料号：{{ job_name }}</h4>
+
+
                     <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增层别</a></h4>
 
                     <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
@@ -138,6 +141,7 @@
                                 <option value ="passed">passed</option>
                                 <option value ="failed">failed</option>
                             </select>
+                            <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
                             <input type="submit" value="提交"/>
                         </form>
                         <br>
