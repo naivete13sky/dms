@@ -6,7 +6,6 @@
     <li><a>层别查询</a></li>
 {% endblock %}
 {% block main_content %}
-
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
@@ -39,8 +38,7 @@
                             selectState = !selectState;
                             }
                         </script>
-                        <form action={% url "job_manage:layer_set_vs_result_manual" %} method="POST">
-                            {% csrf_token %}
+                        <form>
                             <table id="responsive-table" class="data-table table table-striped  table-hover" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
@@ -56,7 +54,14 @@
                                 {% for layer in layers %}
                                     <tr>
                                     <td>
-                                        <input type="checkbox" name="check_box_list" value="{{ layer.id }}" onclick="userCheck(this)">
+                                        {% if select_all_type == "select_all" %}
+                                            <input type="checkbox" name={{ layer.id }} value={{ layer.id }} checked>
+                                        {% endif %}
+
+                                        {% if select_all_type != "select_all" %}
+                                            <input type="checkbox" name={{ layer.id }} value={{ layer.id }} >
+                                        {% endif %}
+
                                     </td>
 
                                     <td>
@@ -131,12 +136,21 @@
                                 </tbody>
                             </table>
                             {% include 'pagination.html' with page=page_obj %}
-
-                            <input type="submit" value="提交"/>
                         </form>
                         <br>
 
 
+{#                        <form  method="get" enctype="multipart/form-data">#}
+{#                            {% csrf_token %}#}
+{#                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">#}
+{#                            <input type="submit" name="select_all" id='select_all' value="全部选择"/>#}
+{#                        </form>#}
+{##}
+{#                        <form  method="get" enctype="multipart/form-data">#}
+{#                            {% csrf_token %}#}
+{#                            <input type="hidden" value={{ job_id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">#}
+{#                            <input type="submit" name="unselect_all" id='unselect_all' value="全部取消"/>#}
+{#                        </form>#}
 
 
 
@@ -157,7 +171,60 @@
 
 
 
+                        <script type="text/javascript">
+                            $(function () {
+                                //全选,设置chheckbox name='all' tbody id=tb
+                                $("input[name=all]").click(function () {
+                                    if (this.checked) {
+                                        $("#tb :checkbox").prop("checked", true);
+                                    } else {
+                                        $("#tb :checkbox").prop("checked", false);
+                                    }
+                                });
+                            });
+                            //单选 设置name=id
+                            function userCheck(ths) {
+                                if (ths.checked == false) {
+                                    $("input[name=all]:checkbox").prop('checked', false);
+                                }
+                                else {
+                                    var count = $("input[name='id']:checkbox:checked").length;
+                                    if (count == $("input[name='id']:checkbox").length) {
+                                        $("input[name=all]:checkbox").prop("checked", true);
+                                    }
+                                }
+                            }
 
+                        </script>
+
+                    {#    {{ userlist }}#}
+
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <table border="2" style="margin: 0 auto;text-align: left;width: 800px">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" name="all">全选</th>
+                                <th>id</th>
+                                <th>用户名</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="tb">
+                            {% for user in userlist %}
+                                <tr>
+                                    <td><input type="checkbox" name="check_box_list" value="{{ user.id }}" onclick="userCheck(this)"></td>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.username }}</td>
+
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                            <input type="submit" value="提交"/>
+                        </form>
 
 
 

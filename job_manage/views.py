@@ -1043,7 +1043,14 @@ def view_layer(request,job_id):
 
 def layer_set_vs_result_manual(request):
     pass
+    if request.method == 'POST':
+        print("POST!!!")
+        # ret=request.REQUEST.get_list('check_box_list')
+        # ret=request.GET.getlist('check_box_list')
+        ret=request.POST.getlist('check_box_list')
+        print(ret)
     print("layer_set_vs_result_manual")
+    return HttpResponse("hello,post!")
 
 class LayerUpdateView(UpdateView):
     """
