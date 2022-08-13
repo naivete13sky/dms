@@ -131,37 +131,16 @@
                                 </tbody>
                             </table>
                             {% include 'pagination.html' with page=page_obj %}
-
-                            <input type="submit" value="提交"/>
-                        </form>
-                        <br>
-
-
-
-
-
-                        <form action="" method="post" novalidate enctype="multipart/form-data">
-                            {% csrf_token %}
+                            <br>
                             批量设置人工比对结果：
-                            <select>
+                            <select id="layer_set_vs_result_manual" name="layer_set_vs_result_manual">
                                 <option value ="none">none</option>
                                 <option value ="passed">passed</option>
                                 <option value ="failed">failed</option>
-
-
                             </select>
-
-                            <input type="submit" value="确认">
+                            <input type="submit" value="提交"/>
                         </form>
-
-
-
-
-
-
-
-
-
+                        <br>
                     </div>
                 </div>
             </div>

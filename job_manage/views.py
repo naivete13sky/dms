@@ -1007,9 +1007,17 @@ class LayerListView(ListView):
             print("POST!!!")
             # ret=request.REQUEST.get_list('check_box_list')
             # ret=request.GET.getlist('check_box_list')
-            ret = request.POST.getlist('check_box_list')
-            print(ret)
-        return HttpResponse("post post post")
+            check_box_list = request.POST.getlist('check_box_list')
+            selected = request.POST.get('layer_set_vs_result_manual', None)
+            print(check_box_list,selected)
+            #开始设置
+            for each in check_box_list:
+                pass
+                each_layer=models.Layer.objects.get(id=each)
+                print(each_layer)
+                each_layer.vs_result_manual=selected
+                each_layer.save()
+        return redirect('job_manage:LayerListView')
 
 def view_layer(request,job_id):
     pass
