@@ -999,9 +999,17 @@ class LayerListView(ListView):
             context['job_name'] = current_job_name.job_name
             context['select_all_type'] = "unselect_all"
 
-
-
         return context
+
+    def post(self, request):  # ***** this method required! ******
+        self.object_list = self.get_queryset()
+        if request.method == 'POST':
+            print("POST!!!")
+            # ret=request.REQUEST.get_list('check_box_list')
+            # ret=request.GET.getlist('check_box_list')
+            ret = request.POST.getlist('check_box_list')
+            print(ret)
+        return HttpResponse("post post post")
 
 def view_layer(request,job_id):
     pass

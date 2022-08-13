@@ -39,7 +39,7 @@
                             selectState = !selectState;
                             }
                         </script>
-                        <form action={% url "job_manage:layer_set_vs_result_manual" %} method="POST">
+                        <form action={% url "job_manage:LayerListView" %} method="POST">
                             {% csrf_token %}
                             <table id="responsive-table" class="data-table table table-striped  table-hover" cellspacing="0" width="100%">
                                 <thead>
