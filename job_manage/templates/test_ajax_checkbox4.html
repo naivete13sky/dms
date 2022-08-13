@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>实现checkbox权限功能并将选中行的数据发送到后端</title>
+</head>
+
+<body>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //全选,设置chheckbox name='all' tbody id=tb
+            $("input[name=all]").click(function () {
+                if (this.checked) {
+                    $("#tb :checkbox").prop("checked", true);
+                } else {
+                    $("#tb :checkbox").prop("checked", false);
+                }
+            });
+        });
+        //单选 设置name=id
+        function userCheck(ths) {
+            if (ths.checked == false) {
+                $("input[name=all]:checkbox").prop('checked', false);
+            }
+            else {
+                var count = $("input[name='id']:checkbox:checked").length;
+                if (count == $("input[name='id']:checkbox").length) {
+                    $("input[name=all]:checkbox").prop("checked", true);
+                }
+            }
+        }
+
+    </script>
+
+{#    {{ userlist }}#}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2" style="margin: 0 auto;text-align: left;width: 800px">
+        <thead>
+        <tr>
+            <th><input type="checkbox" name="all">全选</th>
+            <th>id</th>
+            <th>用户名</th>
+
+        </tr>
+        </thead>
+        <tbody id="tb">
+        {% for user in userlist %}
+            <tr>
+                <td><input type="checkbox" name="check_box_list" value="{{ user.id }}" onclick="userCheck(this)"></td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <input type="submit" value="提交"/>
+    </form>
+
+</body>
+</html>

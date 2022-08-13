@@ -5,7 +5,9 @@
 </head>
 
 <body>
+
     <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+
     <script type="text/javascript">
         // 选择状态，开始默认的是没有选中
          var selectState = false;
@@ -41,17 +43,20 @@
                         temp[1] = tds[2].getElementsByTagName("input")[0].value;
                         allData[num] = temp;
                         num++;
+
                     }
                 }
+                {#var csrf_data = $('input[name=csrfmiddlewaretoken]').val();#}
+                {#allData.append('csrfmiddlewaretoken', csrf_data);//csrf认证的键是固定的#}
             };
-             var csrf = $("input[name='csrfmiddlewaretoken']").val();
+
+
             //将数据使用ajax发送到后端，调用后端接口
             $.ajax({
                 type:"POST",
                 //后端接口
-                url:"",
+                url:"/test_ajax_checkbox/",
                 contentType:"application/json",
-                headers:{'X-CSRFToken': csrf},
                 dataType:"json",
                 //数据
                 data: JSON.stringify({shopInfo : allData}),

@@ -1565,6 +1565,12 @@ def refresh_bug_info(request,job_id):
     # return render(request, 'BugListView.html', {'field_verbose_name': field_verbose_name, 'vs': vs,'job':job})
 
 
+
+
+
+
+
+
 def test(request):
     if request.user.is_authenticated:
         print(request.user.first_name,'|',request.user.username)
@@ -1593,6 +1599,8 @@ def test_ajax_add2(request):
         return HttpResponse(str(a+b))
     return render(request, 'test_ajax_add2.html')
 
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
 def test_ajax_checkbox(request):
     pass
     if request.method == 'POST':
@@ -1604,6 +1612,55 @@ def test_ajax_checkbox(request):
         # return HttpResponse(str(a+b))
         return HttpResponse("abc")
     return render(request, 'test_ajax_checkbox.html')
+
+def test_ajax_checkbox2(request):
+    pass
+    if request.method == 'POST':
+        print("POST!!!")
+        # ret=request.REQUEST.get_list('check_box_list')
+        # ret=request.GET.getlist('check_box_list')
+        ret=request.POST.getlist('check_box_list')
+
+        print(ret)
+        return HttpResponse("abc")
+
+    userlist=models.User.objects.all()
+    # print(userlist)
+    return render(request, 'test_ajax_checkbox2.html' ,{'userlist': userlist,})
+
+def test_ajax_checkbox3(request):
+    pass
+
+    if request.method == 'POST':
+        print("POST!!!")
+
+        result_list = request.POST.getlist('file1', '')
+        result = str(result_list)
+        print('result',result)
+
+        ret=request.POST.getlist('check_box_list')
+
+        print(ret)
+        return HttpResponse("abc")
+
+    userlist=models.User.objects.all()
+    # print(userlist)
+    return render(request, 'test_ajax_checkbox3.html' ,{'userlist': userlist,})
+
+def test_ajax_checkbox4(request):
+    pass
+    if request.method == 'POST':
+        print("POST!!!")
+        # ret=request.REQUEST.get_list('check_box_list')
+        # ret=request.GET.getlist('check_box_list')
+        ret=request.POST.getlist('check_box_list')
+
+        print(ret)
+        return HttpResponse("abc")
+
+    userlist=models.User.objects.all()
+    # print(userlist)
+    return render(request, 'test_ajax_checkbox4.html' ,{'userlist': userlist,})
 
 def test_ajax_post1(request):
     if request.method == 'POST':
@@ -1698,3 +1755,5 @@ def test_ajax_upload(request):
                 f.write(chunk)
         return HttpResponse('ajax上传文件')
     return render(request, 'test_ajax_upload.html')
+
+
