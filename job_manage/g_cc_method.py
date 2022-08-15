@@ -696,6 +696,6 @@ if __name__ == '__main__':
     asw.g_Gerber2Odb(gerberList_path, job, step)
     #
     # asw.delete_job(job)
-    'COM export_job,job=test-zm,path=Z:/share/temp,mode=tar_gzip,submode=full,overwrite=yes'
-    asw.g_export(job,r'Z:/share/temp')
+    # 'COM export_job,job=test-zm,path=Z:/share/temp,mode=tar_gzip,submode=full,overwrite=yes'
+    # asw.g_export(job,r'Z:/share/temp')
 
