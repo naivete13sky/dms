@@ -1282,11 +1282,159 @@ def vs_ep(request,job_id):
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
 
-
 def vs_g(request,job_id):
     pass
-    print("G软件VS",job_id)
-    return HttpResponse("G软件VS"+str(job_id))
+    print("G软件VS", job_id)
+    # return HttpResponse("G软件VS" + str(job_id))
+
+    g_vs_total_result_flag = True  # True表示最新一次G比对通过
+    vs_time=str(int(time.time()))
+
+    job = Job.objects.get(id=job_id)
+    print(job.job_name, job.file_odb_current,job.file_odb_g)
+
+    #拿到job_ep和job_g
+    temp_path = r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
+    if not os.path.exists(os.path.join(temp_path,'ep')):
+        os.mkdir(os.path.join(temp_path,'ep'))
+    if not os.path.exists(os.path.join(temp_path,'g')):
+        os.mkdir(os.path.join(temp_path,'g'))
+
+    job_ep_path=(os.path.join(settings.PROJECT_PATH,r'media',str(job.file_odb_current))).replace(r'/','\\')
+    temp_ep_path=os.path.join(temp_path,'ep')
+    shutil.copy(job_ep_path,temp_ep_path)
+    time.sleep(0.2)
+    ep_tgz_file = os.listdir(temp_ep_path)[0]
+    print("ep_tgz_file:",ep_tgz_file)
+    job_operation.untgz(os.path.join(temp_ep_path,str(job.file_odb_current).split('/')[-1]),temp_ep_path)
+    if os.path.exists(os.path.join(temp_ep_path,str(job.file_odb_current).split('/')[-1])):
+        os.remove(os.path.join(temp_ep_path,str(job.file_odb_current).split('/')[-1]))
+    print("ep_tgz_file_now:",os.listdir(temp_ep_path)[0])
+
+    job_g_path = (os.path.join(settings.PROJECT_PATH, r'media', str(job.file_odb_g))).replace(r'/', '\\')
+    temp_g_path = os.path.join(temp_path, 'g')
+    shutil.copy(job_g_path, temp_g_path)
+    time.sleep(0.2)
+    g_tgz_file = os.listdir(temp_g_path)[0]
+    print("g_tgz_file:", g_tgz_file)
+    job_operation.untgz(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1]), temp_g_path)
+    if os.path.exists(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1])):
+        os.remove(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1]))
+    print("g_tgz_file_now:", os.listdir(temp_g_path)[0])
+
+    epcam.init()
+
+    #打开job_ep
+    # job_ep_name=str(job.file_odb_current).split('/')[-1][:-4]
+    job_ep_name=os.listdir(temp_ep_path)[0]
+    new_job_path_ep = os.path.join(temp_ep_path, job_ep_name)
+    print("temp_ep_path:", temp_ep_path, "job_ep_name:", job_ep_name)
+    res=job_operation.open_job(temp_ep_path, job_ep_name)
+    print("open ep tgz:",res)
+    print("job_ep_layer:", job_operation.get_all_layers(job_ep_name))
+    if len(job_operation.get_all_layers(job_ep_name))==0:
+        pass
+        g_vs_total_result_flag=False
+        return HttpResponse("最新-EP-ODB++打开失败！！！！！")
+
+
+    # 打开job_g
+    # job_g_name = str(job.file_odb_g).split('/')[-1][:-4]
+    job_g_name = os.listdir(temp_g_path)[0]
+    new_job_path_g = os.path.join(temp_g_path, job_g_name)
+    print("temp_g_path:", temp_g_path, "job_g_name:", job_g_name)
+    job_operation.open_job(temp_g_path, job_g_name)
+    print("open gp tgz:", res)
+    print("job_g_layer:",job_operation.get_all_layers(job_g_name))
+    if len(job_operation.get_all_layers(job_g_name))==0:
+        pass
+        g_vs_total_result_flag=False
+        return HttpResponse("G-ODB++打开失败！！！！！")
+
+
+
+
+    all_result = {}  # 存放所有层比对结果
+
+
+    step="orig"
+
+    #原始层文件信息，最全的
+    all_layer_from_org = models.Layer.objects.filter(job=job)
+    print("all_layer_from_org:", all_layer_from_org)
+
+    #以为G软件解析好的为主，来VS
+    all_layer = job_operation.get_all_layers(job_g_name)
+    print('G软件tgz中的层信息：',all_layer)
+    if len(all_layer)==0:
+        pass
+        g_vs_total_result_flag = False
+
+
+    for layer in all_layer:
+        print("g_layer:",layer)
+        print("比对参数",job_g_name, step, layer, job_ep_name, step, layer)
+        asw=Asw()
+
+
+
+        # layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
+        # all_result[layer] = layer_result
+
+    #     for each in all_layer_from_org:
+    #         if layer == str(each.layer_org).lower():
+    #             print("I find it!!!!!!!!!!!!!!")
+    #             print(layer_result,type(layer_result))
+    #             layer_result_dict=json.loads(layer_result)
+    #             print(layer_result_dict)
+    #             print(len(layer_result_dict["result"]))
+    #             new_vs=models.Vs()
+    #             new_vs.job=job
+    #             new_vs.layer = each.layer
+    #             new_vs.layer_org=each.layer_org
+    #             new_vs.vs_result_detail=str(layer_result_dict)
+    #             new_vs.vs_method='ep'
+    #             new_vs.layer_file_type=each.layer_file_type
+    #             new_vs.layer_type=each.layer_type
+    #             new_vs.vs_time=vs_time
+    #             try:
+    #                 if len(layer_result_dict["result"])==0:
+    #                     each.vs_result_ep='passed'
+    #                     new_vs.vs_result ='passed'
+    #                 if len(layer_result_dict["result"])>0:
+    #                     each.vs_result_ep = 'failed'
+    #                     new_vs.vs_result = 'failed'
+    #                     g_vs_total_result_flag=False
+    #             except:
+    #                 pass
+    #                 print("异常！")
+    #             each.vs_time=vs_time
+    #             each.save()
+    #             new_vs.save()
+    # pass
+    # if g_vs_total_result_flag==True:
+    #     pass
+    #     job.vs_result_ep='passed'
+    # if g_vs_total_result_flag==False:
+    #     pass
+    #     job.vs_result_ep='failed'
+    # job.vs_time=vs_time
+    # job.save()
+    #
+    #
+    # print("*" * 100)
+    # print(all_result)
+    # print("*" * 100)
+    #
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
+
+    # return HttpResponse("悦谱VS"+str(job_id))
+    return redirect('job_manage:JobListView')
+
 
 class VsListView(ListView):
     queryset = models.Vs.objects.all()

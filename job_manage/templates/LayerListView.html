@@ -42,7 +42,7 @@
                             selectState = !selectState;
                             }
                         </script>
-                        <form action={% url "job_manage:LayerListView" %} method="POST">
+{#                        <form action={% url "job_manage:LayerListView" %} method="POST">#}
                             {% csrf_token %}
                             <table id="responsive-table" class="data-table table table-striped  table-hover" cellspacing="0" width="100%">
                                 <thead>
@@ -143,7 +143,7 @@
                             </select>
                             <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
                             <input type="submit" value="提交"/>
-                        </form>
+{#                        </form>#}
                         <br>
                     </div>
                 </div>

@@ -8,7 +8,8 @@ import time
 import linecache
 import gl as gl
 LAYER_COMPARE_JSON = 'layer_compare.json'
-from job_manage import models
+from job_manage import models, job_operation
+
 
 class Asw():
     def __init__(self,gateway_path):
@@ -30,7 +31,7 @@ class Asw():
         # print("*"*100,ret)
         return ret
         
-    def layer_compare_g(self, paras, _type):
+    def layer_compare_g1(self, paras, _type):
         print("*" * 100)
         result=""
         try:
@@ -181,6 +182,319 @@ class Asw():
             for cmd in cmd_list2:
                 self.exec_cmd(cmd)
         return result
+
+    def import_odb_folder(self, jobpath):
+        print("*" * 100,"import job")
+        results=[]
+        self.jobpath = jobpath
+        if not os.path.exists(self.jobpath):
+            print('{} does not exist'.format(self.jobpath))
+            results.append('{} does not exist'.format(self.jobpath))
+            return results
+        job = os.path.basename(self.jobpath)
+        cmd_list1 = [
+            'COM import_job,db=genesis,path={},name={},analyze_surfaces=no'.format(jobpath, job),
+
+        ]
+
+        for cmd in cmd_list1:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            results=results.append(ret)
+            if ret != 0:
+                print('inner error')
+                return results
+
+        return results
+
+    def layer_compare_g_open_2_job(self, jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res):
+        print("*" * 100,"comare_open_2_job")
+        results=[]
+        try:
+            self.jobpath1 = jobpath1
+            # self.job_name_1=self.jobpath1.split("\\")[-1]
+            self.step1 = step1
+            self.layer1 = layer1
+            self.jobpath2 = jobpath2
+            self.step2 = step2
+            self.layer2 = layer2
+            self.layer2_ext = layer2_ext
+            self.tol = tol
+            self.map_layer = map_layer
+            self.map_layer_res = map_layer_res
+        except Exception as e:
+            print(e)
+            print("*"*100)
+            return results
+
+        job1 = os.path.basename(self.jobpath1)
+        job2 = os.path.basename(self.jobpath2)
+        layer_cp = layer2 + layer2_ext
+
+
+        cmd_list1 = [
+            'COM check_inout,mode=out,type=job,job={}'.format(job1),
+            'COM clipb_open_job,job={},update_clipboard=view_job'.format(job1),
+            'COM open_job,job={}'.format(job1),
+            'COM open_entity,job={},type=step,name={},iconic=no'.format(job1, step1),
+            'COM units,type=inch',
+            'COM open_job,job={}'.format(job2),
+            # 'COM compare_layers,layer1={},job2={},step2={},layer2={},layer2_ext={},tol={},area=global,consider_sr=yes,ignore_attr=,map_layer={},map_layer_res={}'.format(
+            #     layer1, job2, step2, layer2, layer2_ext, tol, map_layer, map_layer_res),
+
+            # 'COM save_job,job={},override=no'.format(job1),
+            # 'COM editor_page_close',
+            # 'COM check_inout,mode=out,type=job,job={}'.format(job1),
+            # 'COM close_job,job={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            #
+            # 'COM close_job,job={}'.format(job2),
+            # 'COM close_form,job={}'.format(job2),
+            # 'COM close_flow,job={}'.format(job2)
+
+        ]
+
+        cmd_list2 = [
+            # 'COM editor_page_close',
+            # 'COM check_inout,mode=in,type=job,job={}'.format(job1),
+            # 'COM close_job,job={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            # 'COM delete_entity,job=,type=job,name={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            # # 'COM close_job,job={}'.format(job2),
+            # # 'COM close_form,job={}'.format(job2),
+            # # 'COM close_flow,job={}'.format(job2),
+            # 'COM delete_entity,job=,type=job,name={}'.format(job2),
+            # 'COM close_form,job={}'.format(job2),
+            # 'COM close_flow,job={}'.format(job2)
+        ]
+
+
+        for cmd in cmd_list1:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            results.append(ret)
+            if ret != 0:
+                print('inner error')
+                return results
+
+    def layer_compare_do_compare(self, jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res):
+        print("*" * 100, "do_comare")
+        results = []
+        try:
+            self.jobpath1 = jobpath1
+            # self.job_name_1=self.jobpath1.split("\\")[-1]
+            self.step1 = step1
+            self.layer1 = layer1
+            self.jobpath2 = jobpath2
+            self.step2 = step2
+            self.layer2 = layer2
+            self.layer2_ext = layer2_ext
+            self.tol = tol
+            self.map_layer = map_layer
+            self.map_layer_res = map_layer_res
+        except Exception as e:
+            print(e)
+            print("*" * 100)
+            return results
+
+        self.job1 = os.path.basename(jobpath1)
+        self.job2 = os.path.basename(jobpath2)
+        layer_cp = layer2 + layer2_ext
+
+        cmd_list1 = [
+            'COM compare_layers,layer1={},job2={},step2={},layer2={},layer2_ext={},tol={},area=global,consider_sr=yes,ignore_attr=,map_layer={},map_layer_res={}'.format(
+                self.layer1, self.job2, self.step2, self.layer2, self.layer2_ext, self.tol, self.map_layer, self.map_layer_res),
+
+            'COM save_job,job={},override=no'.format(self.job1),
+            # 'COM editor_page_close',
+            # 'COM check_inout,mode=out,type=job,job={}'.format(job1),
+            # 'COM close_job,job={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            #
+            # 'COM close_job,job={}'.format(job2),
+            # 'COM close_form,job={}'.format(job2),
+            # 'COM close_flow,job={}'.format(job2)
+
+        ]
+
+        cmd_list2 = [
+            # 'COM editor_page_close',
+            # 'COM check_inout,mode=in,type=job,job={}'.format(job1),
+            # 'COM close_job,job={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            # 'COM delete_entity,job=,type=job,name={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            # # 'COM close_job,job={}'.format(job2),
+            # # 'COM close_form,job={}'.format(job2),
+            # # 'COM close_flow,job={}'.format(job2),
+            # 'COM delete_entity,job=,type=job,name={}'.format(job2),
+            # 'COM close_form,job={}'.format(job2),
+            # 'COM close_flow,job={}'.format(job2)
+        ]
+
+        for cmd in cmd_list1:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            if ret != 0:
+                print('inner error')
+                return results
+
+        time.sleep(1)
+
+    def layer_compare_analysis(self, jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res):
+        print("*" * 100, "comare")
+        results = []
+        try:
+            self.jobpath1 = jobpath1
+            # self.job_name_1=self.jobpath1.split("\\")[-1]
+            self.step1 = step1
+            self.layer1 = layer1
+            self.jobpath2 = jobpath2
+            self.step2 = step2
+            self.layer2 = layer2
+            self.layer2_ext = layer2_ext
+            self.tol = tol
+            self.map_layer = map_layer
+            self.map_layer_res = map_layer_res
+        except Exception as e:
+            print(e)
+            print("*" * 100)
+            return results
+
+        job1 = os.path.basename(jobpath1)
+        job2 = os.path.basename(jobpath2)
+        layer_cp = layer2 + layer2_ext
+
+        #解压tgz
+        temp_path=r'C:\cc\share\temp'
+        job_operation.untgz(os.path.join(temp_path, '760_ep.tgz'),temp_path)
+        # if os.path.exists(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1])):
+        #     os.remove(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1]))
+        # print("g_tgz_file_now:", os.listdir(temp_g_path)[0])
+
+
+        features = (r"{}\{}\steps\{}\layers\{}\features".format(temp_path,job1, step1,self.map_layer))
+        features_Z = (r"{}\{}\steps\{}\layers\{}\features.Z".format(temp_path,job1, step1,self.map_layer))
+        print(features, "\n", features_Z)
+        if os.path.isfile(features_Z):
+            pass
+            compress = Compress()
+            compress.uncompress_z(features_Z)
+
+        try:
+            f = open(features, "r")
+        except Exception as e:
+            print("未能比对！！！请重新执行比对！！！")
+            result = "未比对"
+
+
+        # shutil.copytree(r"C:\genesis\fw\jobs\{}".format(job_name_1),r"C:\cc\jobs\{}".format(job_name_1))
+        # time.sleep(15)
+
+        with open(features, "r") as f:
+            s = f.readlines()
+            print(s[3])
+        if "r0" in s[3]:
+            print("比对发现有差异！！！！！！")
+            result = "错误"
+        else:
+            print("恭喜！比对通过！！！")
+            result = "正常"
+
+            diff = False
+            # asw_dir = "C:/genesis"
+            # matrix_path = os.path.join(asw_dir, 'fw/jobs/{}/matrix/matrix'.format(job1))
+            matrix_path = r'C:\genesis\fw\jobs\{}\matrix\matrix'.format(job1)
+            with open(matrix_path, 'r') as f:
+                for var in f.readlines():
+                    line = var.strip()
+                    if len(line) == 0:
+                        continue
+                    attr = line.split('=')
+                    if len(attr) == 2:
+                        # print(attr)
+                        if attr[0] == 'NAME' and attr[1].lower() == layer_cp:
+                            diff = True
+                            break
+            if diff == True:
+                print('Difference were found')
+                result = "错误"
+            else:
+                print('Layers Match')
+                result = "正常"
+
+        return result
+
+    def layer_compare_close_job(self, jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res):
+        print("*" * 100, "close job")
+        results = []
+        try:
+            self.jobpath1 = jobpath1
+            # self.job_name_1=self.jobpath1.split("\\")[-1]
+            self.step1 = step1
+            self.layer1 = layer1
+            self.jobpath2 = jobpath2
+            self.step2 = step2
+            self.layer2 = layer2
+            self.layer2_ext = layer2_ext
+            self.tol = tol
+            self.map_layer = map_layer
+            self.map_layer_res = map_layer_res
+        except Exception as e:
+            print(e)
+            print("*" * 100)
+            return results
+
+        self.job1 = os.path.basename(jobpath1)
+        self.job2 = os.path.basename(jobpath2)
+        layer_cp = layer2 + layer2_ext
+
+        cmd_list1 = [
+
+            'COM editor_page_close',
+            'COM check_inout,mode=out,type=job,job={}'.format(self.job1),
+            'COM close_job,job={}'.format(self.job1),
+            'COM close_form,job={}'.format(self.job1),
+            'COM close_flow,job={}'.format(self.job1),
+
+            'COM close_job,job={}'.format(self.job2),
+            'COM close_form,job={}'.format(self.job2),
+            'COM close_flow,job={}'.format(self.job2)
+
+        ]
+
+        cmd_list2 = [
+            # 'COM editor_page_close',
+            # 'COM check_inout,mode=in,type=job,job={}'.format(job1),
+            # 'COM close_job,job={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            # 'COM delete_entity,job=,type=job,name={}'.format(job1),
+            # 'COM close_form,job={}'.format(job1),
+            # 'COM close_flow,job={}'.format(job1),
+            # # 'COM close_job,job={}'.format(job2),
+            # # 'COM close_form,job={}'.format(job2),
+            # # 'COM close_flow,job={}'.format(job2),
+            # 'COM delete_entity,job=,type=job,name={}'.format(job2),
+            # 'COM close_form,job={}'.format(job2),
+            # 'COM close_flow,job={}'.format(job2)
+        ]
+
+        for cmd in cmd_list1:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            if ret != 0:
+                print('inner error')
+                return results
+
+        time.sleep(1)
 
     def clean_g(self, paras):
         print("begin clean!")
