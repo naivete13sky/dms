@@ -189,10 +189,10 @@ class Asw():
         print("*" * 100,"import job")
         results=[]
         self.jobpath = jobpath
-        if not os.path.exists(self.jobpath):
-            print('{} does not exist'.format(self.jobpath))
-            results.append('{} does not exist'.format(self.jobpath))
-            return results
+        # if not os.path.exists(self.jobpath):
+        #     print('{} does not exist'.format(self.jobpath))
+        #     results.append('{} does not exist'.format(self.jobpath))
+        #     return results
         job = os.path.basename(self.jobpath)
         cmd_list1 = [
             'COM import_job,db=genesis,path={},name={},analyze_surfaces=no'.format(jobpath, job),
@@ -1150,17 +1150,17 @@ if __name__ == '__main__':
         shutil.rmtree(temp_path)
 
 
-
+    g_local_share=r'//vmware-host/Shared Folders/share'
     rets = []
     paras = {}
     job1 = '760_ep'
     job2 = '760_g'
     step1 = 'orig'
     step2 = 'orig'
-    jobpath1 = r'C:\Users\cheng.chen\Desktop'+ '\\' + job1
+    jobpath1 = r'Z:\share'+ '\\' + job1
     step1 = step1
     layer1 = 'bottom.art'
-    jobpath2 = r'C:\Users\cheng.chen\Desktop' + '\\' + job2
+    jobpath2 = r'Z:\share' + '\\' + job2
     step2 = step2
     layer2 = 'bottom.art'
     layer2_ext = '_copy'
@@ -1169,8 +1169,8 @@ if __name__ == '__main__':
     map_layer_res = 200
 
     asw = Asw(gl.gateway_path)
-    asw.import_odb_folder(r'C:\Users\cheng.chen\Desktop'+ '\\' + job1)#导入要比图的资料
-    asw.import_odb_folder(r'C:\Users\cheng.chen\Desktop' + '\\' + job2)  # 导入要比图的资料
+    asw.import_odb_folder(os.path.join(g_local_share,job1))#导入要比图的资料
+    asw.import_odb_folder(os.path.join(g_local_share,job2))  # 导入要比图的资料
     asw.layer_compare_g_open_2_job(jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res)
     asw.layer_compare_do_compare(jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,map_layer_res)
     asw.g_export(job1,r'Z:/share/temp')
