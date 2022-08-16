@@ -187,10 +187,11 @@ class Asw():
         print("*" * 100,"import job")
         results=[]
         self.jobpath = jobpath
-        if not os.path.exists(self.jobpath):
-            print('{} does not exist'.format(self.jobpath))
-            results.append('{} does not exist'.format(self.jobpath))
-            return results
+        #远程调用时不能判断下面这个
+        # if not os.path.exists(self.jobpath):
+        #     print('{} does not exist'.format(self.jobpath))
+        #     results.append('{} does not exist'.format(self.jobpath))
+        #     return results
         job = os.path.basename(self.jobpath)
         cmd_list1 = [
             'COM import_job,db=genesis,path={},name={},analyze_surfaces=no'.format(jobpath, job),

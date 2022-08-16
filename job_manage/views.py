@@ -1290,6 +1290,9 @@ def vs_g(request,job_id):
     g_vs_total_result_flag = True  # True表示最新一次G比对通过
     vs_time=str(int(time.time()))
 
+
+
+
     job = Job.objects.get(id=job_id)
     print(job.job_name, job.file_odb_current,job.file_odb_g)
 
@@ -1373,12 +1376,50 @@ def vs_g(request,job_id):
         g_vs_total_result_flag = False
 
 
+    asw = Asw(settings.G_GETWAY_PATH)
+
+    g_temp_path = r'Z:/share/temp' + "_" + str(request.user) + "_" + str(job_id)
+    rets = []
+    paras = {}
+
+
+
+    job1 = os.listdir(os.path.join(temp_path, 'g'))[0]
+    jobpath1 = r'Z:/share/temp_{}_{}/g/{}'.format(str(request.user),str(job_id),job1)
+    step1 = 'orig'
+    layer1 = 'bottom.art'
+
+    job2 = os.listdir(os.path.join(temp_path, 'ep'))[0]
+    jobpath2 = r'Z:/share/temp_{}_{}/ep/{}'.format(str(request.user),str(job_id),job2)
+    step2 = 'orig'
+    layer2 = 'bottom.art'
+
+    layer2_ext = '_copy'
+    tol = 0.1
+    map_layer = layer2 + '-com'
+    map_layer_res = 200
+
+    print("job1:",job1,"job2:",job2)
+    asw.import_odb_folder(jobpath1)  # 导入要比图的资料,G的
+    asw.import_odb_folder(jobpath2)  # 导入要比图的资料，悦谱的
+
+
     for layer in all_layer:
         print("g_layer:",layer)
         print("比对参数",job_g_name, step, layer, job_ep_name, step, layer)
-        asw=Asw()
+
+        asw.layer_compare_g_open_2_job(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol, map_layer,map_layer_res)
+        asw.layer_compare_do_compare(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol, map_layer,map_layer_res)
+
+        # asw.layer_compare_analysis(jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,
+        #                            map_layer_res)
 
 
+    asw.layer_compare_close_job(jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,
+                                map_layer_res)
+    asw.g_export(job1, r'Z:/share/temp')
+    asw.delete_job(job1)
+    asw.delete_job(job2)
 
         # layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
         # all_result[layer] = layer_result
@@ -1429,8 +1470,8 @@ def vs_g(request,job_id):
     # print("*" * 100)
     #
     # 删除temp_path
-    if os.path.exists(temp_path):
-        shutil.rmtree(temp_path)
+    # if os.path.exists(temp_path):
+    #     shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
