@@ -879,7 +879,8 @@ def gerber274x_to_odb_g(request,job_id):
     file_path = os.path.join(temp_path,file_path_gerber)
     gerberList = getFlist(file_path)
     print(gerberList)
-    g_temp_path=r'Z:/share/temp'+"_"+str(request.user)+"_"+str(job_id)
+    # g_temp_path=r'Z:/share/temp'+"_"+str(request.user)+"_"+str(job_id)
+    g_temp_path = r'\\vmware-host\Shared Folders\share/temp' + "_" + str(request.user) + "_" + str(job_id)
     gerberList_path = []
     for each in gerberList:
         gerberList_path.append(os.path.join(g_temp_path,file_path_gerber, each))
@@ -1387,19 +1388,22 @@ def vs_g(request,job_id):
 
     asw = Asw(settings.G_GETWAY_PATH)
 
-    g_temp_path = r'Z:/share/temp' + "_" + str(request.user) + "_" + str(job_id)
+    # g_temp_path = r'Z:/share/temp' + "_" + str(request.user) + "_" + str(job_id)
+    g_temp_path = r'\\vmware-host\Shared Folders\share/temp' + "_" + str(request.user) + "_" + str(job_id)
     rets = []
     paras = {}
 
 
 
     job1 = os.listdir(os.path.join(temp_path, 'g'))[0]
-    jobpath1 = r'Z:/share/temp_{}_{}/g/{}'.format(str(request.user),str(job_id),job1)
+    # jobpath1 = r'Z:/share/temp_{}_{}/g/{}'.format(str(request.user),str(job_id),job1)
+    jobpath1 = r'\\vmware-host\Shared Folders\share/temp_{}_{}/g/{}'.format(str(request.user), str(job_id), job1)
     step1 = 'orig'
     layer1 = 'bottom.art'
 
     job2 = os.listdir(os.path.join(temp_path, 'ep'))[0]
-    jobpath2 = r'Z:/share/temp_{}_{}/ep/{}'.format(str(request.user),str(job_id),job2)
+    # jobpath2 = r'Z:/share/temp_{}_{}/ep/{}'.format(str(request.user),str(job_id),job2)
+    jobpath2 = r'\\vmware-host\Shared Folders\share/temp_{}_{}/ep/{}'.format(str(request.user), str(job_id), job2)
     step2 = 'orig'
     layer2 = 'bottom.art'
 
@@ -1432,7 +1436,8 @@ def vs_g(request,job_id):
     asw.layer_compare_close_job(jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,map_layer_res)
     if not os.path.exists(r'C:\cc\share\temp'):
         os.mkdir(r'C:\cc\share\temp')
-    asw.g_export(job1, r'Z:/share/temp')
+    # asw.g_export(job1, r'Z:/share/temp')
+    asw.g_export(job1, r'//vmware-host/Shared Folders/share/temp')
     asw.delete_job(job1)
     asw.delete_job(job2)
 
