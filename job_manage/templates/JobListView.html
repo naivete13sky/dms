@@ -137,14 +137,31 @@
 
 
                                 </td>
+
                                 <td>
-                                    {% if job.vs_result_g == 'none' %}
-                                        无信息
-                                        <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_g/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
+                                    {% if job.vs_result_g == 'passed' %}
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                            <i class="fa fa-check"></i>
                                         </button>
                                     {% endif %}
 
+                                    {% if job.vs_result_g == 'failed' %}
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                            <i class="fa fa-asterisk"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_g == 'none' %}
+                                        未比对
+
+                                    {% endif %}
+
+                                    <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_g/{{ job.id }}';"><i class="fa fa-file-picture-o"></i>
+                                    </button>
+
+
                                 </td>
+
                                 <td>
 {#                                    <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>#}
 {##}

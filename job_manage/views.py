@@ -1440,64 +1440,71 @@ def vs_g(request,job_id):
     #先解压
     temp_path = r'C:\cc\share\temp'
     job_operation.untgz(os.path.join(temp_path, os.listdir(temp_path)[0]), temp_path)
+    all_result= {}
     for layer in all_layer_g:
         pass
         print(layer)
         layer_result=asw.layer_compare_analysis(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol, layer+'-com',map_layer_res)
-        print(layer_result)
+        # print(layer_result)
+
+        all_result[layer] = layer_result
+
+        for each in all_layer_from_org:
+            if layer == str(each.layer_org).lower():
+                print("I find it!!!!!!!!!!!!!!")
+                print(layer_result,type(layer_result))
+                # layer_result_dict=json.loads(layer_result)
+                # print(layer_result_dict)
+                # print(len(layer_result_dict["result"]))
+                new_vs=models.Vs()
+                new_vs.job=job
+                new_vs.layer = each.layer
+                new_vs.layer_org=each.layer_org
+                new_vs.vs_result_detail=str(layer_result)
+                new_vs.vs_method='g'
+                new_vs.layer_file_type=each.layer_file_type
+                new_vs.layer_type=each.layer_type
+                new_vs.vs_time=vs_time
+                try:
+                    # print('layer_result_dict["result"]:',layer_result_dict["result"])
+                    if layer_result=='正常':
+                        each.vs_result_g='passed'
+                        new_vs.vs_result ='passed'
+                    elif layer_result=='错误':
+                        each.vs_result_g = 'failed'
+                        new_vs.vs_result = 'failed'
+                        g_vs_total_result_flag=False
+                    elif layer_result=='未比对':
+                        each.vs_result_g = 'none'
+                        new_vs.vs_result = 'none'
+                        g_vs_total_result_flag=False
+                    else:
+                        print("异常，状态异常！！！")
+
+                except:
+                    pass
+                    print("异常！")
+                each.vs_time=vs_time
+                each.save()
+                new_vs.save()
+
+    if g_vs_total_result_flag==True:
+        pass
+        job.vs_result_g='passed'
+    if g_vs_total_result_flag==False:
+        pass
+        job.vs_result_g='failed'
+    job.vs_time=vs_time
+    job.save()
 
 
+    print("*" * 100)
+    print(all_result)
+    print("*" * 100)
 
-        # all_result[layer] = layer_result
-
-        # for each in all_layer_from_org:
-        #     if layer == str(each.layer_org).lower():
-        #         print("I find it!!!!!!!!!!!!!!")
-        #         print(layer_result,type(layer_result))
-        #         layer_result_dict=json.loads(layer_result)
-        #         print(layer_result_dict)
-        #         print(len(layer_result_dict["result"]))
-        #         new_vs=models.Vs()
-        #         new_vs.job=job
-        #         new_vs.layer = each.layer
-        #         new_vs.layer_org=each.layer_org
-        #         new_vs.vs_result_detail=str(layer_result_dict)
-        #         new_vs.vs_method='ep'
-        #         new_vs.layer_file_type=each.layer_file_type
-        #         new_vs.layer_type=each.layer_type
-        #         new_vs.vs_time=vs_time
-        #         try:
-        #             if len(layer_result_dict["result"])==0:
-        #                 each.vs_result_ep='passed'
-        #                 new_vs.vs_result ='passed'
-        #             if len(layer_result_dict["result"])>0:
-        #                 each.vs_result_ep = 'failed'
-        #                 new_vs.vs_result = 'failed'
-        #                 g_vs_total_result_flag=False
-        #         except:
-        #             pass
-        #             print("异常！")
-        #         each.vs_time=vs_time
-        #         each.save()
-        #         new_vs.save()
-    # pass
-    # if g_vs_total_result_flag==True:
-    #     pass
-    #     job.vs_result_ep='passed'
-    # if g_vs_total_result_flag==False:
-    #     pass
-    #     job.vs_result_ep='failed'
-    # job.vs_time=vs_time
-    # job.save()
-    #
-    #
-    # print("*" * 100)
-    # print(all_result)
-    # print("*" * 100)
-    #
     # 删除temp_path
-    # if os.path.exists(temp_path):
-    #     shutil.rmtree(temp_path)
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
