@@ -310,7 +310,7 @@ class Asw():
             'COM compare_layers,layer1={},job2={},step2={},layer2={},layer2_ext={},tol={},area=global,consider_sr=yes,ignore_attr=,map_layer={},map_layer_res={}'.format(
                 self.layer1, self.job2, self.step2, self.layer2, self.layer2_ext, self.tol, self.map_layer, self.map_layer_res),
 
-            'COM save_job,job={},override=no'.format(self.job1),
+            # 'COM save_job,job={},override=no'.format(self.job1),
             # 'COM editor_page_close',
             # 'COM check_inout,mode=out,type=job,job={}'.format(job1),
             # 'COM close_job,job={}'.format(job1),
@@ -345,9 +345,30 @@ class Asw():
             ret = self.exec_cmd(cmd)
             if ret != 0:
                 print('inner error')
+                return 'inner error'
+
+        time.sleep(1)
+
+    def save_job(self, job):
+        print("*" * 100, "save")
+        results = []
+
+        cmd_list1 = [
+            'COM save_job,job={},override=no'.format(job),
+        ]
+
+        cmd_list2 = [
+        ]
+
+        for cmd in cmd_list1:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            if ret != 0:
+                print('inner error')
                 return results
 
         time.sleep(1)
+
 
     def layer_compare_analysis(self, jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res):
         print("*" * 100, "comare")
@@ -373,9 +394,8 @@ class Asw():
         job2 = os.path.basename(jobpath2)
         layer_cp = layer2 + layer2_ext
 
-        #解压tgz
-        temp_path=r'C:\cc\share\temp'
-        job_operation.untgz(os.path.join(temp_path, '760_ep.tgz'),temp_path)
+        temp_path = r'C:\cc\share\temp'
+
         # if os.path.exists(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1])):
         #     os.remove(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1]))
         # print("g_tgz_file_now:", os.listdir(temp_g_path)[0])
@@ -398,38 +418,44 @@ class Asw():
 
         # shutil.copytree(r"C:\genesis\fw\jobs\{}".format(job_name_1),r"C:\cc\jobs\{}".format(job_name_1))
         # time.sleep(15)
-
-        with open(features, "r") as f:
-            s = f.readlines()
-            print(s[3])
-        if "r0" in s[3]:
-            print("比对发现有差异！！！！！！")
-            result = "错误"
-        else:
-            print("恭喜！比对通过！！！")
-            result = "正常"
-
-            diff = False
-            # asw_dir = "C:/genesis"
-            # matrix_path = os.path.join(asw_dir, 'fw/jobs/{}/matrix/matrix'.format(job1))
-            matrix_path = r'C:\genesis\fw\jobs\{}\matrix\matrix'.format(job1)
-            with open(matrix_path, 'r') as f:
-                for var in f.readlines():
-                    line = var.strip()
-                    if len(line) == 0:
-                        continue
-                    attr = line.split('=')
-                    if len(attr) == 2:
-                        # print(attr)
-                        if attr[0] == 'NAME' and attr[1].lower() == layer_cp:
-                            diff = True
-                            break
-            if diff == True:
-                print('Difference were found')
+        try:
+            with open(features, "r") as f:
+                s = f.readlines()
+                print(s[3])
+            if "r0" in s[3]:
+                print("比对发现有差异！！！！！！")
                 result = "错误"
             else:
-                print('Layers Match')
+                print("恭喜！比对通过！！！")
                 result = "正常"
+
+                try:
+                    diff = False
+                    matrix_path = r"{}\{}\matrix\matrix".format(temp_path,job1)
+                    print('matrix_path:',matrix_path)
+                    with open(matrix_path, 'r') as f:
+                        for var in f.readlines():
+                            line = var.strip()
+                            if len(line) == 0:
+                                continue
+                            attr = line.split('=')
+                            if len(attr) == 2:
+                                # print(attr)
+                                if attr[0] == 'NAME' and attr[1].lower() == layer_cp:
+                                    diff = True
+                                    break
+                    if diff == True:
+                        print('Difference were found')
+                        result = "错误"
+                    else:
+                        print('Layers Match')
+                        result = "正常"
+                except:
+                    print("matrix查看方法失败")
+
+        except:
+            print("查看结果失败！")
+            result='未比对'
 
         return result
 

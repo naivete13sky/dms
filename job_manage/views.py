@@ -1369,9 +1369,18 @@ def vs_g(request,job_id):
     print("all_layer_from_org:", all_layer_from_org)
 
     #以为G软件解析好的为主，来VS
-    all_layer = job_operation.get_all_layers(job_g_name)
-    print('G软件tgz中的层信息：',all_layer)
-    if len(all_layer)==0:
+    all_layer_g = job_operation.get_all_layers(job_g_name)
+    print('G软件tgz中的层信息：',all_layer_g)
+
+    all_layer_ep = job_operation.get_all_layers(job_ep_name)
+    print('悦谱软件tgz中的层信息：', all_layer_ep)
+
+
+    if len(all_layer_g)==0:
+        pass
+        g_vs_total_result_flag = False
+
+    if len(all_layer_ep)==0:
         pass
         g_vs_total_result_flag = False
 
@@ -1403,57 +1412,74 @@ def vs_g(request,job_id):
     asw.import_odb_folder(jobpath1)  # 导入要比图的资料,G的
     asw.import_odb_folder(jobpath2)  # 导入要比图的资料，悦谱的
 
-
-    for layer in all_layer:
+    asw.layer_compare_g_open_2_job(jobpath1, step1, layer1, jobpath2, step2, layer1, layer2_ext, tol, map_layer,map_layer_res)
+    for layer in all_layer_g:
         print("g_layer:",layer)
         print("比对参数",job_g_name, step, layer, job_ep_name, step, layer)
+        if layer in all_layer_ep:
+            map_layer = layer + '-com'
+            result=asw.layer_compare_do_compare(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol, map_layer,map_layer_res)
+            if result=='inner error':
+                pass
+                print(layer,"比对异常！")
+        else:
+            pass
 
-        asw.layer_compare_g_open_2_job(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol, map_layer,map_layer_res)
-        asw.layer_compare_do_compare(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol, map_layer,map_layer_res)
-
-        # asw.layer_compare_analysis(jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,
-        #                            map_layer_res)
 
 
-    asw.layer_compare_close_job(jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,
-                                map_layer_res)
+    asw.save_job(job1)
+    asw.save_job(job2)
+    asw.layer_compare_close_job(jobpath1, step1, layer1, jobpath2, step2, layer2, layer2_ext, tol, map_layer,map_layer_res)
+    if not os.path.exists(r'C:\cc\share\temp'):
+        os.mkdir(r'C:\cc\share\temp')
     asw.g_export(job1, r'Z:/share/temp')
     asw.delete_job(job1)
     asw.delete_job(job2)
 
-        # layer_result = epcam_api.layer_compare_point(job_ep_name, step, layer, job_g_name, step, layer, tol, isGlobal, consider_sr,map_layer_res)
+    #开始查看比对结果
+    #先解压
+    temp_path = r'C:\cc\share\temp'
+    job_operation.untgz(os.path.join(temp_path, os.listdir(temp_path)[0]), temp_path)
+    for layer in all_layer_g:
+        pass
+        print(layer)
+        layer_result=asw.layer_compare_analysis(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol, layer+'-com',map_layer_res)
+        print(layer_result)
+
+
+
         # all_result[layer] = layer_result
 
-    #     for each in all_layer_from_org:
-    #         if layer == str(each.layer_org).lower():
-    #             print("I find it!!!!!!!!!!!!!!")
-    #             print(layer_result,type(layer_result))
-    #             layer_result_dict=json.loads(layer_result)
-    #             print(layer_result_dict)
-    #             print(len(layer_result_dict["result"]))
-    #             new_vs=models.Vs()
-    #             new_vs.job=job
-    #             new_vs.layer = each.layer
-    #             new_vs.layer_org=each.layer_org
-    #             new_vs.vs_result_detail=str(layer_result_dict)
-    #             new_vs.vs_method='ep'
-    #             new_vs.layer_file_type=each.layer_file_type
-    #             new_vs.layer_type=each.layer_type
-    #             new_vs.vs_time=vs_time
-    #             try:
-    #                 if len(layer_result_dict["result"])==0:
-    #                     each.vs_result_ep='passed'
-    #                     new_vs.vs_result ='passed'
-    #                 if len(layer_result_dict["result"])>0:
-    #                     each.vs_result_ep = 'failed'
-    #                     new_vs.vs_result = 'failed'
-    #                     g_vs_total_result_flag=False
-    #             except:
-    #                 pass
-    #                 print("异常！")
-    #             each.vs_time=vs_time
-    #             each.save()
-    #             new_vs.save()
+        # for each in all_layer_from_org:
+        #     if layer == str(each.layer_org).lower():
+        #         print("I find it!!!!!!!!!!!!!!")
+        #         print(layer_result,type(layer_result))
+        #         layer_result_dict=json.loads(layer_result)
+        #         print(layer_result_dict)
+        #         print(len(layer_result_dict["result"]))
+        #         new_vs=models.Vs()
+        #         new_vs.job=job
+        #         new_vs.layer = each.layer
+        #         new_vs.layer_org=each.layer_org
+        #         new_vs.vs_result_detail=str(layer_result_dict)
+        #         new_vs.vs_method='ep'
+        #         new_vs.layer_file_type=each.layer_file_type
+        #         new_vs.layer_type=each.layer_type
+        #         new_vs.vs_time=vs_time
+        #         try:
+        #             if len(layer_result_dict["result"])==0:
+        #                 each.vs_result_ep='passed'
+        #                 new_vs.vs_result ='passed'
+        #             if len(layer_result_dict["result"])>0:
+        #                 each.vs_result_ep = 'failed'
+        #                 new_vs.vs_result = 'failed'
+        #                 g_vs_total_result_flag=False
+        #         except:
+        #             pass
+        #             print("异常！")
+        #         each.vs_time=vs_time
+        #         each.save()
+        #         new_vs.save()
     # pass
     # if g_vs_total_result_flag==True:
     #     pass
