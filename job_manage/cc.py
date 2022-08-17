@@ -1,3 +1,9 @@
+import subprocess
+
+import rarfile
+import os,sys
+sys.path.append(r'C:\cc\python\epwork\dms\job_manage\g')
+
 
 def mysql():
     pass
@@ -58,5 +64,6 @@ if __name__ == "__main__":
     pass
     # test_gerber_to_odb_ep()
     # vs_ep_1()
-    mysql()
+    # mysql()
+
 

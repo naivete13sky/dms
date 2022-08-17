@@ -1000,6 +1000,7 @@ class Compress():
 
     def uncompress_z(self,file_full_name):
         # command = r'gzip.exe -d C:\cc\else\test\features.Z'
+        #需要设置环境变量。需要win32gnu.dll
         command=r'gzip.exe -d {}'.format(file_full_name)
         print(command)
         self.process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE,stderr=subprocess.STDOUT, shell=True)

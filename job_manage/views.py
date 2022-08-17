@@ -1440,8 +1440,8 @@ def vs_g(request,job_id):
         os.mkdir(r'C:\cc\share\temp')
     # asw.g_export(job1, r'Z:/share/temp')
     asw.g_export(job1, r'//vmware-host/Shared Folders/share/temp')
-    # asw.delete_job(job1)
-    # asw.delete_job(job2)
+    asw.delete_job(job1)
+    asw.delete_job(job2)
 
     #开始查看比对结果
     #先解压
@@ -1457,7 +1457,8 @@ def vs_g(request,job_id):
         all_result[layer] = layer_result
 
         for each in all_layer_from_org:
-            if layer == str(each.layer_org).lower():
+            # print("layer:",layer,"str(each.layer_org).lower():",str(each.layer_org).lower().replace(" ","-").replace("(","-").replace(")","-"))
+            if layer == str(each.layer_org).lower().replace(" ","-").replace("(","-").replace(")","-"):
                 print("I find it!!!!!!!!!!!!!!")
                 print(layer_result,type(layer_result))
                 # layer_result_dict=json.loads(layer_result)
@@ -1492,7 +1493,9 @@ def vs_g(request,job_id):
                     pass
                     print("异常！")
                 each.vs_time_g=vs_time_g
+                # print("each:",each)
                 each.save()
+                # print("new_vs:",new_vs)
                 new_vs.save()
 
     if g_vs_total_result_flag==True:
@@ -1510,8 +1513,12 @@ def vs_g(request,job_id):
     print("*" * 100)
 
     # 删除temp_path
-    # if os.path.exists(temp_path):
-    #     shutil.rmtree(temp_path)
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
+
+
+    if os.path.exists(r'C:\cc\share\temp' + "_" + str(request.user) + "_" + str(job_id)):
+        shutil.rmtree(r'C:\cc\share\temp' + "_" + str(request.user) + "_" + str(job_id))
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
