@@ -48,7 +48,8 @@ urlpatterns = [
     path('vs_g/<int:job_id>/', views.vs_g,name='vs_g'),
 
     path('VsListView',login_required(views.VsListView.as_view()),name='VsListView'),
-    path('view_vs/<int:job_id>/', views.view_vs,name='view_vs'),
+    path('view_vs_ep/<int:job_id>/', views.view_vs_ep,name='view_vs_ep'),
+    path('view_vs_g/<int:job_id>/', views.view_vs_g,name='view_vs_g'),
     path('view_vs_one_layer/<int:job_id>/<str:layer_org>/', views.view_vs_one_layer,name='view_vs_one_layer'),
 
     path('BugListView',login_required(views.BugListView.as_view()),name='BugListView'),

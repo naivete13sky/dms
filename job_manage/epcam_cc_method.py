@@ -91,7 +91,10 @@ class EpGerberToODB:
                     os.rename(file_path + r'/' + file, file_path + r'/''unknow' + str(index))
                     file = 'unknow' + str(index)
                     index = index + 1
-                ret = epcam_api.file_identify(os.path.join(root, file))
+                os.rename(file_path + r'/' + file,file_path + r'/' + file.replace(' ','-').replace('(','-').replace(')','-'))
+                print("file name:",file.replace(' ','-').replace('(','-').replace(')','-'))
+                ret = epcam_api.file_identify(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')))
+                print("ret:",ret)
                 data = json.loads(ret)
                 file_format = data['paras']['format']
                 file_param = data['paras']['parameters']
@@ -114,10 +117,10 @@ class EpGerberToODB:
                     # re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
                     print('file:',file)
                     print('?=')
-                    print(file,'=?',models.Layer.objects.get(job=job_current,layer=file.replace(' ','-')))
+                    print(file,'=?',models.Layer.objects.get(job=job_current,layer=file.replace(' ','-').replace('(','-').replace(')','-')))
                     print('原来：',file_param)
                     try:
-                        layer_e2= models.Layer.objects.get(job=job_current,layer=file.replace(' ','-'))
+                        layer_e2= models.Layer.objects.get(job=job_current,layer=file.replace(' ','-').replace('(','-').replace(')','-'))
                         print(layer_e2.layer,layer_e2.status)
                         if layer_e2.status=='published':
                             pass
@@ -127,14 +130,14 @@ class EpGerberToODB:
                             file_param['Number_format_decimal'] = int(layer_e2.number_format_B_ep)
                             file_param['tool_units'] = layer_e2.tool_units_ep
                         print('现在：',file_param)
-                        re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
+                        re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file.replace(' ','-').replace('(','-').replace(')','-'), file_param, '', '', '',[])
                     except:
                         print("except:"*5)
-                        re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
+                        re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file.replace(' ','-').replace('(','-').replace(')','-'), file_param, '', '', '',[])
 
                 if file_format == 'Gerber274x' or file_format == 'DXF':
                     print(file)
-                    re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])  # translate
+                    re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file.replace(' ','-').replace('(','-').replace(')','-'), file_param, '', '', '',[])  # translate
 
 
     def ep_gerber_to_odb(self,job, step, file_path, out_path):

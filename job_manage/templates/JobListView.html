@@ -116,13 +116,13 @@
 
                                 <td>
                                     {% if job.vs_result_ep == 'passed' %}
-                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs_ep/{{ job.id }}';">
                                             <i class="fa fa-check"></i>
                                         </button>
                                     {% endif %}
 
                                     {% if job.vs_result_ep == 'failed' %}
-                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs_ep/{{ job.id }}';">
                                             <i class="fa fa-asterisk"></i>
                                         </button>
                                     {% endif %}
@@ -140,13 +140,13 @@
 
                                 <td>
                                     {% if job.vs_result_g == 'passed' %}
-                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs_g/{{ job.id }}';">
                                             <i class="fa fa-check"></i>
                                         </button>
                                     {% endif %}
 
                                     {% if job.vs_result_g == 'failed' %}
-                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs/{{ job.id }}';">
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs_g/{{ job.id }}';">
                                             <i class="fa fa-asterisk"></i>
                                         </button>
                                     {% endif %}

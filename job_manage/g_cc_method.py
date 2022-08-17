@@ -666,7 +666,7 @@ class Asw():
             tool_units = paras['tool_units']
             layer = paras['layer']
             print("layer"*10,layer)
-            layer=layer.replace(' ','-')
+            layer=layer.replace(' ','-').replace('(', '-').replace(')', '-')
             print("layer" * 10, layer)
             wheel = paras['wheel']
             wheel_template = paras['wheel_template']
@@ -760,7 +760,7 @@ class Asw():
             tool_units = paras['tool_units']
             layer = paras['layer']
             print("layer"*10,layer)
-            layer=layer.replace(' ','-')
+            layer=layer.replace(' ','-').replace('(', '-').replace(')', '-')
             print("layer" * 10, layer)
             wheel = paras['wheel']
             wheel_template = paras['wheel_template']
@@ -782,9 +782,9 @@ class Asw():
             job_current = models.Job.objects.get(id=job_id)
             layer_all = models.Layer.objects.filter(job=job_current)
             print(layer_all)
-            print(path.replace(' ', '-'))
-            print(os.path.basename(path).replace(' ', '-'))
-            layer_e2 = models.Layer.objects.get(job=job_current, layer=os.path.basename(path).replace(' ', '-'))
+            print(path.replace(' ', '-').replace('(', '-').replace(')', '-'))
+            print(os.path.basename(path).replace(' ', '-').replace('(', '-').replace(')', '-'))
+            layer_e2 = models.Layer.objects.get(job=job_current, layer=os.path.basename(path).replace(' ', '-').replace('(', '-').replace(')', '-'))
             print('*'*100,layer_e2)
             print("*"*100,layer_e2.layer_file_type)
             if layer_e2.status == 'published' and layer_e2.layer_file_type=='excellon2':

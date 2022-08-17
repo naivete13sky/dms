@@ -666,6 +666,8 @@ def get_file_name_from_org(request,job_id):
                 file_name='unknow' + str(index)
                 index=index+1
             file_name=file_name.replace(' ','-')
+            file_name = file_name.replace('(', '-')
+            file_name = file_name.replace(')', '-')
             layer_new = models.Layer()
             layer_new.job=job
             layer_new.layer=file_name
@@ -880,7 +882,7 @@ def gerber274x_to_odb_g(request,job_id):
     gerberList = getFlist(file_path)
     print(gerberList)
     # g_temp_path=r'Z:/share/temp'+"_"+str(request.user)+"_"+str(job_id)
-    g_temp_path = r'\\vmware-host\Shared Folders\share/temp' + "_" + str(request.user) + "_" + str(job_id)
+    g_temp_path = r'//vmware-host/Shared Folders/share/temp' + "_" + str(request.user) + "_" + str(job_id)
     gerberList_path = []
     for each in gerberList:
         gerberList_path.append(os.path.join(g_temp_path,file_path_gerber, each))
@@ -1134,7 +1136,7 @@ class LayerUpdateViewOneJob(UpdateView):
 def vs_ep(request,job_id):
     pass
     ep_vs_total_result_flag = True  # True表示最新一次悦谱比对通过
-    vs_time=str(int(time.time()))
+    vs_time_ep=str(int(time.time()))
 
     print("悦谱VS",job_id)
     job = Job.objects.get(id=job_id)
@@ -1246,7 +1248,7 @@ def vs_ep(request,job_id):
                 new_vs.vs_method='ep'
                 new_vs.layer_file_type=each.layer_file_type
                 new_vs.layer_type=each.layer_type
-                new_vs.vs_time=vs_time
+                new_vs.vs_time_ep=vs_time_ep
                 try:
                     if len(layer_result_dict["result"])==0:
                         each.vs_result_ep='passed'
@@ -1258,7 +1260,7 @@ def vs_ep(request,job_id):
                 except:
                     pass
                     print("异常！")
-                each.vs_time=vs_time
+                each.vs_time_ep=vs_time_ep
                 each.save()
                 new_vs.save()
     pass
@@ -1268,7 +1270,7 @@ def vs_ep(request,job_id):
     if ep_vs_total_result_flag==False:
         pass
         job.vs_result_ep='failed'
-    job.vs_time=vs_time
+    job.vs_time_ep=vs_time_ep
     job.save()
 
 
@@ -1289,7 +1291,7 @@ def vs_g(request,job_id):
     # return HttpResponse("G软件VS" + str(job_id))
 
     g_vs_total_result_flag = True  # True表示最新一次G比对通过
-    vs_time=str(int(time.time()))
+    vs_time_g=str(int(time.time()))
 
 
 
@@ -1438,8 +1440,8 @@ def vs_g(request,job_id):
         os.mkdir(r'C:\cc\share\temp')
     # asw.g_export(job1, r'Z:/share/temp')
     asw.g_export(job1, r'//vmware-host/Shared Folders/share/temp')
-    asw.delete_job(job1)
-    asw.delete_job(job2)
+    # asw.delete_job(job1)
+    # asw.delete_job(job2)
 
     #开始查看比对结果
     #先解压
@@ -1469,7 +1471,7 @@ def vs_g(request,job_id):
                 new_vs.vs_method='g'
                 new_vs.layer_file_type=each.layer_file_type
                 new_vs.layer_type=each.layer_type
-                new_vs.vs_time=vs_time
+                new_vs.vs_time_g=vs_time_g
                 try:
                     # print('layer_result_dict["result"]:',layer_result_dict["result"])
                     if layer_result=='正常':
@@ -1489,7 +1491,7 @@ def vs_g(request,job_id):
                 except:
                     pass
                     print("异常！")
-                each.vs_time=vs_time
+                each.vs_time_g=vs_time_g
                 each.save()
                 new_vs.save()
 
@@ -1499,7 +1501,7 @@ def vs_g(request,job_id):
     if g_vs_total_result_flag==False:
         pass
         job.vs_result_g='failed'
-    job.vs_time=vs_time
+    job.vs_time_g=vs_time_g
     job.save()
 
 
@@ -1508,8 +1510,8 @@ def vs_g(request,job_id):
     print("*" * 100)
 
     # 删除temp_path
-    if os.path.exists(temp_path):
-        shutil.rmtree(temp_path)
+    # if os.path.exists(temp_path):
+    #     shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
@@ -1546,7 +1548,8 @@ class VsListView(ListView):
                               models.Vs._meta.get_field('layer_type').verbose_name,
                               models.Vs._meta.get_field('features_count').verbose_name,
                               models.Vs._meta.get_field('status').verbose_name,
-                              models.Vs._meta.get_field('vs_time').verbose_name,
+                              models.Vs._meta.get_field('vs_time_ep').verbose_name,
+                              models.Vs._meta.get_field('vs_time_g').verbose_name,
                               models.Vs._meta.get_field('create_time').verbose_name,
                               models.Vs._meta.get_field('updated').verbose_name,
                               "标签",
@@ -1560,12 +1563,12 @@ class VsListView(ListView):
                 Q(job__job_name__contains=query))
         return context
 
-def view_vs(request,job_id):
+def view_vs_ep(request,job_id):
     pass
     #找到job对象
     job=Job.objects.get(id=job_id)
     print(job.job_name,job.file_compressed)
-    vs = models.Vs.objects.filter(job=job,vs_time=job.vs_time)
+    vs = models.Vs.objects.filter(job=job,vs_time_ep=job.vs_time_ep)
 
     field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
                           models.Vs._meta.get_field('layer').verbose_name,
@@ -1577,7 +1580,36 @@ def view_vs(request,job_id):
                           models.Vs._meta.get_field('layer_type').verbose_name,
                           models.Vs._meta.get_field('features_count').verbose_name,
                           models.Vs._meta.get_field('status').verbose_name,
-                          models.Vs._meta.get_field('vs_time').verbose_name,
+                          models.Vs._meta.get_field('vs_time_ep').verbose_name,
+                          models.Vs._meta.get_field('vs_time_g').verbose_name,
+                          models.Vs._meta.get_field('create_time').verbose_name,
+                          models.Vs._meta.get_field('updated').verbose_name,
+                          "标签",
+                          "操作",
+                          ]
+
+    # return redirect('job_manage:LayerListView')
+    return render(request, 'VsListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'vs': vs,'job':job})
+
+def view_vs_g(request,job_id):
+    pass
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name,job.file_compressed)
+    vs = models.Vs.objects.filter(job=job,vs_time_g=job.vs_time_g)
+
+    field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
+                          models.Vs._meta.get_field('layer').verbose_name,
+                          models.Vs._meta.get_field('layer_org').verbose_name,
+                          models.Vs._meta.get_field('vs_result').verbose_name,
+                          models.Vs._meta.get_field('vs_result_detail').verbose_name,
+                          models.Vs._meta.get_field('vs_method').verbose_name,
+                          models.Vs._meta.get_field('layer_file_type').verbose_name,
+                          models.Vs._meta.get_field('layer_type').verbose_name,
+                          models.Vs._meta.get_field('features_count').verbose_name,
+                          models.Vs._meta.get_field('status').verbose_name,
+                          models.Vs._meta.get_field('vs_time_ep').verbose_name,
+                          models.Vs._meta.get_field('vs_time_g').verbose_name,
                           models.Vs._meta.get_field('create_time').verbose_name,
                           models.Vs._meta.get_field('updated').verbose_name,
                           "标签",
@@ -1592,7 +1624,7 @@ def view_vs_one_layer(request,job_id,layer_org):
     #找到job对象
     job=Job.objects.get(id=job_id)
     print(job.job_name,job.file_compressed)
-    vs = models.Vs.objects.filter(job=job,vs_time=job.vs_time,layer_org=layer_org)
+    vs = models.Vs.objects.filter(job=job,vs_time_ep=job.vs_time_ep,layer_org=layer_org)
 
     field_verbose_name = [models.Vs._meta.get_field('job').verbose_name,
                           models.Vs._meta.get_field('layer').verbose_name,
