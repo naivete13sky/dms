@@ -1234,7 +1234,7 @@ def vs_ep(request,job_id):
         #     if layer == str(each).lower():
         #         print("I find it!!!!!!!!!!!!!!")
         for each in all_layer_from_org:
-            if layer == str(each.layer_org).lower():
+            if layer == str(each.layer_org).lower().replace(" ","-").replace("(","-").replace(")","-"):
                 print("I find it!!!!!!!!!!!!!!")
                 print(layer_result,type(layer_result))
                 layer_result_dict=json.loads(layer_result)
