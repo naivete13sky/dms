@@ -800,6 +800,7 @@ def gerber274x_to_odb_ep2(request,job_id):
         os.remove(temp_compressed)
     #epcam 导入
     epcam.init()
+    epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
     file_path_gerber = os.listdir(temp_path)[0]
     job_name = file_path_gerber + '_ep_'+str(int(time.time()))
     step = 'orig'
