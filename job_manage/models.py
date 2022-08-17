@@ -176,7 +176,7 @@ class Vs(models.Model):
     layer_org=models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=1)],null=True,blank=True,
                             verbose_name="原始层名称")
     vs_result=models.CharField(max_length=10, choices=(('passed', '通过'), ('failed', '失败'), ('none', '未比对')), default='none',null=True,blank=True,verbose_name="比对结果")
-    vs_result_detail=models.CharField(max_length=100000, validators=[validators.MinLengthValidator(limit_value=0)],
+    vs_result_detail=models.CharField(max_length=1000000, validators=[validators.MinLengthValidator(limit_value=0)],
                             null=True,blank=True,verbose_name="比对详细信息")
 
     vs_method = models.CharField(max_length=10, choices=(('ep', '悦谱'), ('g', 'G软件'), ('none', 'none')),
