@@ -1,5 +1,6 @@
 import subprocess
 
+import psycopg2
 import rarfile
 import os,sys
 sys.path.append(r'C:\cc\python\epwork\dms\job_manage\g')
@@ -58,12 +59,24 @@ def mysql2():
         for each in result:
             print(each)
 
-
+def pg():
+    pass
+    conn = psycopg2.connect(database="dms", user="readonly", password="123456", host="10.97.80.147", port="5432")
+    cursor = conn.cursor()
+    sql='''SELECT * from job a
+where a.id=2
+    '''
+    cursor.execute(sql)
+    conn.commit()
+    ans = cursor.fetchall()
+    conn.close()
+    return ans
 
 if __name__ == "__main__":
     pass
     # test_gerber_to_odb_ep()
     # vs_ep_1()
     # mysql()
+    print(pg())
 
 
