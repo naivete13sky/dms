@@ -199,7 +199,10 @@
 
 
 
-                                <td>{{ job.remark }}</td>
+                                <td>
+
+                                    <div title={{ job.remark }}> {{ job.remark|slice:"20" }} </div>
+                                </td>
                                 <td>{{ job.author }}</td>
                                 <td>{{ job.from_object }}</td>
                                 <td>{{ job.create_time }}</td>
