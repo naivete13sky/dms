@@ -9,3 +9,7 @@ def dashboard(request):
     job_counts=len(Job.objects.all())
     print(job_counts)
     return render(request,r'dashboard.html',{"job_counts":job_counts})
+
+
+def index_base_20220818(request):
+    return render(request,r'../templates/index_base_20220818.html')

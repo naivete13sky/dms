@@ -6,7 +6,6 @@
     <li><a>层别查询</a></li>
 {% endblock %}
 {% block main_content %}
-
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
@@ -28,6 +27,12 @@
 {#                    {{ cc }}#}
 
                     <div class="table-responsive">
+
+
+
+
+
+
                         <script type="text/javascript">
                             // 选择状态，开始默认的是没有选中
                             var selectState = false;
@@ -41,10 +46,20 @@
                                 }
                             selectState = !selectState;
                             }
+
+
+
                         </script>
+
+
+
+
+
+
+
 {#                        <form action={% url "job_manage:LayerListView" %} method="POST">#}
                             {% csrf_token %}
-                            <table id="responsive-table" class="data-table table table-striped  table-hover" cellspacing="0" width="100%">
+                            <table id="responsive-table" class=" table data-table table-striped  table-hover" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
                                     <th>isselected<input type="checkbox" name="cbtest" onclick="AllCheck(this.form)"></th>
@@ -60,6 +75,7 @@
                                     <tr>
                                     <td>
                                         <input type="checkbox" name="check_box_list" value="{{ layer.id }}" onclick="userCheck(this)">
+                                        {{ layer.id }}
                                     </td>
 
                                     <td>
@@ -150,8 +166,25 @@
             </div>
         </div>
     </div>
+
+{#    <script src={% static "javascripts/jquery.min.js" %}></script>#}
+{#    <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>#}
+
+    <script >
+
+        $(document).ready(function(){
+            $('#responsive-table').dataTable(
+                {
+                    "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
+                    {#"aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项#}
+                    "aLengthMenu": [5, 10, 20,50,100, "所有"],//设置每页显示数据条数的下拉选项
+                    'iDisplayLength': 50, //每页初始显示5条记录
+                }
+            );
+        });
+    </script>
+
 {% endblock %}
-<script src={% static "javascripts/jquery.min.js" %}></script>
 
 
 
