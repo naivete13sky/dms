@@ -114,25 +114,22 @@
                                         <span class="profile-ava">
 {#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
                                         </span>
-                                        <span class="username">cc</span>
+
+                                        <span class="user-name">{{ request.user.username }}</span>
+
                                         <b class="caret"></b>
-                                    </a>
+                        </a>
+
                         <ul class="dropdown-menu extended logout">
                             <div class="log-arrow-up"></div>
                             <li class="eborder-top">
-                                <a href="#"><i class="icon_profile"></i> My Profile</a>
+                                <a href={% url "dashboard" %}><i class="icon_profile"></i>我的资料</a>
                             </li>
-
-
-
-
                             <li>
-                            <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
+                            <a href={% url "logout" %}><i class="icon_key_alt"></i> Log Out</a>
                             </li>
-
-
-
                         </ul>
+
                     </li>
                     <!-- user login dropdown end -->
 
@@ -354,8 +351,11 @@
                   <div class="col-lg-12">
 
                     <ol class="breadcrumb">
+                    {% block content_header_child %}
                       <li><i class="fa fa-home"></i><a href={% url "back_stage:dashboard" %}>Home</a></li>
                       <li><i class="fa fa-laptop"></i>Dashboard</li>
+                    {% endblock %}
+
                     </ol>
                   </div>
                 </div>
@@ -418,16 +418,16 @@
 
                     <script>
 
-                            $(document).ready(function(){
-                                    $('#table1').dataTable(
-                                        {
-                                            "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
-                                            "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
-                                            'iDisplayLength': 5, //每页初始显示5条记录
-                                        }
-                                    );
-                                });
-                        </script>
+                        $(document).ready(function(){
+                                $('#table1').dataTable(
+                                    {
+                                        "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
+                                        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
+                                        'iDisplayLength': 5, //每页初始显示5条记录
+                                    }
+                                );
+                            });
+                    </script>
 
                 {% endblock %}
 
@@ -437,6 +437,8 @@
 
             </div>
         </section>
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
         <!--main content end-->
     </section>
     <!-- container section start -->
@@ -482,50 +484,51 @@
     <script src={% static "index_base_20220818/js/sparklines.js" %}></script>
     <script src={% static "index_base_20220818/js/charts.js" %}></script>
     <script src={% static "index_base_20220818/js/jquery.slimscroll.min.js" %}></script>
+
     <script>
-    //knob
-    $(function() {
-    $(".knob").knob({
-      'draw': function() {
-        $(this.i).val(this.cv + '%')
-      }
-    })
-    });
+        //knob
+        $(function() {
+        $(".knob").knob({
+          'draw': function() {
+            $(this.i).val(this.cv + '%')
+          }
+        })
+        });
 
-    //carousel
-    $(document).ready(function() {
-    $("#owl-slider").owlCarousel({
-      navigation: true,
-      slideSpeed: 300,
-      paginationSpeed: 400,
-      singleItem: true
+        //carousel
+        $(document).ready(function() {
+        $("#owl-slider").owlCarousel({
+          navigation: true,
+          slideSpeed: 300,
+          paginationSpeed: 400,
+          singleItem: true
 
-    });
-    });
+        });
+        });
 
-    //custom select box
+        //custom select box
 
-    $(function() {
-    $('select.styled').customSelect();
-    });
+        $(function() {
+        $('select.styled').customSelect();
+        });
 
-    /* ---------- Map ---------- */
-    $(function() {
-    $('#map').vectorMap({
-      map: 'world_mill_en',
-      series: {
-        regions: [{
-          values: gdpData,
-          scale: ['#000', '#000'],
-          normalizeFunction: 'polynomial'
-        }]
-      },
-      backgroundColor: '#eef3f7',
-      onLabelShow: function(e, el, code) {
-        el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
-      }
-    });
-    });
+        /* ---------- Map ---------- */
+        $(function() {
+        $('#map').vectorMap({
+          map: 'world_mill_en',
+          series: {
+            regions: [{
+              values: gdpData,
+              scale: ['#000', '#000'],
+              normalizeFunction: 'polynomial'
+            }]
+          },
+          backgroundColor: '#eef3f7',
+          onLabelShow: function(e, el, code) {
+            el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
+          }
+        });
+        });
     </script>
 
     {% block js %}
@@ -552,7 +555,7 @@
 
 {#    <script src={% static "javascripts/jquery.min.js" %}></script>#}
     <script src={% static "javascripts/jquery.cookie.js" %}></script>
-    <script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>
+{#    <script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>#}
     <script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
     <script src={% static "javascripts/template-script.min.js" %}></script>
     <script src={% static "javascripts/template-init.min.js" %}></script>
