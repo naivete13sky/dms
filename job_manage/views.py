@@ -816,15 +816,23 @@ def gerber274x_to_odb_ep2(request,job_id):
     cc = EpGerberToODB()
     print("*"*100,job_name, step, file_path, out_path,job_id)
     cc.ep_gerber_to_odb2(job_name, step, file_path, out_path,job_id)
+
+    # datashow = {"cmd":"show_layer", "job":job_name, "step": step, "layer":""}
+    # js = json.dumps(datashow)
+    # epcam.view_cmd(js)
+
     #把悦谱转图压缩成tgz。
-    ifn = os.path.join(temp_path,job_name)
-    try:
-        ifn = ifn.split(sep='"')[1]
-        # print(ifn)
-    except:
-        pass
-    ofn = ifn + '.tgz'
-    Tgz().maketgz(ofn, ifn)
+
+    # ifn = os.path.join(temp_path,job_name)
+    # try:
+    #     ifn = ifn.split(sep='"')[1]
+    #     # print(ifn)
+    # except:
+    #     pass
+    # ofn = ifn + '.tgz'
+    # Tgz().maketgz(ofn, ifn)
+    job_operation.maketgz(os.path.join(temp_path,job_name),temp_path,job_name + '.tgz')
+
 
     #把压缩好悦谱转图tzg放入相应Job里
     shutil.copy(os.path.join(temp_path,job_name+'.tgz'), os.path.join(settings.PROJECT_PATH,r'media\files'))
