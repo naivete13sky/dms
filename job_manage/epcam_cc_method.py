@@ -97,6 +97,7 @@ class EpGerberToODB:
                 print("ret:",ret)
                 data = json.loads(ret)
                 file_format = data['paras']['format']
+                file_name = data['paras']['name']
                 file_param = data['paras']['parameters']
                 # file_param = {'Coordinates':'Absolute',
                 #               'Decimal_numbers':True,
@@ -130,14 +131,14 @@ class EpGerberToODB:
                             file_param['Number_format_decimal'] = int(layer_e2.number_format_B_ep)
                             file_param['tool_units'] = layer_e2.tool_units_ep
                         print('现在：',file_param)
-                        re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file.replace(' ','-').replace('(','-').replace(')','-'), file_param, '', '', '',[])
+                        re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])
                     except:
                         print("except:"*5)
-                        re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file.replace(' ','-').replace('(','-').replace(')','-'), file_param, '', '', '',[])
+                        re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])
 
                 if file_format == 'Gerber274x' or file_format == 'DXF':
                     print(file)
-                    re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file.replace(' ','-').replace('(','-').replace(')','-'), file_param, '', '', '',[])  # translate
+                    re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])  # translate
 
 
     def ep_gerber_to_odb(self,job, step, file_path, out_path):

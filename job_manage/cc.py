@@ -72,11 +72,43 @@ where a.id=2
     conn.close()
     return ans
 
+import tarfile as tf
+def maketgz(ifn, out_path, file_name):
+    """压缩文件夹为tgz
+    :param     ifn(str):导入路径
+    :param     out_path(str):导出路径
+    :param     file_name(str):文件名
+    :returns   :None
+    :raises    error:
+    """
+    try:
+        ifn = ifn.split(sep = '"')[1]
+    except:
+        pass
+    file_real_name = file_name.split('.')[0]
+    ofn = out_path + '\\' + file_name #+ '.tgz'
+    #最外层后缀也为tar, 然后再rename为tgz
+    out_ofn = out_path + '\\' + file_real_name + '.tar'
+    #with tf.open(ofn, 'w:gz') as tar:
+    with tf.open(out_ofn, 'w:gz') as tar:
+        tar.add(ifn, arcname = os.path.basename(ifn))
+    if os.path.exists(ofn):
+        os.remove(ofn)
+    os.rename(out_ofn, ofn)
+    print('compress success!')
+        #os.system('pause')
+
+    return 0
+
+
+
+
 if __name__ == "__main__":
     pass
     # test_gerber_to_odb_ep()
     # vs_ep_1()
     # mysql()
-    print(pg())
+    # print(pg())
+    maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
 
 
