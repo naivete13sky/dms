@@ -1,0 +1,465 @@
+{% load static  %}
+{#{% load blog_tags %}#}
+<!doctype html>
+<html lang="en" class="fixed">
+{#<html lang="en" class="fixed left-sidebar-collapsed">#}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{% block title %}cc{% endblock %}</title>
+    <link rel="apple-touch-icon" sizes="120x120" href={% static "favicon/apple-icon-120x120.png" %}>
+    <link rel="icon" type="/static/image/png" sizes="192x192" href={% static "favicon/android-icon-192x192.png" %}>
+    <link rel="icon" type="/static/image/png" sizes="32x32" href={% static "favicon/favicon-32x32.png" %}>
+    <link rel="icon" type="/static/image/png" sizes="16x16" href={% static "favicon/favicon-16x16.png" %}>
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href={% static "vendor/animate.css/animate.css" %}>
+    <link rel="stylesheet" href={% static "vendor/data-table/media/css/dataTables.bootstrap.min.css" %}>
+    <link rel="stylesheet" href={% static "vendor/data-table/extensions/Responsive/css/responsive.bootstrap.min.css" %}>
+    <link rel="stylesheet" href={% static "stylesheets/css/style.css" %}>
+    <link rel="stylesheet" href={% static "vendor/select2/css/select2.min.css" %}>
+    <link rel="stylesheet" href={% static "vendor/select2/css/select2-bootstrap.min.css" %}>
+{#    <link rel="stylesheet" href={% static "vendor/bootstrap_date-picker/css/bootstrap-datepicker3.min.css" %}>#}
+    <link rel="stylesheet" href={% static "vendor/bootstrap_time-picker/css/timepicker.css" %}>
+{#    <link rel="stylesheet" href={% static "vendor/bootstrap_color-picker/css/bootstrap-colorpicker.min.css" %}>#}
+
+{#    <link href="{% static "admin/css/base.css" %}" rel="stylesheet">#}
+    {% block head_add %}
+
+    {% endblock %}
+{#        <script src={% static "javascripts/jquery.min.js" %}></script>#}
+{#    <script src={% static "javascripts/examples/tables/data-tables.js" %}></script>#}
+
+
+</head>
+
+<body>
+<div class="wrap">
+    <div class="page-header">
+        <div class="leftside-header">
+            <div class="logo">
+{#                <a href="{% url "index" %}" class="on-click">#}
+{#                    <img alt="logo" id="img-4" src={% static 'images/mh2.png' %} />#}
+{#                    <img alt="logo" id="img-1" src={% static 'images/yuepu3.png' %} />#}
+
+                </a>
+            </div>
+
+
+
+            <div id="menu-toggle" class="visible-xs toggle-left-sidebar" data-toggle-class="left-sidebar-open" data-target="html">
+                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+        </div>
+        <div class="rightside-header">
+            <div class="header-middle"></div>
+            <div class="header-section" id="search-headerbox">
+                <input type="text" name="search" id="search" placeholder="Search...">
+                <i class="fa fa-search search" id="search-icon" aria-hidden="true"></i>
+                <div class="header-separator"></div>
+            </div>
+            <div class="header-section hidden-xs" id="notice-headerbox">
+
+
+
+                <div class="header-separator"></div>
+            </div>
+            <div class="header-section" id="user-headerbox">
+                <div class="user-header-wrap">
+{#                    <div class="user-photo">#}
+{#                        <img src={% static "images/cc2.jpg" %} alt="Jane" />#}
+{#                    </div>#}
+                    <div class="user-info">
+                        <span class="user-name">{{ request.user.username }}</span>
+{#                        <span class="user-profile">Admin</span>#}
+                    </div>
+                    <i class="fa fa-plus icon-open" aria-hidden="true"></i>
+                    <i class="fa fa-minus icon-close" aria-hidden="true"></i>
+                </div>
+                <div class="user-options dropdown-box">
+                    <div class="drop-content basic">
+                        <ul>
+                            <li> <a href={% url "dashboard" %}><i class="fa fa-user" aria-hidden="true"></i> 我的资料</a></li>
+                            <li> <a href={% url "logout" %}><i class="fa fa-lock" aria-hidden="true"></i> 退出</a></li>
+{#                            <li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Configurations</a></li>#}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="header-separator"></div>
+            <div class="header-section">
+{#                <a href="{% url "django.contrib.auth.views.logout" %}"><i class="fa fa-sign-out log-out" aria-hidden="true"></i></a>#}
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+
+        <div class="left-sidebar">
+            <div class="left-sidebar-header">
+
+                <div class="btn btn-o btn-primary btn-xs btn-animated mb-xs" data-img="img-4" data-animated-class="rotateOut">导航</div>
+
+                <div class="left-sidebar-toggle c-hamburger c-hamburger--htla hidden-xs" data-toggle-class="left-sidebar-collapsed" data-target="html">
+                    <span></span>
+                </div>
+            </div>
+            <div id="left-nav" class="nano">
+                <div class="nano-content">
+                    <nav>
+                        <ul class="nav" id="main-nav">
+                            <li class="has-child-item close-item">
+                                <a href="{% url "back_stage:dashboard" %}"><i class="fa fa-dashboard" aria-hidden="true"></i><span>看板</span></a>
+
+                            </li>
+
+                            <li class=" has-child-item close-item">
+                                <a >
+                                    <i class="fa fa-database" aria-hidden="true"></i>
+                                    <span>料号管理</span>
+
+                                </a>
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+
+                                        <li>
+                                            <a href="{% url "job_manage:JobListView" %}">料号查询</a>
+                                        </li>
+
+                                    </li>
+                                </ul>
+
+
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+
+                                        <li>
+                                            <a href="{% url "job_manage:LayerListView" %}">层别信息</a>
+                                        </li>
+
+                                    </li>
+                                </ul>
+
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+
+                                        <li>
+                                            <a href="{% url "job_manage:VsListView" %}">VS详细信息</a>
+                                        </li>
+
+                                    </li>
+                                </ul>
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+
+                                        <li>
+                                            <a href="{% url "job_manage:BugListView" %}">Bug详细信息</a>
+                                        </li>
+
+                                    </li>
+                                </ul>
+
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "job_manage:job_settings" %}">配置</a></li>
+
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
+                            <li class=" has-child-item close-item">
+                                <a >
+                                    <i class="fa fa-sitemap" aria-hidden="true"></i>
+                                    <span>工程管理</span>
+
+                                </a>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+
+                                        <li>
+                                            <a href="{% url "project:ProjectListView" %}">工程查询</a>
+                                        </li>
+
+                                    </li>
+                                </ul>
+
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "project:project_settings" %}">配置</a></li>
+
+                                    </li>
+                                </ul>
+                            </li>
+
+
+
+
+                            <li class=" has-child-item close-item">
+                                <a >
+                                    <i class="fa fa-product-hunt" aria-hidden="true"></i>
+                                    <span>CAM代工服务订单</span>
+
+                                </a>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+
+                                        <li>
+                                            <a href="{% url "order:CamOrderListView" %}">CAM代工服务订单</a>
+                                        </li>
+
+                                    </li>
+                                </ul>
+
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "order:CamOrderProcessListView" %}">CAM代工制作进度管理</a></li>
+
+                                    </li>
+                                </ul>
+                            </li>
+
+
+
+
+
+
+                            <li class="has-child-item close-item">
+                                <a>
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    <span>EDA用户管理</span>
+                                </a>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <a href={% url "ProfileListView" %}>用户信息管理</a>
+{#                                        <a>EDA用户信息管理</a>#}
+                                    </li>
+
+
+                                    <li class="has-child-item close-item">
+                                        <a href={% url "FactoryRuleListView" %}>厂规管理</a>
+
+                                    </li>
+
+                                    <li class="has-child-item close-item">
+                                        <a href={% url "CustomerRuleListView" %}>客规管理</a>
+
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-question" aria-hidden="true"></i><span>标准EQ配置</span></a>
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="../db_center_dg_ld_js_gs_tj">标准EQ查询</a></li>
+                                    <li><a href="../db_center_PredictYieldRatio">标准EQ新增</a></li>
+                                    <li><a href="../db_center_PredictYieldRatio">EQ详情</a></li>
+                                    <li><a href="tables_responsive.html">配置</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-files-o" aria-hidden="true"></i><span>DMS后台管理</span></a>
+                                <ul class="nav child-nav level-1">
+{#                                    <li><a href="{% url "django.contrib.auth.views.logout" %}">Sign in</a></li>#}
+                                    <li><a href="pages_lock-screen.html">用户管理</a></li>
+                                    <li><a href="pages_forgot-password.html">权限管理</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-magic" aria-hidden="true"></i><span>后台统计</span></a>
+                                <ul class="nav child-nav level-1">
+                                    <li><a href="helpers_background-border.html">CAM服务销售统计</a></li>
+                                    <li><a href="helpers_margin-padding.html">PCB服务销售统计</a></li>
+                                </ul>
+                            </li>
+                            <li class=" has-child-item close-item">
+                                <a >
+                                    <i class="fa fa-sitemap" aria-hidden="true"></i>
+                                    <span>流程管理</span>
+
+                                </a>
+
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li>
+                                            <a href="{% url "process:TrainListView" %}">火车查询</a>
+                                        </li>
+                                    </li>
+                                </ul>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "process:TrainSetListView" %}">火车设置</a></li>
+                                    </li>
+                                </ul>
+                                <ul class="nav child-nav level-1">
+                                    <li class="has-child-item close-item">
+                                        <li><a href="{% url "process:CarriageListView" %}">车厢设置</a></li>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="content-header">
+
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        {% block content_header_child %}
+
+                        {% endblock %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInUp">
+                {% block main_content %}
+
+
+
+                {% endblock %}
+                <div align="center">
+
+        {#<img style="width: 20px; height: 20px;" src="http://www.beian.gov.cn/img/ghs.png" alt="备案标识" /><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32058202010228&token=2be051c1-22dd-44ec-9f4b-d41155f2d855" target="_blank" rel="nofollow noopener">苏ICP备18069791号</a>#}
+    <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">苏ICP备18069791号-1</a>
+
+    </div>
+                <div style="width:300px;margin:0 auto; padding:20px 0;">
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32050802010946" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="\static\images\备案图标.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">苏公网安备 32050802010946号</p></a>
+    </div>
+            </div>
+        </div>
+
+
+        <div class="right-sidebar">
+            <div class="right-sidebar-toggle" data-toggle-class="right-sidebar-opened" data-target="html">
+                <i class="fa fa-cog fa-spin" aria-hidden="true"></i>
+            </div>
+            <div id="right-nav" class="nano">
+                <div class="nano-content">
+                    <div class="template-settings">
+                        <h4 class="text-center">Template Settings</h4>
+                        <ul class="toggle-settings pv-xlg">
+                            <li>
+                                <h6 class="text">Header fixed</h6>
+                                <label class="switch">
+                                    <input id="header-fixed" type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <h6 class="text">Left sidebar fixed</h6>
+                                <label class="switch">
+                                    <input id="left-sidebar-fixed" type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <h6 class="text">Left sidebar collapsed</h6>
+                                <label class="switch">
+                                    <input id="left-sidebar-collapsed" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <h6 class="text">Content header fixed</h6>
+                                <label class="switch">
+                                    <input id="content-header-fixed" type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </ul>
+                        <h4 class="text-center">Template Colors</h4>
+                        <ul class="toggle-colors">
+                            <li>
+                                <a href="index.html" class="on-click"> <img alt="Helsinki-green" src={% static "images/helsinki-green.png" %} /></a>
+                            </li>
+                            <li>
+                                <a href="../helsinki-light/index.html" class="on-click"> <img alt="Helsinki-light" src={% static "images/helsinki-light.png" %} /></a>
+                            </li>
+                            <li>
+                                <a href="../helsinki-blue/index.html" class="on-click"> <img alt="Helsinki-blue" src={% static "images/helsinki-blue.png" %} /></a>
+                            </li>
+                            <li>
+                                <a href="../helsinki-red/index.html" class="on-click"> <img alt="Helsinki-red" src={% static "images/helsinki-red.png" %} /></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    </div>
+</div>
+
+
+{% block js %}
+
+
+<script src={% static "javascripts/template-script.min.js" %}></script>
+<script src={% static "javascripts/template-init.min.js" %}></script>
+<script src={% static "vendor/bootstrap_max-lenght/bootstrap-maxlength.js" %}></script>
+<script src={% static "vendor/select2/js/select2.min.js" %}></script>
+<script src={% static "vendor/input-masked/inputmask.bundle.min.js" %}></script>
+<script src={% static "vendor/input-masked/phone-codes/phone.js" %}></script>
+<script src={% static "vendor/bootstrap_time-picker/js/bootstrap-timepicker.js" %}></script>
+<script src={% static "javascripts/examples/forms/advanced.js" %}></script>
+<script src={% static "vendor/toastr/toastr.min.js" %}></script>
+<script src={% static "vendor/chart-js/chart.min.js" %}></script>
+<script src={% static "vendor/magnific-popup/jquery.magnific-popup.min.js" %}></script>
+<script src={% static "javascripts/examples/dashboard.js" %}></script>
+<script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
+<script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
+<script src={% static "vendor/data-table/extensions/Responsive/js/dataTables.responsive.min.js" %}></script>
+<script src={% static "vendor/data-table/extensions/Responsive/js/responsive.bootstrap.min.js" %}></script>
+<script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
+
+
+<script src={% static "javascripts/jquery.min.js" %}></script>
+<script src={% static "javascripts/jquery.cookie.js" %}></script>
+<script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>
+<script src={% static "vendor/nano-scroller/nano-scroller.js" %}></script>
+<script src={% static "javascripts/template-script.min.js" %}></script>
+<script src={% static "javascripts/template-init.min.js" %}></script>
+<script src={% static "vendor/data-table/media/js/jquery.dataTables.min.js" %}></script>
+<script src={% static "vendor/data-table/media/js/dataTables.bootstrap.min.js" %}></script>
+<script src={% static "javascripts/examples/tables/data-tables.js" %}></script>
+
+
+
+
+<script>
+    $.fn.extend({
+        animateCss: function(animationName) {
+            var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            this.addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+        }
+    });
+
+    $(".btn-animated").on('click', function() {
+        var animation = $(this).attr('data-animated-class');
+        var img = $(this).attr('data-img');
+        $("#" + img).animateCss(animation);
+    });
+</script>
+
+{% endblock %}
+</body>
+
+</html>

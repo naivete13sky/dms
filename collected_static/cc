@@ -1,1 +1,23 @@
 这里的静态文件是apache部署用的。
+
+设置分页：
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script>
+
+    $(document).ready(function(){
+        $('#responsive-table').dataTable(
+            {
+                "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
+                {#"aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项#}
+                "aLengthMenu": [5, 10, 20,50,100, "所有"],//设置每页显示数据条数的下拉选项
+                'iDisplayLength': 50, //每页初始显示5条记录
+            }
+        );
+    });
+</script>
+
+
+下面这两行的js，会导致二级子菜单不能展开。
+<script src={% static "index_base_20220818/js/jquery.js" %}></script>
+<script src={% static "index_base_20220818/js/jquery-1.8.3.min.js" %}></script>

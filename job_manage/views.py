@@ -428,8 +428,8 @@ class JobListView(ListView):
         job_field_verbose_name = [Job._meta.get_field('id').verbose_name,
                                   Job._meta.get_field('job_name').verbose_name,
                                   Job._meta.get_field('file_compressed').verbose_name,
-                                  Job._meta.get_field('file_compressed_org').verbose_name,
-                                  Job._meta.get_field('file_odb').verbose_name,
+                                  # Job._meta.get_field('file_compressed_org').verbose_name,
+                                  # Job._meta.get_field('file_odb').verbose_name,
                                   Job._meta.get_field('file_odb_current').verbose_name,
                                   Job._meta.get_field('file_odb_g').verbose_name,
                                   Job._meta.get_field('vs_result_ep').verbose_name,
@@ -920,7 +920,7 @@ class LayerListView(ListView):
     queryset = models.Layer.objects.all()
     # model=models.Job
     context_object_name = 'layers'
-    paginate_by = 10
+    paginate_by = 50
     # ordering = ['-publish']
     template_name = 'LayerListView.html'
 
@@ -1866,7 +1866,30 @@ def refresh_bug_info(request,job_id):
 def test(request):
     if request.user.is_authenticated:
         print(request.user.first_name,'|',request.user.username)
-    return HttpResponse("abc")
+    # return HttpResponse("abc")
+
+    if request.method == 'POST':
+        result={
+            "teachers": [
+                {"name": "Jack", "age": "30"},
+                {"name": "Jessy", "age": "33"}
+        ]}
+
+        result_json = json.dumps(result)
+        return HttpResponse(result_json)
+
+    result = {
+        "students": [
+            {"name": "John", "age": "15"},
+            {"name": "Anna", "age": "16"},
+            {"name": "Peter", "age": "16"}
+        ],
+        }
+
+    result_json = json.dumps(result)
+
+
+    return render(request, 'test.html',{"result_json":result_json})
 
 
 def test_ajax_index(request):
