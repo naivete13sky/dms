@@ -33,41 +33,62 @@
 
                     <div class="table-responsive">
 
-
-
-
-
-
                         <script type="text/javascript">
-                            // 选择状态，开始默认的是没有选中
-                            var selectState = false;
-                            // 全选或者全取消
-                            function AllCheck(thisform){
-                                for (var i = 0; i < thisform.elements.length; i++){
-                                    // 提取控件
-                                    var checkbox = thisform.elements[i];
-                                    // 修改每个checkbox的状态
-                                    checkbox.checked = !selectState;
+                            //页面加载的时候,所有的复选框都是未选中的状态
+                            function checkOrCancelAll()
+                            {
+                                var chElt=document.getElementById("chElt");//1.获取checkbo的元素对象
+                                var checkedElt = chElt.checked;//2.获取选中状态
+                                var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+
+                                //var allCheck = document.getElementsByName("file");//方法2
+                                var mySpan=document.getElementById("mySpan");//4.循环遍历取出每一个复选框中的元素
+                                if(checkedElt)//全选
+                                {
+
+                                    for(var i=0;i<allCheck.length;i++)
+                                    {
+                                        //设置复选框的选中状态
+                                        allCheck[i].checked=true;
+                                    }
+                                    mySpan.innerHTML="取消全选";
                                 }
-                            selectState = !selectState;
+                                else//取消全选
+                                {
+                                    for(var i=0;i<allCheck.length;i++)
+                                    {
+                                        allCheck[i].checked=false;
+                                    }
+                                    mySpan.innerHTML="全选";
+                                }
                             }
+                            function ischecked()
+                            {
+                                var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+                                for(var i=0;i<allCheck.length;i++)
+                                {
+                                    if(allCheck[i].checked == true)
+                                    {
+                                        return true
+                                    }
+                                }
+                                alert("请选择文件")
+                                return false
+                            }
+                            </script>
 
 
 
-                        </script>
 
 
 
 
 
-
-
-{#                        <form action={% url "job_manage:LayerListView" %} method="POST">#}
                             {% csrf_token %}
                             <table id="responsive-table" class=" table data-table table-striped  table-hover" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                    <th>isselected<input type="checkbox" name="cbtest" onclick="AllCheck(this.form)"></th>
+                                    <th><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br /></th>
                                     {% for each in field_verbose_name %}
                                         <th>{{ each }}</th>
 
@@ -79,7 +100,7 @@
                                 {% for layer in layers %}
                                     <tr>
                                     <td>
-                                        <input type="checkbox" name="check_box_list" value="{{ layer.id }}" onclick="userCheck(this)">
+                                        <input class="file" name="ids" type="checkbox" value="{{ layer.id }}" />
                                         {{ layer.id }}
                                     </td>
 
@@ -155,18 +176,114 @@
                                 </tbody>
                             </table>
                             {% include 'pagination.html' with page=page_obj %}
-                            <br>
-                            批量设置人工比对结果：
-                            <select id="layer_set_vs_result_manual" name="layer_set_vs_result_manual">
-                                <option value ="none">none</option>
-                                <option value ="passed">passed</option>
-                                <option value ="failed">failed</option>
-                            </select>
-                            <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
-                            <input type="submit" value="提交"/>
-{#                        </form>#}
-                        <br>
                     </div>
+
+
+
+                    <br>
+                    {% csrf_token %}
+                    批量设置人工比对结果：
+                    <select id="batch_set" name="batch_set">
+                        <option value ="none">none</option>
+                        <option value ="passed">passed</option>
+                        <option value ="failed">failed</option>
+                    </select>
+                    <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
+                    <div><input class="del-button" type="button" value="批量操作" /></div>
+
+                    <script type="text/javascript">
+                        //页面加载的时候,所有的复选框都是未选中的状态
+                        function checkOrCancelAll()
+                        {
+                            var chElt=document.getElementById("chElt");//1.获取checkbo的元素对象
+                            var checkedElt = chElt.checked;//2.获取选中状态
+                            var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+
+                            //var allCheck = document.getElementsByName("file");//方法2
+                            var mySpan=document.getElementById("mySpan");//4.循环遍历取出每一个复选框中的元素
+                            if(checkedElt)//全选
+                            {
+
+                                for(var i=0;i<allCheck.length;i++)
+                                {
+                                    //设置复选框的选中状态
+                                    allCheck[i].checked=true;
+                                }
+                                mySpan.innerHTML="取消全选";
+                            }
+                            else//取消全选
+                            {
+                                for(var i=0;i<allCheck.length;i++)
+                                {
+                                    allCheck[i].checked=false;
+                                }
+                                mySpan.innerHTML="全选";
+                            }
+                        }
+                        function ischecked()
+                        {
+                            var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+                            for(var i=0;i<allCheck.length;i++)
+                            {
+                                if(allCheck[i].checked == true)
+                                {
+                                    return true
+                                }
+                            }
+                            alert("请选择文件")
+                            return false
+                        }
+                    </script>
+
+                    <script type="text/javascript">
+                        $(function(){
+                            $('#all').click(function(){
+                                $('input[type=checkbox]').attr('checked', $(this).attr('checked'));
+                            });
+                            $('.del-button').click(function(){
+
+                                var chckBox = document.getElementsByName("ids");
+                                var num = chckBox.length;
+                                var ids = "";
+                                for(var index =0 ; index<num ; index++){
+                                    if(chckBox[index].checked){
+                                        ids += chckBox[index].value + ",";
+                                    }
+                                }
+                                console.log(ids);
+                                if(ids!=""){
+                                    if(window.confirm("确定操作所选记录？")){
+                                        $.ajax( {
+                                            type : "post",
+                                            url : "",
+                                            dataType : "text",
+                                            data:{"ids":ids,
+                                                "batch_set":$("#batch_set").val(),
+                                                "layer_set_vs_result_manual_which_one":{{ job_id }},
+                                                "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
+                                                {#headers:{"X-CSRFToken":$.cookie('csrftoken')},//方式三#}
+                                            },   //指定要提交给后端的数据
+
+                                            success : function(data) {
+                                                alert(data);
+                                                window.location.href = "" ;
+                                            },
+                                            error : function(data) {
+                                                alert("系统错误，操作失败");
+                                            }
+                                        });
+                                    }
+                                }else{
+                                    alert("请选择要操作的记录");
+                                    }
+
+                            });
+                        });
+
+
+                    </script>
+                    <br>
+
                 </div>
             </div>
         </div>
@@ -179,7 +296,7 @@
             $('#responsive-table').dataTable(
                 {
                     "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
-                    {#"aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项#}
+                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
                     "aLengthMenu": [5, 10, 20,50,100],//设置每页显示数据条数的下拉选项
                     'iDisplayLength': 50, //每页初始显示5条记录
                 }
