@@ -344,7 +344,7 @@ class Asw():
             print(cmd)
             ret = self.exec_cmd(cmd)
             if ret != 0:
-                print('inner error')
+                print('inner error:',ret)
                 return 'inner error'
 
         time.sleep(1)
@@ -1023,21 +1023,5 @@ def getFlist(path):
 if __name__ == '__main__':
     pass
     asw = Asw(gl.gateway_path)
-    gerberList = [
-                    'C:/Users/cheng.chen/Desktop/346414\\Statische Ansteuerung 18.07.21.gbl',
-                  ]
 
-    gerberList2=getFlist(r'C:\Users\cheng.chen\Desktop\346414')
-    print(gerberList2)
-    gerberList_path=[]
-    for each in gerberList2:
-        gerberList_path.append(os.path.join(r'C:\Users\cheng.chen\Desktop\346414',each))
-    print(gerberList_path)
-    job = 'temp_g'
-    step = "orig"
-    asw.g_Gerber2Odb(gerberList_path, job, step)
-    #
-    # asw.delete_job(job)
-    # 'COM export_job,job=test-zm,path=Z:/share/temp,mode=tar_gzip,submode=full,overwrite=yes'
-    # asw.g_export(job,r'Z:/share/temp')
 
