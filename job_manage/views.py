@@ -1987,6 +1987,25 @@ def test_ajax_checkbox4(request):
     # print(userlist)
     return render(request, 'test_ajax_checkbox4.html' ,{'userlist': userlist,})
 
+def test_ajax_checkbox5(request):
+    pass
+    if request.method == 'POST':
+        print("POST!!!")
+        # ret=request.REQUEST.get_list('check_box_list')
+        # ret=request.GET.getlist('check_box_list')
+        # ret=request.POST.getlist('check_box_list')
+        ret = request.POST.get('ids')
+        ret=ret.split(",")
+        print(ret)
+        for each in ret:
+            if len(each) != "":
+                print(each)
+        return HttpResponse("abc")
+
+    userlist=models.User.objects.all()
+    # print(userlist)
+    return render(request, 'test_ajax_checkbox5.html' ,{'userlist': userlist,})
+
 def test_ajax_post1(request):
     if request.method == 'POST':
         name = request.POST.get("name")

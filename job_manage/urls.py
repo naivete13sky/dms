@@ -69,6 +69,7 @@ urlpatterns = [
     path('test_ajax_checkbox2/', views.test_ajax_checkbox2,name='test_ajax_checkbox2'),
     path('test_ajax_checkbox3/', views.test_ajax_checkbox3,name='test_ajax_checkbox3'),
     path('test_ajax_checkbox4/', views.test_ajax_checkbox4,name='test_ajax_checkbox4'),
+    path('test_ajax_checkbox5/', views.test_ajax_checkbox5,name='test_ajax_checkbox5'),
     path('test_ajax_post1/', views.test_ajax_post1,name='test_ajax_post1'),#not ok
     path('test_ajax_HttpResponse/', views.test_ajax_HttpResponse,name='test_ajax_HttpResponse'),
     path('test_ajax_HttpResponse_json/', views.test_ajax_HttpResponse_json,name='test_ajax_HttpResponse_json'),
