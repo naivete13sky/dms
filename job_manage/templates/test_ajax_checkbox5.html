@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>实现checkbox权限功能并将选中行的数据发送到后端</title>
+</head>
+
+<body>
+
+    <table  >
+    <thead >
+            <tr>
+                <th ><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span></th>
+                <th>ID</th>
+                <th>名称</th>
+            </tr>
+        </thead>
+        <tbody >
+            {% for user in userlist %}
+                <tr>
+                    <td><input type="checkbox" class="file" value="{{ user.id }}" name="ids"/></td>
+                    <td align="center">{{ user.id }}</td>
+                    <td align="center">{{ user.username }}</td>
+
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% csrf_token %}
+    <div><input class="del-button" type="button" value="删除" /></div>
+
+    <script type="text/javascript">
+        //页面加载的时候,所有的复选框都是未选中的状态
+        function checkOrCancelAll()
+        {
+            var chElt=document.getElementById("chElt");//1.获取checkbo的元素对象
+            var checkedElt = chElt.checked;//2.获取选中状态
+            var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+
+            //var allCheck = document.getElementsByName("file");//方法2
+            var mySpan=document.getElementById("mySpan");//4.循环遍历取出每一个复选框中的元素
+            if(checkedElt)//全选
+            {
+
+                for(var i=0;i<allCheck.length;i++)
+                {
+                    //设置复选框的选中状态
+                    allCheck[i].checked=true;
+                }
+                mySpan.innerHTML="取消全选";
+            }
+            else//取消全选
+            {
+                for(var i=0;i<allCheck.length;i++)
+                {
+                    allCheck[i].checked=false;
+                }
+                mySpan.innerHTML="全选";
+            }
+        }
+        function ischecked()
+        {
+            var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+            for(var i=0;i<allCheck.length;i++)
+            {
+                if(allCheck[i].checked == true)
+                {
+                    return true
+                }
+            }
+            alert("请选择文件")
+            return false
+        }
+    </script>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $('#all').click(function(){
+                $('input[type=checkbox]').attr('checked', $(this).attr('checked'));
+            });
+            $('.del-button').click(function(){
+
+                var chckBox = document.getElementsByName("ids");
+                var num = chckBox.length;
+                var ids = "";
+                for(var index =0 ; index<num ; index++){
+                    if(chckBox[index].checked){
+                        ids += chckBox[index].value + ",";
+                    }
+                }
+                console.log(ids);
+                if(ids!=""){
+                    if(window.confirm("确定操作所选记录？")){
+                        $.ajax( {
+                            type : "post",
+                            url : "",
+                            dataType : "text",
+                            data:{"ids":ids, num2:2,
+                                "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
+                                {#headers:{"X-CSRFToken":$.cookie('csrftoken')},//方式三#}
+                            },   //指定要提交给后端的数据
+
+                            success : function(data) {
+                                alert(data);
+                                window.location.href = "" ;
+                            },
+                            error : function(data) {
+                                alert("系统错误，操作失败");
+                            }
+                        });
+                    }
+                }else{
+                    alert("请选择要操作的记录");
+                    }
+
+            });
+        });
+
+
+    </script>
+
+
+
+</body>
+</html>
