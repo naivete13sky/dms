@@ -1530,6 +1530,7 @@ def vs_g(request,job_id):
     if os.path.exists(r'C:\cc\share\temp' + "_" + str(request.user) + "_" + str(job_id)):
         shutil.rmtree(r'C:\cc\share\temp' + "_" + str(request.user) + "_" + str(job_id))
 
+
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
 
