@@ -1345,7 +1345,11 @@ def vs_ep(request,job_id,current_page):
                 new_vs.job=job
                 new_vs.layer = each.layer
                 new_vs.layer_org=each.layer_org
-                new_vs.vs_result_detail=str(layer_result_dict)
+                try:
+                    new_vs.vs_result_detail=len(layer_result_dict["result"])
+                except:
+                    pass
+                    new_vs.vs_result_detail = str(layer_result_dict)
                 new_vs.vs_method='ep'
                 new_vs.layer_file_type=each.layer_file_type
                 new_vs.layer_type=each.layer_type
