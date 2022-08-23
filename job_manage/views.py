@@ -487,8 +487,11 @@ class JobListView(ListView):
                         delete_file=(os.path.join(settings.PROJECT_PATH, r'media', str(each_job.file_odb_current))).replace(r'/', '\\')
                         print(delete_file)
                         each_job.file_odb_current=None
-                        if os.path.exists(delete_file):
-                            os.remove(delete_file)
+                        try:
+                            if os.path.exists(delete_file):
+                                os.remove(delete_file)
+                        except:
+                            print("删除文件异常！")
 
                         each_job.save()
 
