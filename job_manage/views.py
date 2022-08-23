@@ -1516,7 +1516,7 @@ def vs_g(request,job_id,current_page):
     layer2 = 'bottom.art'
 
     layer2_ext = '_copy'
-    tol = 0.1
+    tol = 0.3
     map_layer = layer2 + '-com'
     map_layer_res = 200
 
