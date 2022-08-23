@@ -803,7 +803,8 @@ def gerber274x_to_odb_ep2(request,job_id):
     epcam.init()
     epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
     file_path_gerber = os.listdir(temp_path)[0]
-    job_name = file_path_gerber + '_ep_'+str(int(time.time()))
+    # job_name = file_path_gerber + '_ep_'+str(int(time.time()))
+    job_name = file_path_gerber + '_ep'
     step = 'orig'
 
     # print(file_path_gerber)
@@ -822,7 +823,6 @@ def gerber274x_to_odb_ep2(request,job_id):
     # epcam.view_cmd(js)
 
     #把悦谱转图压缩成tgz。
-
     # ifn = os.path.join(temp_path,job_name)
     # try:
     #     ifn = ifn.split(sep='"')[1]
@@ -882,7 +882,8 @@ def gerber274x_to_odb_g(request,job_id):
     #g 导入
 
     file_path_gerber = os.listdir(temp_path)[0]
-    job_name = file_path_gerber + '_g_'+str(int(time.time()))
+    # job_name = file_path_gerber + '_g_'+str(int(time.time()))
+    job_name = file_path_gerber + '_g'
     step = 'orig'
 
     # print(file_path_gerber)
@@ -1529,6 +1530,7 @@ def vs_g(request,job_id):
 
     if os.path.exists(r'C:\cc\share\temp' + "_" + str(request.user) + "_" + str(job_id)):
         shutil.rmtree(r'C:\cc\share\temp' + "_" + str(request.user) + "_" + str(job_id))
+
 
     # return HttpResponse("悦谱VS"+str(job_id))
     return redirect('job_manage:JobListView')
