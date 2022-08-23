@@ -1477,7 +1477,7 @@ def vs_g(request,job_id,current_page):
     all_layer_from_org = models.Layer.objects.filter(job=job)
     print("all_layer_from_org:", all_layer_from_org)
 
-    #以为G软件解析好的为主，来VS
+    #以G软件解析好的为主，来VS
     all_layer_g = job_operation.get_all_layers(job_g_name)
     print('G软件tgz中的层信息：',all_layer_g)
 
@@ -1536,6 +1536,7 @@ def vs_g(request,job_id,current_page):
                 print(layer,"比对异常！")
         else:
             pass
+            print("悦谱转图中没有此层")
 
 
 
