@@ -186,6 +186,12 @@ class JobForm(forms.ModelForm):
         fields = '__all__'
         fields = ['file_odb']
 
+class JobForm2(forms.ModelForm):
+    pass
+    class Meta:
+        model=Job
+        fields = '__all__'
+
 
 class LayerForm(forms.ModelForm):
     pass

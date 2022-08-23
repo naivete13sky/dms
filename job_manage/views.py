@@ -16,7 +16,8 @@ import rarfile
 from pathlib import Path
 from django.db.models import Q
 from dms.settings import MEDIA_URL
-from job_manage.forms import UserForm,UploadForms,ViewForms,UploadForms_no_file,JobFormsReadOnly,ShareForm,BugForm,BugFormsReadOnly
+from job_manage.forms import UserForm, UploadForms, ViewForms, UploadForms_no_file, JobFormsReadOnly, ShareForm, \
+    BugForm, BugFormsReadOnly, JobForm2
 from job_manage import models
 from django.contrib.sites.models import Site
 from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
@@ -448,6 +449,9 @@ class JobListView(ListView):
                                   ]
         context['job_field_verbose_name'] = job_field_verbose_name# 表头用
 
+        if self.request.GET.__contains__("page"):
+            current_page = self.request.GET["page"]
+            print("current_page", current_page)
 
 
         query=self.request.GET.get('query',False)
@@ -643,7 +647,26 @@ class JobUpdateView(UpdateView):
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'JobUpdateView.html'
-    success_url = '../JobListView' # 修改成功后跳转的链接
+
+    def get(self, request, *args, **kwargs):
+
+        job_update = models.Job.objects.get(id=self.kwargs['pk'])
+        # print(job_update)
+        # initial = {'name': adv_positin.name}
+        # form = self.form_class(initial)
+        form=JobForm2(instance=job_update)
+        # print("*pk"*30,self.kwargs['pk'])
+        self.job_id = job_update.id
+
+
+
+        return render(request, 'JobUpdateView.html', {'form':form})
+
+    #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
+    def get_success_url(self):
+        return '../JobListView?which_one={}'.format(self.object.job_id)
+
+    # success_url = '../JobListView' # 修改成功后跳转的链接
 
 class JobUpdateViewVs(UpdateView):
     """
