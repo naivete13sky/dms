@@ -1234,7 +1234,7 @@ class LayerUpdateViewOneJob(UpdateView):
         return '../view_layer/{}'.format(self.object.job_id)
     # success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 
-def vs_ep(request,job_id):
+def vs_ep(request,job_id,current_page):
     pass
     ep_vs_total_result_flag = True  # True表示最新一次悦谱比对通过
     vs_time_ep=str(int(time.time()))
@@ -1384,9 +1384,10 @@ def vs_ep(request,job_id):
         shutil.rmtree(temp_path)
 
     # return HttpResponse("悦谱VS"+str(job_id))
-    return redirect('job_manage:JobListView')
+    # return redirect('job_manage:JobListView')
+    return redirect('../../JobListView?page={}'.format(current_page))
 
-def vs_g(request,job_id):
+def vs_g(request,job_id,current_page):
     pass
     print("G软件VS", job_id)
     # return HttpResponse("G软件VS" + str(job_id))
@@ -1623,7 +1624,9 @@ def vs_g(request,job_id):
 
 
     # return HttpResponse("悦谱VS"+str(job_id))
-    return redirect('job_manage:JobListView')
+    # return redirect('job_manage:JobListView')
+    return redirect('../../JobListView?page={}'.format(current_page))
+
 
 
 class VsListView(ListView):
