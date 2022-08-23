@@ -495,7 +495,24 @@ class JobListView(ListView):
 
                         each_job.save()
 
-            return HttpResponse("完成删除！")
+                return HttpResponse("完成删除！")
+
+            if selected == "batch_input_ep_odb":
+                for each in ret:
+                    if len(each) != 0:
+                        # print(each)
+                        each_job=Job.objects.get(id=int(each))
+                        print(each_job)
+                        gerber274x_to_odb_ep2(request,int(each))
+                        # try:
+                        #     if os.path.exists(delete_file):
+                        #         os.remove(delete_file)
+                        # except:
+                        #     print("删除文件异常！")
+                        #
+                        # each_job.save()
+
+                return HttpResponse("完成批量悦谱转图！")
             # return redirect('job_manage:job_view')
 
         # layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
