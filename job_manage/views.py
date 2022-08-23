@@ -465,27 +465,35 @@ class JobListView(ListView):
         self.object_list = self.get_queryset()
         if request.method == 'POST':
             print("POST!!!")
+            # for each in request.POST:
+            #     print(each)
             # ret=request.REQUEST.get_list('check_box_list')
             # ret=request.GET.getlist('check_box_list')
-            # ret=request.POST.getlist('check_box_list')
+            # ret=request.POST.getlist('ids_list')
+            # print(ret)
+
             ret = request.POST.get('ids')
             ret = ret.split(",")
             print(ret)
-            for each in ret:
-                if len(each) != "":
-                    print(each)
-            for each in request.POST:
-                print(each)
             selected = request.POST.get('batch_job_set', None)
-            print("seleted:",selected)
-            return HttpResponse("abc")
-            #开始设置
-            # for each in check_box_list:
-            #     pass
-            #     each_layer=models.Layer.objects.get(id=each)
-            #     # print(each_layer)
-            #     each_layer.vs_result_manual=selected
-            #     each_layer.save()
+            print("seleted:", selected)
+            if selected == "batch_delete_ep_odb":
+                for each in ret:
+                    if len(each) != 0:
+                        # print(each)
+                        each_job=Job.objects.get(id=int(each))
+                        print(each_job)
+                        delete_file=(os.path.join(settings.PROJECT_PATH, r'media', str(each_job.file_odb_current))).replace(r'/', '\\')
+                        print(delete_file)
+                        each_job.file_odb_current=None
+                        if os.path.exists(delete_file):
+                            os.remove(delete_file)
+
+                        each_job.save()
+
+            return HttpResponse("完成删除！")
+            # return redirect('job_manage:job_view')
+
         # layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
         # print(layer_which_one_job)
         # return redirect('../../LayerListView?which_one={}'.format(layer_which_one_job))
