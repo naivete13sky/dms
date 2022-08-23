@@ -279,7 +279,7 @@
 
                                 <td>
                                     <div class="btn-group btn-group-xs">
-                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/{{ job.id }}';"><i class="fa fa-pencil"></i>
+                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/{{ job.id }}/{{ current_page }}';"><i class="fa fa-pencil"></i>
                                         </button>
                                         <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
 {#                                                                        <a href="job/{{ job.id }}">查看</a>#}
@@ -323,6 +323,7 @@
                         <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>
                     </select>
                     <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
+                    <input type="hidden" name="current_page" id="current_page" value={{ current_page }} />
                     <div><input class="del-button" type="button" value="批量操作" /></div>
 
 

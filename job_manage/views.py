@@ -449,10 +449,13 @@ class JobListView(ListView):
                                   ]
         context['job_field_verbose_name'] = job_field_verbose_name# 表头用
 
+        #料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
         if self.request.GET.__contains__("page"):
             current_page = self.request.GET["page"]
             print("current_page", current_page)
-
+            context['current_page'] = current_page
+        else:
+            context['current_page']=1
 
         query=self.request.GET.get('query',False)
         if query:
@@ -657,14 +660,15 @@ class JobUpdateView(UpdateView):
         form=JobForm2(instance=job_update)
         # print("*pk"*30,self.kwargs['pk'])
         self.job_id = job_update.id
-
+        current_page = self.kwargs['current_page']
+        print("current_page",current_page)
 
 
         return render(request, 'JobUpdateView.html', {'form':form})
 
     #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
     def get_success_url(self):
-        return '../JobListView?which_one={}'.format(self.object.job_id)
+        return '../../JobListView?page={}'.format(self.kwargs['current_page'])
 
     # success_url = '../JobListView' # 修改成功后跳转的链接
 
