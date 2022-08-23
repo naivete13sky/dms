@@ -474,6 +474,10 @@ class JobListView(ListView):
             for each in ret:
                 if len(each) != "":
                     print(each)
+            for each in request.POST:
+                print(each)
+            selected = request.POST.get('batch_job_set', None)
+            print("seleted:",selected)
             return HttpResponse("abc")
             #开始设置
             # for each in check_box_list:

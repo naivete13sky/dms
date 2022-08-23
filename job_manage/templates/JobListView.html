@@ -309,8 +309,22 @@
 
                     </div>
 
+
+
+
+
                     {% csrf_token %}
-                    <div><input class="del-button" type="button" value="删除" /></div>
+{#                    <br>#}
+                    批量设置：
+                    <select id="batch_job_set" name="batch_job_set">
+                        <option value ="none">none</option>
+                        <option value ="batch_input_ep_odb">批量生成悦谱转图</option>
+                        <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>
+                    </select>
+                    <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
+                    <div><input class="del-button" type="button" value="批量操作" /></div>
+
+
 
                     <script type="text/javascript">
                         //页面加载的时候,所有的复选框都是未选中的状态
@@ -378,7 +392,7 @@
                                             type : "post",
                                             url : "",
                                             dataType : "text",
-                                            data:{"ids":ids, num2:2,
+                                            data:{"ids":ids,"batch_job_set":$("#batch_job_set").val(),
                                                 "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
                                                 {#headers:{"X-CSRFToken":$.cookie('csrftoken')},//方式三#}
                                             },   //指定要提交给后端的数据
