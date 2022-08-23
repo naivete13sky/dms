@@ -461,6 +461,31 @@ class JobListView(ListView):
                 Q(author__username__contains=query))
         return context
 
+    def post(self, request):  # ***** this method required! ******
+        self.object_list = self.get_queryset()
+        if request.method == 'POST':
+            print("POST!!!")
+            # ret=request.REQUEST.get_list('check_box_list')
+            # ret=request.GET.getlist('check_box_list')
+            # ret=request.POST.getlist('check_box_list')
+            ret = request.POST.get('ids')
+            ret = ret.split(",")
+            print(ret)
+            for each in ret:
+                if len(each) != "":
+                    print(each)
+            return HttpResponse("abc")
+            #开始设置
+            # for each in check_box_list:
+            #     pass
+            #     each_layer=models.Layer.objects.get(id=each)
+            #     # print(each_layer)
+            #     each_layer.vs_result_manual=selected
+            #     each_layer.save()
+        # layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
+        # print(layer_which_one_job)
+        # return redirect('../../LayerListView?which_one={}'.format(layer_which_one_job))
+
 class JobDetailView(DetailView):
     model = Job
     template_name = "detail_listview.html"
