@@ -1,13 +1,24 @@
 <div class="pagination">
     <span class="step-links">
         {% if page.has_previous %}
-        <a href="?page={{ page.previous_page_number }}">Previous</a>
+            <a href="?page={{ page.previous_page_number }}">上一页</a>
         {% endif %}
-    <span class="current">
-        Page {{ page.number }} of {{ page.paginator.num_pages }}.
+
+        <span class="current">
+        <span class="step-links">
+            第
+            <input type="text" style="width:40px;" class="" id="vs_tol_g" placeholder="" value={{ page.number }}>
+            页
+            <button type="submit" class="">跳转</button>
+        </span>
+        ，共 {{ page.paginator.num_pages }}页
     </span>
-    {% if page.has_next %}
-        <a href="?page={{ page.next_page_number }}">Next</a>
+
+        {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}">下一页</a>
     {% endif %}
     </span>
+
+
+
 </div>
