@@ -214,6 +214,8 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 #g环境
-G_GETWAY_PATH=r"C:\cc\python\epwork\dms\job_manage\g\gateway.exe"
+# G_GETWAY_PATH=r"C:\cc\python\epwork\dms\job_manage\g\gateway.exe"
+G_GETWAY_PATH=os.path.join(BASE_DIR,r"job_manage\g\gateway.exe")
 #项目根目录
-PROJECT_PATH=r'C:\cc\python\epwork\dms'
+# PROJECT_PATH=r'C:\cc\python\epwork\dms'
+
