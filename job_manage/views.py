@@ -484,49 +484,55 @@ class JobListView(ListView):
             # ret=request.POST.getlist('ids_list')
             # print(ret)
 
-            ret = request.POST.get('ids')
-            ret = ret.split(",")
-            print(ret)
-            selected = request.POST.get('batch_job_set', None)
-            print("seleted:", selected)
-            if selected == "batch_delete_ep_odb":
-                for each in ret:
-                    if len(each) != 0:
-                        # print(each)
-                        each_job=Job.objects.get(id=int(each))
-                        print(each_job)
-                        # print("项目根目录：",settings.BASE_DIR,settings.PROJECT_PATH)
-                        delete_file=(os.path.join(settings.BASE_DIR, r'media', str(each_job.file_odb_current))).replace(r'/', '\\')
-                        print(delete_file)
-                        each_job.file_odb_current=None
-                        try:
-                            if os.path.exists(delete_file):
-                                os.remove(delete_file)
-                        except:
-                            print("删除文件异常！")
+            if request.POST.__contains__("ids"):
+                ret = request.POST.get('ids')
+                ret = ret.split(",")
+                print(ret)
+                selected = request.POST.get('batch_job_set', None)
+                print("seleted:", selected)
+                if selected == "batch_delete_ep_odb":
+                    for each in ret:
+                        if len(each) != 0:
+                            # print(each)
+                            each_job=Job.objects.get(id=int(each))
+                            print(each_job)
+                            # print("项目根目录：",settings.BASE_DIR,settings.PROJECT_PATH)
+                            delete_file=(os.path.join(settings.BASE_DIR, r'media', str(each_job.file_odb_current))).replace(r'/', '\\')
+                            print(delete_file)
+                            each_job.file_odb_current=None
+                            try:
+                                if os.path.exists(delete_file):
+                                    os.remove(delete_file)
+                            except:
+                                print("删除文件异常！")
 
-                        each_job.save()
+                            each_job.save()
 
-                return HttpResponse("完成删除！")
+                    return HttpResponse("完成删除！")
 
-            if selected == "batch_input_ep_odb":
-                for each in ret:
-                    if len(each) != 0:
-                        # print(each)
-                        each_job=Job.objects.get(id=int(each))
-                        print(each_job)
-                        gerber274x_to_odb_ep2(request,int(each))
-                        # try:
-                        #     if os.path.exists(delete_file):
-                        #         os.remove(delete_file)
-                        # except:
-                        #     print("删除文件异常！")
-                        #
-                        # each_job.save()
+                if selected == "batch_input_ep_odb":
+                    for each in ret:
+                        if len(each) != 0:
+                            # print(each)
+                            each_job=Job.objects.get(id=int(each))
+                            print(each_job)
+                            print("each:",each)
+                            gerber274x_to_odb_ep2(request,int(each),request.POST.get("current_page"))
+                            # try:
+                            #     if os.path.exists(delete_file):
+                            #         os.remove(delete_file)
+                            # except:
+                            #     print("删除文件异常！")
+                            #
+                            # each_job.save()
 
-                return HttpResponse("完成批量悦谱转图！")
-            # return redirect('job_manage:job_view')
+                    return HttpResponse("完成批量悦谱转图！")
+                # return redirect('job_manage:job_view')
 
+            if request.POST.__contains__("page_jump"):
+                print(request.POST.get("page_jump"))
+
+                return HttpResponse(request.POST.get("page_jump"))
         # layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
         # print(layer_which_one_job)
         # return redirect('../../LayerListView?which_one={}'.format(layer_which_one_job))

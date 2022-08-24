@@ -395,6 +395,7 @@
                                             url : "",
                                             dataType : "text",
                                             data:{"ids":ids,"batch_job_set":$("#batch_job_set").val(),
+                                                "current_page":{{ current_page }},
                                                 "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
                                                 {#headers:{"X-CSRFToken":$.cookie('csrftoken')},//方式三#}
                                             },   //指定要提交给后端的数据

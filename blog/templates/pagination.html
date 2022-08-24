@@ -1,4 +1,7 @@
+{% load static  %}
 <div class="pagination">
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+
     <span class="step-links">
         {% if page.has_previous %}
             <a href="?page={{ page.previous_page_number }}">上一页</a>
@@ -7,18 +10,42 @@
         <span class="current">
         <span class="step-links">
             第
-            <input type="text" style="width:40px;" class="" id="vs_tol_g" placeholder="" value={{ page.number }}>
+            <input type="text" style="width:40px;" class="page_jump" id="page_jump" placeholder="" value={{ page.number }}>
             页
-            <button type="submit" class="">跳转</button>
+            <button type="submit" class="btn_page_jump">跳转</button>
         </span>
-        ，共 {{ page.paginator.num_pages }}页
+
     </span>
 
         {% if page.has_next %}
-        <a href="?page={{ page.next_page_number }}">下一页</a>
-    {% endif %}
+            <a href="?page={{ page.next_page_number }}">下一页</a>
+            ，共 {{ page.paginator.num_pages }}页
+        {% endif %}
     </span>
 
+    <script type="text/javascript">
+        $(function(){
+            $('.btn_page_jump').click(function(){
+                console.log("btn_page_jump clicked")
+                $.ajax( {
+                        type : "post",
+                        url : "",
+                        dataType : "text",
+                        data:{
+                            "page_jump":$("#page_jump").val(),
+                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                        },   //指定要提交给后端的数据
 
+                        success : function(data) {
+                            {#alert(data);#}
+                            window.location.href = "?page="+$("#page_jump").val() ;
+                        },
+                        error : function(data) {
+                            alert("系统错误，操作失败");
+                        }
+                    });
+            });
+        });
+    </script>
 
 </div>
