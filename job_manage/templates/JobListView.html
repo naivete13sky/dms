@@ -316,15 +316,20 @@
 
                     {% csrf_token %}
 {#                    <br>#}
-                    批量设置：
-                    <select id="batch_job_set" name="batch_job_set">
-                        <option value ="none">none</option>
-                        <option value ="batch_input_ep_odb">批量生成悦谱转图</option>
-                        <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>
-                    </select>
-                    <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
-                    <input type="hidden" name="current_page" id="current_page" value={{ current_page }} />
-                    <div><input class="del-button" type="button" value="批量操作" /></div>
+                    <sapn class="current">
+                        <span class="step-links">
+                            批量设置：
+                            <select id="batch_job_set" name="batch_job_set">
+                                <option value ="none">none</option>
+                                <option value ="batch_input_ep_odb">批量生成悦谱转图</option>
+                                <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>
+                            </select>
+                            <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
+                            <input type="hidden" name="current_page" id="current_page" value={{ current_page }} />
+                            <input class="del-button" type="button" value="批量操作" />
+                        </span>
+                    </sapn>
+
 
 
 
