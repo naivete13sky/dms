@@ -10,7 +10,7 @@
         <span class="current">
             <span class="step-links">
             第
-            <input type="text" style="width:40px;" class="page_jump" id="page_jump" placeholder="" value={{ page.number }}>
+            <input type="text" style="width:40px;" class="page_jump" id="page_jump" placeholder="" value={{ page.number }} onkeydown="if(event.keyCode==13) {test()}">
             页
             <button type="submit" class="btn_page_jump">跳转</button>
         </span>
@@ -46,6 +46,15 @@
                     });
             });
         });
+    </script>
+
+
+
+    <script>
+        function test() {
+           {#alert(123);#}
+           $('.btn_page_jump').click()
+        }
     </script>
 
 </div>
