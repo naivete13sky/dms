@@ -115,8 +115,22 @@
 
                                     {% endif %}
                                     {% if job.bool_layer_info == 'false' %}
-                                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org/{{ job.id }}';"><i class="fa fa-list"></i>
+                                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" onclick="return confirm_do();"><i class="fa fa-list"></i>
                                         </button>
+
+                                        <script type="text/javascript" language="JavaScript">
+                                            function confirm_do()
+                                            {
+                                                 if(confirm("确定要执行生成层名操作吗?"))
+                                                 {
+                                                     window.location.href='get_file_name_from_org/{{ job.id }}';
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     return false;
+                                                 }
+                                            }
+                                        </script>
 
                                     {% endif %}
 
@@ -423,6 +437,12 @@
 
 
                     </script>
+
+
+
+
+
+
 
                 </div>
             </div>
