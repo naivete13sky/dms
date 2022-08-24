@@ -117,7 +117,9 @@ class EpGerberToODB:
                 if file_format == 'Excellon2':
                     # re = epcam_api.file_translate(os.path.join(root, file), job, step, file, file_param, '', '', '',[])
                     print('file:',file)
-                    print('?=')
+                    print('?=',file.replace(' ','-').replace('(','-').replace(')','-'))
+                    # for each in models.Layer.objects.filter(job=job_current):
+                    #     print(each.layer,each.layer_org)
                     print(file,'=?',models.Layer.objects.get(job=job_current,layer=file.replace(' ','-').replace('(','-').replace(')','-')))
                     print('原来：',file_param)
                     try:

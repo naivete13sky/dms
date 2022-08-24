@@ -862,7 +862,7 @@ def gerber274x_to_odb_ep(request,job_id):
 
     return redirect('job_manage:JobListView')
 
-def gerber274x_to_odb_ep2(request,job_id):
+def gerber274x_to_odb_ep2(request,job_id,current_page):
     pass
     #gerber274x_to_odb_ep2:孔参数取自数据库，而gerber274x_to_odb_ep是根据软件默认的参数导入的
 
@@ -933,7 +933,8 @@ def gerber274x_to_odb_ep2(request,job_id):
 
 
 
-    return redirect('job_manage:JobListView')
+    # return redirect('job_manage:JobListView')
+    return redirect('../../JobListView?page={}'.format(current_page))
 
 def getFlist(path):
     for root, dirs, files in os.walk(path):
