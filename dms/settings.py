@@ -219,6 +219,4 @@ G_GETWAY_PATH=os.path.join(BASE_DIR,r"job_manage\g\gateway.exe")
 #项目根目录
 # PROJECT_PATH=r'C:\cc\python\epwork\dms'
 
-#设置料号比图参数
-VS_TOL_EP=0.9
-VS_TOL_G=0.3
+

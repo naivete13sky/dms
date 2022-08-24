@@ -30,7 +30,7 @@
                                         <input type="text" class="form-control" id="vs_tol_ep" placeholder="vs_tol_ep" value={{ vs_tol_ep }}>
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn_vs_tol_ep">修改</button>
+                                        <button type="submit" class="btn-ep">修改</button>
                                     </div>
                                 </form>
 
@@ -42,7 +42,7 @@
                                         <input type="text" class="form-control" id="vs_tol_g" placeholder="vs_tol_g" value={{ vs_tol_g }}>
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn_vs_tol_g">修改</button>
+                                        <button type="submit" class="btn-g">修改</button>
                                     </div>
                                 </form>
 
@@ -54,7 +54,7 @@
 
                         <script type="text/javascript">
                             $(function(){
-                                $('.btn_vs_tol_ep').click(function(){
+                                $('.btn-ep').click(function(){
                                     console.log("btn-primary clicked")
                                     $.ajax( {
                                             type : "post",
@@ -79,14 +79,14 @@
 
                         <script type="text/javascript">
                             $(function(){
-                                $('.btn_vs_tol_g').click(function(){
+                                $('.btn-g').click(function(){
                                     console.log("btn-primary clicked")
                                     $.ajax( {
                                             type : "post",
                                             url : "",
                                             dataType : "text",
                                             data:{
-                                                "vs_tol_ep":$("#vs_tol_g").val(),
+                                                "vs_tol_g":$("#vs_tol_g").val(),
                                                 "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
                                             },   //指定要提交给后端的数据
 

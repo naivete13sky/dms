@@ -707,17 +707,39 @@ def job_settings(request):
         # for each in request.POST:
         #     print(each)
         if request.POST.__contains__("vs_tol_ep"):
-            pass
-            print(request.POST.get("vs_tol_ep"))
+            print("vs_tol_ep")
+            #读取配置文件
+            with open(os.path.join(settings.BASE_DIR,r'config.json'), encoding='utf-8') as f:
+                cfg = json.load(f)
+            #更改文件内容
+            cfg['job_manage']['vs']['vs_tol_ep']=float(request.POST.get("vs_tol_ep"))
+            print(cfg['job_manage']['vs']['vs_tol_ep'])
+            #保存到配置文件
+            with open(os.path.join(settings.BASE_DIR,r'config.json'), 'w') as f:
+                json.dump(cfg, f,indent=4, ensure_ascii=False)
+
+
+
 
         if request.POST.__contains__("vs_tol_g"):
-            pass
-            print(request.POST.get("vs_tol_g"))
+            print("vs_tol_g")
+            # 读取配置文件
+            with open(os.path.join(settings.BASE_DIR, r'config.json'), encoding='utf-8') as f:
+                cfg = json.load(f)
+            # 更改文件内容
+            cfg['job_manage']['vs']['vs_tol_g'] = float(request.POST.get("vs_tol_g"))
+            print(cfg['job_manage']['vs']['vs_tol_g'])
+            # 保存到配置文件
+            with open(os.path.join(settings.BASE_DIR, r'config.json'), 'w') as f:
+                json.dump(cfg, f, indent=4, ensure_ascii=False)
 
         return HttpResponse("完成设置!")
 
-    vs_tol_ep=settings.VS_TOL_EP
-    vs_tol_g=settings.VS_TOL_G
+    # get
+    with open(os.path.join(settings.BASE_DIR, r'config.json'), encoding='utf-8') as f:
+        cfg = json.load(f)
+    vs_tol_ep = cfg['job_manage']['vs']['vs_tol_ep']
+    vs_tol_g = cfg['job_manage']['vs']['vs_tol_g']
     return render(request, r'job_settings.html', locals())
 
 
