@@ -1560,6 +1560,7 @@ def vs_g(request,job_id,current_page):
     layer1 = 'bottom.art'
 
     job2 = os.listdir(os.path.join(temp_path, 'ep'))[0]
+
     # jobpath2 = r'Z:/share/temp_{}_{}/ep/{}'.format(str(request.user),str(job_id),job2)
     jobpath2 = r'\\vmware-host\Shared Folders\share/temp_{}_{}/ep/{}'.format(str(request.user), str(job_id), job2)
     step2 = 'orig'

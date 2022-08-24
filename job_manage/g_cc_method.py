@@ -194,7 +194,7 @@ class Asw():
         #     return results
         job = os.path.basename(self.jobpath)
         cmd_list1 = [
-            'COM import_job,db=genesis,path={},name={},analyze_surfaces=no'.format(jobpath, job),
+            'COM import_job,db=genesis,path={},name={},analyze_surfaces=no'.format(jobpath, job.lower()),
 
         ]
 
@@ -228,8 +228,8 @@ class Asw():
             print("*"*100)
             return results
 
-        job1 = os.path.basename(self.jobpath1)
-        job2 = os.path.basename(self.jobpath2)
+        job1 = os.path.basename(self.jobpath1).lower()
+        job2 = os.path.basename(self.jobpath2).lower()
         layer_cp = layer2 + layer2_ext
 
 
@@ -302,8 +302,8 @@ class Asw():
             print("*" * 100)
             return results
 
-        self.job1 = os.path.basename(jobpath1)
-        self.job2 = os.path.basename(jobpath2)
+        self.job1 = os.path.basename(jobpath1).lower()
+        self.job2 = os.path.basename(jobpath2).lower()
         layer_cp = layer2 + layer2_ext
 
         cmd_list1 = [
