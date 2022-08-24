@@ -1,8 +1,8 @@
 {
     "job_manage": {
         "vs": {
-            "vs_tol_ep": 5.5,
-            "vs_tol_g": 6.3
+            "vs_tol_ep": 0.9,
+            "vs_tol_g": 0.3
         },
         "port": 3306,
         "user": "root",

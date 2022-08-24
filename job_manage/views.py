@@ -698,7 +698,6 @@ class JobDeleteView(DeleteView):
    # namespace:url_name
   success_url = reverse_lazy('job_manage:job_view')
 
-
 def job_settings(request):
     pass
     if request.method == 'POST':
@@ -741,10 +740,6 @@ def job_settings(request):
     vs_tol_ep = cfg['job_manage']['vs']['vs_tol_ep']
     vs_tol_g = cfg['job_manage']['vs']['vs_tol_g']
     return render(request, r'job_settings.html', locals())
-
-
-
-
 
 def get_file_name_from_org(request,job_id):
     pass
@@ -1565,7 +1560,12 @@ def vs_g(request,job_id,current_page):
     layer2 = 'bottom.art'
 
     layer2_ext = '_copy'
-    tol = 0.3
+
+    # 读取配置文件
+    with open(os.path.join(settings.BASE_DIR, r'config.json'), encoding='utf-8') as f:
+        cfg = json.load(f)
+    tol = cfg['job_manage']['vs']['vs_tol_g']
+    print("tol:",tol)
     map_layer = layer2 + '-com'
     map_layer_res = 200
 
