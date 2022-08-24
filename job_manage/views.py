@@ -701,7 +701,28 @@ class JobDeleteView(DeleteView):
 
 def job_settings(request):
     pass
+    if request.method == 'POST':
+        print("POST!!!")
+        # ret=request.REQUEST.get_list('check_box_list')
+        # for each in request.POST:
+        #     print(each)
+        if request.POST.__contains__("vs_tol_ep"):
+            pass
+            print(request.POST.get("vs_tol_ep"))
+
+        if request.POST.__contains__("vs_tol_g"):
+            pass
+            print(request.POST.get("vs_tol_g"))
+
+        return HttpResponse("完成设置!")
+
+    vs_tol_ep=settings.VS_TOL_EP
+    vs_tol_g=settings.VS_TOL_G
     return render(request, r'job_settings.html', locals())
+
+
+
+
 
 def get_file_name_from_org(request,job_id):
     pass
