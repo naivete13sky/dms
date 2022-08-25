@@ -1072,7 +1072,7 @@ class LayerListView(ListView):
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
         field_verbose_name = [
-                              models.Layer._meta.get_field('job').verbose_name,
+                              # models.Layer._meta.get_field('job').verbose_name,
                               models.Layer._meta.get_field('layer').verbose_name,
                               models.Layer._meta.get_field('layer_org').verbose_name,
                               models.Layer._meta.get_field('vs_result_manual').verbose_name,
@@ -1092,6 +1092,7 @@ class LayerListView(ListView):
                               models.Layer._meta.get_field('number_format_B_g').verbose_name,
                               models.Layer._meta.get_field('tool_units_g').verbose_name,
                               models.Layer._meta.get_field('status').verbose_name,
+                                models.Layer._meta.get_field('remark').verbose_name,
                               "标签",
                               "操作",
                               ]

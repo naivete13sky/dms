@@ -104,17 +104,23 @@
                                         {{ layer.id }}
                                     </td>
 
-                                    <td>
-                                        <a href="{{ job.get_absolute_url }}" title="{{ layer.job }}">
+{#                                    <td>#}
+{#                                        <a href="{{ job.get_absolute_url }}" title="{{ layer.job }}">#}
+{##}
+{#                                            {{ layer.job|slice:"20" }}#}
+{#                                        </a>#}
+{##}
+{##}
+{#                                    </td>#}
 
-                                            {{ layer.job|slice:"20" }}
+                                    <td>
+                                        <a href="{{ layer.get_absolute_url }}" title="{{ layer.layer }}">
+
+                                            {{ layer.layer|slice:"15" }}
                                         </a>
 
-
                                     </td>
-
-                                    <td>{{ layer.layer }}</td>
-                                    <td>{{ layer.layer_org }}</td>
+                                    <td><div title={{ layer.layer_org }}> {{ layer.layer_org|slice:"5" }} </div></td>
                                     <td>{{ layer.vs_result_manual }}</td>
                                     <td>{{ layer.vs_result_ep }}</td>
                                     <td>{{ layer.vs_result_g }}</td>
@@ -135,6 +141,7 @@
                                     <td>{{ layer.tool_units_g }}</td>
 
                                     <td>{{ layer.status }}</td>
+                                    <td>{{ layer.remark }}</td>
     {#                                <td>{{ job.create_time }}</td>#}
     {#                                <td>{{ job.updated }}</td>#}
                                     <td>
