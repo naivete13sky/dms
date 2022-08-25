@@ -141,7 +141,9 @@
                                     <td>{{ layer.tool_units_g }}</td>
 
                                     <td>{{ layer.status }}</td>
-                                    <td>{{ layer.remark }}</td>
+                                    <td>
+                                        <div title={{ layer.remark }}> {{ layer.remark|slice:"5" }} </div>
+                                    </td>
     {#                                <td>{{ job.create_time }}</td>#}
     {#                                <td>{{ job.updated }}</td>#}
                                     <td>
