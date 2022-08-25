@@ -221,8 +221,24 @@
 
                                     {% endif %}
 
-                                    <button class="btn btn-transparent" title="点击比对" onclick="window.location.href='vs_ep/{{ job.id }}/{{ current_page }}';"><i class="fa fa-file-picture-o"></i>
-                                        </button>
+                                    <button class="btn btn-transparent" title="点击比对" value={{ job.id }} onclick="confirm_do_vs_ep(this.value);"><i class="fa fa-file-picture-o"></i>
+                                    </button>
+                                    <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_vs_ep(value)
+                                            {
+                                                 if(confirm("确定要执行G软件比图操作吗?"))
+                                                 {
+
+                                                     window.location.href='vs_ep/' + value + '/{{ current_page }}';
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     {#alert(value)#}
+                                                     return false;
+
+                                                 }
+                                            }
+                                        </script>
 
 
                                 </td>
