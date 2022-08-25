@@ -326,7 +326,17 @@
                                 </td>
                                 <td>{{ job.author }}</td>
                                 <td>{{ job.from_object }}</td>
-                                <td>{{ job.get_status_display }}</td>
+                                <td>
+                                    {% if job.status == "published" %}
+                                        <div style=color:green;>{{ job.get_status_display }}</div>
+
+                                    {% endif %}
+                                    {% if job.status != "published" %}
+                                        {{ job.get_status_display }}
+
+                                    {% endif %}
+
+                                </td>
                                 <td>{{ job.create_time }}</td>
                                 <td>{{ job.updated }}</td>
                                 <td>
