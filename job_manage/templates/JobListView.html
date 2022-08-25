@@ -90,10 +90,14 @@
                             </thead>
                             <tbody>
                             {% for job in jobs %}
+
                                 <tr>
                                 <td>
 {#                                    <input type="checkbox" name="check_box_list" value="{{ layer.id }}" onclick="userCheck(this)">#}
+
                                     <input class="file" name="ids" type="checkbox" value="{{ job.id }}" />
+                                    {{ forloop.counter }}
+
 
                                 </td>
                                 <td>{{ job.id }}</td>
