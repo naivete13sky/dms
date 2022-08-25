@@ -6,6 +6,30 @@
     <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:JobListView" %}>料号管理</a></li>
     <li><a>料号查询</a></li>
 {% endblock %}
+
+{% block search %}
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+{#    <form class="navbar-form">#}
+
+      <input class="form-control" id="form-control" placeholder="Search job id" type="text" onkeydown="if(event.keyCode==13) {search_by_job_id()}">
+
+{#    </form>#}
+
+    <script>
+        function search_by_job_id() {
+           {#alert(123);#}
+           {#$('.btn_page_jump').click()#}
+           window.location.href = "?search_by_job_id="+$("#form-control").val();
+        }
+    </script>
+
+
+
+
+
+{% endblock %}
+
+
 {% block main_content %}
 
     <script src={% static "javascripts/jquery.min.js" %}></script>

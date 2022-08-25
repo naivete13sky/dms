@@ -471,6 +471,14 @@ class JobListView(ListView):
                 Q(job_name__contains=query) |
                 Q(from_object__contains=query) |
                 Q(author__username__contains=query))
+
+        #根据料号ID精准搜索
+        search_by_job_id=self.request.GET.get('search_by_job_id',False)
+        if search_by_job_id:
+            pass
+            print("search_by_job_id:",search_by_job_id)
+            context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
+
         return context
 
     def post(self, request):  # ***** this method required! ******
