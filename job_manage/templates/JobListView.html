@@ -167,6 +167,10 @@
 {#                                        {{ job.file_odb_current }}#}
                                         <button class="btn btn-transparent" title="最新EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb_current }}';"><i class="fa fa-download"></i>
                                         </button>
+                                        <button class="btn btn-transparent" title="查看料号" onclick="window.location.href='ep_current_odb_view/{{ job.id }}/{{ current_page }}';"><i class="fa fa-eye"></i>
+
+                                        </button>
+
                                     {% endif %}
 
                                     {% if not job.file_odb_current %}
@@ -182,6 +186,11 @@
                                     {% if job.file_odb_g %}
                                         <button class="btn btn-transparent" title="G-ODB下载：{{ job.file_odb_g}}" onclick="window.location.href='/media/{{ job.file_odb_g }}';"><i class="fa fa-download"></i>
                                         </button>
+
+                                        <button class="btn btn-transparent" title="查看料号" onclick="window.location.href='g_current_odb_view/{{ job.id }}/{{ current_page }}';"><i class="fa fa-eye"></i>
+
+                                        </button>
+
                                     {% endif %}
 
                                     {% if not job.file_odb_g %}

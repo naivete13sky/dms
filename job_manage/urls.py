@@ -32,6 +32,8 @@ urlpatterns = [
     path('gerber274x_to_odb_ep/<int:job_id>/', views.gerber274x_to_odb_ep,name='gerber274x_to_odb_ep'),
     path('gerber274x_to_odb_ep2/<int:job_id>/<int:current_page>', views.gerber274x_to_odb_ep2,name='gerber274x_to_odb_ep2'),
     path('gerber274x_to_odb_g/<int:job_id>/', views.gerber274x_to_odb_g,name='gerber274x_to_odb_g'),
+    path('ep_current_odb_view/<int:job_id>/<int:current_page>', views.ep_current_odb_view,name='ep_current_odb_view'),
+    path('g_current_odb_view/<int:job_id>/<int:current_page>', views.g_current_odb_view,name='g_current_odb_view'),
 
     path('LayerListView',login_required(views.LayerListView.as_view()),name='LayerListView'),
     path('view_layer/<int:job_id>/', views.view_layer,name='view_layer'),

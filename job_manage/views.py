@@ -985,6 +985,76 @@ def gerber274x_to_odb_ep2(request,job_id,current_page):
     # return redirect('job_manage:JobListView')
     return redirect('../../JobListView?page={}'.format(current_page))
 
+def ep_current_odb_view(request,job_id,current_page):
+    pass
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name)
+    #先拿到原始料号，放到临时文件夹，完成解压
+    temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
+    ep_current_odb_file_path=(os.path.join(settings.BASE_DIR,r'media',str(job.file_odb_current))).replace(r'/','\\')
+    shutil.copy(ep_current_odb_file_path,temp_path)
+    time.sleep(0.2)
+
+    job_operation.untgz(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1]), temp_path)#解压tgz
+    if os.path.exists(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1])):#删除tgz
+        os.remove(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1]))
+    # print("temp_path",temp_path,"os.listdir(temp_path)[0]:",os.listdir(temp_path)[0])
+    # epcam 导入
+    epcam.init()
+    epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+    res = job_operation.open_job(temp_path, os.listdir(temp_path)[0])
+    print(res)
+
+    #show epcam
+    datashow = {"cmd":"show_layer", "job":os.listdir(temp_path)[0], "step": "orig", "layer":""}
+    js = json.dumps(datashow)
+    epcam.view_cmd(js)
+
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
+
+    # return redirect('job_manage:JobListView')
+    return redirect('../../JobListView?page={}'.format(current_page))
+
+def g_current_odb_view(request,job_id,current_page):
+    pass
+    #找到job对象
+    job=Job.objects.get(id=job_id)
+    print(job.job_name)
+    #先拿到原始料号，放到临时文件夹，完成解压
+    temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
+    if not os.path.exists(temp_path):
+        os.mkdir(temp_path)
+    g_current_odb_file_path=(os.path.join(settings.BASE_DIR,r'media',str(job.file_odb_g))).replace(r'/','\\')
+    shutil.copy(g_current_odb_file_path,temp_path)
+    time.sleep(0.2)
+
+    job_operation.untgz(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1]), temp_path)#解压tgz
+    if os.path.exists(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1])):#删除tgz
+        os.remove(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1]))
+    # print("temp_path",temp_path,"os.listdir(temp_path)[0]:",os.listdir(temp_path)[0])
+    # epcam 导入
+    epcam.init()
+    epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+    res = job_operation.open_job(temp_path, os.listdir(temp_path)[0])
+    print(res)
+
+    #show epcam
+    datashow = {"cmd":"show_layer", "job":os.listdir(temp_path)[0], "step": "orig", "layer":""}
+    js = json.dumps(datashow)
+    epcam.view_cmd(js)
+
+    # 删除temp_path
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
+
+    # return redirect('job_manage:JobListView')
+    return redirect('../../JobListView?page={}'.format(current_page))
+
 def getFlist(path):
     for root, dirs, files in os.walk(path):
         print('root_dir:', root)  #当前路径
