@@ -1144,7 +1144,7 @@ class LayerListView(ListView):
         field_verbose_name = [
                               # models.Layer._meta.get_field('job').verbose_name,
                               models.Layer._meta.get_field('layer').verbose_name,
-                              models.Layer._meta.get_field('layer_org').verbose_name,
+                              # models.Layer._meta.get_field('layer_org').verbose_name,
                               models.Layer._meta.get_field('vs_result_manual').verbose_name,
                               models.Layer._meta.get_field('vs_result_ep').verbose_name,
                               models.Layer._meta.get_field('vs_result_g').verbose_name,
