@@ -14,8 +14,9 @@
 {#                            <h1>资料</h1>#}
                             {% for job in jobs %}
                                 <h2>
+                                    ID：{{ job.id }}
                                     <a href="{{ job.get_absolute_url }}">
-                                        {{ job.job_name }}
+                                        名称：{{ job.job_name }}
                                     </a>
                                 <p class="tags">
                                     Tags:
