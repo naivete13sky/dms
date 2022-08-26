@@ -1,4 +1,6 @@
 # Create your models here.
+from functools import reduce
+
 from django.core import validators
 from django.db import models
 from django.utils import timezone
@@ -286,4 +288,6 @@ class Bug(models.Model):
     def __str__(self):
         # Return a string that represents the instance
         return self.bug_zentao_id
+
+
 

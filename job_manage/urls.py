@@ -84,6 +84,8 @@ urlpatterns = [
     path('test_ajax_post/', views.test_ajax_post,name='test_ajax_post'),
     path('test_ajax_upload/', views.test_ajax_upload,name='test_ajax_upload'),
 
+    path('test_casbin/', views.test_casbin,name='test_casbin'),
+
 
 # ]
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,6 @@
 # Create your views here.
+import casbin
+from casbin_adapter.enforcer import enforcer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -52,6 +54,8 @@ from django.http import HttpResponseRedirect
 from sqlalchemy import create_engine
 from django.http import  JsonResponse
 from .models import MyTag
+
+
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -2352,4 +2356,36 @@ def test_ajax_upload(request):
         return HttpResponse('ajax上传文件')
     return render(request, 'test_ajax_upload.html')
 
+
+def test_casbin(request):
+
+    #增加一些策略
+    from casbin_adapter.models import CasbinRule
+    current_casbinrule=CasbinRule.objects.filter(v0="dd")
+    if len(current_casbinrule) ==0:
+        new_casbinrule=CasbinRule()
+        new_casbinrule.ptype = "p"
+        new_casbinrule.v0 = "dd"
+        new_casbinrule.v1 = 'data1'
+        new_casbinrule.v2 = "read"
+        new_casbinrule.save()
+
+
+
+
+    sub = "alice"  # the user that wants to access a resource.
+    obj = "data1"  # the resource that is going to be accessed.
+    act = "read"  # the operation that the user performs on the resource.
+
+
+
+    if enforcer.enforce(sub, obj, act):
+        # permit alice to read data1casbin_django_orm_adapter
+        pass
+        result="pass"
+    else:
+        # deny the request, show an error
+        pass
+        result = "not pass"
+    return HttpResponse(result)
 

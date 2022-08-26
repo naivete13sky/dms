@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+{% load static  %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+    <script type="text/javascript" src='C:/cc/python/epwork/dms/collected_static/vendor/data-table/media/js/jquery.dataTables.min.js'></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function(){
+          $("p").click(function(){
+            $(this).hide();
+          });
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function(){
+            $('#table1').dataTable(
+                {
+                    "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
+                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
+                    'iDisplayLength': 5, //每页初始显示5条记录
+                }
+            );
+        });
+    </script>
+
+
+
+
+</head>
+<body>
+    <p>如果你点我，我就会消失。</p>
+    <p>继续点我!</p>
+    <p>接着点我!</p>
+
+
+    <table id="table1" class="table  table-condensed ">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>zhang</td>
+                <td>98</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>wang</td>
+                <td>99</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>wang</td>
+                <td>99</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>wang</td>
+                <td>99</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>wang</td>
+                <td>99</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>wang</td>
+                <td>99</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>wang</td>
+                <td>99</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+
+    <div >
+        <table id="example" class="display" cellspacing="0" width="100%">
+
+            {% csrf_token %}
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>age</th>
+
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td>{{ result_json }}</td>
+        </tr>
+
+        <tr>
+            <td>{{ result_json }}</td>
+        </tr>
+
+
+      </tbody>
+    </table>
+    </div>
+
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        refreshDataTable();
+      });
+
+     var refreshDataTable=function() {
+       var table = $('#example').DataTable({
+         //"ajax":"data/tabledata.json",
+        // "iDisplayLength": 3,
+         "sPaginationType": "full_numbers",
+         "bPaginite": true,
+         "bInfo": true,
+         "bSort": true,
+         "processing": false,
+         "serverSide": true,
+         "sAjaxSource": "",//这个是请求的地址
+         "fnServerData": retrieveData
+
+       });
+       function retrieveData(url, aoData, fnCallback) {
+         var data={"data":{"id":"123123","name":"2s",}};
+         $.ajax({
+           url: url,//这个就是请求地址对应sAjaxSource
+           data : {
+               "aoData" : JSON.stringify(aoData),
+               "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+           },
+           type: 'POST',
+           dataType: 'json',
+           async: false,
+           success: function (result) {
+
+             //var obj=JSON.parse(result);
+             console.log(result);
+             fnCallback(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+           },
+           error:function(XMLHttpRequest, textStatus, errorThrown) {
+
+             alert("status:"+XMLHttpRequest.status+",readyState:"+XMLHttpRequest.readyState+",textStatus:"+textStatus);
+
+           }
+         });
+       }
+     };
+    </script>
+
+</body>
+</html>
