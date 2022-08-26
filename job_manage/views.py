@@ -355,6 +355,17 @@ def add(request):
         return render(request, "add.html", {"form": form, "clean_errors": clean_errors})
 
 def job_list(request,tag_slug=None):
+    if request.POST.__contains__("page_jump"):
+        pass
+        print("post")
+        return HttpResponse("post")
+
+
+
+
+
+
+
     object_list = Job.published.all()
     tag = None
     if tag_slug:
