@@ -5,7 +5,9 @@ import os
 import threading
 
 # bin_path = r'C:\cc\ep_local\product\EP-CAM\version\20220727\EP-CAM_beta_2.28.054_s4_u5_jiami\Release'
-bin_path = r'C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release'
+# bin_path = r'C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release'
+bin_path = r'C:\cc\ep_local\product\EP-CAM\version\20220826\EP-CAM_beta_2.28.054_s22_jiami\Release'
+
 # #subpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
 # subpath = r'D:\EPEDA\trunk\bin\x64\Release'
 # subdir = os.path.basename(subpath)

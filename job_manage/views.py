@@ -942,7 +942,8 @@ def gerber274x_to_odb_ep2(request,job_id,current_page):
         os.remove(temp_compressed)
     #epcam 导入
     epcam.init()
-    epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+    # epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220826\EP-CAM_beta_2.28.054_s22_jiami\Release")
+    epcam_api.set_config_path(settings.EP_CAM_PATH)
     file_path_gerber = os.listdir(temp_path)[0]
     # job_name = file_path_gerber + '_ep_'+str(int(time.time()))
     job_name = file_path_gerber + '_ep'
@@ -1012,7 +1013,8 @@ def ep_current_odb_view(request,job_id,current_page):
     # print("temp_path",temp_path,"os.listdir(temp_path)[0]:",os.listdir(temp_path)[0])
     # epcam 导入
     epcam.init()
-    epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+    # epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+    epcam_api.set_config_path(settings.EP_CAM_PATH)
     res = job_operation.open_job(temp_path, os.listdir(temp_path)[0])
     print(res)
 
@@ -1047,7 +1049,8 @@ def g_current_odb_view(request,job_id,current_page):
     # print("temp_path",temp_path,"os.listdir(temp_path)[0]:",os.listdir(temp_path)[0])
     # epcam 导入
     epcam.init()
-    epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+    # epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+    epcam_api.set_config_path(settings.EP_CAM_PATH)
     res = job_operation.open_job(temp_path, os.listdir(temp_path)[0])
     print(res)
 

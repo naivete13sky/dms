@@ -219,4 +219,5 @@ G_GETWAY_PATH=os.path.join(BASE_DIR,r"job_manage\g\gateway.exe")
 #项目根目录
 # PROJECT_PATH=r'C:\cc\python\epwork\dms'
 
-
+#ep_cam路径
+EP_CAM_PATH=r'C:\cc\ep_local\product\EP-CAM\version\20220826\EP-CAM_beta_2.28.054_s22_jiami\Release'
