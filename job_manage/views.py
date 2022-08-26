@@ -51,7 +51,7 @@ from .forms import LayerFormsReadOnly
 from django.http import HttpResponseRedirect
 from sqlalchemy import create_engine
 from django.http import  JsonResponse
-
+from .models import MyTag
 
 def readFile(filename,chunk_size=512):
     with open(filename,'rb') as f:
@@ -303,7 +303,9 @@ def job_view(request,tag_slug=None):
     # job_list = models.Job.objects.all().order_by('-publish')
     tag = None
     if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
+        # tag = get_object_or_404(Tag, slug=tag_slug)
+        tag = get_object_or_404(MyTag, slug=tag_slug)
+
         job_list = models.Job.objects.filter(tags__in=[tag])
 
     job_field_verbose_name=[Job._meta.get_field('job_name').verbose_name,
@@ -356,7 +358,9 @@ def job_list(request,tag_slug=None):
     object_list = Job.published.all()
     tag = None
     if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
+        # tag = get_object_or_404(Tag, slug=tag_slug)
+        tag = get_object_or_404(MyTag, slug=tag_slug)
+
         object_list = models.Job.objects.filter(tags__in=[tag])
     # object_list = Job.published.all()
     paginator = Paginator(object_list, 5)  # 每页显示5篇文章

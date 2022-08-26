@@ -7,6 +7,36 @@ from django.conf import settings
 from django.core import validators  # 自定义验证器
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from taggit.models import TagBase,GenericTaggedItemBase
+from django.utils.text import slugify
+from django.utils.translation import gettext, gettext_lazy as _
+
+
+class MyTag(TagBase):
+    # 这一步是关键，要设置allow_unicode=True，这样这个字段才能支持中文
+    slug = models.SlugField(verbose_name=_("slug"), unique=True, max_length=100, allow_unicode=True)
+
+    # 这个方法也是要覆盖的，它是用来计算slug的，也是添加allow_unicode=True参数
+    def slugify(self, tag, i=None):
+        slug = slugify(tag, allow_unicode=True)
+        if i is not None:
+            slug += "_%d" % i
+        return slug
+
+    class Meta:
+        verbose_name = _("tag")
+        verbose_name_plural = _("tags")
+        app_label = "taggit"
+
+
+class TaggedWhatever(GenericTaggedItemBase):
+    # 把我们自定义的模型类传进来，它就能知道如何处理
+    tag = models.ForeignKey(
+        MyTag,
+        on_delete=models.CASCADE,
+        related_name="%(app_label)s_%(class)s_items",
+    )
+
 
 class JobManager(models.Manager):
     def get_queryset(self):
@@ -47,7 +77,10 @@ class Job(models.Model):
 
     objects = models.Manager()  # 默认的管理器
     published = JobManager()  # 自定义管理器
-    tags=TaggableManager()
+
+    # tags=TaggableManager()
+    # 声明这个manager也是基于我们自定义的模型类
+    tags = TaggableManager(through=TaggedWhatever)
 
     class Meta:
         db_table = 'job'

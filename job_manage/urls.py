@@ -17,7 +17,10 @@ urlpatterns = [
     re_path('detail/(?P<pk>\d+)/', login_required(views.JobDetailView.as_view()), name='detail'),
     re_path('JobFormView/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='JobFormView'),
     re_path('form/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='form'),
-    path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),
+    # path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),
+    # 这里的参数类型不要写slug，否则又会忽视中文，写str就行了
+    path('tag/<str:tag_slug>/', views.job_list, name='job_list_by_tag'),
+
     path('add', views.add, name='add'),
     path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
     path('',login_required(views.JobListView.as_view()),name='job_view'),
