@@ -2361,7 +2361,7 @@ def test_casbin(request):
 
     #增加一些策略
     from casbin_adapter.models import CasbinRule
-    current_casbinrule=CasbinRule.objects.filter(v0="dd")
+    current_casbinrule=CasbinRule.objects.filter(ptype='p',v0="dd")
     if len(current_casbinrule) ==0:
         new_casbinrule=CasbinRule()
         new_casbinrule.ptype = "p"
@@ -2370,14 +2370,48 @@ def test_casbin(request):
         new_casbinrule.v2 = "read"
         new_casbinrule.save()
 
+    current_casbinrule = CasbinRule.objects.filter(ptype='g', v0="cc")
+    if len(current_casbinrule) ==0:
+        new_casbinrule=CasbinRule()
+        new_casbinrule.ptype = "g"
+        new_casbinrule.v0 = "cc"
+        new_casbinrule.v1 = 'group_admin'
+        new_casbinrule.save()
+
+    current_casbinrule = CasbinRule.objects.filter(ptype='p', v0="group_admin")
+    if len(current_casbinrule) == 0:
+        new_casbinrule = CasbinRule()
+        new_casbinrule.ptype = "p"
+        new_casbinrule.v0 = "group_admin"
+        new_casbinrule.v1 = 'data_group'
+        new_casbinrule.v2 = 'read'
+        new_casbinrule.save()
+
+        new_casbinrule = CasbinRule()
+        new_casbinrule.ptype = "p"
+        new_casbinrule.v0 = "group_admin"
+        new_casbinrule.v1 = 'data_group'
+        new_casbinrule.v2 = 'write'
+        new_casbinrule.save()
+
+    current_casbinrule = CasbinRule.objects.filter(ptype='g2', v1="data_group")
+    if len(current_casbinrule) == 0:
+        new_casbinrule = CasbinRule()
+        new_casbinrule.ptype = "g2"
+        new_casbinrule.v0 = "data1"
+        new_casbinrule.v1 = 'data_group'
+        new_casbinrule.save()
+
+        new_casbinrule = CasbinRule()
+        new_casbinrule.ptype = "g2"
+        new_casbinrule.v0 = "data2"
+        new_casbinrule.v1 = 'data_group'
+        new_casbinrule.save()
 
 
-
-    sub = "alice"  # the user that wants to access a resource.
+    sub = "cc"  # the user that wants to access a resource.
     obj = "data1"  # the resource that is going to be accessed.
     act = "read"  # the operation that the user performs on the resource.
-
-
 
     if enforcer.enforce(sub, obj, act):
         # permit alice to read data1casbin_django_orm_adapter
