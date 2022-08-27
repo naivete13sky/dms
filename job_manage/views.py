@@ -54,7 +54,7 @@ from django.http import HttpResponseRedirect
 from sqlalchemy import create_engine
 from django.http import  JsonResponse
 from .models import MyTag
-
+from django.utils.decorators import method_decorator
 
 
 def readFile(filename,chunk_size=512):
@@ -663,12 +663,32 @@ def job_analysis(request):
     pass
     return render(request, r'job_analysis.html', locals())
 
+
+
+
+def not_permission_job_create_view(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        # 判断权限
+        sub = request.user.username  # 想要访问资源的用户
+        obj = "job_org_compressed"  # 将要被访问的资源
+        act = "post"  # 用户对资源进行的操作
+        print('sub,obj,act:', sub, obj, act)
+        if enforcer.enforce(sub, obj, act):
+            pass
+            print("权限通过！")
+            return view_func(request, *args, **kwargs)
+        else:
+            return HttpResponse("您无此权限！请联系管理员！")
+
+    return wrapper_func
+
 #这种方式上传附件是可以的
-class JobCreateView(CreateView):
+@method_decorator(not_permission_job_create_view, name='dispatch')
+class JobCreateView(LoginRequiredMixin,CreateView):
     model=Job
     template_name = "JobCreateView.html"
     fields = "__all__"
-
+    #设置新增料号时，自动填写上当前用户
     def get_initial(self):
         # Get the initial dictionary from the superclass method
         initial = super(JobCreateView, self).get_initial()
@@ -677,7 +697,6 @@ class JobCreateView(CreateView):
         initial['author'] = self.request.user
         # etc...
         return initial
-
     success_url = 'JobListView'
 
 class JobUpdateView(UpdateView):
