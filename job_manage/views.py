@@ -1028,39 +1028,53 @@ def gerber274x_to_odb_ep2(request,job_id,current_page):
 
 def ep_current_odb_view(request,job_id,current_page):
     pass
-    #找到job对象
-    job=Job.objects.get(id=job_id)
-    print(job.job_name)
-    #先拿到原始料号，放到临时文件夹，完成解压
-    temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
-    if not os.path.exists(temp_path):
-        os.mkdir(temp_path)
-    ep_current_odb_file_path=(os.path.join(settings.BASE_DIR,r'media',str(job.file_odb_current))).replace(r'/','\\')
-    shutil.copy(ep_current_odb_file_path,temp_path)
-    time.sleep(0.2)
+    # 判断权限
+    sub = request.user.username  # 想要访问资源的用户
+    obj = "odb_view"  # 将要被访问的资源
+    act = "get"  # 用户对资源进行的操作
+    print('sub,obj,act:', sub, obj, act)
+    if enforcer.enforce(sub, obj, act):
+        pass
+        print("权限通过！")
 
-    job_operation.untgz(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1]), temp_path)#解压tgz
-    if os.path.exists(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1])):#删除tgz
-        os.remove(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1]))
-    # print("temp_path",temp_path,"os.listdir(temp_path)[0]:",os.listdir(temp_path)[0])
-    # epcam 导入
-    epcam.init()
-    # epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
-    epcam_api.set_config_path(settings.EP_CAM_PATH)
-    res = job_operation.open_job(temp_path, os.listdir(temp_path)[0])
-    print(res)
+        #找到job对象
+        job=Job.objects.get(id=job_id)
+        print(job.job_name)
+        #先拿到原始料号，放到临时文件夹，完成解压
+        temp_path=r'C:\cc\share\temp'+"_"+str(request.user)+"_"+str(job_id)
+        if not os.path.exists(temp_path):
+            os.mkdir(temp_path)
+        ep_current_odb_file_path=(os.path.join(settings.BASE_DIR,r'media',str(job.file_odb_current))).replace(r'/','\\')
+        shutil.copy(ep_current_odb_file_path,temp_path)
+        time.sleep(0.2)
 
-    #show epcam
-    datashow = {"cmd":"show_layer", "job":os.listdir(temp_path)[0], "step": "orig", "layer":""}
-    js = json.dumps(datashow)
-    epcam.view_cmd(js)
+        job_operation.untgz(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1]), temp_path)#解压tgz
+        if os.path.exists(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1])):#删除tgz
+            os.remove(os.path.join(temp_path, str(job.file_odb_current).split('/')[-1]))
+        # print("temp_path",temp_path,"os.listdir(temp_path)[0]:",os.listdir(temp_path)[0])
+        # epcam 导入
+        epcam.init()
+        # epcam_api.set_config_path(r"C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release")
+        epcam_api.set_config_path(settings.EP_CAM_PATH)
+        res = job_operation.open_job(temp_path, os.listdir(temp_path)[0])
+        print(res)
 
-    # 删除temp_path
-    if os.path.exists(temp_path):
-        shutil.rmtree(temp_path)
+        #show epcam
+        datashow = {"cmd":"show_layer", "job":os.listdir(temp_path)[0], "step": "orig", "layer":""}
+        js = json.dumps(datashow)
+        epcam.view_cmd(js)
 
-    # return redirect('job_manage:JobListView')
-    return redirect('../../JobListView?page={}'.format(current_page))
+        # 删除temp_path
+        if os.path.exists(temp_path):
+            shutil.rmtree(temp_path)
+
+        # return redirect('job_manage:JobListView')
+        return redirect('../../JobListView?page={}'.format(current_page))
+    else:
+        # deny the request, show an error
+        pass
+        result = "您无此权限！请联系管理员！"
+        return HttpResponse(result)
 
 def g_current_odb_view(request,job_id,current_page):
     pass
