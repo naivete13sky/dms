@@ -795,6 +795,7 @@ def job_settings(request):
     vs_tol_g = cfg['job_manage']['vs']['vs_tol_g']
     return render(request, r'job_settings.html', locals())
 
+@casbin_permission("job_get_layer_info","post")
 def get_file_name_from_org(request,job_id):
     pass
     print(job_id)
@@ -1111,6 +1112,7 @@ def getFlist(path):
         print('files:', files)     #文件名称，返回list类型
     return files
 
+@casbin_permission("job_gerber_to_odb","post")
 def gerber274x_to_odb_g(request,job_id):
     pass
     #远程调用G软件
@@ -1344,6 +1346,7 @@ def layer_set_vs_result_manual(request):
     print("layer_set_vs_result_manual")
     return HttpResponse("hello,post!")
 
+@method_decorator(casbin_permission("job_layer_deal","put"), name='dispatch')
 class LayerUpdateView(UpdateView):
     """
     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
@@ -1404,6 +1407,7 @@ class LayerUpdateViewOneJob(UpdateView):
         return '../view_layer/{}'.format(self.object.job_id)
     # success_url = '../view_layer/{}'.format(job_id) # 修改成功后跳转的链接
 
+@casbin_permission("job_vs","post")
 def vs_ep(request,job_id,current_page):
     pass
     ep_vs_total_result_flag = True  # True表示最新一次悦谱比对通过
@@ -1561,6 +1565,7 @@ def vs_ep(request,job_id,current_page):
     # return redirect('job_manage:JobListView')
     return redirect('../../JobListView?page={}'.format(current_page))
 
+@casbin_permission("job_vs","post")
 def vs_g(request,job_id,current_page):
     pass
     print("G软件VS", job_id)
@@ -2004,6 +2009,7 @@ class BugListView(ListView):
 
         return context
 
+@method_decorator(casbin_permission("job_bug_deal","post"), name='dispatch')
 class BugCreateView(CreateView):
     model=models.Bug
     template_name = "BugCreateView.html"
@@ -2065,6 +2071,7 @@ class BugCreateView(CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
+@method_decorator(casbin_permission("job_bug_deal","put"), name='dispatch')
 class BugUpdateView(UpdateView):
     """
     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
@@ -2101,6 +2108,7 @@ class BugFormView(FormView):
         form = self.form_class(instance=bug)
         return self.render_to_response({'form': form})
 
+@method_decorator(casbin_permission("job_bug_deal","delete"), name='dispatch')
 class BugDeleteView(DeleteView):
   model = models.Bug
   template_name = 'BugDeleteView.html'
