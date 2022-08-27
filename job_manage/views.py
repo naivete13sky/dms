@@ -684,15 +684,10 @@ def casbin_permission(casbin_obj,casbin_act):
 
 #这种方式上传附件是可以的
 @method_decorator(casbin_permission("job_org_compressed","post"), name='dispatch')
-class JobCreateView(LoginRequiredMixin,CreateView):
+class JobCreateView(CreateView):
     model=Job
     template_name = "JobCreateView.html"
     fields = "__all__"
-
-    def __init__(self):
-        self.obj = "job_org_compressed"  # 将要被访问的资源
-        self.act = "post"  # 用户对资源进行的操作
-
     #设置新增料号时，自动填写上当前用户
     def get_initial(self):
         # Get the initial dictionary from the superclass method
