@@ -518,43 +518,75 @@ class JobListView(ListView):
                 selected = request.POST.get('batch_job_set', None)
                 print("seleted:", selected)
                 if selected == "batch_delete_ep_odb":
-                    for each in ret:
-                        if len(each) != 0:
-                            # print(each)
-                            each_job=Job.objects.get(id=int(each))
-                            print(each_job)
-                            # print("项目根目录：",settings.BASE_DIR,settings.PROJECT_PATH)
-                            delete_file=(os.path.join(settings.BASE_DIR, r'media', str(each_job.file_odb_current))).replace(r'/', '\\')
-                            print(delete_file)
-                            each_job.file_odb_current=None
-                            try:
-                                if os.path.exists(delete_file):
-                                    os.remove(delete_file)
-                            except:
-                                print("删除文件异常！")
+                    # 判断权限
+                    sub = request.user.username  # 想要访问资源的用户
+                    obj = "data_group_job_all"  # 将要被访问的资源
+                    act = "delete"  # 用户对资源进行的操作
+                    print('sub,obj,act:', sub, obj, act)
+                    if enforcer.enforce(sub, obj, act):
+                        pass
+                        print("权限通过！")
+                        for each in ret:
+                            if len(each) != 0:
+                                # print(each)
+                                each_job = Job.objects.get(id=int(each))
+                                print(each_job)
+                                # print("项目根目录：",settings.BASE_DIR,settings.PROJECT_PATH)
+                                delete_file = (
+                                    os.path.join(settings.BASE_DIR, r'media', str(each_job.file_odb_current))).replace(
+                                    r'/', '\\')
+                                print(delete_file)
+                                each_job.file_odb_current = None
+                                try:
+                                    if os.path.exists(delete_file):
+                                        os.remove(delete_file)
+                                except:
+                                    print("删除文件异常！")
 
-                            each_job.save()
+                                each_job.save()
 
-                    return HttpResponse("完成删除！")
+                        return HttpResponse("完成删除！")
+
+                    else:
+                        return HttpResponse("您无此权限！请联系管理员！")
+
+
+
+
+
+
+
 
                 if selected == "batch_input_ep_odb":
-                    for each in ret:
-                        if len(each) != 0:
-                            # print(each)
-                            each_job=Job.objects.get(id=int(each))
-                            print(each_job)
-                            print("each:",each)
-                            gerber274x_to_odb_ep2(request,int(each),request.POST.get("current_page"))
-                            # try:
-                            #     if os.path.exists(delete_file):
-                            #         os.remove(delete_file)
-                            # except:
-                            #     print("删除文件异常！")
-                            #
-                            # each_job.save()
+                    # 判断权限
+                    sub = request.user.username  # 想要访问资源的用户
+                    obj = "data_group_job_all"  # 将要被访问的资源
+                    act = "delete"  # 用户对资源进行的操作
+                    print('sub,obj,act:', sub, obj, act)
+                    if enforcer.enforce(sub, obj, act):
+                        pass
+                        print("权限通过！")
 
-                    return HttpResponse("完成批量悦谱转图！")
-                # return redirect('job_manage:job_view')
+                        for each in ret:
+                            if len(each) != 0:
+                                # print(each)
+                                each_job=Job.objects.get(id=int(each))
+                                print(each_job)
+                                print("each:",each)
+                                gerber274x_to_odb_ep2(request,int(each),request.POST.get("current_page"))
+                                # try:
+                                #     if os.path.exists(delete_file):
+                                #         os.remove(delete_file)
+                                # except:
+                                #     print("删除文件异常！")
+                                #
+                                # each_job.save()
+
+                        return HttpResponse("完成批量悦谱转图！")
+                    # return redirect('job_manage:job_view')
+
+                    else:
+                        return HttpResponse("您无此权限！请联系管理员！")
 
             if request.POST.__contains__("page_jump"):
                 print(request.POST.get("page_jump"))
