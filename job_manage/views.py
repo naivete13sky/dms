@@ -739,6 +739,7 @@ class JobUpdateViewVs(UpdateView):
     template_name = 'JobUpdateView.html'
     success_url = '../JobListView' # 修改成功后跳转的链接
 
+@method_decorator(casbin_permission("job_org_compressed","delete"), name='dispatch')
 class JobDeleteView(DeleteView):
   """
   """
