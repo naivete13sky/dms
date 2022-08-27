@@ -65,3 +65,16 @@ class BugAdmin(admin.ModelAdmin):
     prepopulated_fields = {'remark': ('bug',)}
     # ordering = ('recipe_status', 'receive_date',)
     list_per_page = 10
+
+from casbin_adapter.models import CasbinRule
+@admin.register(CasbinRule)
+class CasbinRuleAdmin(admin.ModelAdmin):
+    list_display = ('id','ptype','v0','v1','v2','v3','v4','v5',)
+
+    search_fields = ('ptype','v0','v1','v2',)
+    # prepopulated_fields = {'remark': ('job_name',)}
+    # raw_id_fields = ('v0',)
+    # date_hierarchy = 'publish'
+    ordering = ('ptype','v0','v1','v2',"id", )
+    list_per_page = 20
+
