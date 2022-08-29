@@ -60,7 +60,8 @@ class Job(models.Model):
                                     default='none',verbose_name="G软件比图结果")
     bug_info = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=0)],blank=True, null=True,verbose_name="Bug信息")
     job_name = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],verbose_name="料号名称")
-    job_type = models.CharField(max_length=10, choices=(('common', '普通板'), ('hdi', 'HDI'), ('led', 'LED板'), ('else', '其它')), default='common',
+    job_type = models.CharField(max_length=10, choices=(('common', '普通板'), ('hdi', 'HDI'), ('led', 'LED板'), ('car', '汽车板'), ('flex', '软板'),
+                                                         ('rigid_flex', '软硬结合板'),('carrier', '载板'), ('else', '其它')), default='common',
                                 verbose_name="料号类型")
     bool_layer_info=models.CharField(max_length=10, choices=(('true', 'true'), ('false', 'false')), default='false',null=True,blank=True,verbose_name="是否有层别信息")
     remark = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],verbose_name="备注",blank=True,null=True)
@@ -83,6 +84,47 @@ class Job(models.Model):
     # tags=TaggableManager()
     # 声明这个manager也是基于我们自定义的模型类
     tags = TaggableManager(through=TaggedWhatever)
+
+
+    #以下是梅炽元的接口测试需求
+    usage=models.CharField(null=True,blank=True,max_length=200, validators=[validators.MinLengthValidator(limit_value=0)],help_text="料号用途",verbose_name='用途')
+    job_url=models.URLField(null=True,blank=True,verbose_name="料号url")
+    totalFeatureNum=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],help_text="总物件数",verbose_name='总物件数')
+
+    matrixRowNum=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(1000), validators.MinValueValidator(0)],help_text="层数",verbose_name='层数')
+    bgaNum=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],help_text="BGA总数量",verbose_name='BGA总数')
+    copperLayerNum=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(1000), validators.MinValueValidator(0)],help_text="信号层数量",verbose_name='信号层数')
+
+    hdiLevel=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(99), validators.MinValueValidator(0)],help_text="HDI介数",verbose_name='HDI介数')
+
+    origStepName=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="原稿step名称",verbose_name='orig_step')
+    prepareStepName=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="前处理完成的step名称",verbose_name='pre_step')
+    pcsStepName=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="已经完成pcs处理的step名",verbose_name='pcs_step')
+    setStepName=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="set拼板完成的step名",verbose_name='set_step')
+    panelStepName=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="panel拼板完成的step名",verbose_name='panel_step')
+    impCouponStepName=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="阻抗测试条的step名",verbose_name='阻抗step')
+    routLayerName=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="rout层的名字",verbose_name='Rout层')
+    pcsSize=models.FloatField(null=True,blank=True,help_text='pcs的profile线外接正矩形的对角线长度(单位:inch)',verbose_name='pcs对角线尺寸')
+    panelSize=models.FloatField(null=True,blank=True,help_text='panel的profile线外接正矩形的对角线长度(单位:inch)',verbose_name='panel对角线尺寸')
+    minLineWidth4outer=models.FloatField(null=True,blank=True,help_text='外层的最小线宽(单位:mil)',verbose_name='外层最小线宽')
+    minLineSpace4outer=models.FloatField(null=True,blank=True,help_text='外层的最小线距(单位:mil)',verbose_name='外层最小线距')
+    pcsDrlNum=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],help_text="pcs所有孔层的所有孔数量(包括槽孔,镭射孔等)",verbose_name='pcs所有孔数')
+    impLineNum=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(100000), validators.MinValueValidator(0)],help_text="阻抗线数量(包括槽孔,镭射孔等)",verbose_name='阻抗线数量')
+
+    customerCode=models.CharField(null=True,blank=True,max_length=50, validators=[validators.MinLengthValidator(limit_value=0)],help_text="客户(代码)",verbose_name='客户(代码)')
+    hasPGlayer=models.CharField(max_length=10, choices=(('yes', '是'), ('no', '否'),('none', 'None')), default='none',help_text="有PG层",verbose_name="有PG层?")
+    hasSMlayer=models.CharField(max_length=10, choices=(('yes', '是'), ('no', '否'),('none', 'None')), default='none',help_text="有solderMasker层吗?",verbose_name="有防焊层?")
+    solderMaxWindowNum4singleSide=models.IntegerField(null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],help_text="单面最多防焊开窗数量",verbose_name='单面最多防焊开窗数量')
+    linedCopper=models.CharField(max_length=10, choices=(('yes', '是'), ('no', '否'),('none', 'None')), default='none',help_text="线铜板?",verbose_name="线铜板?")
+
 
     class Meta:
         db_table = 'job'
