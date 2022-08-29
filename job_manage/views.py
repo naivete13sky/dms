@@ -365,11 +365,6 @@ def job_list(request,tag_slug=None):
         return HttpResponse("post")
 
 
-
-
-
-
-
     object_list = Job.published.all()
     tag = None
     if tag_slug:
@@ -380,6 +375,10 @@ def job_list(request,tag_slug=None):
     # object_list = Job.published.all()
     paginator = Paginator(object_list, 5)  # 每页显示5篇文章
     page = request.GET.get('page')
+
+    if page==None:
+        page=1
+
     try:
         jobs = paginator.page(page)
     except PageNotAnInteger:
@@ -389,8 +388,8 @@ def job_list(request,tag_slug=None):
         # 如果页数超出总页数就返回最后一页
         jobs = paginator.page(paginator.num_pages)
 
-    # return render(request, 'blog/post/list.html', {'posts': posts})
-    return render(request, 'list.html', {'page': page, 'jobs': jobs,'tag': tag})
+    field_verbose_name=["ID","料号名称","标签","发布人","创建时间","更新时间"]
+    return render(request, 'list.html', {'page': page, 'jobs': jobs,'tag': tag,"field_verbose_name":field_verbose_name,})
 
 class JobListViewVs(ListView):
     queryset = models.Job.objects.all()
@@ -784,6 +783,7 @@ class JobDeleteView(DeleteView):
    # namespace:url_name
   success_url = reverse_lazy('job_manage:job_view')
 
+@casbin_permission("job_vs","post")
 def job_settings(request):
     pass
     if request.method == 'POST':
