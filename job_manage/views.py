@@ -2053,6 +2053,15 @@ class BugListView(ListView):
 
         return context
 
+    def post(self, request):  # ***** this method required! ******
+        if request.method == 'POST':
+            print("POST!!!")
+
+            if request.POST.__contains__("page_jump"):
+                print(request.POST.get("page_jump"))
+                return HttpResponse(request.POST.get("page_jump"))
+
+
 @method_decorator(casbin_permission("job_bug_deal","post"), name='dispatch')
 class BugCreateView(CreateView):
     model=models.Bug
