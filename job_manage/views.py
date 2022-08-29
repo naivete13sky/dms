@@ -1855,15 +1855,6 @@ class VsListView(ListView):
     # ordering = ['-publish']
     template_name = 'VsListView.html'
 
-    # def get_queryset(self):
-    #     query = self.request.GET.get('query', '')
-    #     new_context = models.Job.objects.filter(
-    #             Q(job_name__contains=query) |
-    #             Q(author__username__contains=query))
-    #     return new_context
-    # def get_queryset(self):  # 重写get_queryset方法
-    #     # 获取所有is_deleted为False的用户，并且以时间倒序返回数据
-    #     return UserProfile.objects.filter(is_deleted=False).order_by('-create_time')
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -1892,6 +1883,22 @@ class VsListView(ListView):
                 Q(layer__contains=query) |
                 Q(job__job_name__contains=query))
         return context
+
+    def post(self, request):  # ***** this method required! ******
+        self.object_list = self.get_queryset()
+        if request.method == 'POST':
+            print("POST!!!")
+            # for each in request.POST:
+            #     print(each)
+            # ret=request.REQUEST.get_list('check_box_list')
+            # ret=request.GET.getlist('check_box_list')
+            # ret=request.POST.getlist('ids_list')
+            # print(ret)
+
+            if request.POST.__contains__("page_jump"):
+                print(request.POST.get("page_jump"))
+                return HttpResponse(request.POST.get("page_jump"))
+
 
 def view_vs_ep(request,job_id):
     pass
