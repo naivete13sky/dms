@@ -495,6 +495,11 @@ class JobListView(ListView):
             print('current_user_checkbox_value')
             context['current_user_checkbox_value']="checked"
 
+        # 只看当前用户数据用的.记录radio状态用的.
+        if self.request.GET.get('radio_view_my_job', False):
+            print('radio_view_my_job')
+            context['radio_view_my_job'] = "checked"
+
         #根据料号ID精准搜索
         search_by_job_id=self.request.GET.get('search_by_job_id',False)
         if search_by_job_id:
@@ -607,6 +612,15 @@ class JobListView(ListView):
 
                 return HttpResponse(request.user.username)
 
+            if request.POST.__contains__("radio_view_my_job"):
+                print("radio_view_my_job",request.POST.get("radio_view_my_job"))
+                if request.POST.get("radio_view_my_job")=="on":
+                    # print("on")
+                    pass
+                    queryset = models.Job.objects.filter(author=self.request.user)
+                    # print(queryset)
+
+                return HttpResponse(request.user.username)
         # layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
         # print(layer_which_one_job)
         # return redirect('../../LayerListView?which_one={}'.format(layer_which_one_job))
