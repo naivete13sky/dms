@@ -49,8 +49,45 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">模糊查询</button>
                         </div>
+                        <div class="form-group">
+                            <label>只看当前用户<input name="current_user" id="current_user" type="checkbox" {{ current_user_checkbox_value }} onclick="view_current_user_job(this)"></label>
+                        </div>
                     </form>
-{#                    {{ cc }}#}
+
+
+
+
+                    <script>
+                        function view_current_user_job() {
+                            {#alert("cc")#}
+                            if($("#current_user").checked=true){
+                                {#alert("checked")#}
+                                {#$('.btn_view_current_user_job').click()#}
+                                $.ajax( {
+                                        type : "post",
+                                        url : "",
+                                        dataType : "text",
+                                        data:{
+                                            "current_user":$("#current_user").val(),
+                                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                        },   //指定要提交给后端的数据
+
+                                        success : function(data) {
+                                            {#alert(data);#}
+                                            window.location.href = "?query="+ data + "&current_user_checkbox_value=" + true;
+                                        },
+                                        error : function(data) {
+                                            alert("系统错误，操作失败");
+                                        }
+                                    });
+                            }
+
+
+
+
+
+                        }
+                    </script>
 
 
 
@@ -113,6 +150,7 @@
                             </tr>
                             </thead>
                             <tbody>
+
                             {% for job in jobs %}
 
                                 <tr>

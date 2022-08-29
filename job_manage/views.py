@@ -490,6 +490,11 @@ class JobListView(ListView):
                 Q(from_object__contains=query) |
                 Q(author__username__contains=query))
 
+        #只看当前用户数据用的.记录筛选框状态用的.
+        if self.request.GET.get('current_user_checkbox_value',False):
+            print('current_user_checkbox_value')
+            context['current_user_checkbox_value']="checked"
+
         #根据料号ID精准搜索
         search_by_job_id=self.request.GET.get('search_by_job_id',False)
         if search_by_job_id:
@@ -591,9 +596,22 @@ class JobListView(ListView):
                 print(request.POST.get("page_jump"))
 
                 return HttpResponse(request.POST.get("page_jump"))
+
+            if request.POST.__contains__("current_user"):
+                # print("current_user",request.POST.get("current_user"))
+                if request.POST.get("current_user")=="on":
+                    # print("on")
+                    pass
+                    queryset = models.Job.objects.filter(author=self.request.user)
+                    print(queryset)
+
+                return HttpResponse(request.user.username)
+
         # layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
         # print(layer_which_one_job)
         # return redirect('../../LayerListView?which_one={}'.format(layer_which_one_job))
+
+
 
 class JobDetailView(DetailView):
     model = Job

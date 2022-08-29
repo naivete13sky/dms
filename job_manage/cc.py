@@ -100,6 +100,22 @@ def maketgz(ifn, out_path, file_name):
 
     return 0
 
+import functools
+def log(text):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            print('%s %s():' % (text, func.__name__))
+            print("函数内部参数:",*args,*kw)
+            print("函数内部参数,第2个:",args[1])
+            return func(*args, **kw)
+        return wrapper
+    return decorator
+
+@log("abc")
+def now(p1,p2):
+    print('2015-3-25')
+    print("p1",p1,"p2",p2)
 
 
 
@@ -109,6 +125,8 @@ if __name__ == "__main__":
     # vs_ep_1()
     # mysql()
     # print(pg())
-    maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
+    # maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
 
+
+    now(1,2)
 

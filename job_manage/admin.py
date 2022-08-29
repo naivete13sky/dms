@@ -24,6 +24,8 @@ class JobAdmin(admin.ModelAdmin):
     # ordering = ('recipe_status', 'receive_date',)
     list_per_page = 10
 
+
+
 @admin.register(ShareAccount)
 class ShareAccountAdmin(admin.ModelAdmin):
     list_display = ('share_job','share_account','remark',)
