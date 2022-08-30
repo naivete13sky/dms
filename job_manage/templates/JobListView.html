@@ -59,12 +59,19 @@
 
                             <select id="select_file_usage_type" name="select_file_usage_type" onchange="view_job_usage_type(this)">
                                 {% for each in select_file_usage_type %}
-                                    <option value = {{ each }}>{{ each }}</option>
+                                    {% if each.0 == current_file_usage_type %}
+                                        <option selected value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != current_file_usage_type %}
+                                        <option value = {{ each.0 }}>{{ each.1 }}</option>
+                                    {% endif %}
+
                                 {% endfor %}
 
                             </select>
                             <label>使用分类筛选</label>
                         </div>
+
 
                     </form>
 

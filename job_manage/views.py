@@ -475,7 +475,8 @@ class JobListView(ListView):
 
 
         #使用分类筛选
-        context['select_file_usage_type']=['所有', '导入测试', '客户资料', '测试', '其它']
+        # context['select_file_usage_type']=['所有', '导入测试', '客户资料', '测试', '其它']
+        context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
 
 
 
@@ -521,6 +522,7 @@ class JobListView(ListView):
             pass
             print("search_by_file_usage_type:", search_by_file_usage_type)
             context['jobs'] = models.Job.objects.filter(Q(file_usage_type=search_by_file_usage_type))
+            context['current_file_usage_type']=search_by_file_usage_type
 
         return context
 
@@ -639,25 +641,14 @@ class JobListView(ListView):
 
             if request.POST.__contains__("select_file_usage_type"):
                 print("select_file_usage_type",request.POST.get("select_file_usage_type"))
-                if request.POST.get("select_file_usage_type")=="所有":
+                if request.POST.get("select_file_usage_type")=="all":
                     pass
-                    result = ''
-                elif request.POST.get("select_file_usage_type")=="导入测试":
-                    queryset = models.Job.objects.filter(file_usage_type='input_test')
+                    result=''
+
+                else:
+                    queryset = models.Job.objects.filter(file_usage_type=request.POST.get("select_file_usage_type"))
                     print(queryset)
-                    result = 'input_test'
-                elif request.POST.get("select_file_usage_type")=="客户资料":
-                    queryset = models.Job.objects.filter(file_usage_type='customer_job')
-                    print(queryset)
-                    result = 'customer_job'
-                elif request.POST.get("select_file_usage_type")=="测试":
-                    queryset = models.Job.objects.filter(file_usage_type='test')
-                    print(queryset)
-                    result = 'test'
-                elif request.POST.get("select_file_usage_type")=="其它":
-                    queryset = models.Job.objects.filter(file_usage_type='else')
-                    print(queryset)
-                    result='else'
+                    result=request.POST.get("select_file_usage_type")
 
                 return HttpResponse(result)
 
