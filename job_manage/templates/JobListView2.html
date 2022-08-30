@@ -685,10 +685,32 @@
                                         var str="";
                                         $("#table_body").html("");
                                             for (i in data.data){
+                                                if (data.data[i]["fields"]["file_compressed"]){
+                                                    var str_file_compressed0= '<button class="btn btn-transparent" title="附件下载：' + data.data[i]["fields"]["file_compressed"] + '" onclick="window.location.href="/media/' + data.data[i]["fields"]["file_compressed"] + '";"><i class="fa fa-download"></i></button>'
+                                                    var str_file_compressed1= '<a href=' + '"/media/' + data.data[i]["fields"]["file_compressed"] +'"' + ' title="查看' + data.data[i]["fields"]["file_compressed"] + '详细信息">' + '下载' + '</a>'
+                                                    var str_file_compressed2= '<button class="btn btn-transparent" title="生成层别名称：' + data.data[i]["fields"]["file_compressed"] + '" value=' + data.data[i]["pk"] + ' onclick="confirm_do_get_layer_info2(this.value);"><i class="fa fa-list"></i></button>'
+                                                }
+                                                {#alert(str_file_compressed2)#}
+
+
+
                                                 str += "<tr>" +
-                                                "<td>" + (parseInt(i)+parseInt(1)) + "</td>" +
+                                                "<td>" + '<input class="file" name="ids" type="checkbox" value='+ data.data[i]["pk"] +' />' +  (parseInt(i)+parseInt(1)) + "</td>" +
                                                 "<td>" + data.data[i]["pk"] + "</td>" +
-                                                "<td>" + data.data[i]["fields"]["username"] + "</td>" +
+                                                "<td>" + '<a href=' + "/job_manage/JobFormView/" + data.data[i]["pk"] + ' title="查看' + data.data[i]["fields"]["job_name"] + '详细信息">' + data.data[i]["fields"]["job_name"] + '</a>' + "</td>" +
+                                                "<td>" + str_file_compressed1 + str_file_compressed2 + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
+                                                "<td>" +  + "</td>" +
                                                 "<tr>";
 
                                         }
@@ -707,10 +729,57 @@
                     </script>
                 </form>
 
-                <td>
-                    <input class="file" name="ids" type="checkbox" value="{{ job.id }}" />
+                    <script type="text/javascript" language="JavaScript">
+                            function confirm_do_get_layer_info2(value)
+                            {
+                                 if(confirm("确定要执行生成层名操作吗?"))
+                                 {
+                                     {#alert("确认")#}
+                                     $.ajax({
+                                        type:"post",
+                                        data:{
+                                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                            "post_type":"get_file_name_from_org",
+                                            "job_id":value,
+                                        },
+                                        url:"",
+                                        dataType:"text",
+                                        success:function (data) {
+                                            alert(data)
 
-                </td>
+                                        },
+                                        error:function () {
+                                            alert("false");
+                                        }
+                                    })
+                                     window.location.href="get_file_name_from_org/" + value;
+                                     {#return true;#}
+
+                                 }else{
+                                     alert(value)
+                                     alert("cc")
+                                     return false;
+
+                                 }
+                            }
+                        </script>
+
+                    {% if job.bool_layer_info == 'false' %}
+                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" value={{ job.id }} onclick="confirm_do_get_layer_info(this.value);"><i class="fa fa-list"></i>
+                        </button>
+
+
+
+
+
+                    {% endif %}
+
+                    {% if job.bool_layer_info == 'true' %}
+                        <button class="btn btn-transparent" title="打开生成层别名称入口：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org_on/{{ job.id }}';"><i class="fa fa-toggle-on"></i>
+                        </button>
+
+                    {% endif %}
+
 
 
 

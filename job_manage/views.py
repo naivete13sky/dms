@@ -868,6 +868,13 @@ class JobListView2(ListView):
 
                 return HttpResponse(result)
 
+            if request.POST.get("post_type",False):
+                print("*"*100,request.POST.get("post_type",False))
+                if request.POST.get("post_type",False)== 'get_file_name_from_org':
+                    pass
+                    get_file_name_from_org(request,request.POST.get("job_id",False))
+                return HttpResponse(request.POST.get("post_type",False))
+
 
 class JobDetailView(DetailView):
     model = Job
@@ -2752,7 +2759,13 @@ def temp(request):
         data["data"] = json.loads(all_user2)
         return JsonResponse(data, safe=False)
 
-    cc=object2json_serializers()
+    def object2json_serializers_job():
+        data = {}
+        jobs = serializers.serialize("json", models.Job.objects.all())
+        data["data"] = json.loads(jobs)
+        return JsonResponse(data, safe=False)
+
+    cc=object2json_serializers_job()
     print("cc:",cc)
 
     return HttpResponse(cc,content_type="application/json")
