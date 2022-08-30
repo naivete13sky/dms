@@ -55,6 +55,7 @@ from sqlalchemy import create_engine
 from django.http import  JsonResponse
 from .models import MyTag
 from django.utils.decorators import method_decorator
+from django.core import serializers
 
 
 def readFile(filename,chunk_size=512):
@@ -2746,21 +2747,36 @@ def test_casbin(request):
 
 def temp(request):
     pass
-    data={
-    "students": [
-        {"name": "John", "age": "15"},
-        {"name": "Anna", "age": "16"},
-        {"name": "Peter", "age": "16"}
-    ],
-    "teachers": [
-        {"name": "Jack", "age": "30"},
-        {"name": "Jessy", "age": "33"}
-    ]}
     data = [
             {"name": "John", "age": "15"},
             {"name": "Anna", "age": "16"},
             {"name": "Peter", "age": "16"}
         ]
+
+    all_user=models.User.objects.all()
+    for each in all_user:
+        print(each.id,each.username)
+
+
     data_json=json.dumps(data)
-    print(data_json)
-    return HttpResponse(data_json,content_type="application/json")
+
+
+
+    def object2json_serializers():
+        data = {}
+        all_user2 = serializers.serialize("json", models.User.objects.all())
+        data["data"] = json.loads(all_user2)
+
+        return JsonResponse(data, safe=False)
+
+    def object2json():
+        data = {}
+        all_user2 = serializers.serialize("json", models.User.objects.all())
+        data["data"] = list(all_user2)
+
+        return JsonResponse(data, safe=False)
+
+    cc=object2json_serializers()
+    print("cc:",cc)
+
+    return HttpResponse(cc,content_type="application/json")

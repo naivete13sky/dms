@@ -672,16 +672,18 @@
                                     url:"temp",
                                     dataType:"json",
                                     success:function (data) {
-                                        alert("hello")
+                                        {#alert("hello")#}
+                                        {#alert(data.data)#}
+                                        {#alert(data.data[0]["pk"])#}
 
 
                                         $("#listtable").DataTable().destroy(); //再次click后，先将datatable删除
                                         var str="";
                                         $("#table_body").html("");
-                                            for (i in data){
+                                            for (i in data.data){
                                                 str += "<tr>" +
-                                                "<td>" + data[i]["name"] + "</td>" +
-                                                "<td>" + data[i]["age"] + "</td>" +
+                                                "<td>" + data.data[i]["pk"] + "</td>" +
+                                                "<td>" + data.data[i]["fields"]["username"] + "</td>" +
                                                 "<tr>";
                                         }
                                         $("#table_body").append(str);
