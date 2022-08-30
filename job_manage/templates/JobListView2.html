@@ -1,0 +1,716 @@
+{#{% extends 'index_base.html' %}#}
+{% extends 'index_base_20220818.html' %}
+{% load static  %}
+{% block title %}悦谱数据管理系统{% endblock %}
+{% block content_header_child %}
+    <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a href={% url "job_manage:JobListView" %}>料号管理</a>
+    </li>
+
+    <li>
+        <a>料号查询-通用</a>
+    </li>
+
+{% endblock %}
+
+{% block search %}
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+{#    <form class="navbar-form">#}
+
+      <input class="form-control" id="form-control" placeholder="料号ID精准查询" type="text" onkeydown="if(event.keyCode==13) {search_by_job_id()}">
+
+{#    </form>#}
+
+    <script>
+        function search_by_job_id() {
+           {#alert(123);#}
+           {#$('.btn_page_jump').click()#}
+           window.location.href = "?search_by_job_id="+$("#form-control").val();
+        }
+    </script>
+
+
+
+
+
+{% endblock %}
+
+
+{% block main_content %}
+
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+{#    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>#}
+
+    <div class="row animated fadeInUp">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-content">
+
+
+                    <li>
+                        <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
+
+                        <label>|</label>
+
+                        <label>使用分类</label>
+                        <select id="select_file_usage_type" name="select_file_usage_type" onchange="view_job_usage_type(this)">
+                                {% for each in select_file_usage_type %}
+                                    {% if each.0 == current_file_usage_type %}
+                                        <option selected value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != current_file_usage_type %}
+                                        <option value = {{ each.0 }}>{{ each.1 }}</option>
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </select>
+
+                        <label>|</label>
+
+                        <label>所有者：</label>
+                        <select id="select_file_usage_type" name="select_file_usage_type" onchange="view_job_usage_type(this)">
+                                {% for each in select_file_usage_type %}
+                                    {% if each.0 == current_file_usage_type %}
+                                        <option selected value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != current_file_usage_type %}
+                                        <option value = {{ each.0 }}>{{ each.1 }}</option>
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </select>
+
+
+                        <a>料号查询-通用</a>
+                    </li>
+
+                    <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+
+
+                        <div class="form-group">
+                            <input type="" class="form-control" id="query" name="query" placeholder="料号名、负责人、料号来源">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">模糊查询</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label><input name="view_job" type="radio" id="radio_view_all_job" {{ radio_view_all_job }}  onclick="view_all_job(this)" />查看所有料号 </label>
+                            <label><input name="view_job" type="radio" id="radio_view_my_job" {{ radio_view_my_job }} onclick="view_my_job(this)" />只看我的料号 </label>
+                        </div>
+
+
+
+
+                    </form>
+
+
+                    <script>
+                        function view_my_job() {
+                            {#alert("view_my_job")#}
+                            {#alert("checked")#}
+                            {#$('.btn_view_current_user_job').click()#}
+                            $.ajax( {
+                                    type : "post",
+                                    url : "",
+                                    dataType : "text",
+                                    data:{
+                                        "radio_view_my_job":$("#radio_view_my_job").val(),
+                                        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                    },   //指定要提交给后端的数据
+
+                                    success : function(data) {
+                                        {#alert(data);#}
+                                        window.location.href = "?query="+ data + "&radio_view_my_job=" + true;
+                                    },
+                                    error : function(data) {
+                                        alert("系统错误，操作失败");
+                                    }
+                                });
+
+                        }
+                    </script>
+
+                    <script>
+                        function view_all_job() {
+                            {#alert("view_all_job")#}
+                            window.location.href = '../../job_manage/JobListView' ;
+
+
+                        }
+                    </script>
+
+                    <script>
+                        function view_job_usage_type() {
+                            {#alert("view_my_job")#}
+                            {#alert("checked")#}
+                            {#$('.btn_view_current_user_job').click()#}
+                            $.ajax( {
+                                    type : "post",
+                                    url : "",
+                                    dataType : "text",
+                                    data:{
+                                        "select_file_usage_type":$("#select_file_usage_type").val(),
+                                        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                    },   //指定要提交给后端的数据
+
+                                    success : function(data) {
+                                        {#alert(data);#}
+                                        window.location.href = "?file_usage_type="+ data;
+                                    },
+                                    error : function(data) {
+                                        alert("系统错误，操作失败");
+                                    }
+                                });
+
+                        }
+                    </script>
+
+
+
+
+
+                    <div class="table-responsive">
+
+                        <script type="text/javascript">
+                            //页面加载的时候,所有的复选框都是未选中的状态
+                            function checkOrCancelAll()
+                            {
+                                var chElt=document.getElementById("chElt");//1.获取checkbo的元素对象
+                                var checkedElt = chElt.checked;//2.获取选中状态
+                                var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+
+                                //var allCheck = document.getElementsByName("file");//方法2
+                                var mySpan=document.getElementById("mySpan");//4.循环遍历取出每一个复选框中的元素
+                                if(checkedElt)//全选
+                                {
+
+                                    for(var i=0;i<allCheck.length;i++)
+                                    {
+                                        //设置复选框的选中状态
+                                        allCheck[i].checked=true;
+                                    }
+                                    mySpan.innerHTML="取消全选";
+                                }
+                                else//取消全选
+                                {
+                                    for(var i=0;i<allCheck.length;i++)
+                                    {
+                                        allCheck[i].checked=false;
+                                    }
+                                    mySpan.innerHTML="全选";
+                                }
+                            }
+                            function ischecked()
+                            {
+                                var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+                                for(var i=0;i<allCheck.length;i++)
+                                {
+                                    if(allCheck[i].checked == true)
+                                    {
+                                        return true
+                                    }
+                                }
+                                alert("请选择文件")
+                                return false
+                            }
+                            </script>
+
+
+                        <table id="basic-table" class=" table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br /></th>
+                                {% for each in job_field_verbose_name %}
+                                    <th>{{ each }}</th>
+
+                                {% endfor  %}
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for job in jobs %}
+
+                                <tr>
+                                <td>
+{#                                    <input type="checkbox" name="check_box_list" value="{{ layer.id }}" onclick="userCheck(this)">#}
+
+                                    <input class="file" name="ids" type="checkbox" value="{{ job.id }}" />
+                                    {{ forloop.counter }}
+
+
+                                </td>
+                                <td>{{ job.id }}</td>
+
+                                <td>
+                                    <a href="{{ job.get_absolute_url }}" title="查看{{ job.job_name }}详细信息">
+                                        {{ job.job_name|slice:"20" }}
+                                    </a>
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.file_compressed %}
+                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
+                                        </button>
+
+
+
+                                    {% endif %}
+                                    {% if job.bool_layer_info == 'false' %}
+                                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" value={{ job.id }} onclick="confirm_do_get_layer_info(this.value);"><i class="fa fa-list"></i>
+                                        </button>
+
+
+                                        <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_get_layer_info(value)
+                                            {
+                                                 if(confirm("确定要执行生成层名操作吗?"))
+                                                 {
+
+                                                     window.location.href='get_file_name_from_org/' + value;
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     alert(value)
+                                                     return false;
+
+                                                 }
+                                            }
+                                        </script>
+
+
+                                    {% endif %}
+
+                                    {% if job.bool_layer_info == 'true' %}
+                                        <button class="btn btn-transparent" title="打开生成层别名称入口：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org_on/{{ job.id }}';"><i class="fa fa-toggle-on"></i>
+                                        </button>
+
+                                    {% endif %}
+
+
+                                </td>
+
+{#                                <td>#}
+{#                                    {% if job.file_compressed_org %}#}
+{#                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed_org }}" onclick="window.location.href='/media/{{ job.file_compressed_org }}';"><i class="fa fa-download"></i>#}
+{#                                        </button>#}
+{##}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{##}
+{#                                <td>#}
+{#                                    {% if job.file_odb %}#}
+{#                                        <button class="btn btn-transparent" title="EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>#}
+{#                                        </button>#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+
+                                <td>
+                                    {% if job.file_odb_current %}
+{#                                        {{ job.file_odb_current }}#}
+                                        <button class="btn btn-transparent" title="最新EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb_current }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看料号" onclick="window.location.href='ep_current_odb_view/{{ job.id }}/{{ current_page }}';"><i class="fa fa-eye"></i>
+
+                                        </button>
+
+                                    {% endif %}
+
+                                    {% if not job.file_odb_current %}
+                                        <button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='gerber274x_to_odb_ep2/{{ job.id }}/{{ current_page }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="G-ODB下载：{{ job.file_odb_g}}" onclick="window.location.href='/media/{{ job.file_odb_g }}';"><i class="fa fa-download"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="查看料号" onclick="window.location.href='g_current_odb_view/{{ job.id }}/{{ current_page }}';"><i class="fa fa-eye"></i>
+
+                                        </button>
+
+                                    {% endif %}
+
+                                    {% if not job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="生成G软件转图" onclick="window.location.href='gerber274x_to_odb_g/{{ job.id }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    {% if job.vs_result_ep == 'passed' %}
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs_ep/{{ job.id }}';">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_ep == 'failed' %}
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs_ep/{{ job.id }}';">
+                                            <i class="fa fa-asterisk"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_ep == 'none' %}
+                                        未比对
+
+                                    {% endif %}
+
+                                    <button class="btn btn-transparent" title="点击比对" value={{ job.id }} onclick="confirm_do_vs_ep(this.value);"><i class="fa fa-file-picture-o"></i>
+                                    </button>
+                                    <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_vs_ep(value)
+                                            {
+                                                 if(confirm("确定要执行悦谱比图操作吗?"))
+                                                 {
+
+                                                     window.location.href='vs_ep/' + value + '/{{ current_page }}';
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     alert(value)
+                                                     return false;
+
+                                                 }
+                                            }
+                                    </script>
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.vs_result_g == 'passed' %}
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs_g/{{ job.id }}';">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_g == 'failed' %}
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs_g/{{ job.id }}';">
+                                            <i class="fa fa-asterisk"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_g == 'none' %}
+                                        未比对
+
+                                    {% endif %}
+
+                                    <button class="btn btn-transparent" title="点击比对" value={{ job.id }} onclick="confirm_do_vs_g(this.value);"><i class="fa fa-file-picture-o"></i>
+                                    </button>
+
+                                        <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_vs_g(value)
+                                            {
+                                                 if(confirm("确定要执行G软件比图操作吗?"))
+                                                 {
+
+                                                     window.location.href='vs_g/' + value + '/{{ current_page }}';
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     {#alert(value)#}
+                                                     return false;
+
+                                                 }
+                                            }
+                                        </script>
+
+                                </td>
+
+                                <td>
+{#                                    <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>#}
+{##}
+{#                                    </button>#}
+
+                                    <form action="../../LayerListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看层别信息" ><i class="fa fa-eye"></i>
+
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </td>
+
+                                <td>
+                                    <form action="../../BugListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看Bug" ><i class="fa fa-bug"></i>
+
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </td>
+
+
+                                <td>{{ job.get_file_usage_type_display }}</td>
+
+                                <td>
+
+                                    <div title={{ job.remark }}> {{ job.remark|slice:"20" }} </div>
+                                </td>
+                                <td>{{ job.author }}</td>
+{#                                <td>{{ job.from_object }}</td>#}
+                                <td>
+                                    {% if job.status == "published" %}
+                                        <div style=color:green;>{{ job.get_status_display }}</div>
+
+                                    {% endif %}
+                                    {% if job.status != "published" %}
+                                        {{ job.get_status_display }}
+
+                                    {% endif %}
+
+                                </td>
+{#                                <td>{{ job.create_time }}</td>#}
+{#                                <td>{{ job.updated }}</td>#}
+                                <td>
+                                    {% for tag in job.tags.all %}
+                                        <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if tag %}
+                                        <h2>Posts tagged with "{{ tag.name }}"</h2>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <div class="btn-group btn-group-xs">
+                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/{{ job.id }}/{{ current_page }}';"><i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
+{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/{{ job.id }}';"><i class="fa fa-times"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/{{ job.id }}';"><i class="fa fa-share-alt"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分析" onclick="window.location.href='job_analysis';"><i class="fa fa-server"></i>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            {% endfor %}
+
+
+
+                            </tbody>
+                        </table>
+
+                        {% include 'pagination.html' with page=page_obj %}
+
+                    </div>
+
+
+
+
+
+                    {% csrf_token %}
+{#                    <br>#}
+                    <sapn class="current">
+                        <span class="step-links">
+                            批量设置：
+                            <select id="batch_job_set" name="batch_job_set">
+                                <option value ="none">none</option>
+                                <option value ="batch_input_ep_odb">批量生成悦谱转图</option>
+                                <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>
+                            </select>
+                            <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
+                            <input type="hidden" name="current_page" id="current_page" value={{ current_page }} />
+                            <input class="del-button" type="button" value="批量操作" />
+                        </span>
+                    </sapn>
+
+
+
+
+                    <script type="text/javascript">
+                        //页面加载的时候,所有的复选框都是未选中的状态
+                        function checkOrCancelAll()
+                        {
+                            var chElt=document.getElementById("chElt");//1.获取checkbo的元素对象
+                            var checkedElt = chElt.checked;//2.获取选中状态
+                            var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+
+                            //var allCheck = document.getElementsByName("file");//方法2
+                            var mySpan=document.getElementById("mySpan");//4.循环遍历取出每一个复选框中的元素
+                            if(checkedElt)//全选
+                            {
+
+                                for(var i=0;i<allCheck.length;i++)
+                                {
+                                    //设置复选框的选中状态
+                                    allCheck[i].checked=true;
+                                }
+                                mySpan.innerHTML="取消全选";
+                            }
+                            else//取消全选
+                            {
+                                for(var i=0;i<allCheck.length;i++)
+                                {
+                                    allCheck[i].checked=false;
+                                }
+                                mySpan.innerHTML="全选";
+                            }
+                        }
+                        function ischecked()
+                        {
+                            var allCheck = document.getElementsByClassName("file");//3.若checked=true,将所有的复选框选中,checked=false,将所有的复选框取消
+                            for(var i=0;i<allCheck.length;i++)
+                            {
+                                if(allCheck[i].checked == true)
+                                {
+                                    return true
+                                }
+                            }
+                            alert("请选择文件")
+                            return false
+                        }
+                    </script>
+
+                    <script type="text/javascript">
+                        $(function(){
+                            $('#all').click(function(){
+                                $('input[type=checkbox]').attr('checked', $(this).attr('checked'));
+                            });
+                            $('.del-button').click(function(){
+
+                                var chckBox = document.getElementsByName("ids");
+                                var num = chckBox.length;
+                                var ids = "";
+                                for(var index =0 ; index<num ; index++){
+                                    if(chckBox[index].checked){
+                                        ids += chckBox[index].value + ",";
+                                    }
+                                }
+                                console.log(ids);
+                                if(ids!=""){
+                                    if(window.confirm("确定操作所选记录？")){
+                                        $.ajax( {
+                                            type : "post",
+                                            url : "",
+                                            dataType : "text",
+                                            data:{"ids":ids,"batch_job_set":$("#batch_job_set").val(),
+                                                "current_page":{{ current_page }},
+                                                "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(), //方式二
+                                                {#headers:{"X-CSRFToken":$.cookie('csrftoken')},//方式三#}
+                                            },   //指定要提交给后端的数据
+
+                                            success : function(data) {
+                                                alert(data);
+                                                window.location.href = "" ;
+                                            },
+                                            error : function(data) {
+                                                alert("系统错误，操作失败");
+                                            }
+                                        });
+                                    }
+                                }else{
+                                    alert("请选择要操作的记录");
+                                    }
+
+                            });
+                        });
+
+
+                    </script>
+
+
+
+                <form>
+                    <table class="table table-hover" id="listtable">
+                        <thead>
+                            <tr>
+                            <th width="200">date</th>
+                            <th>open</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="table_body">
+                        </tbody>
+                    </table>
+
+                    <button type="button" id="submit2">提交</button>
+
+
+                    <script>
+                        $(document).ready(function () {
+                            $("#submit2").click(function () {
+                                var tbody=window.document.getElementById("table_body");
+                                $.ajax({
+                                    type:"get",
+                                    data:{},
+                                    url:"temp",
+                                    dataType:"json",
+                                    success:function (data) {
+                                        alert("hello")
+
+
+                                        $("#listtable").DataTable().destroy(); //再次click后，先将datatable删除
+                                        var str="";
+                                        $("#table_body").html("");
+                                            for (i in data){
+                                                str += "<tr>" +
+                                                "<td>" + data[i]["name"] + "</td>" +
+                                                "<td>" + data[i]["age"] + "</td>" +
+                                                "<tr>";
+                                        }
+                                        $("#table_body").append(str);
+
+                                        $("#listtable").DataTable({
+                                            data:data.result, //将后端返回的json数据赋值给datatable
+                                        });
+                                    },
+                                    error:function () {
+                                        alert("false");
+                                    }
+                                })
+                            })
+                        })
+                    </script>
+                </form>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+{#<script src={% static "javascripts/jquery.min.js" %}></script>#}
+
+
+

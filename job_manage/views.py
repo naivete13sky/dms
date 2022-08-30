@@ -652,6 +652,220 @@ class JobListView(ListView):
 
                 return HttpResponse(result)
 
+class JobListView2(ListView):
+    queryset = models.Job.objects.all()
+    # model=models.Job
+    context_object_name = 'jobs'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = 'JobListView2.html'
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        job_field_verbose_name = [Job._meta.get_field('id').verbose_name,
+                                  Job._meta.get_field('job_name').verbose_name,
+                                  Job._meta.get_field('file_compressed').verbose_name,
+                                  # Job._meta.get_field('file_compressed_org').verbose_name,
+                                  # Job._meta.get_field('file_odb').verbose_name,
+                                  Job._meta.get_field('file_odb_current').verbose_name,
+                                  Job._meta.get_field('file_odb_g').verbose_name,
+                                  Job._meta.get_field('vs_result_ep').verbose_name,
+                                  Job._meta.get_field('vs_result_g').verbose_name,
+                                  '层别信息',
+                                  Job._meta.get_field('bug_info').verbose_name,
+                                  Job._meta.get_field('file_usage_type').verbose_name,
+                                  Job._meta.get_field('remark').verbose_name,
+                                  Job._meta.get_field('author').verbose_name,
+                                  # Job._meta.get_field('from_object').verbose_name,
+                                  Job._meta.get_field('status').verbose_name,
+                                  # Job._meta.get_field('publish').verbose_name,
+                                  # Job._meta.get_field('create_time').verbose_name,
+                                  # Job._meta.get_field('updated').verbose_name,
+                                  "标签",
+                                  "操作",
+                                  ]
+        context['job_field_verbose_name'] = job_field_verbose_name# 表头用
+        context['radio_view_all_job']="checked"
+
+
+        #使用分类筛选
+        # context['select_file_usage_type']=['所有', '导入测试', '客户资料', '测试', '其它']
+        context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
+
+
+
+        #料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
+        if self.request.GET.__contains__("page"):
+            current_page = self.request.GET["page"]
+            print("current_page", current_page)
+            context['current_page'] = current_page
+        else:
+            context['current_page']=1
+
+        query=self.request.GET.get('query',False)
+        if query:
+            # context['cc'] = query
+            # print(query)
+            # context['query'] = query
+            context['jobs'] = models.Job.objects.filter(
+                Q(id__contains=query) |
+                Q(job_name__contains=query) |
+                Q(from_object__contains=query) |
+                Q(author__username__contains=query))
+
+        #只看当前用户数据用的.记录筛选框状态用的.
+        if self.request.GET.get('current_user_checkbox_value',False):
+            print('current_user_checkbox_value')
+            context['current_user_checkbox_value']="checked"
+
+        # 只看当前用户数据用的.记录radio状态用的.
+        if self.request.GET.get('radio_view_my_job', False):
+            print('radio_view_my_job')
+            context['radio_view_my_job'] = "checked"
+
+        #根据料号ID精准搜索
+        search_by_job_id=self.request.GET.get('search_by_job_id',False)
+        if search_by_job_id:
+            pass
+            print("search_by_job_id:",search_by_job_id)
+            context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
+
+        # 根据料号使用类型精准筛选
+        search_by_file_usage_type = self.request.GET.get('file_usage_type', False)
+        if search_by_file_usage_type:
+            pass
+            print("search_by_file_usage_type:", search_by_file_usage_type)
+            context['jobs'] = models.Job.objects.filter(Q(file_usage_type=search_by_file_usage_type))
+            context['current_file_usage_type']=search_by_file_usage_type
+
+        return context
+
+    def post(self, request):  # ***** this method required! ******
+        self.object_list = self.get_queryset()
+        if request.method == 'POST':
+            print("POST!!!")
+            # for each in request.POST:
+            #     print(each)
+            # ret=request.REQUEST.get_list('check_box_list')
+            # ret=request.GET.getlist('check_box_list')
+            # ret=request.POST.getlist('ids_list')
+            # print(ret)
+
+            if request.POST.__contains__("ids"):
+                ret = request.POST.get('ids')
+                ret = ret.split(",")
+                print(ret)
+                selected = request.POST.get('batch_job_set', None)
+                print("seleted:", selected)
+                if selected == "batch_delete_ep_odb":
+                    # 判断权限
+                    sub = request.user.username  # 想要访问资源的用户
+                    obj = "data_group_job_all"  # 将要被访问的资源
+                    act = "delete"  # 用户对资源进行的操作
+                    print('sub,obj,act:', sub, obj, act)
+                    if enforcer.enforce(sub, obj, act):
+                        pass
+                        print("权限通过！")
+                        for each in ret:
+                            if len(each) != 0:
+                                # print(each)
+                                each_job = Job.objects.get(id=int(each))
+                                print(each_job)
+                                # print("项目根目录：",settings.BASE_DIR,settings.PROJECT_PATH)
+                                delete_file = (
+                                    os.path.join(settings.BASE_DIR, r'media', str(each_job.file_odb_current))).replace(
+                                    r'/', '\\')
+                                print(delete_file)
+                                each_job.file_odb_current = None
+                                try:
+                                    if os.path.exists(delete_file):
+                                        os.remove(delete_file)
+                                except:
+                                    print("删除文件异常！")
+
+                                each_job.save()
+
+                        return HttpResponse("完成删除！")
+
+                    else:
+                        return HttpResponse("您无此权限！请联系管理员！")
+
+
+
+
+
+
+
+
+                if selected == "batch_input_ep_odb":
+                    # 判断权限
+                    sub = request.user.username  # 想要访问资源的用户
+                    obj = "data_group_job_all"  # 将要被访问的资源
+                    act = "delete"  # 用户对资源进行的操作
+                    print('sub,obj,act:', sub, obj, act)
+                    if enforcer.enforce(sub, obj, act):
+                        pass
+                        print("权限通过！")
+
+                        for each in ret:
+                            if len(each) != 0:
+                                # print(each)
+                                each_job=Job.objects.get(id=int(each))
+                                print(each_job)
+                                print("each:",each)
+                                gerber274x_to_odb_ep2(request,int(each),request.POST.get("current_page"))
+                                # try:
+                                #     if os.path.exists(delete_file):
+                                #         os.remove(delete_file)
+                                # except:
+                                #     print("删除文件异常！")
+                                #
+                                # each_job.save()
+
+                        return HttpResponse("完成批量悦谱转图！")
+                    # return redirect('job_manage:job_view')
+
+                    else:
+                        return HttpResponse("您无此权限！请联系管理员！")
+
+            if request.POST.__contains__("page_jump"):
+                print(request.POST.get("page_jump"))
+
+                return HttpResponse(request.POST.get("page_jump"))
+
+            if request.POST.__contains__("current_user"):
+                # print("current_user",request.POST.get("current_user"))
+                if request.POST.get("current_user")=="on":
+                    # print("on")
+                    pass
+                    queryset = models.Job.objects.filter(author=self.request.user)
+                    print(queryset)
+
+                return HttpResponse(request.user.username)
+
+            if request.POST.__contains__("radio_view_my_job"):
+                print("radio_view_my_job",request.POST.get("radio_view_my_job"))
+                if request.POST.get("radio_view_my_job")=="on":
+                    # print("on")
+                    pass
+                    queryset = models.Job.objects.filter(author=self.request.user)
+                    # print(queryset)
+
+                return HttpResponse(request.user.username)
+
+            if request.POST.__contains__("select_file_usage_type"):
+                print("select_file_usage_type",request.POST.get("select_file_usage_type"))
+                if request.POST.get("select_file_usage_type")=="all":
+                    pass
+                    result=''
+
+                else:
+                    queryset = models.Job.objects.filter(file_usage_type=request.POST.get("select_file_usage_type"))
+                    print(queryset)
+                    result=request.POST.get("select_file_usage_type")
+
+                return HttpResponse(result)
 
 
 class JobDetailView(DetailView):
@@ -2530,3 +2744,23 @@ def test_casbin(request):
         result = "not pass"
     return HttpResponse(result)
 
+def temp(request):
+    pass
+    data={
+    "students": [
+        {"name": "John", "age": "15"},
+        {"name": "Anna", "age": "16"},
+        {"name": "Peter", "age": "16"}
+    ],
+    "teachers": [
+        {"name": "Jack", "age": "30"},
+        {"name": "Jessy", "age": "33"}
+    ]}
+    data = [
+            {"name": "John", "age": "15"},
+            {"name": "Anna", "age": "16"},
+            {"name": "Peter", "age": "16"}
+        ]
+    data_json=json.dumps(data)
+    print(data_json)
+    return HttpResponse(data_json,content_type="application/json")
