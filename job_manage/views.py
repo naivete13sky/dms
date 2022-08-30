@@ -2756,3 +2756,4 @@ def temp(request):
     print("cc:",cc)
 
     return HttpResponse(cc,content_type="application/json")
+

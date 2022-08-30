@@ -650,8 +650,12 @@
                     <table class="table table-hover" id="listtable">
                         <thead>
                             <tr>
-                            <th width="200">date</th>
-                            <th>open</th>
+
+                                <th><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br /></th>
+                                {% for each in job_field_verbose_name %}
+                                    <th>{{ each }}</th>
+
+                                {% endfor  %}
 
                             </tr>
                         </thead>
@@ -682,9 +686,11 @@
                                         $("#table_body").html("");
                                             for (i in data.data){
                                                 str += "<tr>" +
+                                                "<td>" + (parseInt(i)+parseInt(1)) + "</td>" +
                                                 "<td>" + data.data[i]["pk"] + "</td>" +
                                                 "<td>" + data.data[i]["fields"]["username"] + "</td>" +
                                                 "<tr>";
+
                                         }
                                         $("#table_body").append(str);
 
@@ -700,6 +706,12 @@
                         })
                     </script>
                 </form>
+
+                <td>
+                    <input class="file" name="ids" type="checkbox" value="{{ job.id }}" />
+
+                </td>
+
 
 
 
