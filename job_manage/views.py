@@ -459,18 +459,25 @@ class JobListView(ListView):
                                   Job._meta.get_field('vs_result_g').verbose_name,
                                   '层别信息',
                                   Job._meta.get_field('bug_info').verbose_name,
+                                  Job._meta.get_field('file_usage_type').verbose_name,
                                   Job._meta.get_field('remark').verbose_name,
                                   Job._meta.get_field('author').verbose_name,
                                   # Job._meta.get_field('from_object').verbose_name,
                                   Job._meta.get_field('status').verbose_name,
                                   # Job._meta.get_field('publish').verbose_name,
                                   # Job._meta.get_field('create_time').verbose_name,
-                                  Job._meta.get_field('updated').verbose_name,
+                                  # Job._meta.get_field('updated').verbose_name,
                                   "标签",
                                   "操作",
                                   ]
         context['job_field_verbose_name'] = job_field_verbose_name# 表头用
         context['radio_view_all_job']="checked"
+
+
+        #使用分类筛选
+        context['select_file_usage_type']=['所有', '导入测试', '客户资料', '测试', '其它']
+
+
 
         #料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
         if self.request.GET.__contains__("page"):
@@ -507,6 +514,13 @@ class JobListView(ListView):
             pass
             print("search_by_job_id:",search_by_job_id)
             context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
+
+        # 根据料号使用类型精准筛选
+        search_by_file_usage_type = self.request.GET.get('file_usage_type', False)
+        if search_by_file_usage_type:
+            pass
+            print("search_by_file_usage_type:", search_by_file_usage_type)
+            context['jobs'] = models.Job.objects.filter(Q(file_usage_type=search_by_file_usage_type))
 
         return context
 
@@ -622,9 +636,30 @@ class JobListView(ListView):
                     # print(queryset)
 
                 return HttpResponse(request.user.username)
-        # layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
-        # print(layer_which_one_job)
-        # return redirect('../../LayerListView?which_one={}'.format(layer_which_one_job))
+
+            if request.POST.__contains__("select_file_usage_type"):
+                print("select_file_usage_type",request.POST.get("select_file_usage_type"))
+                if request.POST.get("select_file_usage_type")=="所有":
+                    pass
+                    result = ''
+                elif request.POST.get("select_file_usage_type")=="导入测试":
+                    queryset = models.Job.objects.filter(file_usage_type='input_test')
+                    print(queryset)
+                    result = 'input_test'
+                elif request.POST.get("select_file_usage_type")=="客户资料":
+                    queryset = models.Job.objects.filter(file_usage_type='customer_job')
+                    print(queryset)
+                    result = 'customer_job'
+                elif request.POST.get("select_file_usage_type")=="测试":
+                    queryset = models.Job.objects.filter(file_usage_type='test')
+                    print(queryset)
+                    result = 'test'
+                elif request.POST.get("select_file_usage_type")=="其它":
+                    queryset = models.Job.objects.filter(file_usage_type='else')
+                    print(queryset)
+                    result='else'
+
+                return HttpResponse(result)
 
 
 

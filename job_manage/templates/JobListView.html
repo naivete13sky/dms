@@ -55,6 +55,17 @@
                             <label><input name="view_job" type="radio" id="radio_view_my_job" {{ radio_view_my_job }} onclick="view_my_job(this)" />只看我的料号 </label>
                         </div>
 
+                        <div class="form-group">
+
+                            <select id="select_file_usage_type" name="select_file_usage_type" onchange="view_job_usage_type(this)">
+                                {% for each in select_file_usage_type %}
+                                    <option value = {{ each }}>{{ each }}</option>
+                                {% endfor %}
+
+                            </select>
+                            <label>使用分类筛选</label>
+                        </div>
+
                     </form>
 
 
@@ -89,6 +100,32 @@
                             {#alert("view_all_job")#}
                             window.location.href = '../../job_manage/JobListView' ;
 
+
+                        }
+                    </script>
+
+                    <script>
+                        function view_job_usage_type() {
+                            {#alert("view_my_job")#}
+                            {#alert("checked")#}
+                            {#$('.btn_view_current_user_job').click()#}
+                            $.ajax( {
+                                    type : "post",
+                                    url : "",
+                                    dataType : "text",
+                                    data:{
+                                        "select_file_usage_type":$("#select_file_usage_type").val(),
+                                        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                    },   //指定要提交给后端的数据
+
+                                    success : function(data) {
+                                        {#alert(data);#}
+                                        window.location.href = "?file_usage_type="+ data;
+                                    },
+                                    error : function(data) {
+                                        alert("系统错误，操作失败");
+                                    }
+                                });
 
                         }
                     </script>
@@ -388,7 +425,7 @@
                                 </td>
 
 
-
+                                <td>{{ job.get_file_usage_type_display }}</td>
 
                                 <td>
 
@@ -408,7 +445,7 @@
 
                                 </td>
 {#                                <td>{{ job.create_time }}</td>#}
-                                <td>{{ job.updated }}</td>
+{#                                <td>{{ job.updated }}</td>#}
                                 <td>
                                     {% for tag in job.tags.all %}
                                         <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
