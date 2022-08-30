@@ -2746,34 +2746,10 @@ def test_casbin(request):
     return HttpResponse(result)
 
 def temp(request):
-    pass
-    data = [
-            {"name": "John", "age": "15"},
-            {"name": "Anna", "age": "16"},
-            {"name": "Peter", "age": "16"}
-        ]
-
-    all_user=models.User.objects.all()
-    for each in all_user:
-        print(each.id,each.username)
-
-
-    data_json=json.dumps(data)
-
-
-
     def object2json_serializers():
         data = {}
         all_user2 = serializers.serialize("json", models.User.objects.all())
         data["data"] = json.loads(all_user2)
-
-        return JsonResponse(data, safe=False)
-
-    def object2json():
-        data = {}
-        all_user2 = serializers.serialize("json", models.User.objects.all())
-        data["data"] = list(all_user2)
-
         return JsonResponse(data, safe=False)
 
     cc=object2json_serializers()
