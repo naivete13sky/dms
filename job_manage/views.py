@@ -757,7 +757,7 @@ class JobListView2(ListView):
             data["data"] = list(jobs)
             # return JsonResponse(data, safe=False)
             return json.dumps(data,default=str, ensure_ascii=False)
-        print(object2json())
+        # print(object2json())
         context['JsonResponse']=object2json()
         # context['JsonResponse'] = "abc"
         # return HttpResponse(cc, content_type="application/json")

@@ -691,6 +691,30 @@
                                 var id=(parseInt(i)+parseInt(1))
                                 var job_name=MyViewVar.var_1["data"][i]["job_name"]
                                 var job_file_compressed=MyViewVar.var_1["data"][i]["file_compressed"]
+                                var job_bool_layer_info=MyViewVar.var_1["data"][i]["bool_layer_info"]
+
+
+
+                                if(job_file_compressed){
+                                    var job_file_compressed_td = `<a href='/media/${job_file_compressed}' title='下载${job_file_compressed}详细信息'>下载</a>`
+                                }
+                                else {
+                                    var job_file_compressed_td =``
+                                }
+
+
+
+                                if(job_bool_layer_info === 'false'){
+                                    {#alert("false!")#}
+                                    var job_bool_layer_info_td=`<button class="btn btn-transparent" title="生成层别名称：${job_file_compressed}" value=${job_id} onclick="confirm_do_get_layer_info_ajax(this.value);"><i class="fa fa-list"></i></button>`
+
+                                } else {
+                                    {#alert("not false")#}
+                                    var job_bool_layer_info_td=``
+                                }
+
+
+
 
 
 
@@ -700,8 +724,8 @@
                                 `<td><input class="file" name="ids" type="checkbox" value="${job_id}" />${id}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td> <a href='/job_manage/JobFormView/${job_id}' title='查看${job_name}详细信息'>${job_name}</a> </td>` +
-                                `<td>  <button class="btn btn-transparent" title="附件下载：${job_file_compressed}" onclick="window.location.href='/media/${job_file_compressed}';"><i class="fa fa-download"></i></button> </td>` +
-                                `<td>${job_id}</td>` +
+                                `<td> ${job_file_compressed_td} ${job_bool_layer_info_td} </td>` +
+                                `<td>  </td>` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
@@ -714,6 +738,7 @@
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
                                 "<tr>";
+
 
                         }
 
@@ -732,6 +757,7 @@
 
 
                             $("#submit2").click(function () {
+                                {#alert("submit2")#}
                                 var tbody=window.document.getElementById("table_body");
                                 $.ajax({
                                     type:"get",
@@ -739,13 +765,14 @@
                                     url:"temp",
                                     dataType:"json",
                                     success:function (data) {
-                                        {#alert("hello")#}
+                                        alert("hello")
                                         {#alert(data.data)#}
                                         {#alert(data.data[0]["pk"])#}
-
-
-                                        $("#listtable").DataTable().destroy(); //再次click后，先将datatable删除
+                                        alert("hello2")
+                                        {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
+                                        alert("hello3")
                                         var str="";
+
                                         $("#table_body").html("");
                                             for (i in data.data){
                                                 if (data.data[i]["fields"]["file_compressed"]){
@@ -782,6 +809,7 @@
                                         $("#listtable").DataTable({
                                             data:data.result, //将后端返回的json数据赋值给datatable
                                         });
+
                                     },
                                     error:function () {
                                         alert("false");
@@ -789,6 +817,11 @@
                                 })
                             })
                         })
+
+
+
+
+
                     </script>
                 </form>
 
