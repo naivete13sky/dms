@@ -678,8 +678,8 @@
 
                     <script>
                         $(document).ready(function () {
-                            alert("初始化1");
-                            alert(MyViewVar.var_1["data"]);
+                            {#alert("初始化1");#}
+                            {#alert(MyViewVar.var_1["data"]);#}
                             var tbody=window.document.getElementById("table_body");
 
                             $("#listtable").DataTable().destroy(); //再次click后，先将datatable删除
@@ -687,24 +687,32 @@
                             $("#table_body").html("");
                             for (i in MyViewVar.var_1["data"]){
                                 {#alert(i)#}
+                                var job_id=MyViewVar.var_1["data"][i]["id"]
+                                var id=(parseInt(i)+parseInt(1))
+                                var job_name=MyViewVar.var_1["data"][i]["job_name"]
+                                var job_file_compressed=MyViewVar.var_1["data"][i]["file_compressed"]
+
 
 
 
 
                                 str += "<tr>" +
-                                "<td>" +  +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
-                                "<td>" +  + "</td>" +
+                                `<td><input class="file" name="ids" type="checkbox" value="${job_id}" />${id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td> <a href='/job_manage/JobFormView/${job_id}' title='查看${job_name}详细信息'>${job_name}</a> </td>` +
+                                `<td>  <button class="btn btn-transparent" title="附件下载：${job_file_compressed}" onclick="window.location.href='/media/${job_file_compressed}';"><i class="fa fa-download"></i></button> </td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
+                                `<td>${job_id}</td>` +
                                 "<tr>";
 
                         }
@@ -713,7 +721,11 @@
 
 
 
-                            alert("初始化2");
+                            $("#table_body").append(str);
+
+
+
+                            {#alert("初始化2");#}
 
 
 
