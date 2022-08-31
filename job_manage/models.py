@@ -157,6 +157,12 @@ class Job(models.Model):
         # Return a string that represents the instance
         return self.job_name
 
+    def to_dict(self):
+        data = {}
+        for f in self._meta.concrete_fields:
+            data[f.name] = f.value_from_object(self)
+        return data
+
 class Register(models.Model):
     # 当不能设置最小长度的时候,可以使用自定义验证器来弄最小长度值
     # 对应的字段里面都会对应的自定义验证器使用

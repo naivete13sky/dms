@@ -740,6 +740,30 @@ class JobListView2(ListView):
             context['jobs'] = models.Job.objects.filter(Q(file_usage_type=search_by_file_usage_type))
             context['current_file_usage_type']=search_by_file_usage_type
 
+        def object2json_serializers_job():
+            data = {}
+            jobs = serializers.serialize("json", models.Job.objects.all())
+            data["data"] = json.loads(jobs)
+            return JsonResponse(data, safe=False)
+
+        def change_type(byte):
+            if isinstance(byte, bytes):
+                return str(byte, encoding="utf-8")
+            return json.JSONEncoder.default(byte)
+
+        def object2json():
+            data = {}
+            jobs = Job.objects.all().values()
+            data["data"] = list(jobs)
+            # return JsonResponse(data, safe=False)
+            return json.dumps(data,default=str, ensure_ascii=False)
+        print(object2json())
+        context['JsonResponse']=object2json()
+        # context['JsonResponse'] = "abc"
+        # return HttpResponse(cc, content_type="application/json")
+        dict={'name':"cc","add":"ha"}
+        # context['JsonResponse']=json.dumps(dict)
+
         return context
 
     def post(self, request):  # ***** this method required! ******

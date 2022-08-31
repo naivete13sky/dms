@@ -235,7 +235,7 @@
                             </thead>
                             <tbody>
 
-                            {% for job in jobs %}
+                                {% for job in jobs %}
 
                                 <tr>
                                 <td>
@@ -644,7 +644,10 @@
 
                     </script>
 
-
+                {{ JsonResponse }}
+{#                {% for each in JsonResponse %}#}
+{#                    {{ each }}#}
+{#                {% endfor %}#}
 
                 <form>
                     <table class="table table-hover" id="listtable">
@@ -660,14 +663,44 @@
                             </tr>
                         </thead>
                         <tbody id="table_body">
+
                         </tbody>
                     </table>
 
                     <button type="button" id="submit2">提交</button>
 
+                    <script>
+                        var MyViewVar = {
+                            var_1: {{ JsonResponse|safe }},
+                        };
+                        alert(MyViewVar.var_1);
+
+                    </script>
+
+
 
                     <script>
                         $(document).ready(function () {
+
+                            alert("初始化1");
+                            alert(MyViewVar.var_1);
+
+                            var tbody=window.document.getElementById("table_body");
+
+
+                        })
+
+                    </script>
+
+
+
+                    <script>
+                        $(document).ready(function () {
+                            alert("初始化2");
+
+
+
+
                             $("#submit2").click(function () {
                                 var tbody=window.document.getElementById("table_body");
                                 $.ajax({
@@ -688,7 +721,7 @@
                                                 if (data.data[i]["fields"]["file_compressed"]){
                                                     var str_file_compressed0= '<button class="btn btn-transparent" title="附件下载：' + data.data[i]["fields"]["file_compressed"] + '" onclick="window.location.href="/media/' + data.data[i]["fields"]["file_compressed"] + '";"><i class="fa fa-download"></i></button>'
                                                     var str_file_compressed1= '<a href=' + '"/media/' + data.data[i]["fields"]["file_compressed"] +'"' + ' title="查看' + data.data[i]["fields"]["file_compressed"] + '详细信息">' + '下载' + '</a>'
-                                                    var str_file_compressed2= '<button class="btn btn-transparent" title="生成层别名称：' + data.data[i]["fields"]["file_compressed"] + '" value=' + data.data[i]["pk"] + ' onclick="confirm_do_get_layer_info2(this.value);"><i class="fa fa-list"></i></button>'
+                                                    var str_file_compressed2= '<button class="btn btn-transparent" title="生成层别名称：' + data.data[i]["fields"]["file_compressed"] + '" value=' + data.data[i]["pk"] + ' onclick="confirm_do_get_layer_info_ajax(this.value);"><i class="fa fa-list"></i></button>'
                                                 }
                                                 {#alert(str_file_compressed2)#}
 
@@ -730,7 +763,7 @@
                 </form>
 
                     <script type="text/javascript" language="JavaScript">
-                            function confirm_do_get_layer_info2(value)
+                            function confirm_do_get_layer_info_ajax(value)
                             {
                                  if(confirm("确定要执行生成层名操作吗?"))
                                  {
@@ -764,21 +797,9 @@
                             }
                         </script>
 
-                    {% if job.bool_layer_info == 'false' %}
-                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" value={{ job.id }} onclick="confirm_do_get_layer_info(this.value);"><i class="fa fa-list"></i>
-                        </button>
 
 
 
-
-
-                    {% endif %}
-
-                    {% if job.bool_layer_info == 'true' %}
-                        <button class="btn btn-transparent" title="打开生成层别名称入口：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org_on/{{ job.id }}';"><i class="fa fa-toggle-on"></i>
-                        </button>
-
-                    {% endif %}
 
 
 
