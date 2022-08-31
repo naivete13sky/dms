@@ -696,6 +696,7 @@
                                 var job_file_odb_g=MyViewVar.var_1["data"][i]["file_odb_g"]
                                 var job_vs_result_ep=MyViewVar.var_1["data"][i]["vs_result_ep"]
                                 var job_vs_result_g=MyViewVar.var_1["data"][i]["vs_result_g"]
+                                var file_usage_type=MyViewVar.var_1["data"][i]["file_usage_type"]
 
 
                                 //原始文件
@@ -769,6 +770,10 @@
                                 var job_view_layer_info_one_job_td_url = `<a href='../../LayerListView?which_one=${job_id}' title='查看层别信息' value=${job_id} >查看</a>`;
                                 var job_view_layer_info_one_job_td= `<td> ${job_view_layer_info_one_job_td_url}</td>`;
 
+                                //查看Bug信息
+                                var job_view_bug_one_job_td_url = `<a href='../../BugListView?which_one=${job_id}' title='查看Bug信息' value=${job_id} >查看</a>`;
+                                var job_view_bug_one_job_td= `<td> ${job_view_bug_one_job_td_url}</td>`;
+
 
 
 
@@ -782,8 +787,8 @@
                                 `${job_vs_result_ep_td}` +
                                 `${job_vs_result_g_td}` +
                                 `${job_view_layer_info_one_job_td}` +
-                                `<td>${job_id}</td>` +
-                                `<td>${job_id}</td>` +
+                                `${job_view_bug_one_job_td}` +
+                                `<td>${file_usage_type}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
