@@ -696,22 +696,18 @@
 
 
                                 if(job_file_compressed){
-                                    var job_file_compressed_td = `<a href='/media/${job_file_compressed}' title='下载${job_file_compressed}详细信息'>下载</a>`
+                                    var job_file_compressed_td_down = `<a href='/media/${job_file_compressed}' title='下载${job_file_compressed}详细信息'>下载</a>`;
+                                    var job_file_compressed_td_get_layer_info=`<button class="btn btn-transparent" title="生成层别名称：${job_file_compressed}" value="${job_id}" onclick="confirm_do_get_layer_info_ajax(this.value);"><i class="fa fa-list"></i></button>`;
+
+                                    var job_file_compressed_td= `<td> ${job_file_compressed_td_down} ${job_file_compressed_td_get_layer_info} </td>`;
                                 }
                                 else {
-                                    var job_file_compressed_td =``
+                                    var job_file_compressed_td =`<td></td>`;
                                 }
 
 
 
-                                if(job_bool_layer_info === 'false'){
-                                    {#alert("false!")#}
-                                    var job_bool_layer_info_td=`<button class="btn btn-transparent" title="生成层别名称：${job_file_compressed}" value=${job_id} onclick="confirm_do_get_layer_info_ajax(this.value);"><i class="fa fa-list"></i></button>`
 
-                                } else {
-                                    {#alert("not false")#}
-                                    var job_bool_layer_info_td=``
-                                }
 
 
 
@@ -724,8 +720,7 @@
                                 `<td><input class="file" name="ids" type="checkbox" value="${job_id}" />${id}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td> <a href='/job_manage/JobFormView/${job_id}' title='查看${job_name}详细信息'>${job_name}</a> </td>` +
-                                `<td> ${job_file_compressed_td} ${job_bool_layer_info_td} </td>` +
-                                `<td>  </td>` +
+                                `${job_file_compressed_td}` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
