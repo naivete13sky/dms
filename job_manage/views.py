@@ -694,7 +694,7 @@ class JobListView2(ListView):
         # context['select_file_usage_type']=['所有', '导入测试', '客户资料', '测试', '其它']
         context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
 
-
+        context['select_author'] = [('all', '所有'), ('mine', '我的'), ]
 
         #料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
         if self.request.GET.__contains__("page"):

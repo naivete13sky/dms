@@ -46,7 +46,7 @@
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-
+                    {#--------------------------------------分割线--------------------------------------#}
 
                     <li>
                         <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
@@ -70,21 +70,19 @@
                         <label>|</label>
 
                         <label>所有者：</label>
-                        <select id="select_file_usage_type" name="select_file_usage_type" onchange="view_job_usage_type(this)">
-                                {% for each in select_file_usage_type %}
-                                    {% if each.0 == current_file_usage_type %}
-                                        <option selected value = {{ each.0 }} >{{ each.1 }}</option>
-                                    {% endif %}
-                                    {% if each.0 != current_file_usage_type %}
-                                        <option value = {{ each.0 }}>{{ each.1 }}</option>
-                                    {% endif %}
-
-                                {% endfor %}
-
-                            </select>
+                        <select id="select_author" name="select_author">
+                            {% for each in select_author %}
+                                <option value = {{ each.0 }}>{{ each.1 }}</option>
+                            {% endfor %}
+                        </select>
 
 
                         <a>料号查询-通用</a>
+
+
+                        <button type="button" id="submit_query">提交</button>
+
+
                     </li>
 
                     <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
@@ -226,8 +224,8 @@
 
 
 
-                        {#--------------------------------------分割线--------------------------------------#}
-{#                        {{ JsonResponse|safe }}#}
+
+
 
                         <table class=" table table-striped nowrap table-hover" id="listtable" cellspacing="0" width="100%">
                             <thead>
@@ -246,7 +244,7 @@
                             </tbody>
                         </table>
 
-                        <button type="button" id="submit2">提交</button>
+
 
                         <script>
                             var MyViewVar = {
@@ -413,7 +411,7 @@
 
 
 
-                                $("#submit2").click(function () {
+                                $("#submit_query").click(function () {
                                     {#alert("submit2")#}
                                     var tbody=window.document.getElementById("table_body");
                                     $.ajax({
@@ -422,12 +420,12 @@
                                         url:"temp",
                                         dataType:"json",
                                         success:function (data) {
-                                            alert("hello")
+                                            {#alert("hello")#}
                                             {#alert(data.data)#}
                                             {#alert(data.data[0]["pk"])#}
-                                            alert("hello2")
+                                            {#alert("hello2")#}
                                             {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
-                                            alert("hello3")
+                                            {#alert("hello3")#}
                                             var str="";
 
                                             $("#table_body").html("");
