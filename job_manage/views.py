@@ -895,6 +895,24 @@ class JobListView2(ListView):
                 if request.POST.get("post_type",False)== 'get_file_name_from_org':
                     pass
                     get_file_name_from_org(request,request.POST.get("job_id",False))
+
+                if request.POST.get("post_type",False)== 'search_ajax':
+                    pass
+                    print("search_ajax")
+                    select_author=request.POST.get("select_author",False)
+                    print(select_author)
+                    if select_author=='mine':
+                        pass
+
+                        data = {}
+                        jobs = Job.objects.filter(
+                            Q(author__username__contains=request.user.username)
+                        ).values()
+                        data["data"] = list(jobs)
+                        # print(data["data"])
+                        return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
+                        # return json.dumps(data, default=str, ensure_ascii=False)
+
                 return HttpResponse(request.POST.get("post_type",False))
 
 

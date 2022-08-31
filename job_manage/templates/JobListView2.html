@@ -77,10 +77,10 @@
                         </select>
 
 
-                        <a>料号查询-通用</a>
+                        <label>|</label>
 
 
-                        <button type="button" id="submit_query">提交</button>
+                        <button type="button" id="submit_query">搜索</button>
 
 
                     </li>
@@ -398,52 +398,40 @@
                             }
 
 
-
-
-
                                 $("#table_body").append(str);
-
 
 
                                 {#alert("初始化2");#}
 
-
-
-
-
                                 $("#submit_query").click(function () {
-                                    {#alert("submit2")#}
+                                    alert("submit_search")
                                     var tbody=window.document.getElementById("table_body");
                                     $.ajax({
-                                        type:"get",
-                                        data:{},
-                                        url:"temp",
+                                        type:"post",
+                                        data:{
+                                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                            "post_type":"search_ajax",
+                                            "select_author":$("#select_author").val(),
+                                        },
+                                        url:"",
                                         dataType:"json",
                                         success:function (data) {
-                                            {#alert("hello")#}
-                                            {#alert(data.data)#}
-                                            {#alert(data.data[0]["pk"])#}
-                                            {#alert("hello2")#}
-                                            {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
-                                            {#alert("hello3")#}
+                                            alert("hello")
+                                            alert(data)
+
                                             var str="";
 
                                             $("#table_body").html("");
                                                 for (i in data.data){
-                                                    if (data.data[i]["fields"]["file_compressed"]){
-                                                        var str_file_compressed0= '<button class="btn btn-transparent" title="附件下载：' + data.data[i]["fields"]["file_compressed"] + '" onclick="window.location.href="/media/' + data.data[i]["fields"]["file_compressed"] + '";"><i class="fa fa-download"></i></button>'
-                                                        var str_file_compressed1= '<a href=' + '"/media/' + data.data[i]["fields"]["file_compressed"] +'"' + ' title="查看' + data.data[i]["fields"]["file_compressed"] + '详细信息">' + '下载' + '</a>'
-                                                        var str_file_compressed2= '<button class="btn btn-transparent" title="生成层别名称：' + data.data[i]["fields"]["file_compressed"] + '" value=' + data.data[i]["pk"] + ' onclick="confirm_do_get_layer_info_ajax(this.value);"><i class="fa fa-list"></i></button>'
-                                                    }
-                                                    {#alert(str_file_compressed2)#}
+
 
 
 
                                                     str += "<tr>" +
-                                                    "<td>" + '<input class="file" name="ids" type="checkbox" value='+ data.data[i]["pk"] +' />' +  (parseInt(i)+parseInt(1)) + "</td>" +
-                                                    "<td>" + data.data[i]["pk"] + "</td>" +
-                                                    "<td>" + '<a href=' + "/job_manage/JobFormView/" + data.data[i]["pk"] + ' title="查看' + data.data[i]["fields"]["job_name"] + '详细信息">' + data.data[i]["fields"]["job_name"] + '</a>' + "</td>" +
-                                                    "<td>" + str_file_compressed1 + str_file_compressed2 + "</td>" +
+                                                    "<td>" +  + "</td>" +
+                                                    "<td>" +  + "</td>" +
+                                                    "<td>" +  + "</td>" +
+                                                    "<td>" +  + "</td>" +
                                                     "<td>" +  + "</td>" +
                                                     "<td>" +  + "</td>" +
                                                     "<td>" +  + "</td>" +
