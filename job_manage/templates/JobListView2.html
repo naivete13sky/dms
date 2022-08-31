@@ -644,7 +644,7 @@
 
                     </script>
 
-                {{ JsonResponse }}
+{#                {{ JsonResponse }}#}
 {#                {% for each in JsonResponse %}#}
 {#                    {{ each }}#}
 {#                {% endfor %}#}
@@ -673,30 +673,48 @@
                         var MyViewVar = {
                             var_1: {{ JsonResponse|safe }},
                         };
-                        alert(MyViewVar.var_1);
-
+                        {#alert(MyViewVar.var_1);#}
                     </script>
-
-
 
                     <script>
                         $(document).ready(function () {
-
                             alert("初始化1");
-                            alert(MyViewVar.var_1);
-
+                            alert(MyViewVar.var_1["data"]);
                             var tbody=window.document.getElementById("table_body");
 
+                            $("#listtable").DataTable().destroy(); //再次click后，先将datatable删除
+                            var str="";
+                            $("#table_body").html("");
+                            for (i in MyViewVar.var_1["data"]){
+                                {#alert(i)#}
 
-                        })
-
-                    </script>
 
 
 
-                    <script>
-                        $(document).ready(function () {
+                                str += "<tr>" +
+                                "<td>" +  +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<td>" +  + "</td>" +
+                                "<tr>";
+
+                        }
+
+
+
+
+
                             alert("初始化2");
+
 
 
 
