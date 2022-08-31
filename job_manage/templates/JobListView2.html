@@ -695,6 +695,7 @@
                                 var job_file_odb_current=MyViewVar.var_1["data"][i]["file_odb_current"]
                                 var job_file_odb_g=MyViewVar.var_1["data"][i]["file_odb_g"]
                                 var job_vs_result_ep=MyViewVar.var_1["data"][i]["vs_result_ep"]
+                                var job_vs_result_g=MyViewVar.var_1["data"][i]["vs_result_g"]
 
 
                                 //原始文件
@@ -736,7 +737,7 @@
 
 
 
-                                //原始文件
+                                //悦谱比图
                                 if(job_vs_result_ep==="passed"){
                                     var job_vs_result_ep_td_vs_result = `<a href='view_vs_ep/${job_id}' title='查看详情${job_file_odb_current}'>通过</a>`;
                                 }
@@ -751,6 +752,18 @@
 
 
 
+                                //G比图
+                                if(job_vs_result_g==="passed"){
+                                    var job_vs_result_g_td_vs_result = `<a href='view_vs_g/${job_id}' title='查看详情${job_file_odb_g}'>通过</a>`;
+                                }
+                                if(job_vs_result_g==="failed"){
+                                    var job_vs_result_g_td_vs_result = `<a href='view_vs_g/${job_id}' title='查看详情${job_file_odb_g}'>失败</a>`
+                                }
+                                if(job_vs_result_g==="none"){
+                                    var job_vs_result_g_td_vs_result = `未比对`;
+                                }
+                                var job_vs_result_g_td_vs=`<button class="btn btn-transparent" title="点击比对" value=${job_id} onclick="confirm_do_vs_g_ajax(this.value);"><i class="fa fa-file-picture-o"></i></button>`;
+                                var job_vs_result_g_td= `<td> ${job_vs_result_g_td_vs_result} ${job_vs_result_g_td_vs}</td>`;
 
 
 
@@ -765,7 +778,7 @@
                                 `${job_file_odb_current_td}` +
                                 `${job_file_odb_g_td}` +
                                 `${job_vs_result_ep_td}` +
-                                `<td>${job_id}</td>` +
+                                `${job_vs_result_g_td}` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
@@ -913,7 +926,22 @@
                             }
                     </script>
 
+                    <script type="text/javascript" language="JavaScript">
+                        function confirm_do_vs_g_ajax(value)
+                        {
+                             if(confirm("确定要执行G软件比图操作吗?"))
+                             {
 
+                                 window.location.href='vs_g/' + value + '/{{ current_page }}';
+                                 {#return true;#}
+
+                             }else{
+                                 {#alert(value)#}
+                                 return false;
+
+                             }
+                        }
+                    </script>
 
 
 
