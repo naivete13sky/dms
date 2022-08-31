@@ -693,6 +693,7 @@
                                 var job_file_compressed=MyViewVar.var_1["data"][i]["file_compressed"]
                                 var job_bool_layer_info=MyViewVar.var_1["data"][i]["bool_layer_info"]
                                 var job_file_odb_current=MyViewVar.var_1["data"][i]["file_odb_current"]
+                                var job_file_odb_g=MyViewVar.var_1["data"][i]["file_odb_g"]
 
 
 
@@ -714,9 +715,22 @@
                                     var job_file_odb_current_td= `<td> ${job_file_odb_current_td_down} ${job_file_odb_current_td_view} </td>`;
                                 }
                                 else {
-                                    job_file_odb_current_td_input= `<button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='gerber274x_to_odb_ep2/{{ job.id }}/{{ current_page }}';"><i class="fa fa-file"></i></button>`
+                                    job_file_odb_current_td_input= `<button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='gerber274x_to_odb_ep2/${job_id}/1';"><i class="fa fa-file"></i></button>`
 
-                                    var job_file_odb_current_td =`<td></td>`;
+                                    var job_file_odb_current_td =`<td> ${job_file_odb_current_td_input} </td>`;
+                                }
+
+
+                                if(job_file_odb_g){
+                                    var job_file_odb_g_td_down = `<a href='/media/${job_file_odb_g}' title='下载${job_file_odb_g}'>下载</a>`;
+                                    var job_file_odb_g_td_view=`<button class="btn btn-transparent" title="查看料号" onclick="window.location.href='g_current_odb_view/${job_id}/1';"><i class="fa fa-eye"></i></button>`;
+
+                                    var job_file_odb_g_td= `<td> ${job_file_odb_g_td_down} ${job_file_odb_g_td_view} </td>`;
+                                }
+                                else {
+                                    job_file_odb_g_td_input= `<button class="btn btn-transparent" title="生成G软件转图" onclick="window.location.href='gerber274x_to_odb_g/${job_id}/1';"><i class="fa fa-file"></i></button>`
+
+                                    var job_file_odb_g_td =`<td> ${job_file_odb_g_td_input} </td>`;
                                 }
 
 
@@ -737,7 +751,7 @@
                                 `<td> <a href='/job_manage/JobFormView/${job_id}' title='查看${job_name}详细信息'>${job_name}</a> </td>` +
                                 `${job_file_compressed_td}` +
                                 `${job_file_odb_current_td}` +
-                                `<td>${job_id}</td>` +
+                                `${job_file_odb_g_td}` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
                                 `<td>${job_id}</td>` +
