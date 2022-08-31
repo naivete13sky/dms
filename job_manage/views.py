@@ -744,6 +744,7 @@ class JobListView2(ListView):
             data = {}
             jobs = serializers.serialize("json", models.Job.objects.all())
             data["data"] = json.loads(jobs)
+            # print(data["data"])
             return JsonResponse(data, safe=False)
 
         def change_type(byte):
@@ -759,10 +760,7 @@ class JobListView2(ListView):
             return json.dumps(data,default=str, ensure_ascii=False)
         # print(object2json())
         context['JsonResponse']=object2json()
-        # context['JsonResponse'] = "abc"
-        # return HttpResponse(cc, content_type="application/json")
-        dict={'name':"cc","add":"ha"}
-        # context['JsonResponse']=json.dumps(dict)
+        # context['JsonResponse'] = object2json_serializers_job()
 
         return context
 
