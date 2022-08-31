@@ -254,12 +254,22 @@
                         </script>
 
                         <script>
+
                             $(document).ready(function () {
                                 {#alert("初始化1");#}
+
+                                {#$("#listtable").DataTable({destroy:true,});#}
+
+
+
+
+
+
                                 {#alert(MyViewVar.var_1["data"]);#}
                                 var tbody=window.document.getElementById("table_body");
 
-                                $("#listtable").DataTable().destroy(); //再次click后，先将datatable删除
+                                {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
+
                                 var str="";
                                 $("#table_body").html("");
                                 for (i in MyViewVar.var_1["data"]){
@@ -403,8 +413,11 @@
 
                                 {#alert("初始化2");#}
 
+
+
+
                                 $("#submit_query").click(function () {
-                                    alert("submit_search")
+                                    {#alert("submit_search")#}
                                     var tbody=window.document.getElementById("table_body");
                                     $.ajax({
                                         type:"post",
@@ -416,34 +429,143 @@
                                         url:"",
                                         dataType:"json",
                                         success:function (data) {
-                                            alert("hello")
-                                            alert(data)
+                                            {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
+                                            alert("hello1");
+                                            {#alert(data);#}
+                                            {#alert(typeof(data));#}
+                                            json_data=$.parseJSON(data);
+                                            {#alert(typeof(json_data));#}
+                                            {#alert(json_data.data)#}
+                                            {#alert(json_data.data[0]["id"])#}
+
+                                            {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
 
                                             var str="";
 
                                             $("#table_body").html("");
-                                                for (i in data.data){
+                                                for (i in json_data.data){
+                                                    {#alert("hello2");#}
+                                                    var job_id=json_data.data[i]["id"]
+                                                    var id=(parseInt(i)+parseInt(1))
+                                                    var job_name=json_data.data[i]["job_name"]
+                                                    var job_file_compressed=json_data.data[i]["file_compressed"]
+                                                    var job_bool_layer_info=json_data.data[i]["bool_layer_info"]
+                                                    var job_file_odb_current=json_data.data[i]["file_odb_current"]
+                                                    var job_file_odb_g=json_data.data[i]["file_odb_g"]
+                                                    var job_vs_result_ep=json_data.data[i]["vs_result_ep"]
+                                                    var job_vs_result_g=json_data.data[i]["vs_result_g"]
+                                                    var file_usage_type=json_data.data[i]["file_usage_type"]
+                                                    var remark=json_data.data[i]["remark"]
+                                                    var author_id= json_data.data[i]["author_id"]
+                                                    var status= json_data.data[i]["status"]
+
+
+
+                                                    //原始文件
+                                                    if(job_file_compressed){
+                                                        var job_file_compressed_td_down = `<a href='/media/${job_file_compressed}' title='下载${job_file_compressed}'>下载</a>`;
+                                                        var job_file_compressed_td_get_layer_info=`<button class="btn btn-transparent" title="生成层别名称：${job_file_compressed}" value="${job_id}" onclick="confirm_do_get_layer_info_ajax(this.value);"><i class="fa fa-list"></i></button>`;
+
+                                                        var job_file_compressed_td= `<td> ${job_file_compressed_td_down} ${job_file_compressed_td_get_layer_info} </td>`;
+                                                    }
+                                                    else {
+                                                        var job_file_compressed_td =`<td></td>`;
+                                                    }
+
+                                                    //悦谱最新转图
+                                                    if(job_file_odb_current){
+                                                        var job_file_odb_current_td_down = `<a href='/media/${job_file_odb_current}' title='下载${job_file_odb_current}'>下载</a>`;
+                                                        var job_file_odb_current_td_view=`<button class="btn btn-transparent" title="查看料号" onclick="window.location.href='ep_current_odb_view/${job_id}/1';"><i class="fa fa-eye"></i></button>`;
+
+                                                        var job_file_odb_current_td= `<td> ${job_file_odb_current_td_down} ${job_file_odb_current_td_view} </td>`;
+                                                    }
+                                                    else {
+                                                        job_file_odb_current_td_input= `<button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='gerber274x_to_odb_ep2/${job_id}/1';"><i class="fa fa-file"></i></button>`;
+
+                                                        var job_file_odb_current_td =`<td> ${job_file_odb_current_td_input} </td>`;
+                                                    }
+
+                                                    //G转图结果
+                                                    if(job_file_odb_g){
+                                                        var job_file_odb_g_td_down = `<a href='/media/${job_file_odb_g}' title='下载${job_file_odb_g}'>下载</a>`;
+                                                        var job_file_odb_g_td_view=`<button class="btn btn-transparent" title="查看料号" onclick="window.location.href='g_current_odb_view/${job_id}/1';"><i class="fa fa-eye"></i></button>`;
+
+                                                        var job_file_odb_g_td= `<td> ${job_file_odb_g_td_down} ${job_file_odb_g_td_view} </td>`;
+                                                    }
+                                                    else {
+                                                        job_file_odb_g_td_input= `<button class="btn btn-transparent" title="生成G软件转图" onclick="window.location.href='gerber274x_to_odb_g/${job_id}/1';"><i class="fa fa-file"></i></button>`;
+
+                                                        var job_file_odb_g_td =`<td> ${job_file_odb_g_td_input} </td>`;
+                                                    }
+
+
+
+                                                    //悦谱比图
+                                                    if(job_vs_result_ep==="passed"){
+                                                        var job_vs_result_ep_td_vs_result = `<a href='view_vs_ep/${job_id}' title='查看详情${job_file_odb_current}'>通过</a>`;
+                                                    }
+                                                    if(job_vs_result_ep==="failed"){
+                                                        var job_vs_result_ep_td_vs_result = `<a href='view_vs_ep/${job_id}' title='查看详情${job_file_odb_current}'>失败</a>`
+                                                    }
+                                                    if(job_vs_result_ep==="none"){
+                                                        var job_vs_result_ep_td_vs_result = `未比对`;
+                                                    }
+                                                    var job_vs_result_ep_td_vs=`<button class="btn btn-transparent" title="点击比对" value=${job_id} onclick="confirm_do_vs_ep_ajax(this.value);"><i class="fa fa-file-picture-o"></i></button>`;
+                                                    var job_vs_result_ep_td= `<td> ${job_vs_result_ep_td_vs_result} ${job_vs_result_ep_td_vs}</td>`;
+
+
+
+                                                    //G比图
+                                                    if(job_vs_result_g==="passed"){
+                                                        var job_vs_result_g_td_vs_result = `<a href='view_vs_g/${job_id}' title='查看详情${job_file_odb_g}'>通过</a>`;
+                                                    }
+                                                    if(job_vs_result_g==="failed"){
+                                                        var job_vs_result_g_td_vs_result = `<a href='view_vs_g/${job_id}' title='查看详情${job_file_odb_g}'>失败</a>`
+                                                    }
+                                                    if(job_vs_result_g==="none"){
+                                                        var job_vs_result_g_td_vs_result = `未比对`;
+                                                    }
+                                                    var job_vs_result_g_td_vs=`<button class="btn btn-transparent" title="点击比对" value=${job_id} onclick="confirm_do_vs_g_ajax(this.value);"><i class="fa fa-file-picture-o"></i></button>`;
+                                                    var job_vs_result_g_td= `<td> ${job_vs_result_g_td_vs_result} ${job_vs_result_g_td_vs}</td>`;
+
+                                                    //查看层别信息
+                                                    var job_view_layer_info_one_job_td_url = `<a href='../../LayerListView?which_one=${job_id}' title='查看层别信息' value=${job_id} >查看</a>`;
+                                                    var job_view_layer_info_one_job_td= `<td> ${job_view_layer_info_one_job_td_url}</td>`;
+
+                                                    //查看Bug信息
+                                                    var job_view_bug_one_job_td_url = `<a href='../../BugListView?which_one=${job_id}' title='查看Bug信息' value=${job_id} >查看</a>`;
+                                                    var job_view_bug_one_job_td= `<td> ${job_view_bug_one_job_td_url}</td>`;
+
+                                                    //编辑料号
+                                                    var job_edit_td_url = `<a href='JobUpdateView/${job_id}/1' title='编辑' value=${job_id} >编辑</a>`;
+                                                    //查看料号
+                                                    var job_view_td_url = `<a href='/job_manage/JobFormView/${job_id}' title='查看' value=${job_id} >查看</a>`;
+                                                    //删除料号
+                                                    var job_delete_td_url = `<a href='JobDeleteView/${job_id}' title='删除' value=${job_id} >删除</a>`;
+                                                    //分享料号
+                                                    var job_share_td_url = `<a href='share_job/${job_id}' title='分享' value=${job_id} >分享</a>`;
+                                                    var job_tool_td= `<td> ${job_edit_td_url} ${job_view_td_url} ${job_delete_td_url} ${job_share_td_url}</td>`;
 
 
 
 
                                                     str += "<tr>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
-                                                    "<td>" +  + "</td>" +
+                                                    `<td><input class="file" name="ids" type="checkbox" value="${job_id}" />${id}</td>` +
+                                                    `<td>${job_id}</td>` +
+                                                    `<td> <a href='/job_manage/JobFormView/${job_id}' title='查看${job_name}详细信息'>${job_name}</a> </td>` +
+                                                    `${job_file_compressed_td}` +
+                                                    `${job_file_odb_current_td}` +
+                                                    `${job_file_odb_g_td}` +
+                                                    `${job_vs_result_ep_td}` +
+                                                    `${job_vs_result_g_td}` +
+                                                    `${job_view_layer_info_one_job_td}` +
+                                                    `${job_view_bug_one_job_td}` +
+                                                    `<td>${file_usage_type}</td>` +
+                                                    `<td>${remark}</td>` +
+                                                    `<td>${author_id}</td>` +
+                                                    `<td>${status}</td>` +
+                                                    `<td>${status}</td>` +
+                                                    `<td>${job_tool_td}</td>` +
                                                     "<tr>";
 
                                             }

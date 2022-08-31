@@ -908,8 +908,20 @@ class JobListView2(ListView):
                         jobs = Job.objects.filter(
                             Q(author__username__contains=request.user.username)
                         ).values()
+                        print("my job length:",len(jobs))
                         data["data"] = list(jobs)
                         # print(data["data"])
+                        return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
+                        # return json.dumps(data, default=str, ensure_ascii=False)
+
+                    if select_author=='all':
+                        pass
+
+                        data = {}
+                        jobs = Job.objects.all().values()
+                        print("all job length:", len(jobs))
+                        data["data"] = list(jobs)
+                        print(data["data"])
                         return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
                         # return json.dumps(data, default=str, ensure_ascii=False)
 
