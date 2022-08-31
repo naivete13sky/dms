@@ -779,6 +779,22 @@
                                 var job_view_bug_one_job_td_url = `<a href='../../BugListView?which_one=${job_id}' title='查看Bug信息' value=${job_id} >查看</a>`;
                                 var job_view_bug_one_job_td= `<td> ${job_view_bug_one_job_td_url}</td>`;
 
+                                //编辑料号
+                                var job_edit_td_url = `<a href='JobUpdateView/${job_id}/1' title='编辑' value=${job_id} >编辑</a>`;
+                                //查看料号
+                                var job_view_td_url = `<a href='{{ job.get_absolute_url }}' title='查看' value=${job_id} >查看</a>`;
+                                //删除料号
+                                var job_delete_td_url = `<a href='JobDeleteView/{{ job.id }}' title='删除' value=${job_id} >删除</a>`;
+                                //分享料号
+                                var job_share_td_url = `<a href='share_job/{{ job.id }}' title='分享' value=${job_id} >分享</a>`;
+                                var job_tool_td= `<td> ${job_edit_td_url} ${job_view_td_url} ${job_delete_td_url} ${job_share_td_url}</td>`;
+
+
+
+
+
+
+
 
 
 
@@ -798,6 +814,7 @@
                                 `<td>${author_id}</td>` +
                                 `<td>${status}</td>` +
                                 `<td>${status}</td>` +
+                                `<td>${job_tool_td}</td>` +
                                 "<tr>";
 
 
