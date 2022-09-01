@@ -907,12 +907,23 @@ class JobListView2(ListView):
                     else:
                         select_author_search_value = request.user.username
 
+                    select_file_usage_type = request.POST.get("select_file_usage_type", False)
+                    print(select_file_usage_type)
+                    if select_file_usage_type == 'all':
+                        pass
+                        select_file_usage_type_value = ""
+                    else:
+                        select_file_usage_type_value = select_file_usage_type
+
 
 
                     data = {}
                     jobs = Job.objects.filter(
-                        Q(author__username__contains=select_author_search_value)
-                    ).values()
+                        Q(author__username__contains=select_author_search_value) &
+                        Q(file_usage_type__contains=select_file_usage_type_value)
+
+
+                          ).values()
                     print("my job length:",len(jobs))
                     data["data"] = list(jobs)
                     # print(data["data"])
