@@ -930,8 +930,9 @@ class JobListView2(ListView):
                     data["page_range"] = paginator.page_range # 显示页面的范围
 
                     page = request.POST.get('page')
+                    print("当前页:",page,type(page))
                     job_page = paginator.get_page(page)
-
+                    print("本页记录数:",)
 
                     print("my job length:",len(jobs_values))
                     data["data"] = list(job_page)
