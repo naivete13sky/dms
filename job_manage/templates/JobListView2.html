@@ -513,7 +513,7 @@
 
                                                 //是否有下一页
                                                 if(page_has_next){
-                                                    var page_has_next_html_1 = `<button type="button" id="page_ajax_net" class="btn btn-primary">下一页</button>`
+                                                    var page_has_next_html_1 = `<button type="button" id="page_ajax_next" class="btn btn-primary">下一页</button>`
                                                     var page_has_next_html_2 = `<a href="?page=${page_num_pages}">last &raquo;</a>`
                                                     var page_has_next_html=page_has_next_html_1 + page_has_next_html_2
                                                 } else{
@@ -556,27 +556,25 @@
                         </script>
 
 
+                        <script>
+                            //分页用
+                            $("#page_ajax_next").click(function () {
+                                alert("page_ajax_next clicked")
 
+                            })
+
+
+
+
+
+
+                        </script>
 
                         {#--------------------------------------分割线--------------------------------------#}
 {#                        {% include 'pagination_job.html' with page=page_obj %}#}
 
                         <div class="pagination" id = "pagination" >
-                            <span class="step-links">
-                                {% if contacts.has_previous %}
-                                    <a href="?page=1">&laquo; first</a>
-                                    <a href="?page={{ contacts.previous_page_number }}">previous</a>
-                                {% endif %}
 
-                                <span class="current">
-                                    Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
-                                </span>
-
-                                {% if contacts.has_next %}
-                                    <a href="?page={{ contacts.next_page_number }}">next</a>
-                                    <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
-                                {% endif %}
-                            </span>
                         </div>
 
 
