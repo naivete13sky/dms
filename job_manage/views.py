@@ -961,7 +961,7 @@ class JobListView3(ListView):
     context_object_name = 'jobs'
     paginate_by = 10
     # ordering = ['-publish']
-    template_name = 'JobListView2.html'
+    template_name = 'JobListView3.html'
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -1203,12 +1203,8 @@ class JobListView3(ListView):
                     query_from_object_value = query_from_object
 
 
-
-
-
                     #开始查询
                     data = {}
-
                     #不知道什么原因导致了from_object这个字段用Q查询会异常.空白会搜索出来from_object带有值的内容,而我的期望是空白时搜索出来所有.所有只能分支来写查询了.
                     if query_from_object_value != "":
                         jobs = Job.objects.filter(
@@ -1224,38 +1220,15 @@ class JobListView3(ListView):
                         )
 
                     jobs_values = jobs.values()
-
-                    #POST的分页
-                    paginator = Paginator(jobs_values, 10)
-                    data["page_count"] = paginator.count #数据总数量
-                    data["page_num_pages"] = paginator.num_pages # 显示分页后总页数
-                    data["page_range"] = paginator.page_range # 显示页面的范围
-
-                    page = request.POST.get('page')
-                    print("当前页:",page,type(page))
-                    job_page = paginator.get_page(page)
-                    print("本页记录数:",)
-
                     print("my job length:",len(jobs_values))
-                    data["data"] = list(job_page)
-                    data["page"]=job_page
-
-
-                    data["page_has_previous"]=job_page.has_previous()
-                    if job_page.has_previous():
-                        data["page_previous_page_number"] = job_page.previous_page_number()
-
-
-
-                    data["page_has_next"] = job_page.has_next()
-                    if job_page.has_next():
-                        data["page_next_page_numbe"]=job_page.next_page_number()
-
-
+                    data["data"] = list(jobs_values)
                     print(data["data"])
                     return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
 
                 return HttpResponse(request.POST.get("post_type",False))
+
+
+
 
 class JobDetailView(DetailView):
     model = Job

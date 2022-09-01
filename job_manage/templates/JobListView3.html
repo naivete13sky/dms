@@ -11,7 +11,7 @@
     <li>
         <a>料号查询-通用</a>
     </li>
-<script>$("#listtable").DataTable({retrieve: true,});</script>
+<script>$("#basic-table").DataTable({retrieve: true,});</script>
 {% endblock %}
 
 {% block search %}
@@ -136,23 +136,311 @@
                             }
                             </script>
 
-
-                        <table class=" table table-striped nowrap table-hover" id="listtable" cellspacing="0" width="100%">
+                        <table id="basic-table" class=" table table-striped nowrap table-hover" cellspacing="0" width="100%">
                             <thead>
-                                <tr>
+                            <tr>
+                                <th><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br /></th>
+                                {% for each in job_field_verbose_name %}
+                                    <th>{{ each }}</th>
 
-                                    <th><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br /></th>
-                                    {% for each in job_field_verbose_name %}
-                                        <th>{{ each }}</th>
+                                {% endfor  %}
 
-                                    {% endfor  %}
-
-                                </tr>
+                            </tr>
                             </thead>
                             <tbody id="table_body">
 
+                            {% for job in jobs %}
+
+                                <tr>
+                                <td>
+{#                                    <input type="checkbox" name="check_box_list" value="{{ layer.id }}" onclick="userCheck(this)">#}
+
+                                    <input class="file" name="ids" type="checkbox" value="{{ job.id }}" />
+                                    {{ forloop.counter }}
+
+
+                                </td>
+                                <td>{{ job.id }}</td>
+
+                                <td>
+                                    <a href="{{ job.get_absolute_url }}" title="查看{{ job.job_name }}详细信息">
+                                        {{ job.job_name|slice:"20" }}
+                                    </a>
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.file_compressed %}
+                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';"><i class="fa fa-download"></i>
+                                        </button>
+
+
+
+                                    {% endif %}
+                                    {% if job.bool_layer_info == 'false' %}
+                                        <button class="btn btn-transparent" title="生成层别名称：{{ job.file_compressed }}" value={{ job.id }} onclick="confirm_do_get_layer_info(this.value);"><i class="fa fa-list"></i>
+                                        </button>
+
+
+                                        <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_get_layer_info(value)
+                                            {
+                                                 if(confirm("确定要执行生成层名操作吗?"))
+                                                 {
+
+                                                     window.location.href='get_file_name_from_org/' + value;
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     alert(value)
+                                                     return false;
+
+                                                 }
+                                            }
+                                        </script>
+
+
+                                    {% endif %}
+
+                                    {% if job.bool_layer_info == 'true' %}
+                                        <button class="btn btn-transparent" title="打开生成层别名称入口：{{ job.file_compressed }}" onclick="window.location.href='get_file_name_from_org_on/{{ job.id }}';"><i class="fa fa-toggle-on"></i>
+                                        </button>
+
+                                    {% endif %}
+
+
+                                </td>
+
+{#                                <td>#}
+{#                                    {% if job.file_compressed_org %}#}
+{#                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed_org }}" onclick="window.location.href='/media/{{ job.file_compressed_org }}';"><i class="fa fa-download"></i>#}
+{#                                        </button>#}
+{##}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{##}
+{#                                <td>#}
+{#                                    {% if job.file_odb %}#}
+{#                                        <button class="btn btn-transparent" title="EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb }}';"><i class="fa fa-download"></i>#}
+{#                                        </button>#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+
+                                <td>
+                                    {% if job.file_odb_current %}
+{#                                        {{ job.file_odb_current }}#}
+                                        <button class="btn btn-transparent" title="最新EP-ODB下载：{{ job.file_odb}}" onclick="window.location.href='/media/{{ job.file_odb_current }}';"><i class="fa fa-download"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看料号" onclick="window.location.href='ep_current_odb_view/{{ job.id }}/{{ current_page }}';"><i class="fa fa-eye"></i>
+
+                                        </button>
+
+                                    {% endif %}
+
+                                    {% if not job.file_odb_current %}
+                                        <button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='gerber274x_to_odb_ep2/{{ job.id }}/{{ current_page }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="G-ODB下载：{{ job.file_odb_g}}" onclick="window.location.href='/media/{{ job.file_odb_g }}';"><i class="fa fa-download"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="查看料号" onclick="window.location.href='g_current_odb_view/{{ job.id }}/{{ current_page }}';"><i class="fa fa-eye"></i>
+
+                                        </button>
+
+                                    {% endif %}
+
+                                    {% if not job.file_odb_g %}
+                                        <button class="btn btn-transparent" title="生成G软件转图" onclick="window.location.href='gerber274x_to_odb_g/{{ job.id }}';"><i class="fa fa-file"></i>
+                                        </button>
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    {% if job.vs_result_ep == 'passed' %}
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs_ep/{{ job.id }}';">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_ep == 'failed' %}
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs_ep/{{ job.id }}';">
+                                            <i class="fa fa-asterisk"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_ep == 'none' %}
+                                        未比对
+
+                                    {% endif %}
+
+                                    <button class="btn btn-transparent" title="点击比对" value={{ job.id }} onclick="confirm_do_vs_ep(this.value);"><i class="fa fa-file-picture-o"></i>
+                                    </button>
+                                    <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_vs_ep(value)
+                                            {
+                                                 if(confirm("确定要执行悦谱比图操作吗?"))
+                                                 {
+
+                                                     window.location.href='vs_ep/' + value + '/{{ current_page }}';
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     alert(value)
+                                                     return false;
+
+                                                 }
+                                            }
+                                    </script>
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.vs_result_g == 'passed' %}
+                                        <button class="btn btn-transparent" title="通过，查看详情" onclick="window.location.href='view_vs_g/{{ job.id }}';">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_g == 'failed' %}
+                                        <button class="btn btn-transparent" title="失败，查看详情" onclick="window.location.href='view_vs_g/{{ job.id }}';">
+                                            <i class="fa fa-asterisk"></i>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if job.vs_result_g == 'none' %}
+                                        未比对
+
+                                    {% endif %}
+
+                                    <button class="btn btn-transparent" title="点击比对" value={{ job.id }} onclick="confirm_do_vs_g(this.value);"><i class="fa fa-file-picture-o"></i>
+                                    </button>
+
+                                        <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_vs_g(value)
+                                            {
+                                                 if(confirm("确定要执行G软件比图操作吗?"))
+                                                 {
+
+                                                     window.location.href='vs_g/' + value + '/{{ current_page }}';
+                                                     {#return true;#}
+
+                                                 }else{
+                                                     {#alert(value)#}
+                                                     return false;
+
+                                                 }
+                                            }
+                                        </script>
+
+                                </td>
+
+                                <td>
+{#                                    <button class="btn btn-transparent" title="查看层别" onclick="window.location.href='view_layer/{{ job.id }}';"><i class="fa fa-eye"></i>#}
+{##}
+{#                                    </button>#}
+
+                                    <form action="../../LayerListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看层别信息" ><i class="fa fa-eye"></i>
+
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </td>
+
+                                <td>
+                                    <form action="../../BugListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看Bug" ><i class="fa fa-bug"></i>
+
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </td>
+
+
+                                <td>{{ job.get_file_usage_type_display }}</td>
+
+                                <td>
+
+                                    <div title={{ job.remark }}> {{ job.remark|slice:"20" }} </div>
+                                </td>
+                                <td>{{ job.author }}</td>
+{#                                <td>{{ job.from_object }}</td>#}
+                                <td>
+                                    {% if job.status == "published" %}
+                                        <div style=color:green;>{{ job.get_status_display }}</div>
+
+                                    {% endif %}
+                                    {% if job.status != "published" %}
+                                        {{ job.get_status_display }}
+
+                                    {% endif %}
+
+                                </td>
+{#                                <td>{{ job.create_time }}</td>#}
+{#                                <td>{{ job.updated }}</td>#}
+                                <td>
+                                    {% for tag in job.tags.all %}
+                                        <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if tag %}
+                                        <h2>Posts tagged with "{{ tag.name }}"</h2>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <div class="btn-group btn-group-xs">
+                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/{{ job.id }}/{{ current_page }}';"><i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
+{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/{{ job.id }}';"><i class="fa fa-times"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/{{ job.id }}';"><i class="fa fa-share-alt"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分析" onclick="window.location.href='job_analysis';"><i class="fa fa-server"></i>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            {% endfor %}
+
+
+
                             </tbody>
                         </table>
+
+
 
                         <script>
                             var MyViewVar = {
@@ -162,155 +450,7 @@
                             $(document).ready(function () {
                                 {#alert("初始化1");#}
 
-                                {#alert(MyViewVar.var_1["data"]);#}
                                 var tbody=window.document.getElementById("table_body");
-
-                                {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
-
-                                var str="";
-                                $("#table_body").html("");
-                                for (i in MyViewVar.var_1["data"]){
-                                    {#alert(i)#}
-                                    var job_id=MyViewVar.var_1["data"][i]["id"]
-                                    var id=(parseInt(i)+parseInt(1))
-                                    var job_name=MyViewVar.var_1["data"][i]["job_name"]
-                                    var job_file_compressed=MyViewVar.var_1["data"][i]["file_compressed"]
-                                    var job_bool_layer_info=MyViewVar.var_1["data"][i]["bool_layer_info"]
-                                    var job_file_odb_current=MyViewVar.var_1["data"][i]["file_odb_current"]
-                                    var job_file_odb_g=MyViewVar.var_1["data"][i]["file_odb_g"]
-                                    var job_vs_result_ep=MyViewVar.var_1["data"][i]["vs_result_ep"]
-                                    var job_vs_result_g=MyViewVar.var_1["data"][i]["vs_result_g"]
-                                    var file_usage_type=MyViewVar.var_1["data"][i]["file_usage_type"]
-                                    var remark=MyViewVar.var_1["data"][i]["remark"]
-                                    var author_id= MyViewVar.var_1["data"][i]["author_id"]
-                                    var status= MyViewVar.var_1["data"][i]["status"]
-
-
-
-
-                                    //原始文件
-                                    if(job_file_compressed){
-                                        var job_file_compressed_td_down = `<a href='/media/${job_file_compressed}' title='下载${job_file_compressed}'>下载</a>`;
-                                        var job_file_compressed_td_get_layer_info=`<button class="btn btn-transparent" title="生成层别名称：${job_file_compressed}" value="${job_id}" onclick="confirm_do_get_layer_info_ajax(this.value);"><i class="fa fa-list"></i></button>`;
-
-                                        var job_file_compressed_td= `<td> ${job_file_compressed_td_down} ${job_file_compressed_td_get_layer_info} </td>`;
-                                    }
-                                    else {
-                                        var job_file_compressed_td =`<td></td>`;
-                                    }
-
-                                    //悦谱最新转图
-                                    if(job_file_odb_current){
-                                        var job_file_odb_current_td_down = `<a href='/media/${job_file_odb_current}' title='下载${job_file_odb_current}'>下载</a>`;
-                                        var job_file_odb_current_td_view=`<button class="btn btn-transparent" title="查看料号" onclick="window.location.href='ep_current_odb_view/${job_id}/1';"><i class="fa fa-eye"></i></button>`;
-
-                                        var job_file_odb_current_td= `<td> ${job_file_odb_current_td_down} ${job_file_odb_current_td_view} </td>`;
-                                    }
-                                    else {
-                                        job_file_odb_current_td_input= `<button class="btn btn-transparent" title="生成最新悦谱转图" onclick="window.location.href='gerber274x_to_odb_ep2/${job_id}/1';"><i class="fa fa-file"></i></button>`;
-
-                                        var job_file_odb_current_td =`<td> ${job_file_odb_current_td_input} </td>`;
-                                    }
-
-                                    //G转图结果
-                                    if(job_file_odb_g){
-                                        var job_file_odb_g_td_down = `<a href='/media/${job_file_odb_g}' title='下载${job_file_odb_g}'>下载</a>`;
-                                        var job_file_odb_g_td_view=`<button class="btn btn-transparent" title="查看料号" onclick="window.location.href='g_current_odb_view/${job_id}/1';"><i class="fa fa-eye"></i></button>`;
-
-                                        var job_file_odb_g_td= `<td> ${job_file_odb_g_td_down} ${job_file_odb_g_td_view} </td>`;
-                                    }
-                                    else {
-                                        job_file_odb_g_td_input= `<button class="btn btn-transparent" title="生成G软件转图" onclick="window.location.href='gerber274x_to_odb_g/${job_id}/1';"><i class="fa fa-file"></i></button>`;
-
-                                        var job_file_odb_g_td =`<td> ${job_file_odb_g_td_input} </td>`;
-                                    }
-
-
-
-                                    //悦谱比图
-                                    if(job_vs_result_ep==="passed"){
-                                        var job_vs_result_ep_td_vs_result = `<a href='view_vs_ep/${job_id}' title='查看详情${job_file_odb_current}'>通过</a>`;
-                                    }
-                                    if(job_vs_result_ep==="failed"){
-                                        var job_vs_result_ep_td_vs_result = `<a href='view_vs_ep/${job_id}' title='查看详情${job_file_odb_current}'>失败</a>`
-                                    }
-                                    if(job_vs_result_ep==="none"){
-                                        var job_vs_result_ep_td_vs_result = `未比对`;
-                                    }
-                                    var job_vs_result_ep_td_vs=`<button class="btn btn-transparent" title="点击比对" value=${job_id} onclick="confirm_do_vs_ep_ajax(this.value);"><i class="fa fa-file-picture-o"></i></button>`;
-                                    var job_vs_result_ep_td= `<td> ${job_vs_result_ep_td_vs_result} ${job_vs_result_ep_td_vs}</td>`;
-
-
-
-                                    //G比图
-                                    if(job_vs_result_g==="passed"){
-                                        var job_vs_result_g_td_vs_result = `<a href='view_vs_g/${job_id}' title='查看详情${job_file_odb_g}'>通过</a>`;
-                                    }
-                                    if(job_vs_result_g==="failed"){
-                                        var job_vs_result_g_td_vs_result = `<a href='view_vs_g/${job_id}' title='查看详情${job_file_odb_g}'>失败</a>`
-                                    }
-                                    if(job_vs_result_g==="none"){
-                                        var job_vs_result_g_td_vs_result = `未比对`;
-                                    }
-                                    var job_vs_result_g_td_vs=`<button class="btn btn-transparent" title="点击比对" value=${job_id} onclick="confirm_do_vs_g_ajax(this.value);"><i class="fa fa-file-picture-o"></i></button>`;
-                                    var job_vs_result_g_td= `<td> ${job_vs_result_g_td_vs_result} ${job_vs_result_g_td_vs}</td>`;
-
-                                    //查看层别信息
-                                    var job_view_layer_info_one_job_td_url = `<a href='../../LayerListView?which_one=${job_id}' title='查看层别信息' value=${job_id} >查看</a>`;
-                                    var job_view_layer_info_one_job_td= `<td> ${job_view_layer_info_one_job_td_url}</td>`;
-
-                                    //查看Bug信息
-                                    var job_view_bug_one_job_td_url = `<a href='../../BugListView?which_one=${job_id}' title='查看Bug信息' value=${job_id} >查看</a>`;
-                                    var job_view_bug_one_job_td= `<td> ${job_view_bug_one_job_td_url}</td>`;
-
-                                    //编辑料号
-                                    var job_edit_td_url = `<a href='JobUpdateView/${job_id}/1' title='编辑' value=${job_id} >编辑</a>`;
-                                    //查看料号
-                                    var job_view_td_url = `<a href='/job_manage/JobFormView/${job_id}' title='查看' value=${job_id} >查看</a>`;
-                                    //删除料号
-                                    var job_delete_td_url = `<a href='JobDeleteView/${job_id}' title='删除' value=${job_id} >删除</a>`;
-                                    //分享料号
-                                    var job_share_td_url = `<a href='share_job/${job_id}' title='分享' value=${job_id} >分享</a>`;
-                                    var job_tool_td= `<td> ${job_edit_td_url} ${job_view_td_url} ${job_delete_td_url} ${job_share_td_url}</td>`;
-
-
-
-
-
-
-
-
-
-
-                                    str += "<tr>" +
-                                    `<td><input class="file" name="ids" type="checkbox" value="${job_id}" />${id}</td>` +
-                                    `<td>${job_id}</td>` +
-                                    `<td> <a href='/job_manage/JobFormView/${job_id}' title='查看${job_name}详细信息'>${job_name}</a> </td>` +
-                                    `${job_file_compressed_td}` +
-                                    `${job_file_odb_current_td}` +
-                                    `${job_file_odb_g_td}` +
-                                    `${job_vs_result_ep_td}` +
-                                    `${job_vs_result_g_td}` +
-                                    `${job_view_layer_info_one_job_td}` +
-                                    `${job_view_bug_one_job_td}` +
-                                    `<td>${file_usage_type}</td>` +
-                                    `<td>${remark}</td>` +
-                                    `<td>${author_id}</td>` +
-                                    `<td>${status}</td>` +
-                                    `<td>${status}</td>` +
-                                    `<td>${job_tool_td}</td>` +
-                                    "<tr>";
-
-
-                            }
-
-
-                                $("#table_body").append(str);
-
-
-                                {#alert("初始化2");#}
-
-
 
                                 $("#submit_query").click(function () {
                                     {#alert("submit_search")#}
@@ -329,7 +469,7 @@
                                         url:"",
                                         dataType:"json",
                                         success:function (data) {
-                                            {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
+                                            {#$("#basic-table").DataTable().destroy(); //再次click后，先将datatable删除#}
                                             {#alert("hello1");#}
                                             {#alert(data);#}
                                             {#alert(typeof(data));#}
@@ -338,12 +478,13 @@
                                             {#alert(json_data.data)#}
                                             {#alert(json_data.data[0]["id"])#}
 
-                                            {#$("#listtable").DataTable().destroy(); //再次click后，先将datatable删除#}
+                                            {#$("#basic-table").DataTable().destroy(); //再次click后，先将datatable删除#}
 
                                             var str="";
 
                                             $("#table_body").html("");
-                                                for (i in json_data.data){
+
+                                            for (i in json_data.data){
                                                     {#alert("hello2");#}
                                                     var job_id=json_data.data[i]["id"]
                                                     var id=(parseInt(i)+parseInt(1))
@@ -469,65 +610,11 @@
                                                     "<tr>";
 
                                             }
+
                                             $("#table_body").append(str);
 
 
-                                            var str_pagination="";
                                             $("#pagination").html("");
-
-                                                var page = json_data.page;
-                                                {#alert(page);#}
-
-                                                var page_has_previous = json_data.page_has_previous;
-                                                {#alert(page_has_previous);#}
-                                                var page_previous_page_number=json_data.page_previous_page_number
-
-                                                var page_num_pages = json_data.page_num_pages;
-                                                {#alert(page_num_pages);#}
-
-                                                var page_has_next = json_data.page_has_next;
-                                                {#alert(page_has_next);#}
-                                                var page_next_page_numbe = json_data.page_next_page_numbe;
-
-                                                //是否有上一页
-                                                if(page_has_previous){
-                                                    var page_has_previous_html_1 = `<a href="?page=1">&laquo; first</a>`
-                                                    var page_has_previous_html_2 = `<a href="?page=${page_previous_page_number}">previous</a>`
-                                                    var page_has_previous_html=page_has_previous_html_1 + page_has_previous_html_2
-                                                } else {
-                                                    page_has_previous_html=``
-                                                }
-
-
-                                                //是否有下一页
-                                                if(page_has_next){
-                                                    var page_has_next_html_1 = `<button type="button" id="page_ajax_next" class="btn btn-primary" value=${page_next_page_numbe}>下一页</button>`
-                                                    var page_has_next_html_2 = `<a href="?page=${page_num_pages}">last &raquo;</a>`
-                                                    var page_has_next_html=page_has_next_html_1 + page_has_next_html_2
-                                                } else{
-                                                    page_has_next_html=``
-                                                }
-
-
-
-
-
-                                                str_pagination += `<div class="pagination" id = "pagination" >` +
-                                                    `<span class="step-links">` +
-                                                        `${page_has_previous_html}` +
-                                                        `<span class="current">` +
-                                                            `Page 1 of ${page_num_pages} &emsp;` +
-                                                        `</span>` +
-                                                        `${page_has_next_html}` +
-                                                        `` +
-                                                        `` +
-                                                        `` +
-                                                        `` +
-                                                        `` +
-                                                    `</span>` +
-                                                `</div>`;
-
-                                            $("#pagination").append(str_pagination);
 
                                         },
                                         error:function () {
@@ -551,10 +638,9 @@
 
 
 
-
-
+                    <div id="pagination">
                         {% include 'pagination_job.html' with page=page_obj %}
-
+                    </div>
 
 
                         <script type="text/javascript" language="JavaScript">
