@@ -162,14 +162,12 @@
 
 
 
+
+
                         <script>
                             var MyViewVar = {
                                 var_1: {{ JsonResponse|safe }},
                             };
-                            {#alert(MyViewVar.var_1);#}
-                        </script>
-
-                        <script>
 
                             $(document).ready(function () {
                                 {#alert("初始化1");#}
@@ -513,7 +511,7 @@
 
                                                 //是否有下一页
                                                 if(page_has_next){
-                                                    var page_has_next_html_1 = `<button type="button" id="page_ajax_next" class="btn btn-primary">下一页</button>`
+                                                    var page_has_next_html_1 = `<button type="button" id="page_ajax_next" class="btn btn-primary" value=${page_next_page_numbe} onclick="page_next_ajax(this.value);">下一页</button>`
                                                     var page_has_next_html_2 = `<a href="?page=${page_num_pages}">last &raquo;</a>`
                                                     var page_has_next_html=page_has_next_html_1 + page_has_next_html_2
                                                 } else{
@@ -547,6 +545,11 @@
                                         }
                                     })
                                 })
+
+
+
+
+
                             })
 
 
@@ -556,19 +559,7 @@
                         </script>
 
 
-                        <script>
-                            //分页用
-                            $("#page_ajax_next").click(function () {
-                                alert("page_ajax_next clicked")
 
-                            })
-
-
-
-
-
-
-                        </script>
 
                         {#--------------------------------------分割线--------------------------------------#}
 {#                        {% include 'pagination_job.html' with page=page_obj %}#}
@@ -582,39 +573,39 @@
 
 
                         <script type="text/javascript" language="JavaScript">
-                                function confirm_do_get_layer_info_ajax(value)
-                                {
-                                     if(confirm("确定要执行生成层名操作吗?"))
-                                     {
-                                         {#alert("确认")#}
-                                         $.ajax({
-                                            type:"post",
-                                            data:{
-                                                "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
-                                                "post_type":"get_file_name_from_org",
-                                                "job_id":value,
-                                            },
-                                            url:"",
-                                            dataType:"text",
-                                            success:function (data) {
-                                                alert(data)
+                            function confirm_do_get_layer_info_ajax(value)
+                            {
+                                 if(confirm("确定要执行生成层名操作吗?"))
+                                 {
+                                     {#alert("确认")#}
+                                     $.ajax({
+                                        type:"post",
+                                        data:{
+                                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                            "post_type":"get_file_name_from_org",
+                                            "job_id":value,
+                                        },
+                                        url:"",
+                                        dataType:"text",
+                                        success:function (data) {
+                                            alert(data)
 
-                                            },
-                                            error:function () {
-                                                alert("false");
-                                            }
-                                        })
-                                         window.location.href="get_file_name_from_org/" + value;
-                                         {#return true;#}
+                                        },
+                                        error:function () {
+                                            alert("false");
+                                        }
+                                    })
+                                     window.location.href="get_file_name_from_org/" + value;
+                                     {#return true;#}
 
-                                     }else{
-                                         alert(value)
-                                         alert("cc")
-                                         return false;
+                                 }else{
+                                     alert(value)
+                                     alert("cc")
+                                     return false;
 
-                                     }
-                                }
-                            </script>
+                                 }
+                            }
+                        </script>
 
                         <script type="text/javascript" language="JavaScript">
                                 function confirm_do_vs_ep_ajax(value)
@@ -650,6 +641,11 @@
                             }
                         </script>
 
+
+
+
+
+
                     </div>
 
 
@@ -657,7 +653,6 @@
 
 
                     {% csrf_token %}
-{#                    <br>#}
                     <sapn class="current">
                         <span class="step-links">
                             批量设置：
@@ -765,14 +760,6 @@
 
 
                     </script>
-
-{#                {{ JsonResponse }}#}
-{#                {% for each in JsonResponse %}#}
-{#                    {{ each }}#}
-{#                {% endfor %}#}
-
-
-
 
 
 
