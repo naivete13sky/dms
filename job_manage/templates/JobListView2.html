@@ -90,77 +90,14 @@
                             <button type="submit" class="btn btn-primary">模糊查询</button>
                         </div>
 
-                        <div class="form-group">
-                            <label><input name="view_job" type="radio" id="radio_view_all_job" {{ radio_view_all_job }}  onclick="view_all_job(this)" />查看所有料号 </label>
-                            <label><input name="view_job" type="radio" id="radio_view_my_job" {{ radio_view_my_job }} onclick="view_my_job(this)" />只看我的料号 </label>
-                        </div>
-
 
 
 
                     </form>
 
 
-                    <script>
-                        function view_my_job() {
-                            {#alert("view_my_job")#}
-                            {#alert("checked")#}
-                            {#$('.btn_view_current_user_job').click()#}
-                            $.ajax( {
-                                    type : "post",
-                                    url : "",
-                                    dataType : "text",
-                                    data:{
-                                        "radio_view_my_job":$("#radio_view_my_job").val(),
-                                        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
-                                    },   //指定要提交给后端的数据
-
-                                    success : function(data) {
-                                        {#alert(data);#}
-                                        window.location.href = "?query="+ data + "&radio_view_my_job=" + true;
-                                    },
-                                    error : function(data) {
-                                        alert("系统错误，操作失败");
-                                    }
-                                });
-
-                        }
-                    </script>
-
-                    <script>
-                        function view_all_job() {
-                            {#alert("view_all_job")#}
-                            window.location.href = '../../job_manage/JobListView' ;
 
 
-                        }
-                    </script>
-
-                    <script>
-                        function view_job_usage_type() {
-                            {#alert("view_my_job")#}
-                            {#alert("checked")#}
-                            {#$('.btn_view_current_user_job').click()#}
-                            $.ajax( {
-                                    type : "post",
-                                    url : "",
-                                    dataType : "text",
-                                    data:{
-                                        "select_file_usage_type":$("#select_file_usage_type").val(),
-                                        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
-                                    },   //指定要提交给后端的数据
-
-                                    success : function(data) {
-                                        {#alert(data);#}
-                                        window.location.href = "?file_usage_type="+ data;
-                                    },
-                                    error : function(data) {
-                                        alert("系统错误，操作失败");
-                                    }
-                                });
-
-                        }
-                    </script>
 
 
 

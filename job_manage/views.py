@@ -877,19 +877,6 @@ class JobListView2(ListView):
 
                 return HttpResponse(request.user.username)
 
-            # if request.POST.__contains__("select_file_usage_type"):
-            #     print("select_file_usage_type",request.POST.get("select_file_usage_type"))
-            #     if request.POST.get("select_file_usage_type")=="all":
-            #         pass
-            #         result=''
-            #
-            #     else:
-            #         queryset = models.Job.objects.filter(file_usage_type=request.POST.get("select_file_usage_type"))
-            #         print(queryset)
-            #         result=request.POST.get("select_file_usage_type")
-            #
-            #     return HttpResponse(result)
-
             if request.POST.get("post_type",False):
                 print("*"*100,request.POST.get("post_type",False))
                 if request.POST.get("post_type",False)== 'get_file_name_from_org':
@@ -899,6 +886,8 @@ class JobListView2(ListView):
                 if request.POST.get("post_type",False)== 'search_ajax':
                     pass
                     print("search_ajax")
+
+                    #用户筛选,所有或者自己的
                     select_author=request.POST.get("select_author",False)
                     print(select_author)
                     if select_author=='all':
@@ -907,6 +896,7 @@ class JobListView2(ListView):
                     else:
                         select_author_search_value = request.user.username
 
+                    #料号使用类型筛选:所有,或者对应的查询值
                     select_file_usage_type = request.POST.get("select_file_usage_type", False)
                     print(select_file_usage_type)
                     if select_file_usage_type == 'all':
@@ -916,11 +906,11 @@ class JobListView2(ListView):
                         select_file_usage_type_value = select_file_usage_type
 
 
-
+                    #开始查询
                     data = {}
                     jobs = Job.objects.filter(
                         Q(author__username__contains=select_author_search_value) &
-                        Q(file_usage_type__contains=select_file_usage_type_value)
+                        Q(file_usage_type__startswith=select_file_usage_type_value)
 
 
                           ).values()
@@ -928,9 +918,6 @@ class JobListView2(ListView):
                     data["data"] = list(jobs)
                     # print(data["data"])
                     return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
-                    # return json.dumps(data, default=str, ensure_ascii=False)
-
-
 
                 return HttpResponse(request.POST.get("post_type",False))
 
