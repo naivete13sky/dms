@@ -336,6 +336,7 @@
                                             "select_file_usage_type":$("#select_file_usage_type").val(),
                                             "query_job_name":$("#query_job_name").val(),
                                             "query_from_object":$("#query_from_object").val(),
+                                            "page":1,//点击是搜索,返回的肯定是第1页.
                                         },
                                         url:"",
                                         dataType:"json",
@@ -483,6 +484,62 @@
                                             $("#table_body").append(str);
 
 
+                                            var str_pagination="";
+                                            $("#pagination").html("");
+
+                                                var page = json_data.page;
+                                                {#alert(page);#}
+
+                                                var page_has_previous = json_data.page_has_previous;
+                                                {#alert(page_has_previous);#}
+                                                var page_previous_page_number=json_data.page_previous_page_number
+
+                                                var page_num_pages = json_data.page_num_pages;
+                                                {#alert(page_num_pages);#}
+
+                                                var page_has_next = json_data.page_has_next;
+                                                {#alert(page_has_next);#}
+                                                var page_next_page_numbe = json_data.page_next_page_numbe;
+
+                                                //是否有上一页
+                                                if(page_has_previous){
+                                                    var page_has_previous_html_1 = `<a href="?page=1">&laquo; first</a>`
+                                                    var page_has_previous_html_2 = `<a href="?page=${page_previous_page_number}">previous</a>`
+                                                    var page_has_previous_html=page_has_previous_html_1 + page_has_previous_html_2
+                                                } else {
+                                                    page_has_previous_html=``
+                                                }
+
+
+                                                //是否有下一页
+                                                if(page_has_next){
+                                                    var page_has_next_html_1 = `<a href="?page=${page_next_page_numbe}">next &emsp;</a>`
+                                                    var page_has_next_html_2 = `<a href="?page=${page_num_pages}">last &raquo;</a>`
+                                                    var page_has_next_html=page_has_next_html_1 + page_has_next_html_2
+                                                } else{
+                                                    page_has_next_html=``
+                                                }
+
+
+
+
+
+                                                str_pagination += `<div class="pagination" id = "pagination" >` +
+                                                    `<span class="step-links">` +
+                                                        `${page_has_previous_html}` +
+                                                        `<span class="current">` +
+                                                            `Page 1 of ${page_num_pages} &emsp;` +
+                                                        `</span>` +
+                                                        `${page_has_next_html}` +
+                                                        `` +
+                                                        `` +
+                                                        `` +
+                                                        `` +
+                                                        `` +
+                                                    `</span>` +
+                                                `</div>`;
+
+                                            $("#pagination").append(str_pagination);
 
                                         },
                                         error:function () {
@@ -501,7 +558,7 @@
                         {#--------------------------------------分割线--------------------------------------#}
 {#                        {% include 'pagination_job.html' with page=page_obj %}#}
 
-                        <div class="pagination">
+                        <div class="pagination" id = "pagination" >
                             <span class="step-links">
                                 {% if contacts.has_previous %}
                                     <a href="?page=1">&laquo; first</a>

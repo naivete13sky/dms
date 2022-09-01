@@ -922,16 +922,33 @@ class JobListView2(ListView):
                         )
 
                     jobs_values = jobs.values()
+
                     #POST的分页
                     paginator = Paginator(jobs_values, 10)
+                    data["page_count"] = paginator.count #数据总数量
+                    data["page_num_pages"] = paginator.num_pages # 显示分页后总页数
+                    data["page_range"] = paginator.page_range # 显示页面的范围
+
                     page = request.POST.get('page')
                     job_page = paginator.get_page(page)
 
 
-
-
                     print("my job length:",len(jobs_values))
                     data["data"] = list(job_page)
+                    data["page"]=job_page
+
+
+                    data["page_has_previous"]=job_page.has_previous()
+                    if job_page.has_previous():
+                        data["page_previous_page_number"] = job_page.previous_page_number()
+
+
+
+                    data["page_has_next"] = job_page.has_next()
+                    if job_page.has_next():
+                        data["page_next_page_numbe"]=job_page.next_page_number()
+
+
                     print(data["data"])
                     return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
 
