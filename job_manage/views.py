@@ -889,26 +889,34 @@ class JobListView2(ListView):
 
                     #用户筛选,所有或者自己的
                     select_author=request.POST.get("select_author",False)
-                    print(select_author)
+                    print("select_author",select_author)
                     if select_author=='all':
                         pass
                         select_author_search_value=""
                     else:
                         select_author_search_value = request.user.username
+                    select_author_search_value_q_string="Q(author__username__contains=select_author_search_value) &"#拼接起来filter不认识,没用
 
                     #料号使用类型筛选:所有,或者对应的查询值
                     select_file_usage_type = request.POST.get("select_file_usage_type", False)
-                    print(select_file_usage_type)
+                    print("select_file_usage_type",select_file_usage_type)
                     if select_file_usage_type == 'all':
                         pass
                         select_file_usage_type_value = ""
                     else:
                         select_file_usage_type_value = select_file_usage_type
 
+
                     # 料号名称筛选:模糊的
                     query_job_name = request.POST.get("query_job_name", False)
-                    print(query_job_name)
+                    print("query_job_name:",query_job_name)
                     query_job_name_value = query_job_name
+
+
+                    # 料号来源筛选:模糊的
+                    query_from_object = request.POST.get("query_from_object", False)
+                    print("query_from_object:",query_from_object)
+                    query_from_object_value = query_from_object
 
 
 
@@ -916,16 +924,25 @@ class JobListView2(ListView):
 
                     #开始查询
                     data = {}
-                    jobs = Job.objects.filter(
-                        Q(author__username__contains=select_author_search_value) &
-                        Q(file_usage_type__startswith=select_file_usage_type_value) &
-                        Q(job_name__contains=query_job_name_value)
+
+                    #不知道什么原因导致了from_object这个字段用Q查询会异常.空白会搜索出来from_object带有值的内容,而我的期望是空白时搜索出来所有.所有只能分支来写查询了.
+                    if query_from_object_value != "":
+                        jobs = Job.objects.filter(
+                            Q(author__username__contains=select_author_search_value) &
+                            Q(file_usage_type__startswith=select_file_usage_type_value) &
+                            Q(job_name__contains=query_job_name_value)
+                        ).filter(from_object__contains=query_from_object_value).values()
+                    else:
+                        jobs = Job.objects.filter(
+                            Q(author__username__contains=select_author_search_value) &
+                            Q(file_usage_type__startswith=select_file_usage_type_value) &
+                            Q(job_name__contains=query_job_name_value)
+                        ).values()
 
 
-                          ).values()
                     print("my job length:",len(jobs))
                     data["data"] = list(jobs)
-                    # print(data["data"])
+                    print(data["data"])
                     return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
 
                 return HttpResponse(request.POST.get("post_type",False))

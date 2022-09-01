@@ -71,7 +71,10 @@
 
 
                         <label>|</label>
-                        <input type="text"  id="query_job_name" name="query_job_name" placeholder="料号名" style="width:100px;">
+                        <input type="text"  id="query_job_name" name="query_job_name" placeholder="料号名" style="width:80px;">
+
+                        <label>|</label>
+                        <input type="text"  id="query_from_object" name="query_from_object" placeholder="料号来源" style="width:80px;">
 
 
 
@@ -351,6 +354,7 @@
                                             "select_author":$("#select_author").val(),
                                             "select_file_usage_type":$("#select_file_usage_type").val(),
                                             "query_job_name":$("#query_job_name").val(),
+                                            "query_from_object":$("#query_from_object").val(),
                                         },
                                         url:"",
                                         dataType:"json",
