@@ -857,25 +857,7 @@ class JobListView2(ListView):
 
                 return HttpResponse(request.POST.get("page_jump"))
 
-            if request.POST.__contains__("current_user"):
-                # print("current_user",request.POST.get("current_user"))
-                if request.POST.get("current_user")=="on":
-                    # print("on")
-                    pass
-                    queryset = models.Job.objects.filter(author=self.request.user)
-                    print(queryset)
 
-                return HttpResponse(request.user.username)
-
-            if request.POST.__contains__("radio_view_my_job"):
-                print("radio_view_my_job",request.POST.get("radio_view_my_job"))
-                if request.POST.get("radio_view_my_job")=="on":
-                    # print("on")
-                    pass
-                    queryset = models.Job.objects.filter(author=self.request.user)
-                    # print(queryset)
-
-                return HttpResponse(request.user.username)
 
             if request.POST.get("post_type",False):
                 print("*"*100,request.POST.get("post_type",False))
@@ -931,17 +913,25 @@ class JobListView2(ListView):
                             Q(author__username__contains=select_author_search_value) &
                             Q(file_usage_type__startswith=select_file_usage_type_value) &
                             Q(job_name__contains=query_job_name_value)
-                        ).filter(from_object__contains=query_from_object_value).values()
+                        ).filter(from_object__contains=query_from_object_value)
                     else:
                         jobs = Job.objects.filter(
                             Q(author__username__contains=select_author_search_value) &
                             Q(file_usage_type__startswith=select_file_usage_type_value) &
                             Q(job_name__contains=query_job_name_value)
-                        ).values()
+                        )
+
+                    jobs_values = jobs.values()
+                    #POST的分页
+                    paginator = Paginator(jobs_values, 10)
+                    page = request.POST.get('page')
+                    job_page = paginator.get_page(page)
 
 
-                    print("my job length:",len(jobs))
-                    data["data"] = list(jobs)
+
+
+                    print("my job length:",len(jobs_values))
+                    data["data"] = list(job_page)
                     print(data["data"])
                     return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
 
