@@ -38,16 +38,12 @@
 
 
 {% block main_content %}
-
     <script src={% static "javascripts/jquery.min.js" %}></script>
-{#    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>#}
-
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-                    {#--------------------------------------分割线--------------------------------------#}
-
+                {#--------------------------------------开始--筛选--------------------------------------#}
                     <li>
                         <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
 
@@ -77,18 +73,22 @@
                         <input type="text"  id="query_from_object" name="query_from_object" placeholder="料号来源" style="width:80px;">
 
 
-
-
                         <label>|</label>
                         <button type="button" id="submit_query" class="btn btn-primary">搜索</button>
 
+                        <button type="button" id="submit_query_cc" class="btn btn-primary">搜索</button>
 
                     </li>
+                {#--------------------------------------结束--筛选--------------------------------------#}
 
 
 
 
 
+
+
+
+                {#--------------------------------------开始--表格--------------------------------------#}
                     <div class="table-responsive">
 
                         <script type="text/javascript">
@@ -136,13 +136,6 @@
                             </script>
 
 
-
-
-
-
-
-
-
                         <table class=" table table-striped nowrap table-hover" id="listtable" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
@@ -159,10 +152,6 @@
 
                             </tbody>
                         </table>
-
-
-
-
 
                         <script>
                             var MyViewVar = {
@@ -560,17 +549,48 @@
 
 
 
+                        <script>
+                            $(document).ready(function () {
+                                alert("初始化2");
+                                $("#submit_query_cc").click(function () {
+                                    alert("submit_query_cc")
+                                    var tbody=window.document.getElementById("table_body");
+                                    $.ajax({
+                                        type:"post",
+                                        data:{
+                                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                            "post_type":"search_ajax",
+                                            "select_author":$("#select_author").val(),
+                                            "select_file_usage_type":$("#select_file_usage_type").val(),
+                                            "query_job_name":$("#query_job_name").val(),
+                                            "query_from_object":$("#query_from_object").val(),
+                                            "page":1,//点击是搜索,返回的肯定是第1页.
+                                        },
+                                        url:"",
+                                        dataType:"json",
+                                        success:function (data) {
 
-                        {#--------------------------------------分割线--------------------------------------#}
+                                            alert("success")
+                                        },
+                                        error:function () {
+                                            alert("false");
+                                        }
+                                    })
+                                })
+
+
+
+
+
+                            })
+                        </script>
+
+
 {#                        {% include 'pagination_job.html' with page=page_obj %}#}
 
                         <div class="pagination" id = "pagination" >
 
                         </div>
-
-
-
-
 
                         <script type="text/javascript" language="JavaScript">
                             function confirm_do_get_layer_info_ajax(value)
@@ -641,17 +661,16 @@
                             }
                         </script>
 
-
-
-
-
-
                     </div>
 
+                {#--------------------------------------结束--表格--------------------------------------#}
 
 
 
 
+
+
+                {#--------------------------------------开始--批量--------------------------------------#}
                     {% csrf_token %}
                     <sapn class="current">
                         <span class="step-links">
@@ -666,8 +685,6 @@
                             <input class="del-button" type="button" value="批量操作" />
                         </span>
                     </sapn>
-
-
 
 
                     <script type="text/javascript">
@@ -760,7 +777,7 @@
 
 
                     </script>
-
+                    {#--------------------------------------结束--批量--------------------------------------#}
 
 
 
