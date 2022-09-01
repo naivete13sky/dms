@@ -905,12 +905,21 @@ class JobListView2(ListView):
                     else:
                         select_file_usage_type_value = select_file_usage_type
 
+                    # 料号名称筛选:模糊的
+                    query_job_name = request.POST.get("query_job_name", False)
+                    print(query_job_name)
+                    query_job_name_value = query_job_name
+
+
+
+
 
                     #开始查询
                     data = {}
                     jobs = Job.objects.filter(
                         Q(author__username__contains=select_author_search_value) &
-                        Q(file_usage_type__startswith=select_file_usage_type_value)
+                        Q(file_usage_type__startswith=select_file_usage_type_value) &
+                        Q(job_name__contains=query_job_name_value)
 
 
                           ).values()
