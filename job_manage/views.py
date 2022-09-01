@@ -948,6 +948,7 @@ class JobListView2(ListView):
                 return HttpResponse(request.POST.get("post_type",False))
 
 
+
 class JobDetailView(DetailView):
     model = Job
     template_name = "detail_listview.html"

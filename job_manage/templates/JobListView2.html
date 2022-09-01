@@ -5,7 +5,7 @@
 {% block content_header_child %}
     <li>
         <i class="fa fa-home" aria-hidden="true"></i>
-        <a href={% url "job_manage:JobListView" %}>料号管理</a>
+        <a href={% url "job_manage:JobListView2" %}>料号管理</a>
     </li>
 
     <li>
@@ -84,25 +84,6 @@
 
 
                     </li>
-
-                    <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
-                        {% csrf_token %}
-
-
-
-                        <div class="form-group">
-                            <input type="" class="form-control" id="query" name="query" placeholder="料号名、负责人、料号来源">
-                        </div>
-
-
-
-
-
-                    </form>
-
-
-
-
 
 
 
@@ -518,7 +499,7 @@
                         </script>
 
                         {#--------------------------------------分割线--------------------------------------#}
-                        {% include 'pagination.html' with page=page_obj %}
+                        {% include 'pagination_job.html' with page=page_obj %}
 
 
 
