@@ -513,7 +513,7 @@
 
                                                 //是否有下一页
                                                 if(page_has_next){
-                                                    var page_has_next_html_1 = `<a href="?page=${page_next_page_numbe}">next &emsp;</a>`
+                                                    var page_has_next_html_1 = `<button type="button" id="page_ajax_net" class="btn btn-primary">下一页</button>`
                                                     var page_has_next_html_2 = `<a href="?page=${page_num_pages}">last &raquo;</a>`
                                                     var page_has_next_html=page_has_next_html_1 + page_has_next_html_2
                                                 } else{
@@ -554,6 +554,9 @@
 
 
                         </script>
+
+
+
 
                         {#--------------------------------------分割线--------------------------------------#}
 {#                        {% include 'pagination_job.html' with page=page_obj %}#}
