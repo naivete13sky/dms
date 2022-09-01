@@ -15,6 +15,7 @@ urlpatterns = [
     #暂时先改为JobListViewVs，平时是JobListView
     path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),
     path('JobListView2',login_required(views.JobListView2.as_view()),name='JobListView2'),
+    path('JobListView3',login_required(views.JobListView3.as_view()),name='JobListView3'),
     re_path('detail/(?P<pk>\d+)/', login_required(views.JobDetailView.as_view()), name='detail'),
     re_path('JobFormView/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='JobFormView'),
     re_path('form/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='form'),
