@@ -877,18 +877,18 @@ class JobListView2(ListView):
 
                 return HttpResponse(request.user.username)
 
-            if request.POST.__contains__("select_file_usage_type"):
-                print("select_file_usage_type",request.POST.get("select_file_usage_type"))
-                if request.POST.get("select_file_usage_type")=="all":
-                    pass
-                    result=''
-
-                else:
-                    queryset = models.Job.objects.filter(file_usage_type=request.POST.get("select_file_usage_type"))
-                    print(queryset)
-                    result=request.POST.get("select_file_usage_type")
-
-                return HttpResponse(result)
+            # if request.POST.__contains__("select_file_usage_type"):
+            #     print("select_file_usage_type",request.POST.get("select_file_usage_type"))
+            #     if request.POST.get("select_file_usage_type")=="all":
+            #         pass
+            #         result=''
+            #
+            #     else:
+            #         queryset = models.Job.objects.filter(file_usage_type=request.POST.get("select_file_usage_type"))
+            #         print(queryset)
+            #         result=request.POST.get("select_file_usage_type")
+            #
+            #     return HttpResponse(result)
 
             if request.POST.get("post_type",False):
                 print("*"*100,request.POST.get("post_type",False))
@@ -901,29 +901,25 @@ class JobListView2(ListView):
                     print("search_ajax")
                     select_author=request.POST.get("select_author",False)
                     print(select_author)
-                    if select_author=='mine':
-                        pass
-
-                        data = {}
-                        jobs = Job.objects.filter(
-                            Q(author__username__contains=request.user.username)
-                        ).values()
-                        print("my job length:",len(jobs))
-                        data["data"] = list(jobs)
-                        # print(data["data"])
-                        return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
-                        # return json.dumps(data, default=str, ensure_ascii=False)
-
                     if select_author=='all':
                         pass
+                        select_author_search_value=""
+                    else:
+                        select_author_search_value = request.user.username
 
-                        data = {}
-                        jobs = Job.objects.all().values()
-                        print("all job length:", len(jobs))
-                        data["data"] = list(jobs)
-                        print(data["data"])
-                        return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
-                        # return json.dumps(data, default=str, ensure_ascii=False)
+
+
+                    data = {}
+                    jobs = Job.objects.filter(
+                        Q(author__username__contains=select_author_search_value)
+                    ).values()
+                    print("my job length:",len(jobs))
+                    data["data"] = list(jobs)
+                    # print(data["data"])
+                    return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
+                    # return json.dumps(data, default=str, ensure_ascii=False)
+
+
 
                 return HttpResponse(request.POST.get("post_type",False))
 

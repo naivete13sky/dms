@@ -54,18 +54,11 @@
                         <label>|</label>
 
                         <label>使用分类</label>
-                        <select id="select_file_usage_type" name="select_file_usage_type" onchange="view_job_usage_type(this)">
-                                {% for each in select_file_usage_type %}
-                                    {% if each.0 == current_file_usage_type %}
-                                        <option selected value = {{ each.0 }} >{{ each.1 }}</option>
-                                    {% endif %}
-                                    {% if each.0 != current_file_usage_type %}
-                                        <option value = {{ each.0 }}>{{ each.1 }}</option>
-                                    {% endif %}
-
-                                {% endfor %}
-
-                            </select>
+                        <select id="select_file_usage_type" name="select_file_usage_type" >
+                            {% for each in select_file_usage_type %}
+                                <option value = {{ each.0 }} >{{ each.1 }}</option>
+                            {% endfor %}
+                        </select>
 
                         <label>|</label>
 
@@ -417,6 +410,7 @@
                                             "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
                                             "post_type":"search_ajax",
                                             "select_author":$("#select_author").val(),
+                                            "select_file_usage_type":$("#select_file_usage_type").val(),
                                         },
                                         url:"",
                                         dataType:"json",
