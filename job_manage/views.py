@@ -1051,20 +1051,17 @@ class JobListView(ListView):
         #分页
         print(context)
         page = self.request.GET.get('page')
-
-
         paginator = Paginator(context['jobs'], 10)  # 每页显示3篇文章
         # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
         try:
-            context['jobs2'] = paginator.page(page)
+            context['jobs_page'] = paginator.page(page)
         except PageNotAnInteger:
             # 如果page参数不是一个整数就返回第一页
-            context['jobs2'] = paginator.page(1)
+            context['jobs_page'] = paginator.page(1)
         except EmptyPage:
             # 如果页数超出总页数就返回最后一页
-            context['jobs2'] = paginator.page(paginator.num_pages)
-
-        pagination_data = self.get_pagination_data(paginator, context['jobs2'])
+            context['jobs_page'] = paginator.page(paginator.num_pages)
+        pagination_data = self.get_pagination_data(paginator, context['jobs_page'])
         context.update(pagination_data)
 
 
@@ -1127,6 +1124,24 @@ class JobListView(ListView):
                     Q(job_name__contains=query_job_name) &
                     Q(author__username__contains=query_job_author)
                 )
+
+                # 分页
+                print(context)
+                page = self.request.GET.get('page')
+                paginator = Paginator(context['jobs'], 10)  # 每页显示3篇文章
+                # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
+                try:
+                    context['jobs_page'] = paginator.page(page)
+                except PageNotAnInteger:
+                    # 如果page参数不是一个整数就返回第一页
+                    context['jobs_page'] = paginator.page(1)
+                except EmptyPage:
+                    # 如果页数超出总页数就返回最后一页
+                    context['jobs_page'] = paginator.page(paginator.num_pages)
+                pagination_data = self.get_pagination_data(paginator, context['jobs_page'])
+                context.update(pagination_data)
+
+
         print("len(context['jobs']:",len(context['jobs']))
 
         # 料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
