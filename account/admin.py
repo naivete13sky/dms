@@ -16,4 +16,4 @@ class CustomerRuleAdmin(admin.ModelAdmin):
 
 @admin.register(QueryData)
 class QueryDataAdmin(admin.ModelAdmin):
-    list_display = ['query_job_file_usage_type','remark' ,'author']
+    list_display = ['query_job_file_usage_type','query_job_job_name','query_job_author','query_job_from_object','remark' ,'author']

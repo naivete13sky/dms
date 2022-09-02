@@ -82,6 +82,16 @@ class QueryData(models.Model):
     query_job_file_usage_type=models.CharField(max_length=20,blank=True,null=True,
                                                choices=(('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')),
                                                default='all',help_text='此用户筛选条件记录用的',verbose_name='筛选-料号使用类型')
+
+    query_job_job_name = models.CharField(blank=True,null=True,max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],
+                              help_text='此用户筛选条件记录用的',verbose_name="筛选-料号名", )
+    query_job_author = models.CharField(blank=True, null=True, max_length=100,
+                                          validators=[validators.MinLengthValidator(limit_value=0)],
+                                          help_text='此用户筛选条件记录用的', verbose_name="筛选-负责人", )
+    query_job_from_object = models.CharField(blank=True, null=True, max_length=100,
+                                          validators=[validators.MinLengthValidator(limit_value=0)],
+                                          help_text='此用户筛选条件记录用的', verbose_name="筛选-料号来源", )
+
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
                               verbose_name="备注", blank=True,null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='account_query_data_user', verbose_name="用户")

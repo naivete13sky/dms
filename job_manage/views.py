@@ -1000,8 +1000,9 @@ class JobListView(ListView):
             print("此用户无QueryData信息，此时要新建一下")
             new_query_data=QueryData(author=self.request.user)
             new_query_data.save()
-
         current_query_data = QueryData.objects.get(author=self.request.user)
+
+        #料号使用类型
         context['query_job_file_usage_type']=current_query_data.query_job_file_usage_type
         # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
         if context['query_job_file_usage_type'] == 'all':
@@ -1010,8 +1011,17 @@ class JobListView(ListView):
         else:
             query_job_file_usage_type_value = context['query_job_file_usage_type']
 
+        # 料号名称
+        context['query_job_job_name'] = current_query_data.query_job_job_name
+        if context['query_job_job_name'] == None:
+            context['query_job_job_name'] = ""
+            current_query_data.query_job_job_name=""
+            current_query_data.save()
+
+
         context['jobs'] = models.Job.objects.filter(
-            Q(file_usage_type__startswith = query_job_file_usage_type_value)
+            Q(file_usage_type__startswith = query_job_file_usage_type_value) &
+            Q(job_name__contains = context['query_job_job_name'])
 
         )
 
@@ -1032,15 +1042,22 @@ class JobListView(ListView):
             # 料号使用类型筛选:所有,或者对应的查询值
             query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
             #先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
             if query_job_file_usage_type:
-                current_query_data = QueryData.objects.get(author=self.request.user)
                 current_query_data.query_job_file_usage_type = query_job_file_usage_type
                 current_query_data.save()
             if query_job_file_usage_type == 'all':
                 pass
                 query_job_file_usage_type = ""
 
+            # 料号名称筛选
             query_job_name=self.request.GET.get('query_job_name',False)
+            # 先把本次筛选条件存储起来
+            if query_job_name != None:
+                current_query_data.query_job_job_name = query_job_name
+                current_query_data.save()
+
+
             query_job_author = self.request.GET.get('query_job_author', False)
             query_job_from_object = self.request.GET.get('query_job_from_object', False)
 
