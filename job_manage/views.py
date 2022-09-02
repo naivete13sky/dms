@@ -1003,8 +1003,12 @@ class JobListView(ListView):
 
         current_query_data = QueryData.objects.get(author=self.request.user)
         context['query_job_file_usage_type']=current_query_data.query_job_file_usage_type
-        print("query_job_file_usage_type:",context['query_job_file_usage_type'])
+        # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
 
+        context['jobs'] = models.Job.objects.filter(
+            Q(file_usage_type__startswith = context['query_job_file_usage_type'])
+
+        )
 
 
 
