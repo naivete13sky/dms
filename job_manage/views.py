@@ -1050,24 +1050,11 @@ class JobListView(ListView):
 
         #分页
         print(context)
-
-        # paginator = context.get('paginator')  # 包含整体数据的相关信息
-        # page_obj = context.get('page_obj')  # 包含当前页数据相关的信息
-        # pagination_data = self.get_pagination_data(paginator, page_obj)
-        # context.update(pagination_data)
-
-        # page = self.request.GET.get('page')
-        # paginator = Paginator(context['jobs'], 10)  # 包含整体数据的相关信息
-        # page_obj = context.get('page_obj')  # 包含当前页数据相关的信息
-        # pagination_data = self.get_pagination_data(paginator, page_obj)
-        # context.update(pagination_data)
-
-
-
-        object_list = context['jobs']
-        paginator = Paginator(object_list, 10)  # 每页显示3篇文章
-        # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
         page = self.request.GET.get('page')
+
+
+        paginator = Paginator(context['jobs'], 10)  # 每页显示3篇文章
+        # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
         try:
             context['jobs2'] = paginator.page(page)
         except PageNotAnInteger:
@@ -1077,13 +1064,8 @@ class JobListView(ListView):
             # 如果页数超出总页数就返回最后一页
             context['jobs2'] = paginator.page(paginator.num_pages)
 
-
-
-
-
-
-
-
+        pagination_data = self.get_pagination_data(paginator, context['jobs2'])
+        context.update(pagination_data)
 
 
 
@@ -1147,9 +1129,6 @@ class JobListView(ListView):
                 )
         print("len(context['jobs']:",len(context['jobs']))
 
-
-
-
         # 料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
         if self.request.GET.__contains__("page"):
             current_page = self.request.GET["page"]
@@ -1158,21 +1137,12 @@ class JobListView(ListView):
         else:
             context['current_page'] = 1
 
-
-
-
-
         #根据料号ID精准搜索
         search_by_job_id=self.request.GET.get('search_by_job_id',False)
         if search_by_job_id:
             pass
             print("search_by_job_id:",search_by_job_id)
             context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
-
-
-
-
-
 
 
 
