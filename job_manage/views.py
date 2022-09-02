@@ -1048,6 +1048,21 @@ class JobListView(ListView):
 
             )
 
+        #分页
+        print(context)
+
+        paginator = context.get('paginator')  # 包含整体数据的相关信息
+        page_obj = context.get('page_obj')  # 包含当前页数据相关的信息
+        pagination_data = self.get_pagination_data(paginator, page_obj)
+        context.update(pagination_data)
+        return context
+
+
+
+
+
+
+
 
 
 
@@ -1145,6 +1160,31 @@ class JobListView(ListView):
 
 
         return context
+
+    def get_pagination_data(self, paginator, page_obj, around_count=2):
+        left_has_more = False
+
+        right_has_more = False
+        current_page = page_obj.number
+        if current_page <= around_count + 2:
+            left_range = range(1, current_page)
+        else:
+            left_has_more = True
+            left_range = range(current_page - around_count, current_page)
+
+        if current_page >= paginator.num_pages - around_count - 1:
+            right_range = range(current_page + 1, paginator.num_pages + 1)
+        else:
+            right_has_more = True
+            right_range = range(current_page + 1, current_page + around_count + 1)
+
+        pagination_data = {
+            'left_has_more': left_has_more,
+            'right_has_more': right_has_more,
+            'left_range': left_range,
+            'right_range': right_range
+        }
+        return pagination_data
 
     def post(self, request):  # ***** this method required! ******
         self.object_list = self.get_queryset()
