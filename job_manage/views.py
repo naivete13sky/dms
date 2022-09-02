@@ -1004,9 +1004,14 @@ class JobListView(ListView):
         current_query_data = QueryData.objects.get(author=self.request.user)
         context['query_job_file_usage_type']=current_query_data.query_job_file_usage_type
         # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
+        if context['query_job_file_usage_type'] == 'all':
+            pass
+            query_job_file_usage_type_value = ""
+        else:
+            query_job_file_usage_type_value = context['query_job_file_usage_type']
 
         context['jobs'] = models.Job.objects.filter(
-            Q(file_usage_type__startswith = context['query_job_file_usage_type'])
+            Q(file_usage_type__startswith = query_job_file_usage_type_value)
 
         )
 
@@ -1026,6 +1031,11 @@ class JobListView(ListView):
         if submit_query_get:
             # 料号使用类型筛选:所有,或者对应的查询值
             query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
+            #先把本次筛选条件存储起来
+            if query_job_file_usage_type:
+                current_query_data = QueryData.objects.get(author=self.request.user)
+                current_query_data.query_job_file_usage_type = query_job_file_usage_type
+                current_query_data.save()
             if query_job_file_usage_type == 'all':
                 pass
                 query_job_file_usage_type = ""
