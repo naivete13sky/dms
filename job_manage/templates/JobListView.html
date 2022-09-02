@@ -56,7 +56,10 @@
                                     {% if each.0 == query_job_file_usage_type  %}
                                         <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
                                     {% endif %}
-                                    <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% if each.0 != query_job_file_usage_type  %}
+                                        <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+
                                 {% endfor %}
                             </select>
 
