@@ -1025,14 +1025,28 @@ class JobListView(ListView):
             current_query_data.query_job_author = ""
             current_query_data.save()
 
+        # 料号来源
+        context['query_job_from_object'] = current_query_data.query_job_from_object
+        if context['query_job_from_object'] == None:
+            context['query_job_from_object'] = ""
+            current_query_data.query_job_from_object = ""
+            current_query_data.save()
 
+        # from_object比较奇怪，空值用Q筛选异常，所以不用Q筛选
+        if context['query_job_from_object'] != "":
+            context['jobs'] = models.Job.objects.filter(
+                Q(file_usage_type__startswith = query_job_file_usage_type_value) &
+                Q(job_name__contains = context['query_job_job_name']) &
+                Q(author__username__contains = context['query_job_author'])
 
-        context['jobs'] = models.Job.objects.filter(
-            Q(file_usage_type__startswith = query_job_file_usage_type_value) &
-            Q(job_name__contains = context['query_job_job_name']) &
-            Q(author__username__contains = context['query_job_author'])
+            ).filter(from_object__contains = context['query_job_from_object'])
+        else:
+            context['jobs'] = models.Job.objects.filter(
+                Q(file_usage_type__startswith=query_job_file_usage_type_value) &
+                Q(job_name__contains=context['query_job_job_name']) &
+                Q(author__username__contains=context['query_job_author'])
 
-        )
+            )
 
 
 
@@ -1078,6 +1092,12 @@ class JobListView(ListView):
 
 
             query_job_from_object = self.request.GET.get('query_job_from_object', False)
+            context['query_job_from_object'] = query_job_from_object
+            # 先把本次筛选条件存储起来
+            if query_job_from_object != None:
+                current_query_data.query_job_from_object = query_job_from_object
+                current_query_data.save()
+
 
             #from_object比较奇怪，空值用Q筛选异常，所以不用Q筛选
             if query_job_from_object != "":
