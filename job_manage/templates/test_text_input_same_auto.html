@@ -40,20 +40,34 @@
     <div>
         <input type="submit" id="button_submit2" value="提交">
 
-        <select id="select_car2" >
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+        <select id="drl_ep" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
         </select>
+
+        <select id="drl_g" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
 
         <script>
             $(document).ready(function(){
 
                 $("#button_submit2").click(function(){
                     {#alert("abc")#}
-                    $("#select_car2").val("saab");
+                    $("#drl_g").val("4");
                 });
+
+                $("#drl_ep").change(function(){
+                    {#alert("abc")#}
+                    $("#drl_g").val("3");
+                });
+
             });
 
         </script>
