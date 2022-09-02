@@ -44,44 +44,19 @@
             <div class="panel">
                 <div class="panel-content">
                 {#--------------------------------------开始--筛选--------------------------------------#}
-                    <li>
-                        <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
-
-                        <label>|</label>
-
-                        <label>使用分类</label>
-                        <select id="select_file_usage_type" name="select_file_usage_type" >
-                            {% for each in select_file_usage_type %}
-                                <option value = {{ each.0 }} >{{ each.1 }}</option>
-                            {% endfor %}
-                        </select>
-
-                        <label>|</label>
-
-                        <label>所有者：</label>
-                        <select id="select_author" name="select_author">
-                            {% for each in select_author %}
-                                <option value = {{ each.0 }}>{{ each.1 }}</option>
-                            {% endfor %}
-                        </select>
-
-
-                        <label>|</label>
-                        <input type="text"  id="query_job_name" name="query_job_name" placeholder="料号名" style="width:80px;">
-
-                        <label>|</label>
-                        <input type="text"  id="query_from_object" name="query_from_object" placeholder="料号来源" style="width:80px;">
-
-
-                        <label>|</label>
-                        <button type="button" id="submit_query" class="btn btn-primary">搜索</button>
-
-                        <label>|</label>
-
-
 
                         <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                            <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
+
                             {% csrf_token %}
+
+                            <label>使用分类</label>
+                            <select id="select_file_usage_type" name="select_file_usage_type" >
+                                {% for each in select_file_usage_type %}
+                                    <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                {% endfor %}
+                            </select>
+
                             <div class="form-group">
                                 <input type="" class="form-control" id="query_job_name" name="query_job_name" placeholder="料号名" style="width:80px;">
                             </div>
@@ -100,9 +75,6 @@
                             </div>
                         </form>
 
-
-
-                    </li>
                 {#--------------------------------------结束--筛选--------------------------------------#}
 
 
