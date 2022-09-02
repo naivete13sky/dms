@@ -1051,14 +1051,40 @@ class JobListView(ListView):
         #分页
         print(context)
 
-        paginator = context.get('paginator')  # 包含整体数据的相关信息
-        page_obj = context.get('page_obj')  # 包含当前页数据相关的信息
-        pagination_data = self.get_pagination_data(paginator, page_obj)
-        context.update(pagination_data)
-        return context
+        # paginator = context.get('paginator')  # 包含整体数据的相关信息
+        # page_obj = context.get('page_obj')  # 包含当前页数据相关的信息
+        # pagination_data = self.get_pagination_data(paginator, page_obj)
+        # context.update(pagination_data)
 
+        # page = self.request.GET.get('page')
+        # paginator = Paginator(context['jobs'], 10)  # 包含整体数据的相关信息
+        # page_obj = context.get('page_obj')  # 包含当前页数据相关的信息
+        # pagination_data = self.get_pagination_data(paginator, page_obj)
+        # context.update(pagination_data)
 
+        # object_list = context['jobs']
+        # paginator = Paginator(object_list, 10)  # 每页显示3篇文章
+        # page = self.request.GET.get('page')
+        # try:
+        #     context['jobs2'] = paginator.page(page)
+        # except PageNotAnInteger:
+        #     # 如果page参数不是一个整数就返回第一页
+        #     context['jobs2'] = paginator.page(1)
+        # except EmptyPage:
+        #     # 如果页数超出总页数就返回最后一页
+        #     context['jobs2'] = paginator.page(paginator.num_pages)
 
+        object_list = context['jobs']
+        paginator = Paginator(object_list, 10)  # 每页显示3篇文章
+        page = self.request.GET.get('page')
+        try:
+            context['jobs2'] = paginator.page(page)
+        except PageNotAnInteger:
+            # 如果page参数不是一个整数就返回第一页
+            context['jobs2'] = paginator.page(1)
+        except EmptyPage:
+            # 如果页数超出总页数就返回最后一页
+            context['jobs2'] = paginator.page(paginator.num_pages)
 
 
 
