@@ -1041,6 +1041,7 @@ class JobListView(ListView):
         if submit_query_get:
             # 料号使用类型筛选:所有,或者对应的查询值
             query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
+            context['query_job_file_usage_type'] = query_job_file_usage_type
             #先把本次筛选条件存储起来
             current_query_data = QueryData.objects.get(author=self.request.user)
             if query_job_file_usage_type:
@@ -1052,6 +1053,7 @@ class JobListView(ListView):
 
             # 料号名称筛选
             query_job_name=self.request.GET.get('query_job_name',False)
+            context['query_job_job_name'] = query_job_name
             # 先把本次筛选条件存储起来
             if query_job_name != None:
                 current_query_data.query_job_job_name = query_job_name
