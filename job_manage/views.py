@@ -2078,7 +2078,7 @@ def view_layer(request,job_id):
                           models.Layer._meta.get_field('number_format_B_g').verbose_name,
                           models.Layer._meta.get_field('tool_units_g').verbose_name,
                           models.Layer._meta.get_field('status').verbose_name,
-                          "标签",
+
                           "操作",
                           ]
 

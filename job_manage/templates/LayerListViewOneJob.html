@@ -82,15 +82,7 @@
                                 <td>{{ layer.get_status_display }}</td>
 {#                                <td>{{ job.create_time }}</td>#}
 {#                                <td>{{ job.updated }}</td>#}
-                                <td>
-                                    {% for tag in job.tags.all %}
-                                        <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
-                                        {% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                    {% if tag %}
-                                        <h2>Posts tagged with "{{ tag.name }}"</h2>
-                                    {% endif %}
-                                </td>
+
 
                                 <td>
                                     <div class="btn-group btn-group-xs">
