@@ -53,6 +53,9 @@
                             <label>使用分类</label>
                             <select id="query_job_file_usage_type" name="query_job_file_usage_type" >
                                 {% for each in select_file_usage_type %}
+                                    {% if each.0 == query_job_file_usage_type  %}
+                                        <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
                                     <option value = {{ each.0 }} >{{ each.1 }}</option>
                                 {% endfor %}
                             </select>
