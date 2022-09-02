@@ -51,7 +51,7 @@
                             {% csrf_token %}
 
                             <label>使用分类</label>
-                            <select id="select_file_usage_type" name="select_file_usage_type" >
+                            <select id="query_job_file_usage_type" name="query_job_file_usage_type" >
                                 {% for each in select_file_usage_type %}
                                     <option value = {{ each.0 }} >{{ each.1 }}</option>
                                 {% endfor %}

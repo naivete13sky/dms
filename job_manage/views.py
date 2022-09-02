@@ -1008,6 +1008,16 @@ class JobListView3(ListView):
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
         if submit_query_get:
+
+            # 料号使用类型筛选:所有,或者对应的查询值
+            query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
+            if query_job_file_usage_type == 'all':
+                pass
+                query_job_file_usage_type = ""
+
+
+
+
             query_job_name=self.request.GET.get('query_job_name',False)
             query_job_author = self.request.GET.get('query_job_author', False)
             query_job_from_object = self.request.GET.get('query_job_from_object', False)
@@ -1015,12 +1025,14 @@ class JobListView3(ListView):
 
             if query_job_from_object != "":
                 context['jobs'] = models.Job.objects.filter(
+                    Q(file_usage_type__startswith=query_job_file_usage_type) &
                     Q(job_name__contains = query_job_name) &
                     Q(author__username__contains = query_job_author)
                 ).filter(from_object__contains=query_job_from_object)
 
             else:
                 context['jobs'] = models.Job.objects.filter(
+                    Q(file_usage_type__startswith=query_job_file_usage_type) &
                     Q(job_name__contains=query_job_name) &
                     Q(author__username__contains=query_job_author)
                 )
