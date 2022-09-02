@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile,FactoryRule,CustomerRule
+from .models import Profile,FactoryRule,CustomerRule,QueryData
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -12,3 +12,8 @@ class FactoryRuleAdmin(admin.ModelAdmin):
 @admin.register(CustomerRule)
 class CustomerRuleAdmin(admin.ModelAdmin):
     list_display = ['customer_rule_name','remark' ,'author']
+
+
+@admin.register(QueryData)
+class QueryDataAdmin(admin.ModelAdmin):
+    list_display = ['query_job_file_usage_type','remark' ,'author']

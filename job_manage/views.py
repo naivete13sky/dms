@@ -56,6 +56,7 @@ from django.http import  JsonResponse
 from .models import MyTag
 from django.utils.decorators import method_decorator
 from django.core import serializers
+from account.models import QueryData
 
 
 def readFile(filename,chunk_size=512):
@@ -988,8 +989,26 @@ class JobListView(ListView):
                                   "标签",
                                   "操作",
                                   ]
+
         context['job_field_verbose_name'] = job_field_verbose_name# 表头用
-        context['radio_view_all_job']="checked"
+
+        #加载当前用户的筛选条件
+        try:
+            current_query_data=QueryData.objects.get(author=self.request.user)
+            print(current_query_data)
+        except:
+            print("此用户无QueryData信息，此时要新建一下")
+            new_query_data=QueryData(author=self.request.user)
+            new_query_data.save()
+
+        current_query_data = QueryData.objects.get(author=self.request.user)
+        context['query_job_file_usage_type']=current_query_data.query_job_file_usage_type
+        print(context['query_job_file_usage_type'])
+
+
+
+
+
 
 
         #使用分类筛选
@@ -1038,15 +1057,7 @@ class JobListView(ListView):
 
 
 
-        #只看当前用户数据用的.记录筛选框状态用的.
-        if self.request.GET.get('current_user_checkbox_value',False):
-            print('current_user_checkbox_value')
-            context['current_user_checkbox_value']="checked"
 
-        # 只看当前用户数据用的.记录radio状态用的.
-        if self.request.GET.get('radio_view_my_job', False):
-            print('radio_view_my_job')
-            context['radio_view_my_job'] = "checked"
 
         #根据料号ID精准搜索
         search_by_job_id=self.request.GET.get('search_by_job_id',False)
@@ -1055,24 +1066,11 @@ class JobListView(ListView):
             print("search_by_job_id:",search_by_job_id)
             context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
 
-        # 根据料号使用类型精准筛选
-        search_by_file_usage_type = self.request.GET.get('file_usage_type', False)
-        if search_by_file_usage_type:
-            pass
-            print("search_by_file_usage_type:", search_by_file_usage_type)
-            context['jobs'] = models.Job.objects.filter(Q(file_usage_type=search_by_file_usage_type))
-            context['current_file_usage_type']=search_by_file_usage_type
 
 
 
-        def object2json():
-            data = {}
-            jobs = Job.objects.all().values()
-            data["data"] = list(jobs)
-            # return JsonResponse(data, safe=False)
-            return json.dumps(data,default=str, ensure_ascii=False)
 
-        context['JsonResponse']=object2json()
+
 
 
         return context
