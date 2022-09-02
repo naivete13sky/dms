@@ -69,6 +69,7 @@ urlpatterns = [
 
 
     path('test', views.test,name='test'),
+    path('test_text_input_same_auto', views.test_text_input_same_auto,name='test_text_input_same_auto'),
     path('test_ajax_index', views.test_ajax_index,name='test_ajax_index'),
     path('test_ajax_add/', views.test_ajax_add,name='test_ajax_add'),
     path('test_ajax_add2/', views.test_ajax_add2,name='test_ajax_add2'),

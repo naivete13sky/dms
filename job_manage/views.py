@@ -3246,3 +3246,30 @@ def temp(request):
 
     return HttpResponse(cc,content_type="application/json")
 
+def test_text_input_same_auto(request):
+    if request.user.is_authenticated:
+        print(request.user.first_name,'|',request.user.username)
+    # return HttpResponse("abc")
+
+    if request.method == 'POST':
+        result={
+            "teachers": [
+                {"name": "Jack", "age": "30"},
+                {"name": "Jessy", "age": "33"}
+        ]}
+
+        result_json = json.dumps(result)
+        return HttpResponse(result_json)
+
+    result = {
+        "students": [
+            {"name": "John", "age": "15"},
+            {"name": "Anna", "age": "16"},
+            {"name": "Peter", "age": "16"}
+        ],
+        }
+
+    result_json = json.dumps(result)
+
+
+    return render(request, 'test_text_input_same_auto.html',{"result_json":result_json})

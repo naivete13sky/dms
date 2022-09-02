@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load static  %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+    <script type="text/javascript" src='C:/cc/python/epwork/dms/collected_static/vendor/data-table/media/js/jquery.dataTables.min.js'></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+</head>
+<body>
+
+
+    <div>
+        <input type="submit" id="button_submit1" value="提交">
+
+        <select id="select_car" >
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+        </select>
+
+        <script>
+            $(document).ready(function(){
+
+                $("#button_submit1").click(function(){
+                    {#alert("abc")#}
+                    $("#select_car").val("saab");
+                });
+            });
+
+        </script>
+    </div>
+
+
+    <div>
+        <input type="submit" id="button_submit2" value="提交">
+
+        <select id="select_car2" >
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+        </select>
+
+        <script>
+            $(document).ready(function(){
+
+                $("#button_submit2").click(function(){
+                    {#alert("abc")#}
+                    $("#select_car2").val("saab");
+                });
+            });
+
+        </script>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
