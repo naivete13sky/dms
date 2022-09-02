@@ -7,6 +7,7 @@
     <li><a>编辑层别</a></li>
 {% endblock %}
 {% block main_content %}
+    <script src={% static "javascripts/jquery.min.js" %}></script>
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
@@ -29,6 +30,24 @@
             </div>
         </div>
     </div>
+
+    <script>
+            $(document).ready(function(){
+                $("#id_number_format_A_ep").change(function(){
+                    var my_value = $("#id_number_format_A_ep").val();
+                    {#alert(my_value);#}
+
+                    //设置value为3的项被选中
+                    $("#id_number_format_A_g").val(my_value);
+
+
+
+
+                });
+
+            });
+
+        </script>
 {% endblock %}
-<script src={% static "javascripts/jquery.min.js" %}></script>
+
 
