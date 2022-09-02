@@ -1004,14 +1004,22 @@ class JobListView3(ListView):
         else:
             context['current_page']=1
 
-        query=self.request.GET.get('query_get',False)
-        if query:
+
+        #get方式query数据
+        submit_query_get = self.request.GET.get('submit_query_get',False)
+        if submit_query_get:
+            pass
+            query=self.request.GET.get('query_get',False)
             context['jobs'] = models.Job.objects.filter(
                 Q(id__contains=query) |
                 Q(job_name__contains=query) |
                 Q(from_object__contains=query) |
                 Q(author__username__contains=query))
-        print("len(context['jobs']",len(context['jobs']))
+
+
+
+
+        print("len(context['jobs']:",len(context['jobs']))
         #只看当前用户数据用的.记录筛选框状态用的.
         if self.request.GET.get('current_user_checkbox_value',False):
             print('current_user_checkbox_value')
