@@ -993,9 +993,7 @@ class JobListView3(ListView):
 
 
         #使用分类筛选
-        # context['select_file_usage_type']=['所有', '导入测试', '客户资料', '测试', '其它']
         context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
-
         context['select_author'] = [('all', '所有'), ('mine', '我的'), ]
 
         #料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
@@ -1006,17 +1004,14 @@ class JobListView3(ListView):
         else:
             context['current_page']=1
 
-        query=self.request.GET.get('query',False)
+        query=self.request.GET.get('query_get',False)
         if query:
-            # context['cc'] = query
-            # print(query)
-            # context['query'] = query
             context['jobs'] = models.Job.objects.filter(
                 Q(id__contains=query) |
                 Q(job_name__contains=query) |
                 Q(from_object__contains=query) |
                 Q(author__username__contains=query))
-
+        print("len(context['jobs']",len(context['jobs']))
         #只看当前用户数据用的.记录筛选框状态用的.
         if self.request.GET.get('current_user_checkbox_value',False):
             print('current_user_checkbox_value')
@@ -1042,17 +1037,7 @@ class JobListView3(ListView):
             context['jobs'] = models.Job.objects.filter(Q(file_usage_type=search_by_file_usage_type))
             context['current_file_usage_type']=search_by_file_usage_type
 
-        def object2json_serializers_job():
-            data = {}
-            jobs = serializers.serialize("json", models.Job.objects.all())
-            data["data"] = json.loads(jobs)
-            # print(data["data"])
-            return JsonResponse(data, safe=False)
 
-        def change_type(byte):
-            if isinstance(byte, bytes):
-                return str(byte, encoding="utf-8")
-            return json.JSONEncoder.default(byte)
 
         def object2json():
             data = {}
@@ -1060,9 +1045,9 @@ class JobListView3(ListView):
             data["data"] = list(jobs)
             # return JsonResponse(data, safe=False)
             return json.dumps(data,default=str, ensure_ascii=False)
-        # print(object2json())
+
         context['JsonResponse']=object2json()
-        # context['JsonResponse'] = object2json_serializers_job()
+
 
         return context
 
