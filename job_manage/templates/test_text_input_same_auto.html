@@ -108,8 +108,53 @@
                     $("#drl_g2").val("3");
 
                     //设置text为4的项选中
-                    $("#drl_eda").find("option[text='4']").prop("selected", true);
+                    {#$("#drl_eda").find("option[text='4']").prop("selected", true);#}
                     $("#drl_eda").find("option[value='4']").prop("selected", true);
+                    alert("hello")
+
+                });
+
+            });
+
+        </script>
+    </div>
+    <br>
+    4
+    <div>
+        <select id="drl_ep3" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
+        <select id="drl_g3" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
+        <select id="drl_eda3" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
+
+        <script>
+            $(document).ready(function(){
+                $("#drl_ep3").change(function(){
+
+                    alert($("#drl_ep3").val())
+
+                    //设置value为3的项被选中
+                    $("#drl_g3").val($("#drl_ep3").val());
+
+                    //设置text为4的项选中
+                    {#$("#drl_eda3").find("option[text='4']").prop("selected", true);#}
+                    $("#drl_eda3").find("option[value='4']").prop("selected", true);
                     alert("hello")
 
                 });
