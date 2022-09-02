@@ -438,13 +438,13 @@ class JobListViewVs(ListView):
                 Q(author__username__contains=query))
         return context
 
-class JobListView(ListView):
+class JobListView0(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
     context_object_name = 'jobs'
     paginate_by = 10
     # ordering = ['-publish']
-    template_name = 'JobListView.html'
+    template_name = 'JobListView0.html'
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -955,13 +955,13 @@ class JobListView2(ListView):
 
                 return HttpResponse(request.POST.get("post_type",False))
 
-class JobListView3(ListView):
+class JobListView(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
     context_object_name = 'jobs'
     paginate_by = 10
     # ordering = ['-publish']
-    template_name = 'JobListView3.html'
+    template_name = 'JobListView.html'
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -996,33 +996,20 @@ class JobListView3(ListView):
         context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
         context['select_author'] = [('all', '所有'), ('mine', '我的'), ]
 
-        #料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
-        if self.request.GET.__contains__("page"):
-            current_page = self.request.GET["page"]
-            print("current_page", current_page)
-            context['current_page'] = current_page
-        else:
-            context['current_page']=1
-
-
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
         if submit_query_get:
-
             # 料号使用类型筛选:所有,或者对应的查询值
             query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
             if query_job_file_usage_type == 'all':
                 pass
                 query_job_file_usage_type = ""
 
-
-
-
             query_job_name=self.request.GET.get('query_job_name',False)
             query_job_author = self.request.GET.get('query_job_author', False)
             query_job_from_object = self.request.GET.get('query_job_from_object', False)
 
-
+            #from_object比较奇怪，空值用Q筛选异常，所以不用Q筛选
             if query_job_from_object != "":
                 context['jobs'] = models.Job.objects.filter(
                     Q(file_usage_type__startswith=query_job_file_usage_type) &
@@ -1036,14 +1023,18 @@ class JobListView3(ListView):
                     Q(job_name__contains=query_job_name) &
                     Q(author__username__contains=query_job_author)
                 )
-
-
         print("len(context['jobs']:",len(context['jobs']))
 
 
 
 
-
+        # 料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
+        if self.request.GET.__contains__("page"):
+            current_page = self.request.GET["page"]
+            print("current_page", current_page)
+            context['current_page'] = current_page
+        else:
+            context['current_page'] = 1
 
 
 

@@ -3,15 +3,8 @@
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
-    <li>
-        <i class="fa fa-home" aria-hidden="true"></i>
-        <a href={% url "job_manage:JobListView2" %}>料号管理</a>
-    </li>
-
-    <li>
-        <a>料号查询-通用3</a>
-    </li>
-<script>$("#basic-table").DataTable({retrieve: true,});</script>
+    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "job_manage:JobListView" %}>料号管理</a></li>
+    <li><a>料号查询</a></li>
 {% endblock %}
 
 {% block search %}
@@ -38,53 +31,116 @@
 
 
 {% block main_content %}
+
     <script src={% static "javascripts/jquery.min.js" %}></script>
+{#    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>#}
+
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-                {#--------------------------------------开始--筛选--------------------------------------#}
+                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a></h4>
 
-                        <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
-                            <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
+                    <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="" class="form-control" id="query" name="query" placeholder="料号名、负责人、料号来源">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">模糊查询</button>
+                        </div>
 
-                            {% csrf_token %}
+                        <div class="form-group">
+                            <label><input name="view_job" type="radio" id="radio_view_all_job" {{ radio_view_all_job }}  onclick="view_all_job(this)" />查看所有料号 </label>
+                            <label><input name="view_job" type="radio" id="radio_view_my_job" {{ radio_view_my_job }} onclick="view_my_job(this)" />只看我的料号 </label>
+                        </div>
 
-                            <label>使用分类</label>
-                            <select id="query_job_file_usage_type" name="query_job_file_usage_type" >
+                        <div class="form-group">
+
+                            <select id="select_file_usage_type" name="select_file_usage_type" onchange="view_job_usage_type(this)">
                                 {% for each in select_file_usage_type %}
-                                    <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% if each.0 == current_file_usage_type %}
+                                        <option selected value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != current_file_usage_type %}
+                                        <option value = {{ each.0 }}>{{ each.1 }}</option>
+                                    {% endif %}
+
                                 {% endfor %}
+
                             </select>
-
-                            <div class="form-group">
-                                <input type="" class="form-control" id="query_job_name" name="query_job_name" placeholder="料号名" style="width:80px;">
-                            </div>
-
-                            <div class="form-group">
-                                <input type="" class="form-control" id="query_job_author" name="query_job_author" placeholder="负责人" style="width:80px;">
-                            </div>
-
-                            <div class="form-group">
-                                <input type="" class="form-control" id="query_job_from_object" name="query_job_from_object" placeholder="料号来源" style="width:80px;">
-                            </div>
+                            <label>使用分类筛选</label>
+                        </div>
 
 
-                            <div class="form-group">
-                                <button type="submit" id="submit_query_get" name="submit_query_get" class="btn btn-primary" value="submit_query_get">查询</button>
-                            </div>
-                        </form>
-
-                {#--------------------------------------结束--筛选--------------------------------------#}
+                    </form>
 
 
+                    <script>
+                        function view_my_job() {
+                            {#alert("view_my_job")#}
+                            {#alert("checked")#}
+                            {#$('.btn_view_current_user_job').click()#}
+                            $.ajax( {
+                                    type : "post",
+                                    url : "",
+                                    dataType : "text",
+                                    data:{
+                                        "radio_view_my_job":$("#radio_view_my_job").val(),
+                                        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                    },   //指定要提交给后端的数据
+
+                                    success : function(data) {
+                                        {#alert(data);#}
+                                        window.location.href = "?query="+ data + "&radio_view_my_job=" + true;
+                                    },
+                                    error : function(data) {
+                                        alert("系统错误，操作失败");
+                                    }
+                                });
+
+                        }
+                    </script>
+
+                    <script>
+                        function view_all_job() {
+                            {#alert("view_all_job")#}
+                            window.location.href = '../../job_manage/JobListView' ;
+
+
+                        }
+                    </script>
+
+                    <script>
+                        function view_job_usage_type() {
+                            {#alert("view_my_job")#}
+                            {#alert("checked")#}
+                            {#$('.btn_view_current_user_job').click()#}
+                            $.ajax( {
+                                    type : "post",
+                                    url : "",
+                                    dataType : "text",
+                                    data:{
+                                        "select_file_usage_type":$("#select_file_usage_type").val(),
+                                        "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                    },   //指定要提交给后端的数据
+
+                                    success : function(data) {
+                                        {#alert(data);#}
+                                        window.location.href = "?file_usage_type="+ data;
+                                    },
+                                    error : function(data) {
+                                        alert("系统错误，操作失败");
+                                    }
+                                });
+
+                        }
+                    </script>
 
 
 
 
 
-
-                {#--------------------------------------开始--表格--------------------------------------#}
                     <div class="table-responsive">
 
                         <script type="text/javascript">
@@ -131,6 +187,7 @@
                             }
                             </script>
 
+
                         <table id="basic-table" class=" table table-striped nowrap table-hover" cellspacing="0" width="100%">
                             <thead>
                             <tr>
@@ -142,7 +199,7 @@
 
                             </tr>
                             </thead>
-                            <tbody id="table_body">
+                            <tbody>
 
                             {% for job in jobs %}
 
@@ -435,98 +492,16 @@
                             </tbody>
                         </table>
 
-
-
-
-
-
-
-
-                    <div id="pagination">
-                        {% include 'pagination_job.html' with page=page_obj %}
-                    </div>
-
-
-                        <script type="text/javascript" language="JavaScript">
-                            function confirm_do_get_layer_info_ajax(value)
-                            {
-                                 if(confirm("确定要执行生成层名操作吗?"))
-                                 {
-                                     {#alert("确认")#}
-                                     $.ajax({
-                                        type:"post",
-                                        data:{
-                                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
-                                            "post_type":"get_file_name_from_org",
-                                            "job_id":value,
-                                        },
-                                        url:"",
-                                        dataType:"text",
-                                        success:function (data) {
-                                            alert(data)
-
-                                        },
-                                        error:function () {
-                                            alert("false");
-                                        }
-                                    })
-                                     window.location.href="get_file_name_from_org/" + value;
-                                     {#return true;#}
-
-                                 }else{
-                                     alert(value)
-                                     alert("cc")
-                                     return false;
-
-                                 }
-                            }
-                        </script>
-
-                        <script type="text/javascript" language="JavaScript">
-                                function confirm_do_vs_ep_ajax(value)
-                                {
-                                     if(confirm("确定要执行悦谱比图操作吗?"))
-                                     {
-
-                                         window.location.href='vs_ep/' + value + '/{{ current_page }}';
-                                         {#return true;#}
-
-                                     }else{
-                                         alert(value)
-                                         return false;
-
-                                     }
-                                }
-                        </script>
-
-                        <script type="text/javascript" language="JavaScript">
-                            function confirm_do_vs_g_ajax(value)
-                            {
-                                 if(confirm("确定要执行G软件比图操作吗?"))
-                                 {
-
-                                     window.location.href='vs_g/' + value + '/{{ current_page }}';
-                                     {#return true;#}
-
-                                 }else{
-                                     {#alert(value)#}
-                                     return false;
-
-                                 }
-                            }
-                        </script>
+                        {% include 'pagination.html' with page=page_obj %}
 
                     </div>
 
-                {#--------------------------------------结束--表格--------------------------------------#}
 
 
 
 
-
-
-                {#--------------------------------------开始--批量--------------------------------------#}
                     {% csrf_token %}
+{#                    <br>#}
                     <sapn class="current">
                         <span class="step-links">
                             批量设置：
@@ -540,6 +515,8 @@
                             <input class="del-button" type="button" value="批量操作" />
                         </span>
                     </sapn>
+
+
 
 
                     <script type="text/javascript">
@@ -632,7 +609,10 @@
 
 
                     </script>
-                    {#--------------------------------------结束--批量--------------------------------------#}
+
+
+
+
 
 
 
