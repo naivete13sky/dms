@@ -122,17 +122,17 @@
     4
     <div>
         <select id="drl_ep3" >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="1">text1</option>
+            <option value="2">text2</option>
+            <option value="3">text3</option>
+            <option value="4">text4</option>
         </select>
 
         <select id="drl_g3" >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="1">text1</option>
+            <option value="2">text2</option>
+            <option value="3">text3</option>
+            <option value="4">text4</option>
         </select>
 
         <select id="drl_eda3" >
@@ -146,16 +146,93 @@
         <script>
             $(document).ready(function(){
                 $("#drl_ep3").change(function(){
-
-                    alert($("#drl_ep3").val())
+                    var my_value = $("#drl_ep3").val();
+                    {#alert(my_value);#}
 
                     //设置value为3的项被选中
-                    $("#drl_g3").val($("#drl_ep3").val());
+                    $("#drl_g3").val(my_value);
+
 
                     //设置text为4的项选中
                     {#$("#drl_eda3").find("option[text='4']").prop("selected", true);#}
                     $("#drl_eda3").find("option[value='4']").prop("selected", true);
-                    alert("hello")
+                    {#alert("hello");#}
+
+                });
+
+            });
+
+        </script>
+    </div>
+    <br>
+    5
+    <div>
+        <p>
+            <label for="id_number_format_A_ep">整数EP:</label>
+            <select name="number_format_A_ep" id="id_number_format_A_ep">
+                <option value="0">0</option>
+
+                <option value="1">1</option>
+
+                <option value="2">2</option>
+
+                <option value="3">3</option>
+
+                <option value="4">4</option>
+
+                <option value="5">5</option>
+
+                <option value="6">6</option>
+
+                <option value="7">7</option>
+
+                <option value="8">8</option>
+
+                <option value="none" selected>未记录</option>
+
+            </select>
+        </p>
+
+        <p>
+            <label for="id_number_format_A_g">整数G:</label>
+            <select name="number_format_A_g" id="id_number_format_A_g">
+                <option value="0">0</option>
+
+                <option value="1">1</option>
+
+                <option value="2">2</option>
+
+                <option value="3">3</option>
+
+                <option value="4">4</option>
+
+                <option value="5">5</option>
+
+                <option value="6">6</option>
+
+                <option value="7">7</option>
+
+                <option value="8">8</option>
+
+                <option value="none" selected>未记录</option>
+
+            </select>
+        </p>
+
+
+
+
+        <script>
+            $(document).ready(function(){
+                $("#id_number_format_A_ep").change(function(){
+                    var my_value = $("#id_number_format_A_ep").val();
+                    {#alert(my_value);#}
+
+                    //设置value为3的项被选中
+                    $("#id_number_format_A_g").val(my_value);
+
+
+
 
                 });
 
