@@ -13,7 +13,7 @@
 </head>
 <body>
 
-
+    1
     <div>
         <input type="submit" id="button_submit1" value="提交">
 
@@ -35,8 +35,8 @@
 
         </script>
     </div>
-
-
+    <br>
+    2
     <div>
         <input type="submit" id="button_submit2" value="提交">
 
@@ -63,6 +63,8 @@
                     $("#drl_g").val("4");
                 });
 
+
+
                 $("#drl_ep").change(function(){
                     {#alert("abc")#}
                     $("#drl_g").val("3");
@@ -72,6 +74,51 @@
 
         </script>
     </div>
+    <br>
+    3
+    <div>
+        <select id="drl_ep2" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
+        <select id="drl_g2" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
+        <select id="drl_eda" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+
+
+        <script>
+            $(document).ready(function(){
+                $("#drl_ep2").change(function(){
+                    {#alert("abc")#}
+
+                    //设置value为3的项被选中
+                    $("#drl_g2").val("3");
+
+                    //设置text为4的项选中
+                    $("#drl_eda").find("option[text='4']").prop("selected", true);
+                    $("#drl_eda").find("option[value='4']").prop("selected", true);
+                    alert("hello")
+
+                });
+
+            });
+
+        </script>
+    </div>
+
 
 
 
