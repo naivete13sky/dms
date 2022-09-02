@@ -1062,21 +1062,11 @@ class JobListView(ListView):
         # pagination_data = self.get_pagination_data(paginator, page_obj)
         # context.update(pagination_data)
 
-        # object_list = context['jobs']
-        # paginator = Paginator(object_list, 10)  # 每页显示3篇文章
-        # page = self.request.GET.get('page')
-        # try:
-        #     context['jobs2'] = paginator.page(page)
-        # except PageNotAnInteger:
-        #     # 如果page参数不是一个整数就返回第一页
-        #     context['jobs2'] = paginator.page(1)
-        # except EmptyPage:
-        #     # 如果页数超出总页数就返回最后一页
-        #     context['jobs2'] = paginator.page(paginator.num_pages)
+
 
         object_list = context['jobs']
-        # paginator = Paginator(object_list, 10)  # 每页显示3篇文章
-        paginator=context.get('paginator')
+        paginator = Paginator(object_list, 10)  # 每页显示3篇文章
+        # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
         page = self.request.GET.get('page')
         try:
             context['jobs2'] = paginator.page(page)
