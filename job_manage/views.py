@@ -1075,7 +1075,8 @@ class JobListView(ListView):
         #     context['jobs2'] = paginator.page(paginator.num_pages)
 
         object_list = context['jobs']
-        paginator = Paginator(object_list, 10)  # 每页显示3篇文章
+        # paginator = Paginator(object_list, 10)  # 每页显示3篇文章
+        paginator=context.get('paginator')
         page = self.request.GET.get('page')
         try:
             context['jobs2'] = paginator.page(page)
