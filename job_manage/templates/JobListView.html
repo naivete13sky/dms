@@ -65,6 +65,9 @@
                                 $("#basic-table").DataTable({
                                     // 表下方页脚的类型，具体类别比较到，见[官网](https://datatables.net/examples/basic_init/alt_pagination.html)
                                     "pagingType": "simple_numbers",
+                                    //关闭分页
+                                    "info": false,
+                                    "paging": false,
                                     //启动搜索框
                                     searching: true,
                                     destroy : true,
@@ -279,7 +282,8 @@
 
 
 
-                        {% include 'pagination.html' with page=page_obj %}
+{#                        {% include 'pagination.html' with page=page_obj %}#}
+                        {% include 'pagination_job.html' with page=page_obj %}
 
                     </div>
 
@@ -289,13 +293,15 @@
 
                     {% csrf_token %}
 {#                    <br>#}
+
+
                     <sapn class="current">
                         <span class="step-links">
                             批量设置：
                             <select id="batch_job_set" name="batch_job_set">
                                 <option value ="none">none</option>
-                                <option value ="batch_input_ep_odb">批量生成悦谱转图</option>
-                                <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>
+{#                                <option value ="batch_input_ep_odb">批量生成悦谱转图</option>#}
+{#                                <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>#}
                             </select>
                             <input type="hidden" name="layer_set_vs_result_manual_which_one" id="layer_set_vs_result_manual_which_one" value={{ job_id }} />
                             <input type="hidden" name="current_page" id="current_page" value={{ current_page }} />
