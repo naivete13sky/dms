@@ -462,7 +462,7 @@ class JobListView(ListView):
                                   Job._meta.get_field('from_object').verbose_name,
                                   Job._meta.get_field('status').verbose_name,
                                   Job._meta.get_field('updated').verbose_name,
-                                  "标签",
+
                                   "操作",
                                   ]
 
