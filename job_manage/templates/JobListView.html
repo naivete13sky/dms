@@ -187,12 +187,12 @@
 
                                                 var td_row_view=`<button class="btn btn-transparent" title="查看" onclick="window.location.href='JobFormView/${job_id}';"><i class="fa fa-eye"></i></button>`;
 
-                                                var td_row_delete=``;
-                                                var td_row_share=``;
+                                                var td_row_delete=`<button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/${job_id}';"><i class="fa fa-times"></i></button>`;
+                                                var td_row_share=`<button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/${job_id}';"><i class="fa fa-share-alt"></i></button>`;
 
 
                                                 var td_row= ``;
-                                                td_row = `` + td_row_edit + td_row_view + ``;
+                                                td_row = `` + td_row_edit + td_row_view + td_row_delete + td_row_share + ``;
 
                                                 return td_row;
                                             }
