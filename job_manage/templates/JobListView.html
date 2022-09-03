@@ -3,8 +3,15 @@
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
-    <li><i class="fa fa-home" aria-hidden="true"></i><a href={% url "back_stage:dashboard" %}>看板</a></li>
-    <li><a href={% url "job_manage:JobListView" %}>料号查询</a></li>
+    <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a href={% url "back_stage:dashboard" %}>看板</a>
+    </li>
+
+    <li>
+        <a href={% url "job_manage:JobListViewInput" %}>导入测试</a>
+    </li>
+<script>$("#basic-table").DataTable({retrieve: true,});</script>
 {% endblock %}
 
 {% block search %}
@@ -31,207 +38,60 @@
 
 
 {% block main_content %}
-
     <script src={% static "javascripts/jquery.min.js" %}></script>
-{#    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>#}
-
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
                 <div class="panel-content">
-                    <h4><i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a></h4>
+                {#--------------------------------------开始--筛选--------------------------------------#}
+
+                        <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                            <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
+
+                            {% csrf_token %}
+
+                            <label>使用分类</label>
+                            <select id="query_job_file_usage_type" name="query_job_file_usage_type" >
+                                {% for each in select_file_usage_type %}
+                                    {% if each.0 == query_job_file_usage_type  %}
+                                        <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != query_job_file_usage_type  %}
+                                        <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+
+                                {% endfor %}
+                            </select>
+
+                            <div class="form-group">
+                                <input type="" class="form-control" id="query_job_name" name="query_job_name" value="{{ query_job_job_name }}" placeholder="料号名" style="width:120px;">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="" class="form-control" id="query_job_author" name="query_job_author" value="{{ query_job_author }}" placeholder="负责人" style="width:80px;">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="" class="form-control" id="query_job_from_object" name="query_job_from_object" value="{{ query_job_from_object }}" placeholder="料号来源" style="width:80px;">
+                            </div>
 
 
+                            <div class="form-group">
+                                <button type="submit" id="submit_query_get" name="submit_query_get" class="btn btn-primary" value="submit_query_get">查询</button>
+                            </div>
+                        </form>
+
+                {#--------------------------------------结束--筛选--------------------------------------#}
+
+
+
+
+
+
+
+
+                {#--------------------------------------开始--表格--------------------------------------#}
                     <div class="table-responsive">
-
-                        <table id="basic-table" class=" table table-striped nowrap table-hover" cellspacing="0" width="100%">
-                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br />
-                            <thead>
-                                <tr>
-                                <th><span id="mySpan">行</span> <br /></th>
-                                {% for each in job_field_verbose_name %}
-                                    <th>{{ each }}</th>
-
-                                {% endfor  %}
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-
-                        <script>
-                            $(document).ready(function () {
-                                $("#basic-table").DataTable({
-                                    // 表下方页脚的类型，具体类别比较到，见[官网](https://datatables.net/examples/basic_init/alt_pagination.html)
-                                    "pagingType": "simple_numbers",
-                                    //关闭分页
-                                    "info": false,
-                                    "paging": false,
-                                    //启动搜索框
-                                    searching: true,
-                                    destroy : true,
-                                    // 保存刷新时原表的状态
-                                    stateSave: true,
-                                    // 将显示的语言初始化为中文
-                                    "language": {
-                                        "lengthMenu": "选择每页 _MENU_ 展示 ",
-                                        "zeroRecords": "未找到匹配结果--抱歉",
-                                        "info": "当前显示第 _PAGE_ 页结果，共 _PAGES_ 页",
-                                        "infoEmpty": "没有数据",
-                                        "infoFiltered": "(获取 _MAX_ 项结果)",
-                                        "paginate": {
-                                            "first": "首页",
-                                            "previous": "上一页",
-                                            "next": "下一页",
-                                            "last": "末页"
-                                        }
-                                    },
-                                    // 此处重要，该data就是dataTables要展示的数据.users即为后台传递过来的数据
-                                    data: {{ jobs_list | safe }},
-                                    columns: [
-                                        {
-                                            data: null,
-                                            width: "1%",
-                                            // 若想前端显示的不一样，则需要"render"函数
-                                            'render': function (data, type, full, meta) {
-                                                var job_id = full.id
-                                                var select_all_td_1=`<input class="file" name="ids" type="checkbox" value="${job_id}" />`
-                                                var select_all_td_2= meta.row + 1 + meta.settings._iDisplayStart
-                                                return select_all_td_1 + select_all_td_2;
-                                            }
-                                        },
-                                        {
-                                            data: "id",
-                                            'render': function (data, type, full, meta) {
-                                                return '<a class="text-warning" style="color:#007bff" title="job_name:'+ full.job_name +'">'+ data +'</a>';
-                                            }
-                                        },
-
-                                        {
-                                            data: 'job_name'
-                                        },
-
-                                        {
-                                            data: 'file_compressed',
-                                            'render': function (data, type, full, meta) {
-                                                var file_compressed = full.file_compressed
-                                                if (full.file_compressed){
-                                                    return `<button class="btn btn-transparent" title="附件下载：" onclick="window.location.href='/media/${file_compressed}';"><i class="fa fa-download"></i></button>`;
-                                                } else {return "";}
-
-                                            }
-                                        },
-
-                                        {
-                                            data: '层别信息',
-                                            'render': function (data, type, full, meta) {
-                                                var job_id = full.id
-                                                return `<button type="submit" class="btn btn-transparent" title="查看层别信息" value="${job_id}" onclick="view_layer_info(this.value);"><i class="fa fa-eye"></i></button>`;
-                                            }
-                                        },
-
-                                        {
-                                            data: 'Bug信息',
-                                            'render': function (data, type, full, meta) {
-                                                var job_id = full.id
-                                                return `<button type="submit" class="btn btn-transparent" title="查看层别信息" value="${job_id}" onclick="view_bug_info(this.value);"><i class="fa fa-bug"></i></button>`;
-                                            }
-                                        },
-
-                                        {
-                                            data: 'file_usage_type',
-                                            'render': function (data, type, full, meta) {
-                                                if(full.file_usage_type=="input_test"){
-                                                    return "导入测试"
-                                                }
-                                                if(full.file_usage_type=="customer_job"){
-                                                    return "客户资料"
-                                                }
-                                                if(full.file_usage_type=="test"){
-                                                    return "测试"
-                                                }
-                                                if(full.file_usage_type=="else"){
-                                                    return "其它"
-                                                }
-
-                                            }
-                                        },
-
-                                        {
-                                            data: 'remark',
-                                            'render': function (data, type, full, meta) {
-                                                if(full.remark===null){return "";}
-                                                return full.remark;
-
-                                            }
-                                        },
-
-                                        {
-                                            data: 'author'
-                                        },
-
-                                        {
-                                            data: 'from_object'
-                                        },
-
-                                        {
-                                            data: 'status'
-                                        },
-
-                                        {
-                                            data: 'updated'
-                                        },
-
-
-
-                                        {
-
-                                            'render': function (data, type, full, meta) {
-                                                var job_id = full.id;
-                                                var td_row_edit= `<button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/${job_id}/1';"><i class="fa fa-pencil"></i></button>`;
-
-                                                var td_row_view=`<button class="btn btn-transparent" title="查看" onclick="window.location.href='JobFormView/${job_id}';"><i class="fa fa-eye"></i></button>`;
-
-                                                var td_row_delete=`<button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/${job_id}';"><i class="fa fa-times"></i></button>`;
-                                                var td_row_share=`<button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/${job_id}';"><i class="fa fa-share-alt"></i></button>`;
-
-
-                                                var td_row= ``;
-                                                td_row = `` + td_row_edit + td_row_view + td_row_delete + td_row_share + ``;
-
-                                                return td_row;
-                                            }
-                                        },
-
-
-                                    ]
-                                })
-                            });
-
-                            //查看层别信息
-                            function view_layer_info(value) {
-                               {#alert("view_layer_info");#}
-                               {#$('.btn_page_jump').click()#}
-                               window.location.href = "LayerListView?which_one=" + value;
-                            }
-
-                            //查看Bug信息
-                            function view_bug_info(value) {
-                               {#alert("view_layer_info");#}
-                               {#$('.btn_page_jump').click()#}
-                               window.location.href = "BugListView?which_one=" + value;
-                            }
-
-
-
-                        </script>
-
-
-
-
-
-
 
                         <script type="text/javascript">
                             //页面加载的时候,所有的复选框都是未选中的状态
@@ -277,29 +137,252 @@
                             }
                             </script>
 
+                        <table id="basic-table" class=" table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br /></th>
+                                {% for each in job_field_verbose_name %}
+                                    <th>{{ each }}</th>
+
+                                {% endfor  %}
+
+                            </tr>
+                            </thead>
+                            <tbody id="table_body">
+
+                            {% for job in jobs_page %}
+
+                                <tr>
+                                <td>
+{#                                    <input type="checkbox" name="check_box_list" value="{{ layer.id }}" onclick="userCheck(this)">#}
+
+                                    <input class="file" name="ids" type="checkbox" value="{{ job.id }}" />
+                                    {{ forloop.counter }}
+
+
+                                </td>
+                                <td>{{ job.id }}</td>
+
+                                <td>
+                                    <a href="{{ job.get_absolute_url }}" title="查看{{ job.job_name }}详细信息">
+                                        {{ job.job_name|slice:"20" }}
+                                    </a>
+
+
+                                </td>
+
+                                <td>
+                                    {% if job.file_compressed %}
+                                        <button class="btn btn-transparent" title="附件下载：{{ job.file_compressed }}" onclick="window.location.href='/media/{{ job.file_compressed }}';">  <i class="fa fa-download"> </i>  </button>
+                                    {% endif %}
 
 
 
 
 
-{#                        {% include 'pagination.html' with page=page_obj %}#}
-                        {% include 'pagination_job_view.html' with page=page_obj %}
+                                </td>
+
+
+
+
+
+
+
+
+
+                                <td>
+                                    <form action="../../LayerListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看层别信息" ><i class="fa fa-eye"></i>
+
+                                            </button>
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <td>
+                                    <form action="../../BugListView" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="hidden" value={{ job.id }} class="form-control" id="which_one" name="which_one" placeholder="料号名、负责人、料号来源">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-transparent" title="查看Bug" ><i class="fa fa-bug"></i>
+
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </td>
+
+
+                                <td>{{ job.get_file_usage_type_display }}</td>
+
+                                <td>
+
+                                    <div title={{ job.remark }}> {{ job.remark|slice:"20" }} </div>
+                                </td>
+                                <td>{{ job.author }}</td>
+{#                                <td>{{ job.from_object }}</td>#}
+                                <td>
+                                    {% if job.status == "published" %}
+                                        <div style=color:green;>{{ job.get_status_display }}</div>
+
+                                    {% endif %}
+                                    {% if job.status != "published" %}
+                                        {{ job.get_status_display }}
+
+                                    {% endif %}
+
+                                </td>
+{#                                <td>{{ job.create_time }}</td>#}
+                                <td>{{ job.updated }}</td>
+                                <td>
+                                    {% for tag in job.tags.all %}
+                                        <a href="{% url "job_manage:job_list_by_tag" tag.slug %}">{{ tag.name }}</a>
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if tag %}
+                                        <h2>Posts tagged with "{{ tag.name }}"</h2>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <div class="btn-group btn-group-xs">
+                                        <button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/{{ job.id }}/{{ current_page }}';"><i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
+{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/{{ job.id }}';"><i class="fa fa-times"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分享" onclick="window.location.href='share_job/{{ job.id }}';"><i class="fa fa-share-alt"></i>
+                                        </button>
+
+                                        <button class="btn btn-transparent" title="分析" onclick="window.location.href='job_analysis';"><i class="fa fa-server"></i>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            {% endfor %}
+
+
+
+                            </tbody>
+                        </table>
+
+
+
+
+
+
+
+
+                        <div id="pagination">
+                            {% include 'pagination_job_input.html' with page=jobs_page %}
+                        </div>
+
+
+
+
+
+
+
+
+                        <script type="text/javascript" language="JavaScript">
+                            function confirm_do_get_layer_info_ajax(value)
+                            {
+                                 if(confirm("确定要执行生成层名操作吗?"))
+                                 {
+                                     {#alert("确认")#}
+                                     $.ajax({
+                                        type:"post",
+                                        data:{
+                                            "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                                            "post_type":"get_file_name_from_org",
+                                            "job_id":value,
+                                        },
+                                        url:"",
+                                        dataType:"text",
+                                        success:function (data) {
+                                            alert(data)
+
+                                        },
+                                        error:function () {
+                                            alert("false");
+                                        }
+                                    })
+                                     window.location.href="get_file_name_from_org/" + value;
+                                     {#return true;#}
+
+                                 }else{
+                                     alert(value)
+                                     alert("cc")
+                                     return false;
+
+                                 }
+                            }
+                        </script>
+
+                        <script type="text/javascript" language="JavaScript">
+                                function confirm_do_vs_ep_ajax(value)
+                                {
+                                     if(confirm("确定要执行悦谱比图操作吗?"))
+                                     {
+
+                                         window.location.href='vs_ep/' + value + '/{{ current_page }}';
+                                         {#return true;#}
+
+                                     }else{
+                                         alert(value)
+                                         return false;
+
+                                     }
+                                }
+                        </script>
+
+                        <script type="text/javascript" language="JavaScript">
+                            function confirm_do_vs_g_ajax(value)
+                            {
+                                 if(confirm("确定要执行G软件比图操作吗?"))
+                                 {
+
+                                     window.location.href='vs_g/' + value + '/{{ current_page }}';
+                                     {#return true;#}
+
+                                 }else{
+                                     {#alert(value)#}
+                                     return false;
+
+                                 }
+                            }
+                        </script>
 
                     </div>
 
+                {#--------------------------------------结束--表格--------------------------------------#}
 
 
 
 
+
+
+                {#--------------------------------------开始--批量--------------------------------------#}
                     {% csrf_token %}
-{#                    <br>#}
-
-
                     <sapn class="current">
                         <span class="step-links">
                             批量设置：
                             <select id="batch_job_set" name="batch_job_set">
-                                <option value ="none">none</option>
+{#                                <option value ="none">none</option>#}
 {#                                <option value ="batch_input_ep_odb">批量生成悦谱转图</option>#}
 {#                                <option value ="batch_delete_ep_odb">批量删除悦谱转图</option>#}
                             </select>
@@ -308,8 +391,6 @@
                             <input class="del-button" type="button" value="批量操作" />
                         </span>
                     </sapn>
-
-
 
 
                     <script type="text/javascript">
@@ -402,6 +483,11 @@
 
 
                     </script>
+                    {#--------------------------------------结束--批量--------------------------------------#}
+
+
+
+
 
 
 
