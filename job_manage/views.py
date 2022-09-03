@@ -450,7 +450,7 @@ class JobListView(ListView):
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
         context = super().get_context_data(**kwargs)
-        job_field_verbose_name = [Job._meta.get_field('id').verbose_name,
+        context['job_field_verbose_name'] = [Job._meta.get_field('id').verbose_name,
                                   Job._meta.get_field('job_name').verbose_name,
                                   Job._meta.get_field('file_compressed').verbose_name,
                                   # Job._meta.get_field('file_compressed_org').verbose_name,
@@ -472,13 +472,27 @@ class JobListView(ListView):
                                   "标签",
                                   "操作",
                                   ]
-        context['job_field_verbose_name'] = job_field_verbose_name# 表头用
-        context['radio_view_all_job']="checked"
 
 
-        #使用分类筛选
-        # context['select_file_usage_type']=['所有', '导入测试', '客户资料', '测试', '其它']
-        context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
+        def object2json():
+            data = {}
+            jobs = Job.objects.all().values()
+            data["data"] = list(jobs)
+            # return JsonResponse(data, safe=False)
+            return json.dumps(data,default=str, ensure_ascii=False)
+        # print(object2json())
+        context['JsonResponse']=object2json()
+
+        """
+            创建基本的DataTables表格
+            """
+        user_list = []
+        for user_info in models.User.objects.all():
+            user_list.append({
+                'id': user_info.id,
+                'username': user_info.username
+            })
+        context['user_info']=user_list
 
 
 
@@ -501,15 +515,6 @@ class JobListView(ListView):
                 Q(from_object__contains=query) |
                 Q(author__username__contains=query))
 
-        #只看当前用户数据用的.记录筛选框状态用的.
-        if self.request.GET.get('current_user_checkbox_value',False):
-            print('current_user_checkbox_value')
-            context['current_user_checkbox_value']="checked"
-
-        # 只看当前用户数据用的.记录radio状态用的.
-        if self.request.GET.get('radio_view_my_job', False):
-            print('radio_view_my_job')
-            context['radio_view_my_job'] = "checked"
 
         #根据料号ID精准搜索
         search_by_job_id=self.request.GET.get('search_by_job_id',False)
@@ -518,13 +523,7 @@ class JobListView(ListView):
             print("search_by_job_id:",search_by_job_id)
             context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
 
-        # 根据料号使用类型精准筛选
-        search_by_file_usage_type = self.request.GET.get('file_usage_type', False)
-        if search_by_file_usage_type:
-            pass
-            print("search_by_file_usage_type:", search_by_file_usage_type)
-            context['jobs'] = models.Job.objects.filter(Q(file_usage_type=search_by_file_usage_type))
-            context['current_file_usage_type']=search_by_file_usage_type
+
 
         return context
 
