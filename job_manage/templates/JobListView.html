@@ -131,6 +131,74 @@
                                             }
                                         },
 
+                                        {
+                                            data: 'file_usage_type',
+                                            'render': function (data, type, full, meta) {
+                                                if(full.file_usage_type=="input_test"){
+                                                    return "导入测试"
+                                                }
+                                                if(full.file_usage_type=="customer_job"){
+                                                    return "客户资料"
+                                                }
+                                                if(full.file_usage_type=="test"){
+                                                    return "测试"
+                                                }
+                                                if(full.file_usage_type=="else"){
+                                                    return "其它"
+                                                }
+
+                                            }
+                                        },
+
+                                        {
+                                            data: 'remark',
+                                            'render': function (data, type, full, meta) {
+                                                if(full.remark===null){return "";}
+                                                return full.remark;
+
+                                            }
+                                        },
+
+                                        {
+                                            data: 'author'
+                                        },
+
+                                        {
+                                            data: 'from_object'
+                                        },
+
+                                        {
+                                            data: 'status'
+                                        },
+
+                                        {
+                                            data: 'updated'
+                                        },
+
+                                        {
+                                            data: 'tag'
+                                        },
+
+                                        {
+                                            data: 'tag',
+                                            'render': function (data, type, full, meta) {
+                                                var job_id = full.id;
+                                                var td_row_edit= `<button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/${job_id}/1';"><i class="fa fa-pencil"></i></button>`;
+
+                                                var td_row_view=`<button class="btn btn-transparent" title="查看" onclick="window.location.href='JobFormView/${job_id}';"><i class="fa fa-eye"></i></button>`;
+
+                                                var td_row_delete=``;
+                                                var td_row_share=``;
+
+
+                                                var td_row= ``;
+                                                td_row = `` + td_row_edit + td_row_view + ``;
+
+                                                return td_row;
+                                            }
+                                        },
+
+
                                     ]
                                 })
                             });
@@ -370,7 +438,7 @@
                                         <button class="btn btn-transparent" title="编辑" onclick="window.location.href='JobUpdateView/{{ job.id }}/{{ current_page }}';"><i class="fa fa-pencil"></i>
                                         </button>
                                         <button class="btn btn-transparent" title="查看" onclick="window.location.href='{{ job.get_absolute_url }}';"><i class="fa fa-eye"></i>
-{#                                                                        <a href="job/{{ job.id }}">查看</a>#}
+
                                         </button>
 
                                         <button class="btn btn-transparent" title="删除" onclick="window.location.href='JobDeleteView/{{ job.id }}';"><i class="fa fa-times"></i>
