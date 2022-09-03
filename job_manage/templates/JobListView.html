@@ -45,9 +45,10 @@
                     <div class="table-responsive">
 
                         <table id="basic-table" class=" table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br />
                             <thead>
                                 <tr>
-                                <th><input type="checkbox" id="chElt" onclick="checkOrCancelAll();"/><span id="mySpan">全选</span> <br /></th>
+                                <th><span id="mySpan">行</span> <br /></th>
                                 {% for each in job_field_verbose_name %}
                                     <th>{{ each }}</th>
 
@@ -91,7 +92,10 @@
                                             width: "1%",
                                             // 若想前端显示的不一样，则需要"render"函数
                                             'render': function (data, type, full, meta) {
-                                                return meta.row + 1 + meta.settings._iDisplayStart;
+                                                var job_id = full.id
+                                                var select_all_td_1=`<input class="file" name="ids" type="checkbox" value="${job_id}" />`
+                                                var select_all_td_2= meta.row + 1 + meta.settings._iDisplayStart
+                                                return select_all_td_1 + select_all_td_2;
                                             }
                                         },
                                         {
