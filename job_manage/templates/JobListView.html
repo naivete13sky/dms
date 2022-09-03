@@ -123,19 +123,38 @@
                                             }
                                         },
 
+                                        {
+                                            data: 'Bug信息',
+                                            'render': function (data, type, full, meta) {
+                                                var job_id = full.id
+                                                return `<button type="submit" class="btn btn-transparent" title="查看层别信息" value="${job_id}" onclick="view_bug_info(this.value);"><i class="fa fa-bug"></i></button>`;
+                                            }
+                                        },
+
                                     ]
                                 })
                             });
-                        </script>
 
-
-                        <script>
+                            //查看层别信息
                             function view_layer_info(value) {
                                {#alert("view_layer_info");#}
                                {#$('.btn_page_jump').click()#}
                                window.location.href = "LayerListView?which_one=" + value;
                             }
+
+                            //查看Bug信息
+                            function view_bug_info(value) {
+                               {#alert("view_layer_info");#}
+                               {#$('.btn_page_jump').click()#}
+                               window.location.href = "BugListView?which_one=" + value;
+                            }
+
+
+
                         </script>
+
+
+
 
 
 
