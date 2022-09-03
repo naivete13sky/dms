@@ -963,6 +963,10 @@ class JobListView(ListView):
                     else:
                         return HttpResponse("您无此权限！请联系管理员！")
 
+
+
+                return  HttpResponse("啥都没做！")
+
             if request.POST.__contains__("page_jump"):
                 print(request.POST.get("page_jump"))
 
