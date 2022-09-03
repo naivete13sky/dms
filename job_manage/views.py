@@ -345,7 +345,7 @@ def job_list(request,tag_slug=None):
 
         object_list = models.Job.objects.filter(tags__in=[tag])
     # object_list = Job.published.all()
-    paginator = Paginator(object_list, 5)  # 每页显示5篇文章
+    paginator = Paginator(object_list, 20)  # 每页显示5篇文章
     page = request.GET.get('page')
 
     if page==None:
