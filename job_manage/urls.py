@@ -13,9 +13,9 @@ urlpatterns = [
     path('job_list', views.job_list,name='job_list'),
     # path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),
     #暂时先改为JobListViewVs，平时是JobListView
-    path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),
+    path('JobListViewInput',login_required(views.JobListViewInput.as_view()),name='JobListViewInput'),
     path('JobListView2',login_required(views.JobListView2.as_view()),name='JobListView2'),
-    path('JobListView0',login_required(views.JobListView0.as_view()),name='JobListView0'),
+    path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),
     re_path('detail/(?P<pk>\d+)/', login_required(views.JobDetailView.as_view()), name='detail'),
     re_path('JobFormView/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='JobFormView'),
     re_path('form/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='form'),

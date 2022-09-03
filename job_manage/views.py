@@ -439,13 +439,13 @@ class JobListViewVs(ListView):
                 Q(author__username__contains=query))
         return context
 
-class JobListView0(ListView):
+class JobListView(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
     context_object_name = 'jobs'
     paginate_by = 10
     # ordering = ['-publish']
-    template_name = 'JobListView0.html'
+    template_name = 'JobListView.html'
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -956,13 +956,13 @@ class JobListView2(ListView):
 
                 return HttpResponse(request.POST.get("post_type",False))
 
-class JobListView(ListView):
+class JobListViewInput(ListView):
     queryset = models.Job.objects.all()
     # model=models.Job
     context_object_name = 'jobs'
     paginate_by = 10
     # ordering = ['-publish']
-    template_name = 'JobListView.html'
+    template_name = 'JobListViewInput.html'
 
     def get_context_data(self, **kwargs):  # 重写get_context_data方法
         # 很关键，必须把原方法的结果拿到
@@ -1485,7 +1485,7 @@ class JobCreateView(CreateView):
         initial['author'] = self.request.user
         # etc...
         return initial
-    success_url = 'JobListView'
+    success_url = 'JobListViewInput'
 
 @method_decorator(casbin_permission("job_org_compressed","delete"), name='dispatch')
 class JobUpdateView(UpdateView):
@@ -1514,7 +1514,7 @@ class JobUpdateView(UpdateView):
 
     #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
     def get_success_url(self):
-        return '../../JobListView?page={}'.format(self.kwargs['current_page'])
+        return '../../JobListViewInput?page={}'.format(self.kwargs['current_page'])
 
     # success_url = '../JobListView' # 修改成功后跳转的链接
 
@@ -1526,7 +1526,7 @@ class JobUpdateViewVs(UpdateView):
     fields = "__all__"
     # template_name_suffix = '_update_form'  # html文件后缀
     template_name = 'JobUpdateView.html'
-    success_url = '../JobListView' # 修改成功后跳转的链接
+    success_url = '../JobListViewInput' # 修改成功后跳转的链接
 
 @method_decorator(casbin_permission("job_org_compressed","delete"), name='dispatch')
 class JobDeleteView(DeleteView):
@@ -1538,7 +1538,7 @@ class JobDeleteView(DeleteView):
   # template_name_suffix = ''
   # book_delete.html为models.py中__str__的返回值
    # namespace:url_name
-  success_url = reverse_lazy('job_manage:job_view')
+  success_url = reverse_lazy('job_manage:JobListViewInput')
 
 @casbin_permission("job_vs","post")
 def job_settings(request):
@@ -1671,7 +1671,7 @@ def get_file_name_from_org_on(request,job_id):
     job.bool_layer_info='false'
     job.save()
     # return redirect('job_manage:JobListViewVs')
-    return redirect('../../JobListView')
+    return redirect('../../JobListViewInput')
 
 def delete_all_layer_info(request,job_id):
     pass
@@ -1747,7 +1747,7 @@ def gerber274x_to_odb_ep(request,job_id):
 
 
 
-    return redirect('job_manage:JobListView')
+    return redirect('job_manage:JobListViewInput')
 
 @casbin_permission("job_gerber_to_odb","post")
 def gerber274x_to_odb_ep2(request,job_id,current_page):
@@ -1816,7 +1816,7 @@ def gerber274x_to_odb_ep2(request,job_id,current_page):
         shutil.rmtree(temp_path)
 
     # return redirect('job_manage:JobListView')
-    return redirect('../../JobListView?page={}'.format(current_page))
+    return redirect('../../JobListViewInput?page={}'.format(current_page))
 
 @casbin_permission("odb_view","get")
 def ep_current_odb_view(request,job_id,current_page):
@@ -1855,7 +1855,7 @@ def ep_current_odb_view(request,job_id,current_page):
         shutil.rmtree(temp_path)
 
     # return redirect('job_manage:JobListView')
-    return redirect('../../JobListView?page={}'.format(current_page))
+    return redirect('../../JobListViewInput?page={}'.format(current_page))
 
 @casbin_permission("odb_view","get")
 def g_current_odb_view(request,job_id,current_page):
@@ -1892,7 +1892,7 @@ def g_current_odb_view(request,job_id,current_page):
         shutil.rmtree(temp_path)
 
     # return redirect('job_manage:JobListView')
-    return redirect('../../JobListView?page={}'.format(current_page))
+    return redirect('../../JobListViewInput?page={}'.format(current_page))
 
 def getFlist(path):
     for root, dirs, files in os.walk(path):
@@ -1967,7 +1967,7 @@ def gerber274x_to_odb_g(request,job_id):
 
 
 
-    return redirect('job_manage:JobListView')
+    return redirect('job_manage:JobListViewInput')
 
 
 class LayerListView(ListView):
@@ -2357,7 +2357,7 @@ def vs_ep(request,job_id,current_page):
 
     # return HttpResponse("悦谱VS"+str(job_id))
     # return redirect('job_manage:JobListView')
-    return redirect('../../JobListView?page={}'.format(current_page))
+    return redirect('../../JobListViewInput?page={}'.format(current_page))
 
 @casbin_permission("job_vs","post")
 def vs_g(request,job_id,current_page):
@@ -2605,7 +2605,7 @@ def vs_g(request,job_id,current_page):
 
     # return HttpResponse("悦谱VS"+str(job_id))
     # return redirect('job_manage:JobListView')
-    return redirect('../../JobListView?page={}'.format(current_page))
+    return redirect('../../JobListViewInput?page={}'.format(current_page))
 
 
 

@@ -6,7 +6,7 @@
         <ul class="pagination">
             {# 上一页 #}
             {% if page_obj.has_previous %}
-                <li><a href="{% url 'job_manage:JobListView' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                <li><a href="{% url 'job_manage:JobListViewInput' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
             {% else %}
                 <li class="disabled"><a href="javascript:void(0);">上一页</a></li>
             {% endif %}
@@ -19,11 +19,11 @@
                 {% endfor %}
             {% else %}
                 {% for page in left_range %}
-                    <li><a href="{% url 'job_manage:JobListView' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="{% url 'job_manage:JobListViewInput' %}?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
             {% endif %}
             {# 中间部分当前页 #}
-            <li class="active"><a href="{% url 'job_manage:JobListView' %}?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+            <li class="active"><a href="{% url 'job_manage:JobListViewInput' %}?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
             {# 中间右边部分 #}
             {% if right_has_more %}
                 {% for page in right_range %}
@@ -33,12 +33,12 @@
                 <li><a href="{% url '' %}?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
             {% else %}
                 {% for page in right_range %}
-                    <li><a href="{% url 'job_manage:JobListView' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="{% url 'job_manage:JobListViewInput' %}?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
             {% endif %}
             {# 下一页 #}
             {% if page_obj.has_next %}
-                <li><a href="{% url 'job_manage:JobListView' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                <li><a href="{% url 'job_manage:JobListViewInput' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
             {% else %}
                 <li class="disabled"><a href="javascript:void(0);">下一页</a></li>
             {% endif %}
