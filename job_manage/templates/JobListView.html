@@ -111,7 +111,8 @@
                                                 var file_compressed = full.file_compressed
                                                 if (full.file_compressed){
                                                     return `<button class="btn btn-transparent" title="附件下载：" onclick="window.location.href='/media/${file_compressed}';"><i class="fa fa-download"></i></button>`;
-                                                }
+                                                } else {return "";}
+
                                             }
                                         },
 
