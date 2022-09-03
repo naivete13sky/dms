@@ -10,5 +10,10 @@ jobs_list2 = []
 
 
 
+for field in all_job_fileds:
+    job_dict[field] = getattr(Job.objects.get(id=15), field)
+
+
+
 
 

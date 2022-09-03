@@ -487,13 +487,30 @@ class JobListView(ListView):
                 'job_name': each.job_name
             })
         context['jobs_list'] = jobs_list
-
         print("jobs_list",jobs_list)
 
 
 
 
 
+
+
+        job_dict = {}
+        all_job_fileds=['id','job_name']
+        for field in all_job_fileds:
+            job_dict[field] = getattr(Job.objects.get(id=15), field)
+        print("job_dict:",job_dict)
+
+        jobs_list2 = []
+        all_job_fileds=['id','job_name']
+        for each in context["jobs"]:
+            one_job_dict = {}
+            for field in all_job_fileds:
+                one_job_dict[field] = getattr(each, field)
+
+            jobs_list2.append(one_job_dict)
+        context['jobs_list2'] = jobs_list2
+        print("jobs_list2", jobs_list2)
 
 
 
