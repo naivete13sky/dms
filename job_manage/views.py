@@ -478,39 +478,17 @@ class JobListView(ListView):
             前端用jquery的datatable控件，使用方便，功能强大
             创建基本的DataTables表格
         """
-
         jobs_list = []
-        all_job_filed = DjangoMethod().getmodelfield('job_manage', 'Job', exclude=[])
-        for each in context["jobs"]:
-            jobs_list.append({
-                'id': each.id,
-                'job_name': each.job_name
-            })
-        context['jobs_list'] = jobs_list
-        print("jobs_list",jobs_list)
-
-
-
-
-
-
-
-        job_dict = {}
-        all_job_fileds=['id','job_name']
-        for field in all_job_fileds:
-            job_dict[field] = getattr(Job.objects.get(id=15), field)
-        print("job_dict:",job_dict)
-
-        jobs_list2 = []
-        all_job_fileds=['id','job_name']
+        all_job_fileds = ['id','job_name']
+        all_job_fileds = DjangoMethod().getmodelfield('job_manage', 'Job', exclude=[])
         for each in context["jobs"]:
             one_job_dict = {}
             for field in all_job_fileds:
-                one_job_dict[field] = getattr(each, field)
+                one_job_dict[field] = str(getattr(each, field))
 
-            jobs_list2.append(one_job_dict)
-        context['jobs_list2'] = jobs_list2
-        print("jobs_list2", jobs_list2)
+            jobs_list.append(one_job_dict)
+        context['jobs_list'] = jobs_list
+        print("jobs_list", jobs_list)
 
 
 
