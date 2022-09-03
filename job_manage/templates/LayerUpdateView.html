@@ -33,16 +33,44 @@
 
     <script>
             $(document).ready(function(){
+                //units_ep
+                $("#id_units_ep").change(function(){
+                    var my_value = $("#id_units_ep").val();
+                    {#alert(my_value);#}
+                    //设置value为3的项被选中
+                    $("#id_units_g").val(my_value);
+                });
+
+                //省零
+                $("#id_zeroes_omitted_ep").change(function(){
+                    var my_value = $("#id_zeroes_omitted_ep").val();
+                    {#alert(my_value);#}
+                    //设置value为3的项被选中
+                    $("#id_zeroes_omitted_g").val(my_value);
+                });
+
+                //整数
                 $("#id_number_format_A_ep").change(function(){
                     var my_value = $("#id_number_format_A_ep").val();
                     {#alert(my_value);#}
-
                     //设置value为3的项被选中
                     $("#id_number_format_A_g").val(my_value);
+                });
 
+                //小数
+                $("#id_number_format_B_ep").change(function(){
+                    var my_value = $("#id_number_format_B_ep").val();
+                    {#alert(my_value);#}
+                    //设置value为3的项被选中
+                    $("#id_number_format_B_g").val(my_value);
+                });
 
-
-
+                //tool_units_ep
+                $("#id_tool_units_ep").change(function(){
+                    var my_value = $("#id_tool_units_ep").val();
+                    {#alert(my_value);#}
+                    //设置value为3的项被选中
+                    $("#id_tool_units_g").val(my_value);
                 });
 
             });
