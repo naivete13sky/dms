@@ -110,16 +110,31 @@
                                             'render': function (data, type, full, meta) {
                                                 var file_compressed = full.file_compressed
                                                 if (full.file_compressed){
-                                                    {#return '<a class="text-warning" style="color:#007bff" title="job_name:'+ full.job_name +'">'+ data +'</a>';#}
                                                     return `<button class="btn btn-transparent" title="附件下载：" onclick="window.location.href='/media/${file_compressed}';"><i class="fa fa-download"></i></button>`;
                                                 }
-
                                             }
-                                        }
+                                        },
+
+                                        {
+                                            data: '层别信息',
+                                            'render': function (data, type, full, meta) {
+                                                var job_id = full.id
+                                                return `<button type="submit" class="btn btn-transparent" title="查看层别信息" value="${job_id}" onclick="view_layer_info(this.value);"><i class="fa fa-eye"></i></button>`;
+                                            }
+                                        },
 
                                     ]
                                 })
                             });
+                        </script>
+
+
+                        <script>
+                            function view_layer_info(value) {
+                               {#alert("view_layer_info");#}
+                               {#$('.btn_page_jump').click()#}
+                               window.location.href = "LayerListView?which_one=" + value;
+                            }
                         </script>
 
 
