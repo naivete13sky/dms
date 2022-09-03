@@ -2125,7 +2125,6 @@ def view_layer(request,job_id):
                           ]
 
 
-
     # return redirect('job_manage:LayerListView')
     return render(request, 'LayerListViewOneJob.html', {'field_verbose_name': field_verbose_name, 'layers': layers,'job':job})
 
