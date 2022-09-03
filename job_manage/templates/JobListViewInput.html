@@ -5,11 +5,11 @@
 {% block content_header_child %}
     <li>
         <i class="fa fa-home" aria-hidden="true"></i>
-        <a href={% url "job_manage:JobListViewInput" %}>料号管理</a>
+        <a href={% url "back_stage:dashboard" %}>看板</a>
     </li>
 
     <li>
-        <a>导入测试</a>
+        <a href={% url "job_manage:JobListViewInput" %}>导入测试</a>
     </li>
 <script>$("#basic-table").DataTable({retrieve: true,});</script>
 {% endblock %}
