@@ -480,7 +480,7 @@ class JobListView(ListView):
 
             jobs_list.append(one_job_dict)
         context['jobs_list'] = jobs_list
-        print("jobs_list", jobs_list)
+        # print("jobs_list", jobs_list)
 
 
 
