@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
+from django.forms import model_to_dict
 from django.shortcuts import render, get_object_or_404,HttpResponse
 from django.urls import reverse_lazy
 from django.views import View
@@ -32,7 +33,7 @@ path = os.path.dirname(os.path.realpath(__file__)) + r'/epcam'
 sys.path.append(path)
 import epcam
 import epcam_api
-from cc_method import Tgz
+from cc_method import Tgz,DjangoMethod
 import re
 base_path = dirname(dirname(abspath(__file__)))
 sys.path.insert(0, base_path)
@@ -473,26 +474,36 @@ class JobListView(ListView):
                                   "操作",
                                   ]
 
-
-        def object2json():
-            data = {}
-            jobs = Job.objects.all().values()
-            data["data"] = list(jobs)
-            # return JsonResponse(data, safe=False)
-            return json.dumps(data,default=str, ensure_ascii=False)
-        # print(object2json())
-        context['JsonResponse']=object2json()
-
         """
+            前端用jquery的datatable控件，使用方便，功能强大
             创建基本的DataTables表格
-            """
-        user_list = []
-        for user_info in models.User.objects.all():
-            user_list.append({
-                'id': user_info.id,
-                'username': user_info.username
+        """
+
+        jobs_list = []
+        all_job_filed = DjangoMethod().getmodelfield('job_manage', 'Job', exclude=[])
+        for each in context["jobs"]:
+            jobs_list.append({
+                'id': each.id,
+                'job_name': each.job_name
             })
-        context['user_info']=user_list
+        context['jobs_list'] = jobs_list
+
+        print("jobs_list",jobs_list)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,14 @@
+
+all_job_filed = DjangoMethod().getmodelfield('job_manage', 'Job', exclude=[])
+        for each in context["jobs"]:
+            jobs_list.append(model_to_dict(each))
+
+jobs_list2 = []
+        for each in context["jobs"]:
+            jobs_list2.append(model_to_dict(each,exclude=['file_compressed', 'file_odb_g','file_compressed_org','file_odb','file_odb_current']))
+        print("jobs_list2", jobs_list2)
+
+
+
+
+
