@@ -140,38 +140,7 @@ LEFT JOIN job_manage_information h on a.id=h.job_name_org_id;
 def job_upload(request):
     return render(request,r'../templates/job_upload.html')
 
-# ajax上传文件
-def job_upload_ajax(request):
-    if request.method=='GET':
-        return render(request,r'../templates/job_upload.html')
-    elif request.method=='POST':
-        # psd = request.POST.get('password')
-        file_odb = request.FILES.get('file_odb')
-        file_odb_name = file_odb.name
-        # 拼接绝对路径
-        file_odb_path = os.path.join(settings.BASE_DIR, 'upload', file_odb_name)
-        with open(file_odb_path, 'wb')as f:
-            for chunk in file_odb.chunks():#chunks()每次读取数据默认我64k
-                f.write(chunk)
-        #压缩文件
-        file_compressed = request.FILES.get('file_compressed')
-        file_compressed_name = file_compressed.name
-        # print(file_compressed_name)
-        # 拼接绝对路径
-        file_compressed_path = os.path.join(settings.BASE_DIR, 'upload', file_compressed_name)
-        with open(file_compressed_path, 'wb')as f:
-            for chunk in file_compressed.chunks():  # chunks()每次读取数据默认我64k
-                f.write(chunk)
-        job_name = request.POST.get('job_name')
-        remark = request.POST.get('remark')
-        author = request.POST.get('author')
-        print("*"*30,job_name)
 
-        job = Job(file_odb=file_odb, file_compressed=file_compressed,
-                  job_name=job_name, remark=remark, author=author)
-        job.save()
-
-        return HttpResponse('完成上传')
 
 def reg(request):
   form = UserForm()

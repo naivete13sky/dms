@@ -124,9 +124,9 @@ class AddForms(forms.ModelForm):
         }
 
 class RegisterForm(forms.ModelForm):
-    pwd1 = forms.CharField(min_length=3, max_length=10)
-    pwd2 = forms.CharField(min_length=3, max_length=10)
-    email = forms.EmailField()
+    pwd1 = forms.CharField(min_length=3, max_length=30)
+    pwd2 = forms.CharField(min_length=3, max_length=30)
+    email = forms.EmailField(max_length=30)
 
     # clean映射多字段
     def clean(self):

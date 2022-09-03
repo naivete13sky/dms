@@ -5,28 +5,25 @@ from django.conf.urls.static import static
 from django.conf import settings
 app_name = 'job_manage'
 urlpatterns = [
-    path('job_upload_ajax', views.job_upload_ajax, name='job_upload_ajax'),
-    path('reg/', views.reg,name='reg'),
-    re_path('job/(?P<id>\d+)/$', views.Edit,name='edit'),
-    path('addArticle', views.AddArticle.as_view()),
-    path('register/', views.RegisterArticle.as_view()),
-    path('job_list', views.job_list,name='job_list'),
-    # path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),
-    #暂时先改为JobListViewVs，平时是JobListView
-    path('JobListViewInput',login_required(views.JobListViewInput.as_view()),name='JobListViewInput'),
-    path('JobListView2',login_required(views.JobListView2.as_view()),name='JobListView2'),
-    path('JobListViewJquery',login_required(views.JobListViewJquery.as_view()),name='JobListViewJquery'),
-    path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),
-    re_path('detail/(?P<pk>\d+)/', login_required(views.JobDetailView.as_view()), name='detail'),
-    re_path('JobFormView/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='JobFormView'),
-    re_path('form/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='form'),
-    # path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),
+    path('reg/', views.reg,name='reg'),#函数视图，自己写的，供研究注册表单填写与校验用。
+    re_path('job/(?P<id>\d+)/$', views.Edit,name='edit'),#函数视图，自己写的修改Job。
+    path('addArticle', views.AddArticle.as_view()),#函数视图，自己写的新增Job.
+    path('register/', views.RegisterArticle.as_view()),#自己写的注册用户，是register这张表，这是研究用的。实际上dms没有用这个注册功能。
+    path('job_list', views.job_list,name='job_list'),#自己写的函数视图，查看料号列表，筛选了published状态的。实际上dms不需要这个。
+
+
+    path('JobListViewInput',login_required(views.JobListViewInput.as_view()),name='JobListViewInput'),#类视图，测试组用来测试料号导出的，目前dms默认打开的就是这个页面。
+    path('JobListView2',login_required(views.JobListView2.as_view()),name='JobListView2'),#类视图，研究用的。目前这个视图在dms中没用上。
+    path('JobListViewJquery',login_required(views.JobListViewJquery.as_view()),name='JobListViewJquery'),#类视图，研究前端用Jquery的DataTable插件用的，感觉没有django的模板好用。目前这个视图在dms中没用上。
+    path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),#类视图，用来组普通用户展示料号列表的。
+    re_path('detail/(?P<pk>\d+)/', login_required(views.JobDetailView.as_view()), name='detail'),#类视图DetailView，用来查看料号详细信息的。dms中没有用这个函数视图，用了类视图JobFormView。
+    re_path('JobFormView/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='JobFormView'),#类视图，多用了ModelForm，查看某相料号的详细信息。其实还是DetailView省事。
+    # path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),#原来查看tag的，为了增加tag支持中文，修改了url。不用<slug：，只能用<str:了。
     # 这里的参数类型不要写slug，否则又会忽视中文，写str就行了
     path('tag/<str:tag_slug>/', views.job_list, name='job_list_by_tag'),
-
-    path('add', views.add, name='add'),
-    path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),
-    path('',login_required(views.JobListView.as_view()),name='job_view'),
+    path('add', views.add, name='add'),#函数视图，一开始用来新增料号的，后来增加了好多字段，没有继续维护更新。供研究用吧。dms中通过CreatView来新增料号的。
+    path('<int:year>/<int:month>/<int:day>/<slug:job>/', views.job_detail, name='job_detail'),#函数视图，用来查看料号详细信息的。dms中没用这个。
+    path('',login_required(views.JobListView.as_view()),name='job_view'),#job_manage 这个app下，默认路由指向。
     path('del_job/<int:job_id>/', views.del_job, name='del_job'),
     path('share_job/<int:job_id>/', views.share_job, name='share_job'),
     path('job_analysis', views.job_analysis, name='job_analysis'),
