@@ -3630,4 +3630,5 @@ def test_text_input_same_auto(request):
 
 def test_js_local_script(request):
     pass
+
     return render(request, 'test_js_local_script.html',)
