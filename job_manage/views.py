@@ -2007,7 +2007,7 @@ def get_file_name_from_org(request,job_id):
     job.bool_layer_info='true'
     job.save()
     # return redirect('job_manage:JobListViewVs')
-    return redirect('../../view_layer/{}'.format(job_id))
+    return redirect('../../LayerListView?which_one={}'.format(job_id))
 
 def get_file_name_from_org_on(request,job_id):
     pass
