@@ -3627,3 +3627,7 @@ def test_text_input_same_auto(request):
 
 
     return render(request, 'test_text_input_same_auto.html',{"result_json":result_json})
+
+def test_js_local_script(request):
+    pass
+    return render(request, 'test_js_local_script.html',)

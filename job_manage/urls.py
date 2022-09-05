@@ -86,6 +86,7 @@ urlpatterns = [
     path('test_ajax_upload/', views.test_ajax_upload,name='test_ajax_upload'),
     path('test_casbin/', views.test_casbin,name='test_casbin'),
     path('temp', views.temp,name='temp'),
+    path('test_js_local_script', views.test_js_local_script, name='test_js_local_script'),  # 开发时测试用的。
 
 
 # ]
