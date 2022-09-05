@@ -4,6 +4,16 @@ import psycopg2
 import rarfile
 import os,sys
 sys.path.append(r'C:\cc\python\epwork\dms\job_manage\g')
+from django.conf import settings
+import psycopg2
+import os,sys,json,shutil
+path = os.path.dirname(os.path.realpath(__file__)) + r'/epcam'
+from django.conf import settings
+print(path)
+sys.path.append(path)
+import epcam
+import epcam_api
+import job_operation
 
 
 def mysql():
@@ -119,6 +129,22 @@ def now(p1,p2):
 
 
 
+
+
+
+def g_current_odb_view(job_path,job):
+    pass
+
+    #show epcam
+
+
+
+    # 删除temp_path
+    # if os.path.exists(job_path):
+    #     shutil.rmtree(job_path)
+
+
+
 if __name__ == "__main__":
     pass
     # test_gerber_to_odb_ep()
@@ -127,6 +153,7 @@ if __name__ == "__main__":
     # print(pg())
     # maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
 
+    # now(1,2)
 
-    now(1,2)
+
 
