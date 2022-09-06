@@ -2973,16 +2973,16 @@ def send_vs_g_local_result(request):
         job = Job.objects.get(id=job_id)
         print(job)
         vs_time_g=request.POST.get("vs_time_g")[0]
-
+        g_vs_total_result_flag=True
         #上传结果文件
-        if not os.path.exists(r"C:\cc\share\temp\upload"):
-            os.mkdir(r"C:\cc\share\temp\upload")
+        if not os.path.exists(r"C:\cc\share\upload"):
+            os.mkdir(r"C:\cc\share\upload")
         for file in request.FILES.getlist("files"):
             name = file.name
             content = file.file.read()  # is binary
-            open(os.path.join(r'C:\cc\share\temp\upload',name), "wb").write(content)  # 保存到本地
+            open(os.path.join(r'C:\cc\share\upload',name), "wb").write(content)  # 保存到本地
 
-        with open(r'C:\cc\share\temp\upload\result.json', encoding='gbk') as f:
+        with open(r'C:\cc\share\upload\result.json', encoding='gbk') as f:
             result = json.load(f)
         print(result)
 
