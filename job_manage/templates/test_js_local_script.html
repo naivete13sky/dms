@@ -28,11 +28,11 @@
                 {#var wsh=new ActiveXObject("wscript.shell")#}
                 {#wsh.run("notepad.exe")//如果在“运行”可以运行就可以在此直接写，否则要写上绝对路径#}
 
-                {#alert("hello");#}
+                alert("hello");
 
                 try {
                     var objShell = new ActiveXObject("WScript.Shell");
-                    iReturnCode = objShell.Run("cmd.exe /c start  C:\\EPSemicon\\cc\\test.bat", 0, true);
+                    iReturnCode = objShell.Run("cmd.exe /c python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);
 
                 } catch (e) {
 
