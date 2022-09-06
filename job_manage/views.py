@@ -58,6 +58,7 @@ from .models import MyTag
 from django.utils.decorators import method_decorator
 from django.core import serializers
 from account.models import QueryData
+from django.views.decorators.csrf import csrf_exempt
 
 
 def readFile(filename,chunk_size=512):
@@ -2961,6 +2962,87 @@ def vs_g(request,job_id,current_page):
     # return redirect('job_manage:JobListView')
     return redirect('../../JobListViewInput?page={}'.format(current_page))
 
+
+@csrf_exempt
+def send_vs_g_local_result(request):
+    pass
+    if request.method == 'POST':
+        print("post")
+        print(request.POST)
+        # job_id = request.POST.get("job_id")
+        # job = Job.objects.get(id=job_id)
+        all_result=request.POST.get("all_result")
+        print(all_result)
+        if not os.path.exists(r"C:\cc\share\temp\upload"):
+            os.mkdir(r"C:\cc\share\temp\upload")
+        for file in request.FILES.getlist("files"):
+            name = file.name
+            content = file.file.read()  # is binary
+            open(os.path.join(r'C:\cc\share\temp\upload',name), "wb").write(content)  # 保存到本地
+
+        # for layer in all_layer_g:
+        #     pass
+        #     print(layer)
+        #     layer_result = asw.layer_compare_analysis(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol,
+        #                                               layer + '-com', map_layer_res)
+        #     # print(layer_result)
+        #
+        #     all_result[layer] = layer_result
+        #
+        #     for each in all_layer_from_org:
+        #         # print("layer:",layer,"str(each.layer_org).lower():",str(each.layer_org).lower().replace(" ","-").replace("(","-").replace(")","-"))
+        #         if layer == str(each.layer_org).lower().replace(" ", "-").replace("(", "-").replace(")", "-"):
+        #             print("I find it!!!!!!!!!!!!!!")
+        #             print(layer_result, type(layer_result))
+        #             # layer_result_dict=json.loads(layer_result)
+        #             # print(layer_result_dict)
+        #             # print(len(layer_result_dict["result"]))
+        #             new_vs = models.Vs()
+        #             new_vs.job = job
+        #             new_vs.layer = each.layer
+        #             new_vs.layer_org = each.layer_org
+        #             new_vs.vs_result_detail = str(layer_result)
+        #             new_vs.vs_method = 'g'
+        #             new_vs.layer_file_type = each.layer_file_type
+        #             new_vs.layer_type = each.layer_type
+        #             new_vs.vs_time_g = vs_time_g
+        #             try:
+        #                 # print('layer_result_dict["result"]:',layer_result_dict["result"])
+        #                 if layer_result == '正常':
+        #                     each.vs_result_g = 'passed'
+        #                     new_vs.vs_result = 'passed'
+        #                 elif layer_result == '错误':
+        #                     each.vs_result_g = 'failed'
+        #                     new_vs.vs_result = 'failed'
+        #                     g_vs_total_result_flag = False
+        #                 elif layer_result == '未比对':
+        #                     each.vs_result_g = 'none'
+        #                     new_vs.vs_result = 'none'
+        #                     g_vs_total_result_flag = False
+        #                 else:
+        #                     print("异常，状态异常！！！")
+        #
+        #             except:
+        #                 pass
+        #                 print("异常！")
+        #             each.vs_time_g = vs_time_g
+        #             # print("each:",each)
+        #             each.save()
+        #             # print("new_vs:",new_vs)
+        #             new_vs.save()
+        #
+        # if g_vs_total_result_flag == True:
+        #     pass
+        #     job.vs_result_g = 'passed'
+        # if g_vs_total_result_flag == False:
+        #     pass
+        #     job.vs_result_g = 'failed'
+        # job.vs_time_g = vs_time_g
+        # job.save()
+
+        return HttpResponse("abc")
+
+    return render(request,"send_vs_g_local_result.html")
 
 
 class VsListView(ListView):

@@ -64,6 +64,10 @@ urlpatterns = [
     path('BugDeleteView/<int:pk>', views.BugDeleteView.as_view(),name='BugDeleteView'),#删除Bug。
     path('refresh_bug_info/<int:job_id>/', views.refresh_bug_info,name='refresh_bug_info'),#刷新Bug状态，就是重新从禅道拉信息同步过来。
 
+    path('send_vs_g_local_result', views.send_vs_g_local_result,name='send_vs_g_local_result'),#开发时测试用的。
+
+
+
 
 
     path('test', views.test,name='test'),#开发时测试用的。
