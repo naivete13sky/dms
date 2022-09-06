@@ -324,7 +324,7 @@
 
                                     {% endif %}
 
-                                    <button class="btn btn-transparent" title="点击比对" value={{ job.id }} onclick="confirm_do_vs_g(this.value);"><i class="fa fa-file-picture-o"></i>
+                                    <button class="btn btn-transparent" title="点击比对--服务器比对" value={{ job.id }} onclick="confirm_do_vs_g(this.value);"><i class="fa fa-server"></i>
                                     </button>
 
                                         <script type="text/javascript" language="JavaScript">
@@ -335,6 +335,42 @@
 
                                                      window.location.href='vs_g/' + value + '/{{ current_page }}';
                                                      {#return true;#}
+
+                                                 }else{
+                                                     {#alert(value)#}
+                                                     return false;
+
+                                                 }
+                                            }
+                                        </script>
+
+                                    <button class="btn btn-transparent" title="点击比对--客户端比对" value={{ job.id }} onclick="confirm_do_vs_g_local(this.value);"><i class="fa fa-user-o"></i>
+                                    </button>
+                                    <script type="text/javascript" language="JavaScript">
+                                            function confirm_do_vs_g_local(value)
+                                            {
+                                                 if(confirm("确定要执行客户端 G软件比图操作吗?"))
+                                                 {
+
+                                                    {#window.location.href='vs_g/' + value + '/{{ current_page }}';#}
+                                                    {#return true;#}
+
+                                                    {#alert("hello");#}
+                                                    var job_id = value
+                                                    var cmd_str= "cmd.exe /k start python C:/EPSemicon/cc/cc.py  --int_job_id="+value
+                                                    {#alert(cmd_str)#}
+                                                    try {
+                                                        var objShell = new ActiveXObject("WScript.Shell");
+                                                        {#iReturnCode = objShell.Run("cmd.exe /c python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);#}
+
+                                                        iReturnCode = objShell.Run(cmd_str, 0, true);
+
+                                                    } catch (e) {
+
+                                                    console.dir(e);
+                                                    }
+
+
 
                                                  }else{
                                                      {#alert(value)#}

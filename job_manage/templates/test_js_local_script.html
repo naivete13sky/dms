@@ -32,7 +32,8 @@
 
                 try {
                     var objShell = new ActiveXObject("WScript.Shell");
-                    iReturnCode = objShell.Run("cmd.exe /c python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);
+                    {#iReturnCode = objShell.Run("cmd.exe /c python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);#}
+                    iReturnCode = objShell.Run("cmd.exe /k start python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);
 
                 } catch (e) {
 
