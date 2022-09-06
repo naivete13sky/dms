@@ -2969,10 +2969,12 @@ def send_vs_g_local_result(request):
     if request.method == 'POST':
         print("post")
         print(request.POST)
-        # job_id = request.POST.get("job_id")
-        # job = Job.objects.get(id=job_id)
-        all_result=request.POST.get("all_result")
-        print(all_result)
+        job_id = request.POST.get("job_id")[0]
+        job = Job.objects.get(id=job_id)
+        print(job)
+        vs_time_g=request.POST.get("vs_time_g")[0]
+
+        #上传结果文件
         if not os.path.exists(r"C:\cc\share\temp\upload"):
             os.mkdir(r"C:\cc\share\temp\upload")
         for file in request.FILES.getlist("files"):
@@ -2980,67 +2982,67 @@ def send_vs_g_local_result(request):
             content = file.file.read()  # is binary
             open(os.path.join(r'C:\cc\share\temp\upload',name), "wb").write(content)  # 保存到本地
 
-        # for layer in all_layer_g:
-        #     pass
-        #     print(layer)
-        #     layer_result = asw.layer_compare_analysis(jobpath1, step1, layer, jobpath2, step2, layer, layer2_ext, tol,
-        #                                               layer + '-com', map_layer_res)
-        #     # print(layer_result)
-        #
-        #     all_result[layer] = layer_result
-        #
-        #     for each in all_layer_from_org:
-        #         # print("layer:",layer,"str(each.layer_org).lower():",str(each.layer_org).lower().replace(" ","-").replace("(","-").replace(")","-"))
-        #         if layer == str(each.layer_org).lower().replace(" ", "-").replace("(", "-").replace(")", "-"):
-        #             print("I find it!!!!!!!!!!!!!!")
-        #             print(layer_result, type(layer_result))
-        #             # layer_result_dict=json.loads(layer_result)
-        #             # print(layer_result_dict)
-        #             # print(len(layer_result_dict["result"]))
-        #             new_vs = models.Vs()
-        #             new_vs.job = job
-        #             new_vs.layer = each.layer
-        #             new_vs.layer_org = each.layer_org
-        #             new_vs.vs_result_detail = str(layer_result)
-        #             new_vs.vs_method = 'g'
-        #             new_vs.layer_file_type = each.layer_file_type
-        #             new_vs.layer_type = each.layer_type
-        #             new_vs.vs_time_g = vs_time_g
-        #             try:
-        #                 # print('layer_result_dict["result"]:',layer_result_dict["result"])
-        #                 if layer_result == '正常':
-        #                     each.vs_result_g = 'passed'
-        #                     new_vs.vs_result = 'passed'
-        #                 elif layer_result == '错误':
-        #                     each.vs_result_g = 'failed'
-        #                     new_vs.vs_result = 'failed'
-        #                     g_vs_total_result_flag = False
-        #                 elif layer_result == '未比对':
-        #                     each.vs_result_g = 'none'
-        #                     new_vs.vs_result = 'none'
-        #                     g_vs_total_result_flag = False
-        #                 else:
-        #                     print("异常，状态异常！！！")
-        #
-        #             except:
-        #                 pass
-        #                 print("异常！")
-        #             each.vs_time_g = vs_time_g
-        #             # print("each:",each)
-        #             each.save()
-        #             # print("new_vs:",new_vs)
-        #             new_vs.save()
-        #
-        # if g_vs_total_result_flag == True:
-        #     pass
-        #     job.vs_result_g = 'passed'
-        # if g_vs_total_result_flag == False:
-        #     pass
-        #     job.vs_result_g = 'failed'
-        # job.vs_time_g = vs_time_g
-        # job.save()
+        with open(r'C:\cc\share\temp\upload\result.json', encoding='gbk') as f:
+            result = json.load(f)
+        print(result)
 
-        return HttpResponse("abc")
+
+        # 原始层文件信息，最全的
+        all_layer_from_org = models.Layer.objects.filter(job=job)
+        for item in result.items():
+            print(item[0],item[1])
+            for each in all_layer_from_org:
+                # print("layer:",layer,"str(each.layer_org).lower():",str(each.layer_org).lower().replace(" ","-").replace("(","-").replace(")","-"))
+                if item[0] == str(each.layer_org).lower().replace(" ", "-").replace("(", "-").replace(")", "-"):
+                    print("I find it!!!!!!!!!!!!!!")
+                    new_vs = models.Vs()
+                    new_vs.job = job
+                    new_vs.layer = each.layer
+                    new_vs.layer_org = each.layer_org
+                    new_vs.vs_result_detail = str(item[1])
+                    new_vs.vs_method = 'g'
+                    new_vs.layer_file_type = each.layer_file_type
+                    new_vs.layer_type = each.layer_type
+                    new_vs.vs_time_g = vs_time_g
+                    try:
+                        if item[1] == '正常':
+                            each.vs_result_g = 'passed'
+                            new_vs.vs_result = 'passed'
+                        elif item[1] == '错误':
+                            each.vs_result_g = 'failed'
+                            new_vs.vs_result = 'failed'
+                            g_vs_total_result_flag = False
+                        elif item[1] == '未比对':
+                            each.vs_result_g = 'none'
+                            new_vs.vs_result = 'none'
+                            g_vs_total_result_flag = False
+                        else:
+                            print("异常，状态异常！！！")
+
+                    except:
+                        pass
+                        print("异常！")
+                    each.vs_time_g = vs_time_g
+                    # print("each:",each)
+                    each.save()
+                    # print("new_vs:",new_vs)
+                    new_vs.save()
+
+        if g_vs_total_result_flag == True:
+            pass
+            job.vs_result_g = 'passed'
+        if g_vs_total_result_flag == False:
+            pass
+            job.vs_result_g = 'failed'
+        job.vs_time_g = vs_time_g
+        job.save()
+
+        temp_path=r"C:\cc\share\temp"
+        # 删除temp_path
+        if os.path.exists(temp_path):
+            shutil.rmtree(temp_path)
+
+        return HttpResponse("提交完成！！！")
 
     return render(request,"send_vs_g_local_result.html")
 
