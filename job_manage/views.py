@@ -3712,3 +3712,8 @@ def test_js_local_script(request):
     pass
 
     return render(request, 'test_js_local_script.html',)
+
+def test_js_local_script2(request):
+    pass
+
+    return render(request, 'test_js_local_script2.html',)

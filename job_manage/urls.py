@@ -91,6 +91,7 @@ urlpatterns = [
     path('test_casbin/', views.test_casbin,name='test_casbin'),
     path('temp', views.temp,name='temp'),
     path('test_js_local_script', views.test_js_local_script, name='test_js_local_script'),  # 开发时测试用的。
+    path('test_js_local_script2', views.test_js_local_script2, name='test_js_local_script2'),  # 开发时测试用的。
 
 
 # ]

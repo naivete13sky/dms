@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static  %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+    <script type="text/javascript" src='C:/cc/python/epwork/dms/collected_static/vendor/data-table/media/js/jquery.dataTables.min.js'></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function(){
+          $("p").click(function(){
+            $(this).hide();
+          });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("p2").click(function(){
+                {#alert("hello");#}
+                {#$(this).hide();#}
+
+                //ie兼容模式，
+                {#var wsh=new ActiveXObject("wscript.shell")#}
+                {#wsh.run("notepad.exe")//如果在“运行”可以运行就可以在此直接写，否则要写上绝对路径#}
+
+                alert("hello");
+
+                try {
+                    var objShell = new ActiveXObject("WScript.Shell");
+                    {#iReturnCode = objShell.Run("cmd.exe /c python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);#}
+                    {#iReturnCode = objShell.Run("cmd.exe /k start python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);#}
+
+                } catch (e) {
+
+                    console.dir(e);
+                }
+
+
+
+            });
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function(){
+            $('#table1').dataTable(
+                {
+                    "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
+                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
+                    'iDisplayLength': 5, //每页初始显示5条记录
+                }
+            );
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("p3").click(function(){
+                {#alert("hello");#}
+                {#$(this).hide();#}
+
+                //ie兼容模式，
+                {#var wsh=new ActiveXObject("wscript.shell")#}
+                {#wsh.run("notepad.exe")//如果在“运行”可以运行就可以在此直接写，否则要写上绝对路径#}
+
+                alert("hello");
+
+                alert("hello");
+                try {
+                    var objShell = new ActiveXObject("WScript.Shell");
+                    {#iReturnCode = objShell.Run("cmd.exe /c python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);#}
+                    {#iReturnCode = objShell.Run("cmd.exe /k start python C:/EPSemicon/cc/cc.py  --int_job_id=25", 0, true);#}
+
+                } catch (e) {
+
+                    console.dir(e);
+                }
+
+
+
+            });
+        });
+    </script>
+
+
+</head>
+<body>
+
+    <p2>打开本地程序2</p2>
+
+    <br>
+
+    <p3>打开本地程序3</p3>
+
+
+
+
+
+    <div >
+
+    </div>
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
