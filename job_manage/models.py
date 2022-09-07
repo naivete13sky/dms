@@ -187,6 +187,7 @@ class ShareAccount(models.Model):
         ordering=("share_job",)
 
 
+
 class Layer(models.Model):
     pass
     job = models.ForeignKey(to="job_manage.Job", on_delete=models.CASCADE,null=True,blank=True, related_name='job_manage_layer',verbose_name="料号名称")
@@ -261,6 +262,7 @@ class Layer(models.Model):
     class Meta:
         db_table = 'layer'
         ordering = ('-create_time',)
+
 
     def get_absolute_url(self):
         return reverse('job_manage:LayerFormView', args=[self.id, ])

@@ -2451,6 +2451,132 @@ class LayerListView(ListView):
         return HttpResponse("完成更新！")
 
 
+class LayerListViewPara(ListView):
+    queryset = models.Layer.objects.exclude(units_ep = "none")
+    # queryset = models.Layer.objects.filter(units_ep != "none")
+    # queryset=models.LayerManager()
+    # model=models.Job
+    context_object_name = 'layers'
+    paginate_by = 1000
+    # ordering = ['-publish']
+    template_name = 'LayerListViewPara.html'
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        field_verbose_name = [
+                              # models.Layer._meta.get_field('job').verbose_name,
+                              models.Layer._meta.get_field('layer').verbose_name,
+                              # models.Layer._meta.get_field('layer_org').verbose_name,
+                              models.Layer._meta.get_field('vs_result_manual').verbose_name,
+                              models.Layer._meta.get_field('vs_result_ep').verbose_name,
+                              models.Layer._meta.get_field('vs_result_g').verbose_name,
+                              models.Layer._meta.get_field('layer_file_type').verbose_name,
+                              models.Layer._meta.get_field('layer_type').verbose_name,
+                              models.Layer._meta.get_field('features_count').verbose_name,
+                              models.Layer._meta.get_field('units_ep').verbose_name,
+                              models.Layer._meta.get_field('zeroes_omitted_ep').verbose_name,
+                              models.Layer._meta.get_field('number_format_A_ep').verbose_name,
+                              models.Layer._meta.get_field('number_format_B_ep').verbose_name,
+                              models.Layer._meta.get_field('tool_units_ep').verbose_name,
+                              models.Layer._meta.get_field('units_g').verbose_name,
+                              models.Layer._meta.get_field('zeroes_omitted_g').verbose_name,
+                              models.Layer._meta.get_field('number_format_A_g').verbose_name,
+                              models.Layer._meta.get_field('number_format_B_g').verbose_name,
+                              models.Layer._meta.get_field('tool_units_g').verbose_name,
+                              models.Layer._meta.get_field('status').verbose_name,
+                                models.Layer._meta.get_field('remark').verbose_name,
+                              "标签",
+                              "操作",
+                              ]
+        context['field_verbose_name'] = field_verbose_name# 表头用
+
+
+
+
+        query=self.request.GET.get('query',False)
+        if query:
+            context['layers'] = models.Layer.objects.filter(
+                Q(layer__contains=query) |
+                Q(job__job_name__contains=query))
+
+
+        # 筛选用
+        which_one = self.request.GET.get('which_one', False)
+        if which_one:
+            print("which_one:", which_one)
+            context['layers'] = models.Layer.objects.filter(
+                Q(job__id=which_one)
+            )
+
+            current_job_name = models.Job.objects.get(id=which_one)
+            print(current_job_name.job_name)
+            context['job_id'] = current_job_name.id
+            context['job_name'] = current_job_name.job_name
+
+        #层别信息全选，准备批量设置用的
+        select_all=self.request.GET.get('select_all', False)
+        if select_all:
+            pass
+            print("准备全选啦！")
+            # print(self.request.GET.get('which_one', False))
+            context['layers'] = models.Layer.objects.filter(
+                Q(job__id=which_one)
+            )
+
+            current_job_name = models.Job.objects.get(id=which_one)
+            print(current_job_name.job_name)
+            context['job_id'] = current_job_name.id
+            context['job_name'] = current_job_name.job_name
+            context['select_all_type'] = "select_all"
+
+        # 层别信息全选，准备批量设置用的
+        unselect_all = self.request.GET.get('unselect_all', False)
+        if unselect_all:
+            pass
+            print("准备全选啦！")
+            # print(self.request.GET.get('which_one', False))
+            context['layers'] = models.Layer.objects.filter(
+                Q(job__id=which_one)
+            )
+
+            current_job_name = models.Job.objects.get(id=which_one)
+            print(current_job_name.job_name)
+            context['job_id'] = current_job_name.id
+            context['job_name'] = current_job_name.job_name
+            context['select_all_type'] = "unselect_all"
+
+        return context
+
+    def post(self, request):  # ***** this method required! ******
+        self.object_list = self.get_queryset()
+        if request.POST.__contains__("ids"):
+            print("POST!!!")
+            # ret=request.REQUEST.get_list('check_box_list')
+            # ret=request.GET.getlist('check_box_list')
+            # check_box_list = request.POST.getlist('check_box_list')
+            ids=request.POST.get("ids")
+            print("ids",ids)
+            selected = request.POST.get('batch_set', None)
+            print("selected",selected)
+            #开始设置
+            for each in ids.split(","):
+                if len(each) != 0:
+                    pass
+                    print("each",each)
+                    each_layer=models.Layer.objects.get(id=each)
+                    print(each_layer)
+                    each_layer.vs_result_manual=selected
+                    each_layer.save()
+
+        if request.POST.__contains__("page_jump"):
+            print(request.POST.get("page_jump"))
+            return HttpResponse(request.POST.get("page_jump"))
+
+        layer_which_one_job=request.POST.get("layer_set_vs_result_manual_which_one")
+        print(layer_which_one_job)
+        return HttpResponse("完成更新！")
+
 
 def view_layer(request,job_id):
     pass

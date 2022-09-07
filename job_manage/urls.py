@@ -39,6 +39,10 @@ urlpatterns = [
     path('g_current_odb_view/<int:job_id>/<int:current_page>', views.g_current_odb_view,name='g_current_odb_view'),#查看G转图的料号。
 
     path('LayerListView',login_required(views.LayerListView.as_view()),name='LayerListView'),#层信息列表
+
+    path('LayerListViewPara',login_required(views.LayerListViewPara.as_view()),name='LayerListViewPara'),#层信息列表
+
+
     path('view_layer/<int:job_id>/', views.view_layer,name='view_layer'),#查看某个料号下的层信息，其实这个可以不用了。LayerListView已经支持只看某个料的层信息了。
     path('layer_set_vs_result_manual', views.layer_set_vs_result_manual,name='layer_set_vs_result_manual'),#这个功能 忘记了，要再研究一下!!!!!!!!!!!!!
 
