@@ -2968,28 +2968,23 @@ def send_vs_g_local_result(request):
     pass
     if request.method == 'POST':
         print("post")
+        # print(request.body)
         print(request.POST)
-        job_id = request.POST.get("job_id")[0]
+        body=json.loads(request.body)
+        print(body,type(body))
+        body_dict=json.loads(body)
+        print(body_dict,type(body_dict))
+        job_id = body_dict["job_id"]
         job = Job.objects.get(id=job_id)
         print(job)
-        vs_time_g=request.POST.get("vs_time_g")[0]
+        vs_time_g=body_dict["vs_time_g"]
         g_vs_total_result_flag=True
-        #上传结果文件
-        if not os.path.exists(r"C:\cc\share\upload"):
-            os.mkdir(r"C:\cc\share\upload")
-        for file in request.FILES.getlist("files"):
-            name = file.name
-            content = file.file.read()  # is binary
-            open(os.path.join(r'C:\cc\share\upload',name), "wb").write(content)  # 保存到本地
 
-        with open(r'C:\cc\share\upload\result.json', encoding='gbk') as f:
-            result = json.load(f)
-        print(result)
 
 
         # 原始层文件信息，最全的
         all_layer_from_org = models.Layer.objects.filter(job=job)
-        for item in result.items():
+        for item in body_dict["all_result"].items():
             print(item[0],item[1])
             for each in all_layer_from_org:
                 # print("layer:",layer,"str(each.layer_org).lower():",str(each.layer_org).lower().replace(" ","-").replace("(","-").replace(")","-"))
