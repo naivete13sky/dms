@@ -10,8 +10,9 @@
     <script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
 
-    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <link rel="stylesheet" href={% static "pyscript/pyscript.css" %} />
+
+    <script defer src={% static "pyscript/pyscript.js" %}></script>
 
 
 
@@ -114,7 +115,9 @@
     <br>
 
     <py-script>
-        print('Hello, World!')
+        from datetime import datetime
+        now = datetime.now()
+        now.strftime("%m/%d/%Y, %H:%M:%S")
     </py-script>
 
 
