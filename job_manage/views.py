@@ -2457,7 +2457,7 @@ class LayerListViewPara(ListView):
     # queryset=models.LayerManager()
     # model=models.Job
     context_object_name = 'layers'
-    paginate_by = 1000
+    paginate_by = 200
     # ordering = ['-publish']
     template_name = 'LayerListViewPara.html'
 
