@@ -1,5 +1,6 @@
 import sys
 import json
+import time
 from time import sleep
 import pytest
 from os.path import dirname, abspath
@@ -198,6 +199,12 @@ class EpGerberToODB:
         if os.path.exists(new_job_path):
             shutil.rmtree(new_job_path)
         epcam_api.create_job(out_path, job)
+
+
+        # time.sleep(20)
+
+
+
         job_operation.open_job(out_path, job)
         job_operation.create_step(job, step)
         job_operation.save_job(job)
@@ -207,7 +214,10 @@ class EpGerberToODB:
         job_operation.save_job(job)
         all_layer = layer_info.get_all_layer_name(job)  # 获得料号下所有layer
         gl.all_layer=all_layer
-
+        #清空内存，防止同名料号出问题
+        epcam_api.close_job(job)
+        # time.sleep(20)
+        # job_operation.delete_job(job)#delete会把odb文件夹删除的
 
 
 if __name__ == "__main__":

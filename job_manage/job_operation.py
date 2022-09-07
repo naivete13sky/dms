@@ -319,6 +319,7 @@ def maketgz(ifn, out_path, file_name):
     #最外层后缀也为tar, 然后再rename为tgz
     out_ofn = out_path + '\\' + file_real_name + '.tar'
     #with tf.open(ofn, 'w:gz') as tar:
+    print("*" * 100, "out_ofn:", out_ofn, "ifn:", ifn)
     with tf.open(out_ofn, 'w:gz') as tar:
         tar.add(ifn, arcname = os.path.basename(ifn))
     if os.path.exists(ofn):

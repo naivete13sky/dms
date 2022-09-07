@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 import psycopg2
 import rarfile
@@ -143,6 +144,20 @@ def g_current_odb_view(job_path,job):
     # if os.path.exists(job_path):
     #     shutil.rmtree(job_path)
 
+def job_create_test():
+    pass
+    epcam.init()
+    epcam_api.create_job(r"C:\cc\share", "abc")
+    epcam_api.open_job(r"C:\cc\share", "abc")
+    epcam_api.close_job("abc")
+
+    time.sleep(15)
+
+    epcam_api.create_job(r"C:\cc\share", "ccc")
+    epcam_api.close_job("ccc")
+    epcam_api.create_job(r"C:\cc\share", "abc")
+
+
 
 
 if __name__ == "__main__":
@@ -154,6 +169,7 @@ if __name__ == "__main__":
     # maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
 
     # now(1,2)
+    job_create_test()
 
 
 

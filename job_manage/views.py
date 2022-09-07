@@ -2156,6 +2156,7 @@ def gerber274x_to_odb_ep2(request,job_id,current_page):
     #     pass
     # ofn = ifn + '.tgz'
     # Tgz().maketgz(ofn, ifn)
+    print("*"*100,"temp_path:",temp_path,"job_name:",job_name)
     job_operation.maketgz(os.path.join(temp_path, job_name), temp_path, job_name + '.tgz')
 
     # 把压缩好悦谱转图tzg放入相应Job里
