@@ -2982,6 +2982,7 @@ def send_vs_g_local_result(request):
 
 
 
+
         # 原始层文件信息，最全的
         all_layer_from_org = models.Layer.objects.filter(job=job)
         for item in body_dict["all_result"].items():
