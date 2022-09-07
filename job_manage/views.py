@@ -2452,7 +2452,7 @@ class LayerListView(ListView):
 
 
 class LayerListViewPara(ListView):
-    queryset = models.Layer.objects.exclude(units_ep = "none")
+    queryset = models.Layer.objects.exclude(units_ep = "none").exclude(status = "published")
     # queryset = models.Layer.objects.filter(units_ep != "none")
     # queryset=models.LayerManager()
     # model=models.Job
