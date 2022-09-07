@@ -2165,6 +2165,10 @@ def gerber274x_to_odb_ep2(request,job_id,current_page):
 
     job.file_odb_current = ('files/' + job_name + '.tgz')
     job.save()
+
+    #删除料号
+    epcam_api.delete_job(job_name)
+
     # 删除ep.tzg
     if os.path.exists(os.path.join(temp_path, job_name + '.tgz')):
         os.remove(os.path.join(temp_path, job_name + '.tgz'))

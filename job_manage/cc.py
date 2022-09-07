@@ -151,7 +151,8 @@ def job_create_test():
     epcam_api.open_job(r"C:\cc\share", "abc")
     epcam_api.close_job("abc")
 
-    time.sleep(15)
+    # time.sleep(15)
+    epcam_api.delete_job("abc")
 
     epcam_api.create_job(r"C:\cc\share", "ccc")
     epcam_api.close_job("ccc")
