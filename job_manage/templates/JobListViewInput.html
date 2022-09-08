@@ -63,6 +63,20 @@
                                 {% endfor %}
                             </select>
 
+                            <label>状态</label>
+                            <select id="query_job_status" name="query_job_status" >
+                                {% for each in select_status %}
+                                    {% if each.0 == query_job_status  %}
+                                        <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != query_job_status  %}
+                                        <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+
+                                {% endfor %}
+                            </select>
+
+
                             <label>悦谱最新转图</label>
                             <select id="query_job_file_odb_current" name="query_job_file_odb_current" >
                                 {% for each in select_file_odb_current %}

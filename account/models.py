@@ -100,6 +100,10 @@ class QueryData(models.Model):
                                                  ('all', '所有'), ('no', '无'), ('yes', '有'),),
                                                  default='all', help_text='此用户筛选条件记录用的', verbose_name='筛选-是否存在悦谱最新转图')
 
+    query_job_status = models.CharField(max_length=20, blank=True, null=True,
+                                                  choices=(
+                                                      ('all', '所有'), ('draft', '草稿'), ('published', '正式'),),
+                                                  default='all', help_text='此用户筛选条件记录用的', verbose_name='筛选-状态')
 
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
                               verbose_name="备注", blank=True,null=True)

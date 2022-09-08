@@ -1432,6 +1432,16 @@ class JobListViewInput(ListView):
         if context['query_job_file_odb_current'] == 'yes':
             context['jobs'] = context['jobs'].exclude(file_odb_current__exact="")
 
+        # 料号状态
+        context['query_job_status'] = current_query_data.query_job_status
+        # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
+        if context['query_job_status'] == 'all':
+            pass
+        if context['query_job_status'] == 'draft':
+            context['jobs'] = context['jobs'].filter(status="draft")
+        if context['query_job_status'] == 'published':
+            context['jobs'] = context['jobs'].filter(status="published")
+
 
 
 
@@ -1459,6 +1469,7 @@ class JobListViewInput(ListView):
         context['select_author'] = [('all', '所有'), ('mine', '我的'), ]
         context['select_page'] = [('5', '5'), ('10', '10'), ('20', '20'),('50', '50'),('100', '100'),('200', '200'),]
         context['select_file_odb_current'] = [('all', '所有'), ('no', '无'), ('yes', '有'),]
+        context['select_status'] = [('all', '所有'), ('draft', '草稿'), ('published', '正式'),]
 
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
@@ -1538,6 +1549,23 @@ class JobListViewInput(ListView):
                 context['jobs'] = context['jobs'].filter(file_odb_current__exact="")
             if context['query_job_file_odb_current'] == 'yes':
                 context['jobs'] = context['jobs'].exclude(file_odb_current__exact="")
+
+            # 料号状态
+            query_job_status = self.request.GET.get("query_job_status", False)
+            context['query_job_status'] = query_job_status
+            # 先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_status:
+                current_query_data.query_job_status = query_job_status
+                current_query_data.save()
+
+            if context['query_job_status'] == 'all':
+                pass
+            if context['query_job_status'] == 'draft':
+                context['jobs'] = context['jobs'].filter(status="draft")
+            if context['query_job_status'] == 'published':
+                context['jobs'] = context['jobs'].filter(status="published")
+
 
 
 
