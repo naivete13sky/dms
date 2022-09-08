@@ -94,9 +94,9 @@ urlpatterns = [
     path('test_ajax_upload/', views.test_ajax_upload,name='test_ajax_upload'),
     path('test_casbin/', views.test_casbin,name='test_casbin'),
     path('temp', views.temp,name='temp'),
-    path('test_js_local_script', views.test_js_local_script, name='test_js_local_script'),  # 开发时测试用的。
-    path('test_js_local_script2', views.test_js_local_script2, name='test_js_local_script2'),  # 开发时测试用的。
-
+    path('test_js_local_script', views.test_js_local_script, name='test_js_local_script'),  # js调用cmd
+    path('test_js_local_script2', views.test_js_local_script2, name='test_js_local_script2'),  # js调用python，pyscript
+    path('tag_cloud', views.tag_cloud,name='tag_cloud'),#标签云
 
 # ]
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -3848,3 +3848,31 @@ def test_js_local_script2(request):
     pass
 
     return render(request, 'test_js_local_script2.html',)
+
+def tag_cloud(request):
+    if request.user.is_authenticated:
+        print(request.user.first_name,'|',request.user.username)
+    # return HttpResponse("abc")
+
+    if request.method == 'POST':
+        result={
+            "teachers": [
+                {"name": "Jack", "age": "30"},
+                {"name": "Jessy", "age": "33"}
+        ]}
+
+        result_json = json.dumps(result)
+        return HttpResponse(result_json)
+
+    result = {
+        "students": [
+            {"name": "John", "age": "15"},
+            {"name": "Anna", "age": "16"},
+            {"name": "Peter", "age": "16"}
+        ],
+        }
+
+    result_json = json.dumps(result)
+
+
+    return render(request, 'tag_cloud.html',{"result_json":result_json})

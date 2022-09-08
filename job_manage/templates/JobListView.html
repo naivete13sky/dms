@@ -79,6 +79,13 @@
                             <div class="form-group">
                                 <button type="submit" id="submit_query_get" name="submit_query_get" class="btn btn-primary" value="submit_query_get">查询</button>
                             </div>
+
+
+                            <label>&ensp;标签：&ensp;</label>
+                            <div class="form-group">
+                                {% include 'job_tags.html' with page=jobs_page %}
+                            </div>
+
                         </form>
 
                 {#--------------------------------------结束--筛选--------------------------------------#}

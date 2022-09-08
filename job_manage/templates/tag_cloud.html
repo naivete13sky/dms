@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static  %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script src={% static "javascripts/jquery.min.js" %}></script>
+    <script type="text/javascript" src='C:/cc/python/epwork/dms/collected_static/vendor/data-table/media/js/jquery.dataTables.min.js'></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src=" //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function(){
+          $("p").click(function(){
+            $(this).hide();
+          });
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function(){
+            $('#table1').dataTable(
+                {
+                    "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
+                    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
+                    'iDisplayLength': 5, //每页初始显示5条记录
+                }
+            );
+        });
+    </script>
+
+
+
+
+</head>
+<body>
+    <p>如果你点我，我就会消失。</p>
+    <p>继续点我!</p>
+    <p>接着点我!</p>
+
+    {% include 'job_tags.html' %}
+
+</body>
+</html>
