@@ -29,9 +29,17 @@ class DashBoardView(TemplateView):
 
         statics_author=Job.objects.values("author__username").annotate(c = Count("author")).order_by("-c")
         context["statics_author"] = statics_author
-
         context['field_verbose_name']=["负责人",'计数']
 
+        statics_author_list=[]
+        for each in statics_author:
+            pass
+            one_author_tuple=(each["author__username"],each["c"])
+            one_author_dict = {"负责人":each["author__username"],"料号数":each["c"]}
+            # statics_author_list.append(one_author_tuple)
+            statics_author_list.append(one_author_dict)
+
+        context['statics_author_list'] = statics_author_list
 
         return context
 

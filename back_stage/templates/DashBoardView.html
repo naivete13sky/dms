@@ -57,6 +57,41 @@
 
                                 </div>
 
+                                <div class="table-responsive">
+
+                                    <table class=" table table-striped nowrap table-hover" id="listtable" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+
+
+                                                {% for each in field_verbose_name %}
+                                                    <th>{{ each }}</th>
+
+                                                {% endfor  %}
+
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body">
+
+                                            {% for each in statics_author_list %}
+
+                                                <tr>
+                                                    <td>{{ each.负责人 }}</td>
+
+                                                    <td>{{ each.料号数 }}</td>
+
+
+                                                </tr>
+
+
+                                            {% endfor %}
+
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
                             {#--------------------------------------结束--表格--------------------------------------#}
 
                             {{ form }}
