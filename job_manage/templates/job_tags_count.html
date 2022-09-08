@@ -2,11 +2,11 @@
 <div class="row">
     <div class="widget" >
 
-        {% get_tags_count as tag_dict %}
-        {% for tag in tag_dict %}
+        {% get_tags_count as tag_list %}
+        {% for tag in tag_list %}
 {#            {{ tag }}#}
-            <a href="{% url 'job_manage:job_list_by_tag' tag %}" style="font-size: 20px;">
-                <span style="padding: 5px;" class="label {% cycle 'label-default' 'label-primary' 'label-success' 'label-info' 'label-warning' 'label-danger' %}">{{ tag }}</span>
+            <a href="{% url 'job_manage:job_list_by_tag' tag.1 %}" style="font-size: 20px;">
+                <span style="padding: 5px;" class="label {% cycle 'label-default' 'label-primary' 'label-success' 'label-info' 'label-warning' 'label-danger' %}">{{ tag.0 }}</span>
             </a>&nbsp;
         {% endfor %}
     </div>
