@@ -814,7 +814,7 @@ class JobListView(ListView):
         if search_by_job_id:
             pass
             print("search_by_job_id:",search_by_job_id)
-            context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
+            context['jobs_page'] = models.Job.objects.filter(Q(id=search_by_job_id))
 
 
 
@@ -1513,7 +1513,7 @@ class JobListViewInput(ListView):
         if search_by_job_id:
             pass
             print("search_by_job_id:",search_by_job_id)
-            context['jobs'] = models.Job.objects.filter(Q(id=search_by_job_id))
+            context['jobs_page'] = models.Job.objects.filter(Q(id=search_by_job_id))
 
 
 

@@ -169,8 +169,8 @@ if __name__ == "__main__":
     # print(pg())
     # maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
 
-    # now(1,2)
-    job_create_test()
+    now(1,2)
+    # job_create_test()
 
 
 
