@@ -22,40 +22,7 @@
 
 
                             {#--------------------------------------开始--表格--------------------------------------#}
-                                <div class="table-responsive">
 
-                                    <table class=" table table-striped nowrap table-hover" id="listtable" cellspacing="0" width="100%">
-                                        <thead>
-                                            <tr>
-
-
-                                                {% for each in field_verbose_name %}
-                                                    <th>{{ each }}</th>
-
-                                                {% endfor  %}
-
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table_body">
-
-                                            {% for each in statics_author %}
-
-                                                <tr>
-                                                    <td>{{ each.author__username }}</td>
-
-                                                    <td>{{ each.c }}</td>
-
-
-                                                </tr>
-
-
-                                            {% endfor %}
-
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
 
                                 <div class="table-responsive">
 
@@ -79,6 +46,10 @@
                                                     <td>{{ each.负责人 }}</td>
 
                                                     <td>{{ each.料号数 }}</td>
+
+                                                    <td>{{ each.published料号数 }}</td>
+
+                                                    <td>{{ each.draft料号数 }}</td>
 
 
                                                 </tr>
