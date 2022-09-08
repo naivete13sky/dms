@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('dashboard', views.dashboard, name='dashboard'),
     path('index_base_20220818', views.index_base_20220818, name='index_base_20220818'),
+    path('DashBoardView',views.DashBoardView.as_view(),name='DashBoardView')
 
 
 ]
