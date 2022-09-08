@@ -63,6 +63,20 @@
                                 {% endfor %}
                             </select>
 
+                            <label>悦谱最新转图</label>
+                            <select id="query_job_file_odb_current" name="query_job_file_odb_current" >
+                                {% for each in select_file_odb_current %}
+                                    {% if each.0 == query_job_file_odb_current  %}
+                                        <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != query_job_file_odb_current  %}
+                                        <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+
+                                {% endfor %}
+                            </select>
+
+
                             <div class="form-group">
                                 <input type="" class="form-control" id="query_job_name" name="query_job_name" value="{{ query_job_job_name }}" placeholder="料号名" style="width:120px;">
                             </div>

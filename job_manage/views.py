@@ -1377,6 +1377,8 @@ class JobListViewInput(ListView):
         else:
             query_job_file_usage_type_value = context['query_job_file_usage_type']
 
+
+
         # 料号名称
         context['query_job_job_name'] = current_query_data.query_job_job_name
         if context['query_job_job_name'] == None:
@@ -1420,6 +1422,19 @@ class JobListViewInput(ListView):
 
             )
 
+        # 是否存在悦谱最新转图
+        context['query_job_file_odb_current'] = current_query_data.query_job_file_odb_current
+        # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
+        if context['query_job_file_odb_current'] == 'all':
+            pass
+        if context['query_job_file_odb_current'] == 'no':
+            context['jobs'] = context['jobs'].filter(file_odb_current__exact="")
+        if context['query_job_file_odb_current'] == 'yes':
+            context['jobs'] = context['jobs'].exclude(file_odb_current__exact="")
+
+
+
+
         #分页
         print(context)
         page = self.request.GET.get('page')
@@ -1443,6 +1458,7 @@ class JobListViewInput(ListView):
         context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
         context['select_author'] = [('all', '所有'), ('mine', '我的'), ]
         context['select_page'] = [('5', '5'), ('10', '10'), ('20', '20'),('50', '50'),('100', '100'),('200', '200'),]
+        context['select_file_odb_current'] = [('all', '所有'), ('no', '无'), ('yes', '有'),]
 
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
@@ -1506,6 +1522,24 @@ class JobListViewInput(ListView):
                     Q(job_name__contains=query_job_name) &
                     Q(author__username__contains=query_job_author)
                 )
+
+            # 是否存在悦谱最新转图
+            query_job_file_odb_current = self.request.GET.get("query_job_file_odb_current", False)
+            context['query_job_file_odb_current'] = query_job_file_odb_current
+            # 先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_file_odb_current:
+                current_query_data.query_job_file_odb_current = query_job_file_odb_current
+                current_query_data.save()
+
+            if context['query_job_file_odb_current'] == 'all':
+                pass
+            if context['query_job_file_odb_current'] == 'no':
+                context['jobs'] = context['jobs'].filter(file_odb_current__exact="")
+            if context['query_job_file_odb_current'] == 'yes':
+                context['jobs'] = context['jobs'].exclude(file_odb_current__exact="")
+
+
 
             # 分页
             print(context)

@@ -95,6 +95,10 @@ class QueryData(models.Model):
     query_job_paginator_page = models.IntegerField(default=10,null=True,blank=True,
                                      validators=[validators.MaxValueValidator(1000), validators.MinValueValidator(5)],help_text="每页显示行数",verbose_name='query_job_paginator_page')
 
+    query_job_file_odb_current = models.CharField(max_length=20, blank=True, null=True,
+                                                 choices=(
+                                                 ('all', '所有'), ('no', '无'), ('yes', '有'),),
+                                                 default='all', help_text='此用户筛选条件记录用的', verbose_name='筛选-是否存在悦谱最新转图')
 
 
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
