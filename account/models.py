@@ -92,6 +92,11 @@ class QueryData(models.Model):
                                           validators=[validators.MinLengthValidator(limit_value=0)],
                                           help_text='此用户筛选条件记录用的', verbose_name="筛选-料号来源", )
 
+    query_job_paginator_page = models.IntegerField(default=10,null=True,blank=True,
+                                     validators=[validators.MaxValueValidator(1000), validators.MinValueValidator(5)],help_text="每页显示行数",verbose_name='query_job_paginator_page')
+
+
+
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
                               verbose_name="备注", blank=True,null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='account_query_data_user', verbose_name="用户")

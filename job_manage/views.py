@@ -1388,6 +1388,12 @@ class JobListViewInput(ListView):
             current_query_data.query_job_from_object = ""
             current_query_data.save()
 
+        #每页显示行数
+        context['query_job_paginator_page']=current_query_data.query_job_paginator_page
+        # print("context['query_job_paginator_page']","first get:",context['query_job_paginator_page'])
+
+
+
         # from_object比较奇怪，空值用Q筛选异常，所以不用Q筛选
         if context['query_job_from_object'] != "":
             context['jobs'] = models.Job.objects.filter(
@@ -1407,7 +1413,8 @@ class JobListViewInput(ListView):
         #分页
         print(context)
         page = self.request.GET.get('page')
-        paginator = Paginator(context['jobs'], 10)  # 每页显示3篇文章
+        paginator = Paginator(context['jobs'], context['query_job_paginator_page'])  # 每页显示3篇文章
+        print("context['query_job_paginator_page']", "first get:", context['query_job_paginator_page'])
         # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
         try:
             context['jobs_page'] = paginator.page(page)
@@ -1425,6 +1432,7 @@ class JobListViewInput(ListView):
         #使用分类筛选
         context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
         context['select_author'] = [('all', '所有'), ('mine', '我的'), ]
+        context['select_page'] = [('5', '5'), ('10', '10'), ('20', '20'),('50', '50'),('100', '100'),('200', '200'),]
 
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
@@ -1465,6 +1473,14 @@ class JobListViewInput(ListView):
                 current_query_data.query_job_from_object = query_job_from_object
                 current_query_data.save()
 
+            query_job_paginator_page = self.request.GET.get('query_job_paginator_page', False)
+            context['query_job_paginator_page'] = query_job_paginator_page
+            #把每页显示多少行存储起来
+            if query_job_paginator_page != None:
+                current_query_data.query_job_paginator_page = query_job_paginator_page
+                current_query_data.save()
+
+
 
             #from_object比较奇怪，空值用Q筛选异常，所以不用Q筛选
             if query_job_from_object != "":
@@ -1484,7 +1500,7 @@ class JobListViewInput(ListView):
                 # 分页
                 print(context)
                 page = self.request.GET.get('page')
-                paginator = Paginator(context['jobs'], 10)  # 每页显示3篇文章
+                paginator = Paginator(context['jobs'], context['query_job_paginator_page'])  # 每页显示3篇文章
                 # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
                 try:
                     context['jobs_page'] = paginator.page(page)
