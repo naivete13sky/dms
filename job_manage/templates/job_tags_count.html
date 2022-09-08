@@ -1,0 +1,14 @@
+{% load job_tags %}
+<div class="row">
+    <div class="widget" >
+
+        {% get_tags_count as tag_dict %}
+        {% for tag in tag_dict %}
+{#            {{ tag }}#}
+            <a href="{% url 'job_manage:job_list_by_tag' tag %}" style="font-size: 20px;">
+                <span style="padding: 5px;" class="label {% cycle 'label-default' 'label-primary' 'label-success' 'label-info' 'label-warning' 'label-danger' %}">{{ tag }}</span>
+            </a>&nbsp;
+        {% endfor %}
+    </div>
+
+</div>

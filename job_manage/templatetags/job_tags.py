@@ -1,5 +1,7 @@
 from django import template
-from ..models import Job,MyTag
+from ..models import Job,MyTag,TaggedWhatever
+from django.db.models import Count, Q
+
 
 register = template.Library()
 
@@ -15,3 +17,16 @@ def show_latest_jobs(count=5):
 @register.simple_tag
 def get_tags():
     return MyTag.objects.all()
+
+
+@register.simple_tag
+def get_tags_count():
+    result = TaggedWhatever.objects.values('tag_id').order_by('tag_id').annotate(count=Count('tag_id'))
+    tag_dict={}
+    for each in result:
+        print(each["tag_id"],each["count"])
+        tag_one=MyTag.objects.get(id=each["tag_id"])
+        tag_dict[str(tag_one)]=each["count"]
+
+    return tag_dict
+
