@@ -46,11 +46,12 @@
                 {#--------------------------------------开始--筛选--------------------------------------#}
 
                         <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
-                            <i class="fa fa-edit" aria-hidden="true"></i><a href="{% url "job_manage:JobCreateView" %}" style="font-size:20px;">新增料号</a>
+                            <i class="fa fa-edit" aria-hidden="true"></i><a href="{% url "job_manage:JobCreateView" %}" style="font-size:20px;font-weight: bolder;">新增料号</a>
 
                             {% csrf_token %}
 
-                            <label>使用分类</label>
+                            <label style="font-size:20px;">|</label>
+                            <label style="font-size:20px;">使用分类</label>
                             <select id="query_job_file_usage_type" name="query_job_file_usage_type" class="form-control" style="width:110px;">
                                 {% for each in select_file_usage_type %}
                                     {% if each.0 == query_job_file_usage_type  %}
@@ -63,7 +64,7 @@
                                 {% endfor %}
                             </select>
 
-                            <label>状态</label>
+                            <label style="font-size:20px;">状态</label>
                             <select id="query_job_status" name="query_job_status" class="form-control">
                                 {% for each in select_status %}
                                     {% if each.0 == query_job_status  %}
@@ -77,7 +78,7 @@
                             </select>
 
 
-                            <label>悦谱最新转图</label>
+                            <label style="font-size:20px;">悦谱最新转图</label>
                             <select id="query_job_file_odb_current" name="query_job_file_odb_current" class="form-control">
                                 {% for each in select_file_odb_current %}
                                     {% if each.0 == query_job_file_odb_current  %}
@@ -104,8 +105,8 @@
                             </div>
 
 
-                            <label>每页显示行数</label>
-                            <select id="query_job_paginator_page" name="query_job_paginator_page" >
+                            <label style="font-size:20px;">每页显示行数</label>
+                            <select id="query_job_paginator_page" name="query_job_paginator_page" class="form-control">
                                 {% for each in select_page %}
 
                                     {% if each.0|add:0 == query_job_paginator_page|add:0  %}
