@@ -51,7 +51,7 @@
                             {% csrf_token %}
 
                             <label>使用分类</label>
-                            <select id="query_job_file_usage_type" name="query_job_file_usage_type" class="form-control" style="width:80px;">
+                            <select id="query_job_file_usage_type" name="query_job_file_usage_type" class="form-control" style="width:110px;">
                                 {% for each in select_file_usage_type %}
                                     {% if each.0 == query_job_file_usage_type  %}
                                         <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
