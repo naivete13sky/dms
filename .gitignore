@@ -155,4 +155,4 @@ migrations/
 /restful_api/migrations/
 .idea/*
 /upload/
-!/collected_static/echarts-master/*.hex
+!/collected_static/echarts-master/
