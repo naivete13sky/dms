@@ -146,6 +146,7 @@ cython_debug/
 media/
 migrations/
 .idea/dms.iml
+.idea/
 /account/migrations/
 /blog/migrations/
 /job_manage/migrations

@@ -32,6 +32,7 @@
       <excludeFolder url="file://$MODULE_DIR$/common_static/echarts-master/test/lib" />
       <excludeFolder url="file://$MODULE_DIR$/common_static/echarts-master/build" />
       <excludeFolder url="file://$MODULE_DIR$/common_static/echarts-master/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/back_stage/static/echarts-master" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
