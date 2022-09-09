@@ -21,7 +21,10 @@ def get_tags():
 
 @register.simple_tag
 def get_tags_count():
-    result = TaggedWhatever.objects.values('tag_id').order_by('tag_id').annotate(count=Count('tag_id'))
+    # result = TaggedWhatever.objects.values('tag_id').order_by('tag_id').annotate(count=Count('tag_id')).order_by('count')
+    result = TaggedWhatever.objects.values('tag_id').annotate(count=Count('tag_id')).order_by('-count')
+    print(result,type(result))
+
     tag_list=[]
     for each in result:
         print(each["tag_id"],each["count"])

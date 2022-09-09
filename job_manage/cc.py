@@ -130,9 +130,6 @@ def now(p1,p2):
 
 
 
-
-
-
 def g_current_odb_view(job_path,job):
     pass
 
@@ -159,6 +156,29 @@ def job_create_test():
     epcam_api.create_job(r"C:\cc\share", "abc")
 
 
+import functools
+
+strs = [3, 4, 1, 2]
+
+
+# 自定义排序规则
+def my_compare(x, y):
+    if x > y:
+        return 1
+    elif x < y:
+        return -1
+    return 0
+
+def list_sort_test():
+    pass
+    import functools
+    strs = [3, 4, 1, 2]
+    # 分别使用sorted和list.sort
+    print(strs)
+    print(sorted(strs, key=functools.cmp_to_key(my_compare)))
+    print(strs)
+    strs.sort(key=functools.cmp_to_key(my_compare))
+    print(strs)
 
 
 if __name__ == "__main__":
@@ -169,8 +189,10 @@ if __name__ == "__main__":
     # print(pg())
     # maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
 
-    now(1,2)
+    # now(1,2)
     # job_create_test()
+    list_sort_test
+
 
 
 
