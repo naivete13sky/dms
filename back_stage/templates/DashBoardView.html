@@ -71,6 +71,11 @@
                                 <div id="main01" style="width: 1100px;height:500px;">
                                     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
                                     <script type="text/javascript">
+
+                                        var x_list = {{ statics_job_by_day_x|safe }};
+                                        var y_list = {{ statics_job_by_day_y|safe }};
+
+
                                                                             // 基于准备好的dom，初始化echarts实例
                                         var myChart=echarts.init(document.getElementById('main01'));
 
@@ -91,7 +96,7 @@
                                             xAxis: [
                                                 {
                                                   type: 'category',
-                                                  data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                                  data: x_list,
                                                   axisTick: {
                                                     alignWithLabel: true
                                                   }
@@ -107,7 +112,7 @@
                                                   name: '料号个数',
                                                   type: 'bar',
                                                   barWidth: '60%',
-                                                  data: [10, 52, 200, 334, 390, 330, 220]
+                                                  data: y_list
                                                 }
                                             ]
                                         };

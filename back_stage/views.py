@@ -3,6 +3,9 @@ from django.views.generic.base import TemplateView
 from job_manage.models import Job
 from django.db.models import Avg,Max,Min,Count,Sum
 from django.db import connection
+import json
+import datetime
+from datetime import datetime
 # Create your views here.
 def index(request):
     return render(request,r'../templates/index.html')
@@ -53,13 +56,15 @@ class DashBoardView(TemplateView):
         y_list=[]
         for key in result:
             print(key)
-            x_list.append(key["day"])
+            x_list.append(str(datetime.date(key["day"])))
+
             y_list.append(key["number"])
         x_list.reverse()
         y_list.reverse()
         print(x_list)
         print(y_list)
-
+        context['statics_job_by_day_x'] = json.dumps(x_list)
+        context['statics_job_by_day_y'] = y_list
 
 
 
