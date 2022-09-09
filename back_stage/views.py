@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from job_manage.models import Job
 from django.db.models import Avg,Max,Min,Count,Sum
+from django.db import connection
 # Create your views here.
 def index(request):
     return render(request,r'../templates/index.html')
@@ -42,6 +43,25 @@ class DashBoardView(TemplateView):
             statics_author_list.append(one_author_dict)
 
         context['statics_author_list'] = statics_author_list
+
+        #每日新增料号数统计
+        statics_day=Job.objects.values("create_time").annotate(c = Count("job_name")).order_by("-c")
+        print(statics_day)
+        select = {'day': connection.ops.datetime_trunc_sql('day', 'create_time', 8)}
+        result = Job.objects.extra(select=select).values('day').annotate(number=Count('id')).order_by("-day")[:7]
+        x_list=[]
+        y_list=[]
+        for key in result:
+            print(key)
+            x_list.append(key["day"])
+            y_list.append(key["number"])
+        x_list.reverse()
+        y_list.reverse()
+        print(x_list)
+        print(y_list)
+
+
+
 
         return context
 

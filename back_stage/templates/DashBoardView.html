@@ -68,7 +68,7 @@
 
                             {#--------------------------------------开始--图表1--------------------------------------#}
 
-                                <div id="main01" style="width: 1100px;height:500px;"></div>#表格容器
+                                <div id="main01" style="width: 1100px;height:500px;">
                                     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
                                     <script type="text/javascript">
                                                                             // 基于准备好的dom，初始化echarts实例
@@ -77,38 +77,38 @@
                                                                                     // 指定图表的配置项和数据
                                         var option = {
                                             tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                              type: 'shadow'
-                                            }
+                                                trigger: 'axis',
+                                                axisPointer: {
+                                                  type: 'shadow'
+                                                }
                                             },
                                             grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
+                                                left: '3%',
+                                                right: '4%',
+                                                bottom: '3%',
+                                                containLabel: true
                                             },
                                             xAxis: [
-                                            {
-                                              type: 'category',
-                                              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                                              axisTick: {
-                                                alignWithLabel: true
-                                              }
-                                            }
+                                                {
+                                                  type: 'category',
+                                                  data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                                  axisTick: {
+                                                    alignWithLabel: true
+                                                  }
+                                                }
                                             ],
                                             yAxis: [
-                                            {
-                                              type: 'value'
-                                            }
+                                                {
+                                                  type: 'value'
+                                                }
                                             ],
                                             series: [
-                                            {
-                                              name: 'Direct',
-                                              type: 'bar',
-                                              barWidth: '60%',
-                                              data: [10, 52, 200, 334, 390, 330, 220]
-                                            }
+                                                {
+                                                  name: '料号个数',
+                                                  type: 'bar',
+                                                  barWidth: '60%',
+                                                  data: [10, 52, 200, 334, 390, 330, 220]
+                                                }
                                             ]
                                         };
 
