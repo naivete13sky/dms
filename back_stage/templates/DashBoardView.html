@@ -147,10 +147,11 @@
                                                                                     // 指定图表的配置项和数据
                                         var option = {
                                             tooltip: {
-                                                trigger: 'axis',
-                                                axisPointer: {
-                                                    type: 'shadow'
-                                                }
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                              // Use axis to trigger tooltip
+                                              type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+                                            }
                                             },
                                             legend: {},
                                             grid: {
@@ -159,106 +160,81 @@
                                                 bottom: '3%',
                                                 containLabel: true
                                             },
-                                            xAxis: [
-                                            {
+                                            xAxis: {
                                                 type: 'category',
                                                 data: x_list
-                                            }
-                                            ],
-                                            yAxis: [
-                                                {
-                                                  type: 'value'
-                                                }
-                                            ],
+                                            },
+                                            yAxis: {
+                                                type: 'value'
+                                            },
+
                                             series: [
                                                 {
                                                     name: 'Direct',
                                                     type: 'bar',
-                                                    emphasis: {
-                                                    focus: 'series'
+                                                    stack: 'total',
+                                                    label: {
+                                                        show: true
                                                     },
-                                                    data: [320, 332, 301, 334, 390, 330, 320]
+                                                    emphasis: {
+                                                        focus: 'series'
+                                                    },
+                                                    data: [320, 302, 301, 334, 390, 330, 320]
                                                 },
                                                 {
-                                                    name: 'Email',
+                                                    name: 'Mail Ad',
                                                     type: 'bar',
-                                                    stack: 'Ad',
+                                                    stack: 'total',
+                                                    label: {
+                                                    show: true
+                                                    },
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
                                                     data: [120, 132, 101, 134, 90, 230, 210]
                                                 },
                                                 {
-                                                    name: 'Union Ads',
+                                                    name: 'Affiliate Ad',
                                                     type: 'bar',
-                                                    stack: 'Ad',
+                                                    stack: 'total',
+                                                    label: {
+                                                    show: true
+                                                    },
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
                                                     data: [220, 182, 191, 234, 290, 330, 310]
                                                 },
                                                 {
-                                                    name: 'Video Ads',
+                                                    name: 'Video Ad',
                                                     type: 'bar',
-                                                    stack: 'Ad',
+                                                    stack: 'total',
+                                                    label: {
+                                                    show: true
+                                                    },
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
-                                                    data: [150, 232, 201, 154, 190, 330, 410]
+                                                    data: [150, 212, 201, 154, 190, 330, 410]
                                                 },
                                                 {
                                                     name: 'Search Engine',
                                                     type: 'bar',
-                                                    data: [862, 1018, 964, 1026, 1679, 1600, 1570],
-                                                    emphasis: {
-                                                        focus: 'series'
+                                                    stack: 'total',
+                                                    label: {
+                                                    show: true
                                                     },
-                                                    markLine: {
-                                                        lineStyle: {
-                                                            type: 'dashed'
-                                                        },
-                                                        data: [[{ type: 'min' }, { type: 'max' }]]
-                                                    }
-                                                },
-                                                {
-                                                    name: 'Baidu',
-                                                    type: 'bar',
-                                                    barWidth: 5,
-                                                    stack: 'Search Engine',
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
-                                                    data: [620, 732, 701, 734, 1090, 1130, 1120]
-                                                },
-                                                {
-                                                    name: 'Google',
-                                                    type: 'bar',
-                                                    stack: 'Search Engine',
-                                                    emphasis: {
-                                                    focus: 'series'
-                                                    },
-                                                    data: [120, 132, 101, 134, 290, 230, 220]
-                                                },
-                                                {
-                                                    name: 'Bing',
-                                                    type: 'bar',
-                                                    stack: 'Search Engine',
-                                                    emphasis: {
-                                                    focus: 'series'
-                                                    },
-                                                    data: [60, 72, 71, 74, 190, 130, 110]
-                                                },
-                                                {
-                                                    name: 'Others',
-                                                    type: 'bar',
-                                                    stack: 'Search Engine',
-                                                    emphasis: {
-                                                    focus: 'series'
-                                                    },
-                                                    data: [62, 82, 91, 84, 109, 110, 120]
+                                                    data: [820, 832, 901, 934, 1290, 1330, 1320]
                                                 }
                                             ]
                                         };
+
+
+
+
 
                                                                                     // 使用刚指定的配置项和数据显示图表。
                                         myChart.setOption(option);
