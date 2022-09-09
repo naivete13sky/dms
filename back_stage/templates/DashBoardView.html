@@ -65,6 +65,64 @@
 
                             {#--------------------------------------结束--表格--------------------------------------#}
 
+
+                            {#--------------------------------------开始--图表1--------------------------------------#}
+
+                                <div id="main01" style="width: 1100px;height:500px;"></div>#表格容器
+                                    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+                                    <script type="text/javascript">
+                                                                            // 基于准备好的dom，初始化echarts实例
+                                        var myChart=echarts.init(document.getElementById('main01'));
+
+                                                                                    // 指定图表的配置项和数据
+                                        var option = {
+                                            tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                              type: 'shadow'
+                                            }
+                                            },
+                                            grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                            },
+                                            xAxis: [
+                                            {
+                                              type: 'category',
+                                              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                              axisTick: {
+                                                alignWithLabel: true
+                                              }
+                                            }
+                                            ],
+                                            yAxis: [
+                                            {
+                                              type: 'value'
+                                            }
+                                            ],
+                                            series: [
+                                            {
+                                              name: 'Direct',
+                                              type: 'bar',
+                                              barWidth: '60%',
+                                              data: [10, 52, 200, 334, 390, 330, 220]
+                                            }
+                                            ]
+                                        };
+
+                                                                                    // 使用刚指定的配置项和数据显示图表。
+                                        myChart.setOption(option);
+                                     </script>
+                                </div>
+
+
+
+
+
+
+                            {#--------------------------------------结束--图表1--------------------------------------#}
                             {{ form }}
                             {{ job }}
 
