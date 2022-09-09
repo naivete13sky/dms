@@ -24,6 +24,14 @@
       <excludeFolder url="file://$MODULE_DIR$/process/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/project/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/restful_api/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/collected_static/echarts-master/test/build" />
+      <excludeFolder url="file://$MODULE_DIR$/collected_static/echarts-master/test/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/collected_static/echarts-master/build" />
+      <excludeFolder url="file://$MODULE_DIR$/collected_static/echarts-master/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/common_static/echarts-master/test/build" />
+      <excludeFolder url="file://$MODULE_DIR$/common_static/echarts-master/test/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/common_static/echarts-master/build" />
+      <excludeFolder url="file://$MODULE_DIR$/common_static/echarts-master/dist" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
