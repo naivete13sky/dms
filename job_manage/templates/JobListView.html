@@ -46,12 +46,12 @@
                 {#--------------------------------------开始--筛选--------------------------------------#}
 
                         <form action="" class="form-inline" method="get" enctype="multipart/form-data" novalidate>
-                            <i class="fa fa-edit" aria-hidden="true"></i><a href={% url "job_manage:JobCreateView" %}>新增料号</a>
+                            <i class="fa fa-edit" aria-hidden="true"></i><a href="{% url "job_manage:JobCreateView" %}" style="font-size:20px;">新增料号</a>
 
                             {% csrf_token %}
 
                             <label>使用分类</label>
-                            <select id="query_job_file_usage_type" name="query_job_file_usage_type" >
+                            <select id="query_job_file_usage_type" name="query_job_file_usage_type" class="form-control" style="width:80px;">
                                 {% for each in select_file_usage_type %}
                                     {% if each.0 == query_job_file_usage_type  %}
                                         <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
