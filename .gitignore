@@ -155,5 +155,6 @@ migrations/
 /restful_api/migrations/
 .idea/*
 /upload/
-!/collected_static/echarts-master/*
-!/common_static/echarts-master/*
+!/collected_static/echarts-master/dist/
+!/common_static/echarts-master/build/
+
