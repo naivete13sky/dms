@@ -137,7 +137,11 @@
                                     <script type="text/javascript">
 
                                         var x_list = {{ statics_job_by_day_x|safe }};
-                                        var y_list = {{ statics_job_by_day_y|safe }};
+                                        var y_list_cc = {{ statics_job_by_day_author_list_7_day_cc|safe }};
+                                        var y_list_zjr = {{ statics_job_by_day_author_list_7_day_zjr|safe }};
+                                        var y_list_gcc = {{ statics_job_by_day_author_list_7_day_gcc|safe }};
+                                        var y_list_ze = {{ statics_job_by_day_author_list_7_day_ze|safe }};
+                                        var y_list_zzr = {{ statics_job_by_day_author_list_7_day_zzr|safe }};
 
 
 
@@ -170,7 +174,7 @@
 
                                             series: [
                                                 {
-                                                    name: 'Direct',
+                                                    name: 'cc',
                                                     type: 'bar',
                                                     stack: 'total',
                                                     label: {
@@ -179,10 +183,10 @@
                                                     emphasis: {
                                                         focus: 'series'
                                                     },
-                                                    data: [320, 302, 301, 334, 390, 330, 320]
+                                                    data: y_list_cc
                                                 },
                                                 {
-                                                    name: 'Mail Ad',
+                                                    name: 'jinru.zhang',
                                                     type: 'bar',
                                                     stack: 'total',
                                                     label: {
@@ -191,10 +195,10 @@
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
-                                                    data: [120, 132, 101, 134, 90, 230, 210]
+                                                    data: y_list_zjr
                                                 },
                                                 {
-                                                    name: 'Affiliate Ad',
+                                                    name: 'congcong.guo',
                                                     type: 'bar',
                                                     stack: 'total',
                                                     label: {
@@ -203,10 +207,10 @@
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
-                                                    data: [220, 182, 191, 234, 290, 330, 310]
+                                                    data: y_list_gcc
                                                 },
                                                 {
-                                                    name: 'Video Ad',
+                                                    name: 'en.zhu',
                                                     type: 'bar',
                                                     stack: 'total',
                                                     label: {
@@ -215,10 +219,10 @@
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
-                                                    data: [150, 212, 201, 154, 190, 330, 410]
+                                                    data: y_list_ze
                                                 },
                                                 {
-                                                    name: 'Search Engine',
+                                                    name: 'zhenru.zhao',
                                                     type: 'bar',
                                                     stack: 'total',
                                                     label: {
@@ -227,7 +231,7 @@
                                                     emphasis: {
                                                     focus: 'series'
                                                     },
-                                                    data: [820, 832, 901, 934, 1290, 1330, 1320]
+                                                    data: y_list_zzr
                                                 }
                                             ]
                                         };
