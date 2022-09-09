@@ -6,7 +6,7 @@
         {% for tag in tag_list %}
 {#            {{ tag }}#}
             <a href="{% url 'job_manage:job_list_by_tag' tag.1 %}" style="font-size: 20px;">
-                <span style="padding: 5px;" class="label {% cycle 'label-default' 'label-primary' 'label-success' 'label-info' 'label-warning' 'label-danger' %}">{{ tag.0 }}</span>
+                <span style="padding: 5px;" class="label {% cycle 'label-default' 'label-primary' 'label-success' 'label-info' 'label-warning' 'label-danger' %}">{{ tag.0 }}:{{ tag.2 }}</span>
             </a>&nbsp;
         {% endfor %}
     </div>
