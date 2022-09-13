@@ -118,6 +118,9 @@ class DashBoardView(TemplateView):
         context['job_published_ratio'] = job_published_ratio
 
 
+        #Nightingale Chart
+        print("context['statics_author_list']:",context['statics_author_list'])
+
 
         return context
 

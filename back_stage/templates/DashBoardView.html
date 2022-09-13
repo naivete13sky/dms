@@ -321,7 +321,104 @@
                                 <div class="panel">
                                     <div class="panel-content">
                                         <div id="donut-example">
+                                            <div id="main04" style="width: 800px;height:400px;">
+                                                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+                                                <script type="text/javascript">
 
+                                                var x_list_dui_ji = {{ statics_job_by_day_x_dui_ji|safe }};
+                                                var statics_author_list= {{ statics_author_list|safe }};
+                                                {#alert(statics_author_list);#}
+
+                                                var statics_author_list_js=[];
+                                                for (var i in statics_author_list){
+                                                    var each_one={ value: statics_author_list[i].料号数, name: statics_author_list[i].负责人 };
+                                                    {#alert(each_one.name);#}
+                                                    statics_author_list_js.push(each_one);
+                                                };
+                                                {#alert(statics_author_list_js);#}
+
+
+
+
+                                                                                    // 基于准备好的dom，初始化echarts实例
+                                                var myChart=echarts.init(document.getElementById('main04'));
+
+                                                                                            // 指定图表的配置项和数据
+                                                var option = {
+                                                    title: {
+                                                        text: 'Nightingale Chart',
+                                                        subtext: 'Fake Data',
+                                                        left: 'center'
+                                                    },
+                                                    tooltip: {
+                                                        trigger: 'item',
+                                                        formatter: '{a} <br/>{b} : {c} ({d}%)'
+                                                    },
+                                                    legend: {
+                                                        left: 'center',
+                                                        top: 'bottom',
+                                                        {#data: [#}
+                                                        {#    'rose1',#}
+                                                        {#    'rose2',#}
+                                                        {#    'rose3',#}
+                                                        {#    'rose4',#}
+                                                        {#    'rose5',#}
+                                                        {#    'rose6',#}
+                                                        {#    'rose7',#}
+                                                        {#    'rose8'#}
+                                                        {#]#}
+                                                    },
+                                                    toolbox: {
+                                                        show: true,
+                                                        feature: {
+                                                            mark: { show: true },
+                                                            dataView: { show: true, readOnly: false },
+                                                            restore: { show: true },
+                                                            saveAsImage: { show: true }
+                                                        }
+                                                    },
+                                                    series: [
+                                                        {
+                                                            name: 'Radius Mode',
+                                                            type: 'pie',
+                                                            radius: [20, 140],
+                                                            center: ['25%', '50%'],
+                                                            roseType: 'radius',
+                                                            itemStyle: {
+                                                                borderRadius: 5
+                                                            },
+                                                            label: {
+                                                                show: false
+                                                            },
+                                                            emphasis: {
+                                                                label: {
+                                                                  show: true
+                                                                }
+                                                            },
+                                                            data: statics_author_list_js
+                                                        },
+                                                        {
+                                                            name: 'Area Mode',
+                                                            type: 'pie',
+                                                            radius: [20, 140],
+                                                            center: ['75%', '50%'],
+                                                            roseType: 'area',
+                                                            itemStyle: {
+                                                                borderRadius: 5
+                                                            },
+                                                            data: statics_author_list_js
+                                                        }
+                                                    ]
+                                                };
+
+
+
+
+
+                                                                                            // 使用刚指定的配置项和数据显示图表。
+                                                myChart.setOption(option);
+                                             </script>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
