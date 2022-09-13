@@ -66,64 +66,267 @@
                             {#--------------------------------------结束--表格--------------------------------------#}
 
 
-                            {#--------------------------------------开始--图表1--------------------------------------#}
-                                每日新增料号数
-                                <div id="main01" style="width: 1100px;height:500px;">
-                                    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-                                    <script type="text/javascript">
-
-                                        var x_list = {{ statics_job_by_day_x|safe }};
-                                        var y_list = {{ statics_job_by_day_y|safe }};
 
 
-                                                                            // 基于准备好的dom，初始化echarts实例
-                                        var myChart=echarts.init(document.getElementById('main01'));
+                            <div class="col-sm-6">
+                                <h4 class="section-subtitle"><b>人工确认率</b></h4>
+                                <div class="panel">
+                                    <div class="panel-content">
+                                        <div id="line-example">
 
-                                                                                    // 指定图表的配置项和数据
-                                        var option = {
-                                            tooltip: {
-                                                trigger: 'axis',
-                                                axisPointer: {
-                                                  type: 'shadow'
-                                                }
-                                            },
-                                            grid: {
-                                                left: '3%',
-                                                right: '4%',
-                                                bottom: '3%',
-                                                containLabel: true
-                                            },
-                                            xAxis: [
-                                                {
-                                                  type: 'category',
-                                                  data: x_list,
-                                                  axisTick: {
-                                                    alignWithLabel: true
-                                                  }
-                                                }
-                                            ],
-                                            yAxis: [
-                                                {
-                                                  type: 'value'
-                                                }
-                                            ],
-                                            series: [
-                                                {
-                                                  name: '料号个数',
-                                                  type: 'bar',
-                                                  barWidth: '60%',
-                                                    label: {
-                                                        show: true
-                                                    },
-                                                  data: y_list
-                                                }
-                                            ]
-                                        };
+                                            <div id="main03" style="width: 800px;height:400px;">
+                                                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+                                                <script type="text/javascript">
 
-                                                                                    // 使用刚指定的配置项和数据显示图表。
-                                        myChart.setOption(option);
-                                     </script>
+                                                    var job_published_ratio = {{ job_published_ratio|safe }};
+
+                                                                                        // 基于准备好的dom，初始化echarts实例
+                                                    var myChart=echarts.init(document.getElementById('main03'));
+
+                                                                                                // 指定图表的配置项和数据
+                                                    var option = {
+                                                        tooltip: {
+                                                        formatter: '{a} <br/>{b} : {c}%'
+                                                        },
+                                                        series: [
+                                                        {
+                                                          name: 'Pressure',
+                                                          type: 'gauge',
+                                                          progress: {
+                                                            show: true
+                                                          },
+                                                          detail: {
+                                                            valueAnimation: true,
+                                                            formatter: '{value}'
+                                                          },
+                                                          data: [
+                                                            {
+                                                              value: job_published_ratio,
+                                                              name: 'SCORE'
+                                                            }
+                                                          ]
+                                                        }
+                                                        ]
+                                                    };
+
+
+
+
+
+                                                                                                // 使用刚指定的配置项和数据显示图表。
+                                                    myChart.setOption(option);
+                                                 </script>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4 class="section-subtitle"><b>每日新增料号数</b></h4>
+                                <div class="panel">
+                                    <div class="panel-content">
+                                        <div id="area-example">
+
+                                            <div id="main01" style="width: 800px;height:400px;">
+                                                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+                                                <script type="text/javascript">
+
+                                                    var x_list = {{ statics_job_by_day_x|safe }};
+                                                    var y_list = {{ statics_job_by_day_y|safe }};
+
+
+                                                                                        // 基于准备好的dom，初始化echarts实例
+                                                    var myChart=echarts.init(document.getElementById('main01'));
+
+                                                                                                // 指定图表的配置项和数据
+                                                    var option = {
+                                                        tooltip: {
+                                                            trigger: 'axis',
+                                                            axisPointer: {
+                                                              type: 'shadow'
+                                                            }
+                                                        },
+                                                        grid: {
+                                                            left: '3%',
+                                                            right: '4%',
+                                                            bottom: '3%',
+                                                            containLabel: true
+                                                        },
+                                                        xAxis: [
+                                                            {
+                                                              type: 'category',
+                                                              data: x_list,
+                                                              axisTick: {
+                                                                alignWithLabel: true
+                                                              }
+                                                            }
+                                                        ],
+                                                        yAxis: [
+                                                            {
+                                                              type: 'value'
+                                                            }
+                                                        ],
+                                                        series: [
+                                                            {
+                                                              name: '料号个数',
+                                                              type: 'bar',
+                                                              barWidth: '60%',
+                                                                label: {
+                                                                    show: true
+                                                                },
+                                                              data: y_list
+                                                            }
+                                                        ]
+                                                    };
+
+                                                                                                // 使用刚指定的配置项和数据显示图表。
+                                                    myChart.setOption(option);
+                                                 </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4 class="section-subtitle"><b>每日新增料号数</b> </h4>
+                                <div class="panel">
+                                    <div class="panel-content">
+                                        <div id="bar-example">
+
+                                            <div id="main02" style="width: 800px;height:400px;">
+                                                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+                                                <script type="text/javascript">
+
+                                                var x_list = {{ statics_job_by_day_x|safe }};
+                                                var y_list_cc = {{ statics_job_by_day_author_list_7_day_cc|safe }};
+                                                var y_list_zjr = {{ statics_job_by_day_author_list_7_day_zjr|safe }};
+                                                var y_list_gcc = {{ statics_job_by_day_author_list_7_day_gcc|safe }};
+                                                var y_list_ze = {{ statics_job_by_day_author_list_7_day_ze|safe }};
+                                                var y_list_zzr = {{ statics_job_by_day_author_list_7_day_zzr|safe }};
+
+
+
+                                                                                    // 基于准备好的dom，初始化echarts实例
+                                                var myChart=echarts.init(document.getElementById('main02'));
+
+                                                                                            // 指定图表的配置项和数据
+                                                var option = {
+                                                    tooltip: {
+                                                    trigger: 'axis',
+                                                    axisPointer: {
+                                                      // Use axis to trigger tooltip
+                                                      type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+                                                    }
+                                                    },
+                                                    legend: {},
+                                                    grid: {
+                                                        left: '3%',
+                                                        right: '4%',
+                                                        bottom: '3%',
+                                                        containLabel: true
+                                                    },
+                                                    xAxis: {
+                                                        type: 'category',
+                                                        data: x_list
+                                                    },
+                                                    yAxis: {
+                                                        type: 'value'
+                                                    },
+
+                                                    series: [
+                                                        {
+                                                            name: 'cc',
+                                                            type: 'bar',
+                                                            stack: 'total',
+                                                            label: {
+                                                                show: true
+                                                            },
+                                                            emphasis: {
+                                                                focus: 'series'
+                                                            },
+                                                            data: y_list_cc
+                                                        },
+                                                        {
+                                                            name: 'jinru.zhang',
+                                                            type: 'bar',
+                                                            stack: 'total',
+                                                            label: {
+                                                            show: true
+                                                            },
+                                                            emphasis: {
+                                                            focus: 'series'
+                                                            },
+                                                            data: y_list_zjr
+                                                        },
+                                                        {
+                                                            name: 'congcong.guo',
+                                                            type: 'bar',
+                                                            stack: 'total',
+                                                            label: {
+                                                            show: true
+                                                            },
+                                                            emphasis: {
+                                                            focus: 'series'
+                                                            },
+                                                            data: y_list_gcc
+                                                        },
+                                                        {
+                                                            name: 'en.zhu',
+                                                            type: 'bar',
+                                                            stack: 'total',
+                                                            label: {
+                                                            show: true
+                                                            },
+                                                            emphasis: {
+                                                            focus: 'series'
+                                                            },
+                                                            data: y_list_ze
+                                                        },
+                                                        {
+                                                            name: 'zhenru.zhao',
+                                                            type: 'bar',
+                                                            stack: 'total',
+                                                            label: {
+                                                            show: true
+                                                            },
+                                                            emphasis: {
+                                                            focus: 'series'
+                                                            },
+                                                            data: y_list_zzr
+                                                        }
+                                                    ]
+                                                };
+
+
+
+
+
+                                                                                            // 使用刚指定的配置项和数据显示图表。
+                                                myChart.setOption(option);
+                                             </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4 class="section-subtitle"><b>Donut</b> Chart</h4>
+                                <div class="panel">
+                                    <div class="panel-content">
+                                        <div id="donut-example">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            {#--------------------------------------开始--图表1--------------------------------------#}
+
 
 
 
@@ -134,119 +337,7 @@
 
 
                             {#--------------------------------------开始--图表2--------------------------------------#}
-                                每日新增料号数2
-                                <div id="main02" style="width: 1100px;height:500px;">
-                                    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-                                    <script type="text/javascript">
 
-                                        var x_list = {{ statics_job_by_day_x|safe }};
-                                        var y_list_cc = {{ statics_job_by_day_author_list_7_day_cc|safe }};
-                                        var y_list_zjr = {{ statics_job_by_day_author_list_7_day_zjr|safe }};
-                                        var y_list_gcc = {{ statics_job_by_day_author_list_7_day_gcc|safe }};
-                                        var y_list_ze = {{ statics_job_by_day_author_list_7_day_ze|safe }};
-                                        var y_list_zzr = {{ statics_job_by_day_author_list_7_day_zzr|safe }};
-
-
-
-                                                                            // 基于准备好的dom，初始化echarts实例
-                                        var myChart=echarts.init(document.getElementById('main02'));
-
-                                                                                    // 指定图表的配置项和数据
-                                        var option = {
-                                            tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                              // Use axis to trigger tooltip
-                                              type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
-                                            }
-                                            },
-                                            legend: {},
-                                            grid: {
-                                                left: '3%',
-                                                right: '4%',
-                                                bottom: '3%',
-                                                containLabel: true
-                                            },
-                                            xAxis: {
-                                                type: 'category',
-                                                data: x_list
-                                            },
-                                            yAxis: {
-                                                type: 'value'
-                                            },
-
-                                            series: [
-                                                {
-                                                    name: 'cc',
-                                                    type: 'bar',
-                                                    stack: 'total',
-                                                    label: {
-                                                        show: true
-                                                    },
-                                                    emphasis: {
-                                                        focus: 'series'
-                                                    },
-                                                    data: y_list_cc
-                                                },
-                                                {
-                                                    name: 'jinru.zhang',
-                                                    type: 'bar',
-                                                    stack: 'total',
-                                                    label: {
-                                                    show: true
-                                                    },
-                                                    emphasis: {
-                                                    focus: 'series'
-                                                    },
-                                                    data: y_list_zjr
-                                                },
-                                                {
-                                                    name: 'congcong.guo',
-                                                    type: 'bar',
-                                                    stack: 'total',
-                                                    label: {
-                                                    show: true
-                                                    },
-                                                    emphasis: {
-                                                    focus: 'series'
-                                                    },
-                                                    data: y_list_gcc
-                                                },
-                                                {
-                                                    name: 'en.zhu',
-                                                    type: 'bar',
-                                                    stack: 'total',
-                                                    label: {
-                                                    show: true
-                                                    },
-                                                    emphasis: {
-                                                    focus: 'series'
-                                                    },
-                                                    data: y_list_ze
-                                                },
-                                                {
-                                                    name: 'zhenru.zhao',
-                                                    type: 'bar',
-                                                    stack: 'total',
-                                                    label: {
-                                                    show: true
-                                                    },
-                                                    emphasis: {
-                                                    focus: 'series'
-                                                    },
-                                                    data: y_list_zzr
-                                                }
-                                            ]
-                                        };
-
-
-
-
-
-                                                                                    // 使用刚指定的配置项和数据显示图表。
-                                        myChart.setOption(option);
-                                     </script>
-                                </div>
 
 
 
@@ -257,50 +348,7 @@
 
 
                             {#--------------------------------------开始--图表3--------------------------------------#}
-                                人工确认率
-                                <div id="main03" style="width: 1100px;height:500px;">
-                                    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-                                    <script type="text/javascript">
 
-                                        var job_published_ratio = {{ job_published_ratio|safe }};
-
-                                                                            // 基于准备好的dom，初始化echarts实例
-                                        var myChart=echarts.init(document.getElementById('main03'));
-
-                                                                                    // 指定图表的配置项和数据
-                                        var option = {
-                                            tooltip: {
-                                            formatter: '{a} <br/>{b} : {c}%'
-                                            },
-                                            series: [
-                                            {
-                                              name: 'Pressure',
-                                              type: 'gauge',
-                                              progress: {
-                                                show: true
-                                              },
-                                              detail: {
-                                                valueAnimation: true,
-                                                formatter: '{value}'
-                                              },
-                                              data: [
-                                                {
-                                                  value: job_published_ratio,
-                                                  name: 'SCORE'
-                                                }
-                                              ]
-                                            }
-                                            ]
-                                        };
-
-
-
-
-
-                                                                                    // 使用刚指定的配置项和数据显示图表。
-                                        myChart.setOption(option);
-                                     </script>
-                                </div>
 
 
 
@@ -319,6 +367,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 {% endblock %}
 <script src={% static "javascripts/jquery.min.js" %}></script>
