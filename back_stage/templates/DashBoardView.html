@@ -197,7 +197,7 @@
                                                 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
                                                 <script type="text/javascript">
 
-                                                var x_list = {{ statics_job_by_day_x|safe }};
+                                                var x_list_dui_ji = {{ statics_job_by_day_x_dui_ji|safe }};
                                                 var y_list_cc = {{ statics_job_by_day_author_list_7_day_cc|safe }};
                                                 var y_list_zjr = {{ statics_job_by_day_author_list_7_day_zjr|safe }};
                                                 var y_list_gcc = {{ statics_job_by_day_author_list_7_day_gcc|safe }};
@@ -227,7 +227,7 @@
                                                     },
                                                     xAxis: {
                                                         type: 'category',
-                                                        data: x_list
+                                                        data: x_list_dui_ji
                                                     },
                                                     yAxis: {
                                                         type: 'value'
@@ -240,7 +240,7 @@
                                                             type: 'bar',
                                                             stack: 'total',
                                                             label: {
-                                                            show: true
+                                                            show: false
                                                             },
                                                             emphasis: {
                                                             focus: 'series'
@@ -252,7 +252,7 @@
                                                             type: 'bar',
                                                             stack: 'total',
                                                             label: {
-                                                            show: true
+                                                            show: false
                                                             },
                                                             emphasis: {
                                                             focus: 'series'
@@ -264,7 +264,7 @@
                                                             type: 'bar',
                                                             stack: 'total',
                                                             label: {
-                                                            show: true
+                                                            show: false
                                                             },
                                                             emphasis: {
                                                             focus: 'series'
@@ -276,13 +276,30 @@
                                                             type: 'bar',
                                                             stack: 'total',
                                                             label: {
-                                                            show: true
+                                                            show: false
                                                             },
                                                             emphasis: {
                                                             focus: 'series'
                                                             },
                                                             data: y_list_zzr
-                                                        }
+                                                        },
+                                                        {
+                                                            name: '总计',
+                                                            type: 'bar',
+                                                            stack: 'all',
+                                                            label: {
+                                                                show: true,
+                                                                position: 'top',
+                                                            },
+                                                            emphasis: {
+                                                            focus: 'series'
+                                                            },
+                                                            data: y_list_total,
+                                                            z: -1,
+                                                            //不同系列的柱间距离，为百分比,如果想要两个系列的柱子重叠，可以设置 barGap 为 '-100%'。
+                                                            barGap: '-100%',
+                                                        },
+
 
                                                     ]
                                                 };

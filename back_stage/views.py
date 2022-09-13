@@ -89,6 +89,15 @@ class DashBoardView(TemplateView):
             statics_job_by_day_author_list_n_day.reverse()
             return statics_job_by_day_author_list_n_day
 
+        context['statics_job_by_day_x_dui_ji']=[str(today- relativedelta(days=6)),
+                                                str(today- relativedelta(days=5)),
+                                                str(today- relativedelta(days=4)),
+                                                str(today- relativedelta(days=3)),
+                                                str(today- relativedelta(days=2)),
+                                                str(today- relativedelta(days=1)),
+                                                str(today)]
+        print(context['statics_job_by_day_x_dui_ji'])
+
         print("statics_job_by_day_author_list_7_day_cc:", get_statics_job_by_day_author_list_n_day("cc",7))
         context['statics_job_by_day_author_list_7_day_cc'] = get_statics_job_by_day_author_list_n_day("cc",7)
         print("statics_job_by_day_author_list_7_day_zjr:", get_statics_job_by_day_author_list_n_day("jinru.zhang", 7))
