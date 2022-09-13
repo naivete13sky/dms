@@ -203,7 +203,7 @@
                                                 var y_list_gcc = {{ statics_job_by_day_author_list_7_day_gcc|safe }};
                                                 var y_list_ze = {{ statics_job_by_day_author_list_7_day_ze|safe }};
                                                 var y_list_zzr = {{ statics_job_by_day_author_list_7_day_zzr|safe }};
-
+                                                var y_list_total = {{ statics_job_by_day_author_list_7_day_total|safe }};
 
 
                                                                                     // 基于准备好的dom，初始化echarts实例
@@ -282,6 +282,19 @@
                                                             focus: 'series'
                                                             },
                                                             data: y_list_zzr
+                                                        },
+                                                        {
+                                                            name: '总计',
+                                                            type: 'bar',
+                                                            stack: 'all',
+                                                            label: {
+                                                            show: true
+                                                            },
+
+                                                            data: y_list_total,
+                                                            z: -1,
+                                                            //不同系列的柱间距离，为百分比,如果想要两个系列的柱子重叠，可以设置 barGap 为 '-100%'。
+                                                            barGap: '-100%',
                                                         }
                                                     ]
                                                 };

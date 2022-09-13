@@ -78,7 +78,10 @@ class DashBoardView(TemplateView):
             for each in range(0,n):
                 pass
                 # print(each)
-                each_jobs=Job.objects.filter(author__username=author).filter(create_time__range=(today - relativedelta(days=each), today - relativedelta(days=each)+relativedelta(days=1)))
+                if author=="all":
+                    each_jobs=Job.objects.filter(create_time__range=(today - relativedelta(days=each), today - relativedelta(days=each)+relativedelta(days=1)))
+                else:
+                    each_jobs=Job.objects.filter(author__username=author).filter(create_time__range=(today - relativedelta(days=each), today - relativedelta(days=each)+relativedelta(days=1)))
                 each_job_count=len(each_jobs)
                 # print("each_job_count:",each_job_count)
 
@@ -97,6 +100,8 @@ class DashBoardView(TemplateView):
         print("statics_job_by_day_author_list_7_day_zzr:", get_statics_job_by_day_author_list_n_day("zhenru.zhao", 7))
         context['statics_job_by_day_author_list_7_day_zzr'] = get_statics_job_by_day_author_list_n_day("zhenru.zhao", 7)
 
+        print("statics_job_by_day_author_list_7_day_total:", get_statics_job_by_day_author_list_n_day("all", 7))
+        context['statics_job_by_day_author_list_7_day_total'] = get_statics_job_by_day_author_list_n_day("all", 7)
 
         #published比率，仪表盘
         job_published_ratio=round((len(Job.objects.filter(status="published").filter(file_usage_type="input_test"))/len(Job.objects.filter(file_usage_type="input_test")))*100)
