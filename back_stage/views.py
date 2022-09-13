@@ -98,6 +98,11 @@ class DashBoardView(TemplateView):
         context['statics_job_by_day_author_list_7_day_zzr'] = get_statics_job_by_day_author_list_n_day("zhenru.zhao", 7)
 
 
+        #published比率，仪表盘
+        job_published_ratio=round((len(Job.objects.filter(status="published").filter(file_usage_type="input_test"))/len(Job.objects.filter(file_usage_type="input_test")))*100)
+        print("job_published_ratio:",job_published_ratio)
+        context['job_published_ratio'] = job_published_ratio
+
 
 
         return context

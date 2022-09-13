@@ -254,8 +254,63 @@
 
 
                             {#--------------------------------------结束--图表2--------------------------------------#}
-                            {{ form }}
-                            {{ job }}
+
+
+                            {#--------------------------------------开始--图表3--------------------------------------#}
+                                人工确认率
+                                <div id="main03" style="width: 1100px;height:500px;">
+                                    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+                                    <script type="text/javascript">
+
+                                        var job_published_ratio = {{ job_published_ratio|safe }};
+
+                                                                            // 基于准备好的dom，初始化echarts实例
+                                        var myChart=echarts.init(document.getElementById('main03'));
+
+                                                                                    // 指定图表的配置项和数据
+                                        var option = {
+                                            tooltip: {
+                                            formatter: '{a} <br/>{b} : {c}%'
+                                            },
+                                            series: [
+                                            {
+                                              name: 'Pressure',
+                                              type: 'gauge',
+                                              progress: {
+                                                show: true
+                                              },
+                                              detail: {
+                                                valueAnimation: true,
+                                                formatter: '{value}'
+                                              },
+                                              data: [
+                                                {
+                                                  value: job_published_ratio,
+                                                  name: 'SCORE'
+                                                }
+                                              ]
+                                            }
+                                            ]
+                                        };
+
+
+
+
+
+                                                                                    // 使用刚指定的配置项和数据显示图表。
+                                        myChart.setOption(option);
+                                     </script>
+                                </div>
+
+
+
+
+                            {#--------------------------------------结束--图表2--------------------------------------#}
+
+
+
+
+
 
 
                         </div>
