@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'taggit',
     'project.apps.ProjectConfig',
-    'djmoney',
+    # 'djmoney',#RemovedInDjango41Warning: 'djmoney' defines default_app_config = 'djmoney.apps.MoneyConfig'. Django now detects this configuration automatically.You can remove default_app_config.app_config = AppConfig.create(entry)
     'order.apps.OrderConfig',
     'process.apps.ProcessConfig',
     'rest_framework',
@@ -149,7 +149,7 @@ LANGUAGE_CODE = 'zh-Hans'
 TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 
-USE_L10N = True
+# USE_L10N = True# RemovedInDjango50Warning: The USE_L10N setting is deprecated. Starting with Django 5.0, localized formatting of data will always be enabled. For example Django will display numbers and dates using the format of the current locale.warnings.warn(USE_L10N_DEPRECATED_MSG, RemovedInDjango50Warning)
 
 # USE_TZ = True
 USE_TZ = False

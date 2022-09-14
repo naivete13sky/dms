@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.urls import reverse
-from djmoney.models.fields import MoneyField
+# from djmoney.models.fields import MoneyField
 from project.models import Project
 from django.db.models import JSONField
 # Create your models here.
@@ -18,9 +18,11 @@ class CamOrder(models.Model):
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=2)],verbose_name="备注",blank=True)
     customer_user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='cam_order_customer_user',verbose_name="下单人")
     project=models.ForeignKey(Project, on_delete=models.CASCADE, related_name='cam_order_project',verbose_name="工程")
-    customer_price=MoneyField(max_digits=14, decimal_places=2,null=True,blank=True, default_currency='Yuan',verbose_name='下单报价')
+    # customer_price=MoneyField(max_digits=14, decimal_places=2,null=True,blank=True, default_currency='Yuan',verbose_name='下单报价')
+    customer_price =models.DecimalField( max_digits=14, decimal_places=2,null=True, blank=True,verbose_name='下单报价')
     should_finish_time=models.DateTimeField(default=timezone.now,null=True,blank=True,verbose_name="应交付时间")
-    process_price=MoneyField(max_digits=14, decimal_places=2,null=True,blank=True, default_currency='Yuan',verbose_name='做单报价')
+    # process_price=MoneyField(max_digits=14, decimal_places=2,null=True,blank=True, default_currency='Yuan',verbose_name='做单报价')
+    process_price=models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True, verbose_name='做单报价')
     process_user=models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True, related_name='cam_order_process_user',verbose_name="做单人")
     author =models.ForeignKey(User, on_delete=models.CASCADE, related_name='cam_order_author_user',verbose_name="负责人")
     status = models.CharField(
