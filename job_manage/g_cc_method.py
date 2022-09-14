@@ -8,8 +8,8 @@ import time
 import linecache
 import gl as gl
 LAYER_COMPARE_JSON = 'layer_compare.json'
-from job_manage import models, job_operation
-
+from job_manage import models
+from job_manage.epcam import job_operation
 
 class Asw():
     def __init__(self,gateway_path):

@@ -7,7 +7,8 @@ import subprocess
 import time
 import linecache
 import gl as gl
-from job_manage import job_operation
+# from job_manage import job_operation
+from job_manage.epcam import job_operation
 
 LAYER_COMPARE_JSON = 'layer_compare.json'
 # from job_manage import models
