@@ -17,66 +17,75 @@
 
                             <form method="post">{% csrf_token %}
                                 {{ form.as_p }}
+                                {{ customer_forms_new_region }}
+                                <br>
                                 <input type="submit" value="新增">
                             </form>
 
 
-                            <span>省</span>
-                                <select id="province" onchange="changeProvince()">
-                                    <option value="--请选择--">--请选择--</option>
-                                </select>
-                                <span>市</span>
-                                <select id="city" onchange="changeCity()">
-                                    <option value="">--请选择--</option>
-                                </select>
-                                <span>区</span>
-                                <select id="area" onchange="changeArea()">
-                                    <option value="">--请选择--</option>
-                                </select>
-                            </body>
-                            <script>
-                                var arrData = {
-                                    江西省:{南昌市: ['青山湖区','经开区','东湖区','南昌县'],
-                                            吉安市: ['青原区','吉州区','吉安县','泰和县','新干县'],
-                                            赣州市: ['河源市','兴国县','yy县','xx县'],
-                                            宜春市: ['袁州区','万载县']},
-                                    湖南省:{邵阳市: ['邵阳县','1区','2区'],
-                                            长沙市: ['1区','2区','3区','4区'],
-                                            岳阳市: ['5区','6区','7区','8区','9区','10区']},
-                                    广东省:{广州市: ['11区','12区','13区'],
-                                            东莞市: ['厚街镇','14区','15区','16区','17区'],
-                                            中山市: ['18区','19区','20区','21区']},
-                                    江苏省:{苏州市: ['22区','23区','24区','25区','26区'],
-                                            徐州市: ['27镇','28区','29区','30区'],
-                                            镇江市: ['31区','32区','33区','34区']}
-                                };
 
-                                var province = document.getElementById("province");
-                                var city = document.getElementById("city");
-                                var area = document.getElementById("area");
+                            <script type="text/javascript">
+                                var arrData= {{ get_region_dict|safe }};
+                                {#alert("abc");#}
+                                {#alert(arrData.中国.江苏省);#}
+
+                                var country = document.getElementById("id_customerformsnewregion-country");
+                                var province = document.getElementById("id_customerformsnewregion-province");
+                                var city = document.getElementById("id_customerformsnewregion-city");
 
                                 window.onload = function(){
-                                    for(key in arrData){ 	// 初始化省份的标签，即遍历arrData的key值，添加到下拉列表中
-                                        province.options.add(new Option(key, key));
+
+                                    document.getElementById("id_customerformsnewregion-country").options.add(new Option("请选择国家 "));
+                                    document.getElementById("id_customerformsnewregion-province").options.add(new Option("请选择省份 "));
+                                    document.getElementById("id_customerformsnewregion-city").options.add(new Option("请选择城市 "));
+                                    document.getElementById("id_customerformsnewregion-country").addEventListener("change", changeCountry);
+                                    document.getElementById("id_customerformsnewregion-province").addEventListener("change", changeProvince);
+
+                                    for(key in arrData){ 	// 初始化国家的标签，即遍历arrData的key值，添加到下拉列表中
+                                        country.options.add(new Option(key, key));
                                     }
+
+                                        var a ="{{ original.country }}" ;
+                                        var b ="{{ original.province }}" ;
+                                        var c ="{{ original.city }}" ;
+
+                              $("#id_customerformsnewregion-country").find("option").each(function(){
+                                   if($(this).text() == a)	{
+                                     $(this).attr("selected",true);
+                                   }
+                               });
+                               changeCountry();
+
+                               $("#id_customerformsnewregion-province").find("option").each(function(){
+                                   if($(this).text() == b)	{
+                                     $(this).attr("selected",true);
+                                   }
+                               });
+
+                               changeProvince();
+                               $("#id_customerformsnewregion-city").find("option").each(function(){
+                                   if($(this).text() == c)	{
+                                     $(this).attr("selected",true);
+                                   }
+                               });
+                                }	//结束
+                                function changeCountry(){
+                                    province.length = 1; //当重新选择某个省时，应该把市和区的option清空，因为默认栏是“--请选择--”，故把长度变为1.
+                                    city.length = 1;  //同上
+                                    for(key in arrData[country.value])
+                                        //注意字典中key的用法，字典是以键值对{key:value}存储的。country.value就是选择的国家，比如选了国内，那么country.value就是国内。
+                                        province.options.add(new Option(key, key)); //options.add(new Option(text,value));
+
                                 }
 
                                 function changeProvince(){
-                                    city.length = 1; //当重新选择某个省时，应该把市和区的option清空，因为默认栏是“--请选择--”，故把长度变为1.
-                                    area.length = 1;  //同上
-                                    for(key in arrData[province.value])
-                                        //注意字典中key的用法，字典是以键值对{key:value}存储的。province.value就是选择的省，比如选了江西省，那么province.value就是江西省。
-                                        city.options.add(new Option(key, key)); //options.add(new Option(text,value));
-
-                                }
-
-                                function changeCity(){
-                                    area.length = 1;  //当重新选择某个市时，应该把区的option清空，因为默认栏是“--请选择--”，故把长度变为1.
-                                    for(key in arrData[province.value][city.value]){
-                                        var a = arrData[province.value][city.value][key];
-                                        area.options.add(new Option(a, a));
+                                    city.length = 1;  //当重新选择某个省时，应该把市的option清空，因为默认栏是“--请选择--”，故把长度变为1.
+                                    for(key in arrData[country.value][province.value]){
+                                        var a = arrData[country.value][province.value][key];
+                                        city.options.add(new Option(a, a));
                                     }
                                 }
+
                             </script>
 
 
@@ -90,5 +99,5 @@
         </div>
     </div>
 {% endblock %}
-<script src={% static "javascripts/jquery.min.js" %}></script>
+{#<script src={% static "javascripts/jquery.min.js" %}></script>#}
 

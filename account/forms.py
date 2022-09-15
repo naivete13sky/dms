@@ -83,3 +83,23 @@ class CustomerFormsReadOnly(forms.ModelForm):
             super(CustomerFormsReadOnly, self).__init__(*args, **kwargs)
             for name, field in self.fields.iteritems():
                 field.widget.attrs['readonly'] = 'true'
+
+class CustomerFormsNew(forms.ModelForm):
+    class Meta:
+        model = Customer
+        # fields = '__all__'
+        fields = ['name_full','name_simple','department','customer_type','remark','publish']
+
+# class CustomerFormsNewRegion(forms.Form):
+#     username = forms.CharField()
+#     password = forms.CharField(widget=forms.PasswordInput)
+
+class CustomerFormsNewRegion(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['country', 'province', 'city', ]
+        widgets = {
+            'country': forms.Select(),
+            'province': forms.Select(),
+            'city': forms.Select(),
+        }

@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.utils import timezone
 
 from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly,ProfileFormsReadOnly,CustomerRuleFormsReadOnly,CustomerFormsReadOnly
+from .forms import CustomerFormsNew,CustomerFormsNewRegion
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404,HttpResponse,redirect
 from account import models
@@ -11,6 +12,8 @@ from django.contrib.sites.models import Site
 from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
 from django.db.models import Q
 from django.urls import reverse_lazy # 带参数跳转
+from django.conf import settings
+import json,os
 
 
 def user_login(request):
@@ -399,10 +402,57 @@ class CustomerUpdateView(UpdateView):
     success_url = '../CustomerListView' # 修改成功后跳转的链接
 
 class CustomerCreateView(CreateView):
-    model=Customer
+    # model=Customer
+    form_class = CustomerFormsNew
     template_name = "CustomerCreateView.html"
-    fields = "__all__"
+    # fields = "__all__"
     success_url = 'CustomerListView'
+
+    def get_region_dict(self):
+        region_dict={}
+        region_dict_china = {}
+        data = json.load(open(os.path.join(settings.BASE_DIR,r'account\china_region.json')))
+        data_version = data['data_version']
+        provinces = data['result'][0]
+        citys = data['result'][1]
+        for province in provinces:
+            pass
+            # print(province["fullname"])
+
+            cidx = province['cidx']
+            province_citys_js = citys[cidx[0]:cidx[1]]
+            one_province_city_list = []
+            for city in province_citys_js:
+                pass
+                # print(city["fullname"])
+                one_province_city_list.append(city["fullname"])
+            region_dict_china[province["fullname"]] = one_province_city_list
+
+        region_dict["中国"]=region_dict_china
+        region_dict["国外"]={'亚洲': ['日本','韩国','朝鲜'],
+                  '欧洲': ['英国','德国','法国','瑞士'],
+                  '非洲': ['南非','埃及','加纳','贝宁','苏丹','中非'],
+                  '美洲': ['美国','巴西','智利','古巴','海地','秘鲁'],
+                  '大洋洲': ['帕劳','斐济','汤加','纽埃','瑙鲁','萨摩亚']}
+        return region_dict
+
+
+    def get_context_data(self, **kwargs):
+        context = super(CustomerCreateView, self).get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            customer_forms_new = CustomerFormsNew(self.request.POST, prefix='customerformsnew')
+            customer_forms_new_region = CustomerFormsNewRegion(self.request.POST, prefix='customerformsnewregion')
+
+        else:
+            customer_forms_new = CustomerFormsNew(prefix='customerformsnew')
+            customer_forms_new_region = CustomerFormsNewRegion(prefix='customerformsnewregion')
+
+            # 注意要把自己处理的表单放到context上下文中，供模板文件使用
+        context['customer_forms_new'] = customer_forms_new
+        context['customer_forms_new_region'] = customer_forms_new_region
+        context['get_region_dict']=self.get_region_dict()
+
+        return context
 
 class CustomerDeleteView(DeleteView):
   """
