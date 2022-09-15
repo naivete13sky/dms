@@ -403,7 +403,7 @@ class CustomerUpdateView(UpdateView):
 
 class CustomerCreateView(CreateView):
     # model=Customer
-    form_class = CustomerFormsNew
+    form_class = CustomerFormsNewRegion
     template_name = "CustomerCreateView.html"
     # fields = "__all__"
     success_url = 'CustomerListView'
@@ -440,19 +440,31 @@ class CustomerCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CustomerCreateView, self).get_context_data(**kwargs)
         if self.request.method == 'POST':
-            customer_forms_new = CustomerFormsNew(self.request.POST, prefix='customerformsnew')
+            # customer_forms_new = CustomerFormsNew(self.request.POST, prefix='customerformsnew')
             customer_forms_new_region = CustomerFormsNewRegion(self.request.POST, prefix='customerformsnewregion')
 
         else:
-            customer_forms_new = CustomerFormsNew(prefix='customerformsnew')
+            # customer_forms_new = CustomerFormsNew(prefix='customerformsnew')
             customer_forms_new_region = CustomerFormsNewRegion(prefix='customerformsnewregion')
 
             # 注意要把自己处理的表单放到context上下文中，供模板文件使用
-        context['customer_forms_new'] = customer_forms_new
+        # context['customer_forms_new'] = customer_forms_new
         context['customer_forms_new_region'] = customer_forms_new_region
         context['get_region_dict']=self.get_region_dict()
 
         return context
+
+    # def form_valid(self, form):
+    #     # 首先我们要获取到CustomerFormsNew表单对应的模型，此时是不能save的，因为外键customer_forms_new_region对应的数据库记录还没有创建，所以commit传为False
+    #     customer = form.save(commit=False)
+    #     # 获取上面get_context_data方法中在POST里得到的表单
+    #     context = self.get_context_data()
+    #     # 依次创建（调用save方法）、主键赋到下一条记录的外键中、下一次记录创建（save）
+    #     customer_region = context['customer_forms_new_region'].save()
+    #     # context['customer_forms_new'].save()
+    #     # customer.save()
+    #
+    #     return super(CustomerCreateView, self).form_valid(form)
 
 class CustomerDeleteView(DeleteView):
   """
