@@ -12,10 +12,10 @@
             {% endif %}
             {# 中间左边部分 #}
             {% if left_has_more %}
-                <li><a href="{% url '' %}?page=1">1</a></li>
+                <li><a href="{% url 'job_manage:JobListView' %}?page=1">1</a></li>
                 <li><a href="javascript:void(0);">...</a></li>
                 {% for page in left_range %}
-                    <li><a href="{% url '' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="{% url 'job_manage:JobListView' %}?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
             {% else %}
                 {% for page in left_range %}
