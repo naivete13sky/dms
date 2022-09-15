@@ -44,4 +44,10 @@ urlpatterns = [
     path('CustomerRuleDeleteView/<int:pk>', views.CustomerRuleDeleteView.as_view(),name='CustomerRuleDeleteView'),
 
 
+    path('CustomerListView',views.CustomerListView.as_view(),name='CustomerListView'),
+    path('CustomerDetailView/<int:pk>/', views.CustomerDetailView.as_view(),name='CustomerDetailView'),
+    path('CustomerUpdateView/<int:pk>', views.CustomerUpdateView.as_view(), name='CustomerUpdateView'),
+    path('CustomerCreateView', views.CustomerCreateView.as_view(), name='CustomerCreateView'),
+    path('CustomerDeleteView/<int:pk>', views.CustomerDeleteView.as_view(),name='CustomerDeleteView'),
+
 ]

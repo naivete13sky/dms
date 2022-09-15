@@ -150,3 +150,6 @@ class Customer(models.Model):
 
     def __str__(self):
         return "Profile for customer {}".format(self.name_simple)
+
+    def get_absolute_url(self):
+        return reverse('CustomerDetailView', args=[self.id, ])

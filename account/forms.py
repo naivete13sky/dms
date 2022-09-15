@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile,FactoryRule,CustomerRule
+from .models import Profile,FactoryRule,CustomerRule,Customer
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -75,3 +75,11 @@ class CustomerRuleFormsProjectNew(forms.ModelForm):
         fields = ['customer_rule_name','remark','publish','status']
 
 
+class CustomerFormsReadOnly(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = '__all__'
+        def __init__(self, *args, **kwargs):
+            super(CustomerFormsReadOnly, self).__init__(*args, **kwargs)
+            for name, field in self.fields.iteritems():
+                field.widget.attrs['readonly'] = 'true'

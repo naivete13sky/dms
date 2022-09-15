@@ -1,14 +1,17 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly,ProfileFormsReadOnly,CustomerRuleFormsReadOnly
+from django.utils import timezone
+
+from .forms import LoginForm,UserRegistrationForm,UserEditForm, ProfileEditForm,ProfileEditFormAll,FactoryRuleFormsReadOnly,ProfileFormsReadOnly,CustomerRuleFormsReadOnly,CustomerFormsReadOnly
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404,HttpResponse,redirect
 from account import models
-from .models import Profile,FactoryRule,CustomerRule
+from .models import Profile,FactoryRule,CustomerRule,Customer
 from django.contrib.sites.models import Site
 from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
 from django.db.models import Q
 from django.urls import reverse_lazy # 带参数跳转
+
 
 def user_login(request):
     if request.method == "POST":
@@ -342,3 +345,68 @@ class CustomerRuleDeleteView(DeleteView):
   # book_delete.html为models.py中__str__的返回值
    # namespace:url_name
   success_url = reverse_lazy('CustomerRuleListView')
+
+
+class CustomerListView(ListView):
+    queryset = models.Customer.objects.all()
+    # model=models.Job
+    context_object_name = 'customer'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = r'CustomerListView.html'
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        field_verbose_name = [Customer._meta.get_field('name_full').verbose_name,
+                              Customer._meta.get_field('name_simple').verbose_name,
+                              Customer._meta.get_field('department').verbose_name,
+                              Customer._meta.get_field('country').verbose_name,
+                              Customer._meta.get_field('province').verbose_name,
+                              Customer._meta.get_field('city').verbose_name,
+                              Customer._meta.get_field('customer_type').verbose_name,
+                              Customer._meta.get_field('publish').verbose_name,
+                              Customer._meta.get_field('remark').verbose_name,
+                              "操作",
+                              ]
+        context['field_verbose_name'] = field_verbose_name# 表头用
+        query=self.request.GET.get('query',False)
+        if query:
+            context['customer'] = Customer.objects.filter(
+                Q(name_full__contains=query) |
+                Q(name_simple__contains=query))
+
+        return context
+
+class CustomerDetailView(DetailView):
+    model = Customer
+    template_name = "CustomerDetailView.html"
+    context_object_name = "customer"
+    pk_url_kwarg = "pk"  # pk_url_kwarg默认值就是pk，这里可以覆盖，但必须和url中的命名组参数名称一致
+    def get(self, request, *args, **kwargs):
+        # print('get url parms: ' + kwargs['pk'])
+        customer = Customer.objects.filter(id=kwargs['pk']).first()
+        form = CustomerFormsReadOnly(instance=customer)
+        return self.render_to_response({'form': form})
+
+class CustomerUpdateView(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = Customer
+    fields = "__all__"
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'CustomerUpdateView.html'
+    success_url = '../CustomerListView' # 修改成功后跳转的链接
+
+class CustomerCreateView(CreateView):
+    model=Customer
+    template_name = "CustomerCreateView.html"
+    fields = "__all__"
+    success_url = 'CustomerListView'
+
+class CustomerDeleteView(DeleteView):
+  """
+  """
+  model = Customer
+  template_name = 'CustomerDeleteView.html'
+  success_url = reverse_lazy('CustomerListView')
