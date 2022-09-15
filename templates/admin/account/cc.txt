@@ -1,0 +1,2 @@
+在这里放入change_form.html，可以覆盖python路径中admin的此页面。当然这个页面也可以放在具体应用下，如account下面对应的位置。
+如果没有这个文件，那就到系统安装文件django/contrib/admin/templates/admin目录下拷贝change_form.html文件到我们新建立的templates\admin\news\article目录下。
