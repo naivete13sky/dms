@@ -97,7 +97,7 @@ class CustomerFormsNew(forms.ModelForm):
 class CustomerFormsNewRegion(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ['country', 'province', 'city', ]
+        fields = ['name_full','name_simple','department','customer_type','country', 'province', 'city', 'remark','publish',]
         widgets = {
             'country': forms.Select(),
             'province': forms.Select(),

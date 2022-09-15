@@ -17,7 +17,7 @@
 
                             <form method="post">{% csrf_token %}
                                 {{ form.as_p }}
-                                {{ customer_forms_new_region }}
+{#                                {{ customer_forms_new_region }}#}
                                 <br>
                                 <input type="submit" value="新增">
                             </form>
@@ -25,21 +25,21 @@
 
 
                             <script type="text/javascript">
-                                var arrData= {{ get_region_dict|safe }};
-                                {#alert("abc");#}
-                                {#alert(arrData.中国.江苏省);#}
 
-                                var country = document.getElementById("id_customerformsnewregion-country");
-                                var province = document.getElementById("id_customerformsnewregion-province");
-                                var city = document.getElementById("id_customerformsnewregion-city");
+                                var arrData= {{ get_region_dict|safe }}
+                                {#alert(arrData2.中国.江苏省)#}
 
+                                var country = document.getElementById("id_country");
+                                var province = document.getElementById("id_province");
+                                var city = document.getElementById("id_city");
+                                var title = document.getElementById("id_name");
                                 window.onload = function(){
 
-                                    document.getElementById("id_customerformsnewregion-country").options.add(new Option("请选择国家 "));
-                                    document.getElementById("id_customerformsnewregion-province").options.add(new Option("请选择省份 "));
-                                    document.getElementById("id_customerformsnewregion-city").options.add(new Option("请选择城市 "));
-                                    document.getElementById("id_customerformsnewregion-country").addEventListener("change", changeCountry);
-                                    document.getElementById("id_customerformsnewregion-province").addEventListener("change", changeProvince);
+                                    document.getElementById("id_country").options.add(new Option("请选择国家 "));
+                                    document.getElementById("id_province").options.add(new Option("请选择省份 "));
+                                    document.getElementById("id_city").options.add(new Option("请选择城市 "));
+                                    document.getElementById("id_country").addEventListener("change", changeCountry);
+                                    document.getElementById("id_province").addEventListener("change", changeProvince);
 
                                     for(key in arrData){ 	// 初始化国家的标签，即遍历arrData的key值，添加到下拉列表中
                                         country.options.add(new Option(key, key));
@@ -49,21 +49,21 @@
                                         var b ="{{ original.province }}" ;
                                         var c ="{{ original.city }}" ;
 
-                              $("#id_customerformsnewregion-country").find("option").each(function(){
+                              $("#id_country").find("option").each(function(){
                                    if($(this).text() == a)	{
                                      $(this).attr("selected",true);
                                    }
                                });
                                changeCountry();
 
-                               $("#id_customerformsnewregion-province").find("option").each(function(){
+                               $("#id_province").find("option").each(function(){
                                    if($(this).text() == b)	{
                                      $(this).attr("selected",true);
                                    }
                                });
 
                                changeProvince();
-                               $("#id_customerformsnewregion-city").find("option").each(function(){
+                               $("#id_city").find("option").each(function(){
                                    if($(this).text() == c)	{
                                      $(this).attr("selected",true);
                                    }
@@ -86,7 +86,7 @@
                                     }
                                 }
 
-                            </script>
+    </script>
 
 
 
