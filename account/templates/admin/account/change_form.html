@@ -75,7 +75,7 @@
 
 
 
-    cc2:{{ cc }}
+{#    cc2:{{ region_dict }}#}
     <script type="text/javascript">
         var arrData = {
             国内:{北京: ['北京'],
@@ -89,6 +89,8 @@
                   美洲: ['美国','巴西','智利','古巴','海地','秘鲁'],
                   大洋洲: ['帕劳','斐济','汤加','纽埃','瑙鲁','萨摩亚']},
         };
+        var arrData= {{ region_dict|safe }}
+        {#alert(arrData2.中国.江苏省)#}
 
         var country = document.getElementById("id_country");
         var province = document.getElementById("id_province");

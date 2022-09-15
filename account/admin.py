@@ -54,10 +54,38 @@ class CustomerAdmin(admin.ModelAdmin):
         # print(type(provinces_tuple))
         return provinces_tuple
 
+    def get_region_dict(self):
+        region_dict={}
+        region_dict_china = {}
+        data = json.load(open(os.path.join(settings.BASE_DIR,r'account\china_region.json')))
+        data_version = data['data_version']
+        provinces = data['result'][0]
+        citys = data['result'][1]
+        for province in provinces:
+            pass
+            # print(province["fullname"])
+
+            cidx = province['cidx']
+            province_citys_js = citys[cidx[0]:cidx[1]]
+            one_province_city_list = []
+            for city in province_citys_js:
+                pass
+                # print(city["fullname"])
+                one_province_city_list.append(city["fullname"])
+            region_dict_china[province["fullname"]] = one_province_city_list
+
+        region_dict["中国"]=region_dict_china
+        region_dict["国外"]={'亚洲': ['日本','韩国','朝鲜'],
+                  '欧洲': ['英国','德国','法国','瑞士'],
+                  '非洲': ['南非','埃及','加纳','贝宁','苏丹','中非'],
+                  '美洲': ['美国','巴西','智利','古巴','海地','秘鲁'],
+                  '大洋洲': ['帕劳','斐济','汤加','纽埃','瑙鲁','萨摩亚']}
+        return region_dict
+
     #重写add_view方法是为了实现把区域信息传给change_form.html页面中。
     def add_view(self, request,  extra_context=None):
         extra_context = extra_context or {}
-        extra_context['cc'] = self.get_province_tuple()
+        extra_context['region_dict'] = self.get_region_dict()
 
         return super(CustomerAdmin, self).add_view(
             request,extra_context=extra_context,

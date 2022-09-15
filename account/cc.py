@@ -124,6 +124,34 @@ def cc():
         pass
         # print(city["fullname"])
 
+
+def cc2():
+    pass
+    region_dict={}
+    data = json.load(open('data.json'))
+    data_version = data['data_version']
+    provinces = data['result'][0]
+    citys = data['result'][1]
+    for province in provinces:
+        pass
+        # print(province["fullname"])
+
+
+        cidx=province['cidx']
+        province_citys_js = citys[cidx[0]:cidx[1]]
+        one_province_city_list = []
+        for city in province_citys_js:
+            pass
+            # print(city["fullname"])
+            one_province_city_list.append(city["fullname"])
+        region_dict[province["fullname"]] = one_province_city_list
+
+    print(region_dict)
+
+
+
+
+
 if __name__ == "__main__":
     pass
     # get_addres_info_gaodei()
@@ -132,6 +160,6 @@ if __name__ == "__main__":
     # info_to_dict()
     # info_show_tree()
 
-    cc()
+    cc2()
 
 
