@@ -1,9 +1,14 @@
+import os
+
 from django.db import models
 from django.conf import settings
 from django.core import validators  # 自定义验证器
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+import json
+from django.conf import settings
+
 
 
 class Profile(models.Model):
@@ -118,3 +123,60 @@ class QueryData(models.Model):
     class Meta:
         db_table = 'account_query_data'
         ordering = ('-publish',)
+
+class Customer(models.Model):
+    name_full = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],null=True,blank=True,verbose_name="客户全称")
+    name_simple = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],null=True,blank=True,verbose_name="客户简称")
+    department = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)],null=True,blank=True,verbose_name="部门")
+
+    def get_province_tuple():
+        pass
+        data = json.load(open(os.path.join(settings.BASE_DIR,r'account\china_region.json')))
+        data_version = data['data_version']
+        provinces = data['result'][0]
+        provinces_tuple = ()
+        for province in provinces:
+            pass
+            # print(province)
+            # print(province["fullname"])
+            provinces_tuple = provinces_tuple + ((province["id"], province["fullname"]),)
+        print(provinces_tuple)
+        # print(type(provinces_tuple))
+        return provinces_tuple
+    province0 = models.CharField(max_length=100,choices = get_province_tuple(), validators=[validators.MinLengthValidator(limit_value=0)], null=True,blank=True, verbose_name="省份")
+
+    def get_city_tuple():
+        data = json.load(open(os.path.join(settings.BASE_DIR,r'account\china_region.json')))
+        data_version = data['data_version']
+        provinces = data['result'][0]
+        provinces_tuple = ()
+        for province in provinces:
+            pass
+            # print(province)
+            # print(province["fullname"])
+            provinces_tuple = provinces_tuple + ((province["id"], province["fullname"]),)
+        print(provinces_tuple)
+        # print(type(provinces_tuple))
+        return provinces_tuple
+    city0 = models.CharField(max_length=100,choices = get_city_tuple(), validators=[validators.MinLengthValidator(limit_value=0)],null=True,blank=True,verbose_name="城市")
+
+    name = models.CharField('标题', max_length=256,null=True,blank=True)
+    country = models.CharField('国家', max_length=256,null=True,blank=True)
+    province = models.CharField('省份', max_length=256,null=True,blank=True)
+    city = models.CharField('城市', max_length=256,null=True,blank=True)
+
+
+
+    customer_type=models.CharField(max_length=20, choices=(('pcb_factory', '板厂'), ('design_customer', '设计端客户')), default='pcb_factory',
+                                   null=True,blank=True,verbose_name="客户类型")
+
+    remark = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)], blank=True,
+                              null=True, help_text='备注', verbose_name="备注")
+    publish = models.DateTimeField(default=timezone.now)
+    create_time = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    class Meta:
+        ordering = ('-publish',)
+
+    def __str__(self):
+        return "Profile for customer {}".format(self.name_simple)
