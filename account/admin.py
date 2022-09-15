@@ -35,9 +35,9 @@ class CustomerForm(forms.ModelForm):
 class CustomerAdmin(admin.ModelAdmin):
 
     form = CustomerForm
-    fields = ('name', ('country', 'province', 'city'))
+    fields = ('name_full','name_simple','department','customer_type', ('country', 'province', 'city'))
 
-    list_display = ['name_full', 'name_simple', 'department', 'province0', 'city', 'customer_type', 'remark']
+    list_display = ['name_full', 'name_simple', 'department','province','city', 'customer_type', 'remark']
 
     def get_province_tuple(self):
         pass
@@ -54,6 +54,7 @@ class CustomerAdmin(admin.ModelAdmin):
         # print(type(provinces_tuple))
         return provinces_tuple
 
+    #重写add_view方法是为了实现把区域信息传给change_form.html页面中。
     def add_view(self, request,  extra_context=None):
         extra_context = extra_context or {}
         extra_context['cc'] = self.get_province_tuple()
