@@ -36,4 +36,9 @@ class CustomerAdmin(admin.ModelAdmin):
 
     list_display = ['name_full', 'name_simple', 'department', 'province0', 'city', 'customer_type', 'remark']
 
-
+    def add_view(self, request,  extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['cc'] = "I am cc!"
+        return super(CustomerAdmin, self).add_view(
+            request,extra_context=extra_context,
+        )
