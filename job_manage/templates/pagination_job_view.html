@@ -27,10 +27,10 @@
             {# 中间右边部分 #}
             {% if right_has_more %}
                 {% for page in right_range %}
-                    <li><a href="{% url '' %}?page={{ page }}">{{ page }}</a></li>
+                    <li><a href="{% url 'job_manage:JobListView' %}?page={{ page }}">{{ page }}</a></li>
                 {% endfor %}
                 <li><a href="javascript:void(0);">...</a></li>
-                <li><a href="{% url '' %}?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
+                <li><a href="{% url 'job_manage:JobListView' %}?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
             {% else %}
                 {% for page in right_range %}
                     <li><a href="{% url 'job_manage:JobListView' %}?page={{ page }}">{{ page }}</a></li>
