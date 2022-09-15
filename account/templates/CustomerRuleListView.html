@@ -1,4 +1,4 @@
-{% extends 'index_base.html' %}
+{% extends 'index_base_20220818.html' %}
 {% load static  %}
 {% block title %}悦谱数据管理系统{% endblock %}
 {% block content_header_child %}
@@ -7,6 +7,7 @@
     <li><a>客规信息查询</a></li>
 {% endblock %}
 {% block main_content %}
+    <script src={% static "javascripts/jquery.min.js" %}></script>
     <div class="row animated fadeInUp">
         <div class="col-sm-12">
             <div class="panel">
