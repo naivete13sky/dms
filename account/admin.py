@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import Profile,FactoryRule,CustomerRule,QueryData,Customer
 from django import forms
+import json
+import os
+from django.conf import settings
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -36,9 +39,25 @@ class CustomerAdmin(admin.ModelAdmin):
 
     list_display = ['name_full', 'name_simple', 'department', 'province0', 'city', 'customer_type', 'remark']
 
+    def get_province_tuple(self):
+        pass
+        data = json.load(open(os.path.join(settings.BASE_DIR,r'account\china_region.json')))
+        data_version = data['data_version']
+        provinces = data['result'][0]
+        provinces_tuple = ()
+        for province in provinces:
+            pass
+            # print(province)
+            # print(province["fullname"])
+            provinces_tuple = provinces_tuple + ((province["id"], province["fullname"]),)
+        print(provinces_tuple)
+        # print(type(provinces_tuple))
+        return provinces_tuple
+
     def add_view(self, request,  extra_context=None):
         extra_context = extra_context or {}
-        extra_context['cc'] = "I am cc!"
+        extra_context['cc'] = self.get_province_tuple()
+
         return super(CustomerAdmin, self).add_view(
             request,extra_context=extra_context,
         )
