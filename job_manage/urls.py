@@ -98,5 +98,10 @@ urlpatterns = [
     path('test_js_local_script2', views.test_js_local_script2, name='test_js_local_script2'),  # js调用python，pyscript
     path('tag_cloud', views.tag_cloud,name='tag_cloud'),#标签云
 
+    path('test_admin', views.test_admin,name='test_admin'),#开发时测试用的。
+
+
+
+
 # ]
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

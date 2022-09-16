@@ -26,7 +26,26 @@
 
 
 
+                            <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
 
+                            <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
+                            <script src="/static/admin/js/nav_sidebar.js" defer></script>
+
+                            <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+
+
+                            <script src="/admin/jsi18n/"></script>
+                            <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+                            <script src="/static/admin/js/calendar.js"></script>
+                            <script src="/static/admin/js/jquery.init.js"></script>
+                            <script src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+                            <script src="/static/admin/js/core.js"></script>
+                            <script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+                            <script src="/static/admin/js/actions.js"></script>
+                            <script src="/static/admin/js/urlify.js"></script>
+                            <script src="/static/admin/js/prepopulate.js"></script>
+                            <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+                            <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
 
                             <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
                             <script>
@@ -43,6 +62,23 @@
                             </script>
                             <div id = "replace">
                             </div>
+
+                            <script id="django-admin-form-add-constants"
+                                    src="/static/admin/js/change_form.js"
+
+                                        data-model-name="job"
+
+                                    async>
+                            </script>
+
+{#                            <script id="django-admin-prepopulated-fields-constants"#}
+{#                                    src="/static/admin/js/prepopulate_init.js"#}
+{#                                    data-prepopulated-fields="[{&quot;id&quot;: &quot;#id_remark&quot;, &quot;name&quot;: &quot;remark&quot;, &quot;dependency_ids&quot;: [&quot;#id_job_name&quot;], &quot;dependency_list&quot;: [&quot;job_name&quot;], &quot;maxLength&quot;: 100, &quot;allowUnicode&quot;: false}]">#}
+{#                            </script>#}
+
+
+
+
 
 
 
