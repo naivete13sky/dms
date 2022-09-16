@@ -25,31 +25,24 @@
 
 
 
-                            <form class="form-horizontal form-stripe">
-                                <div class="form-group">
-                                    <label for="select2-example-basic" class="col-sm-2 control-label">Basic</label>
-                                    <div class="col-sm-10">
-                                        <select name="country" id="select2-example-basic" class="form-control" style="width: 100%">
 
-                                            <optgroup label="板厂客户">
 
-                                                {% for each in get_customer_pcb_factory %}
-                                                    <option value="{{ each }}" label="{{ each }}">{{ each }}</option>
-                                                {% endfor %}
-                                            </optgroup>
 
-                                            <optgroup label="设计端客户">
-                                                {% for each in get_customer_pcb_design %}
-                                                    <option value="{{ each }}" label="{{ each }}">{{ each }}</option>
-                                                {% endfor %}
-                                            </optgroup>
-
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </form>
-
+                            <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+                            <script>
+                                $(document).ready(function(){
+                                    var html_to_be="";
+                                    html_to_be=`<div>
+                                                    <label for="id_from_object_pcb_factory">料号来源-板厂:</label>
+                                                    <input type="text" name="from_object_pcb_factory" id="id_from_object_pcb_factory" class="vForeignKeyRawIdAdminField">
+                                                    <a href="/admin/account/customer/?_to_field=id" class="related-lookup" id="lookup_id_from_object_pcb_factory" title="查询"></a>
+                                                </div>
+                                                `;
+                                    document.getElementById("replace").outerHTML=html_to_be;
+                                });
+                            </script>
+                            <div id = "replace">
+                            </div>
 
 
 
