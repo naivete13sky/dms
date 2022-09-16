@@ -19,7 +19,7 @@ class JobAdmin(admin.ModelAdmin):
 
     search_fields = ('job_name','author__username',)
     prepopulated_fields = {'remark': ('job_name',)}
-    raw_id_fields = ('author',)
+    raw_id_fields = ('author','from_object_pcb_factory','from_object_pcb_design')
     date_hierarchy = 'publish'
     # ordering = ('recipe_status', 'receive_date',)
     list_per_page = 10

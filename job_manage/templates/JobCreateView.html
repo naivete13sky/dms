@@ -25,6 +25,34 @@
 
 
 
+                            <form class="form-horizontal form-stripe">
+                                <div class="form-group">
+                                    <label for="select2-example-basic" class="col-sm-2 control-label">Basic</label>
+                                    <div class="col-sm-10">
+                                        <select name="country" id="select2-example-basic" class="form-control" style="width: 100%">
+
+                                            <optgroup label="板厂客户">
+
+                                                {% for each in get_customer_pcb_factory %}
+                                                    <option value="{{ each }}" label="{{ each }}">{{ each }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+
+                                            <optgroup label="设计端客户">
+                                                {% for each in get_customer_pcb_design %}
+                                                    <option value="{{ each }}" label="{{ each }}">{{ each }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </form>
+
+
+
+
                         </div>
 
                     </div>

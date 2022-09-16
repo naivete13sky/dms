@@ -12,7 +12,7 @@ from taggit.managers import TaggableManager
 from taggit.models import TagBase,GenericTaggedItemBase
 from django.utils.text import slugify
 from django.utils.translation import gettext, gettext_lazy as _
-
+from account.models import Customer
 
 class MyTag(TagBase):
     # 这一步是关键，要设置allow_unicode=True，这样这个字段才能支持中文
@@ -66,6 +66,14 @@ class Job(models.Model):
                                      help_text='原始文件类型', verbose_name="原始文件类型")
     from_object = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=2)], null=True,
                                    blank=True, help_text='料号从哪来的', verbose_name="料号来源")
+
+    from_object_pcb_factory = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='job_manage_job_account_customer_pcb_factory', null=True, blank=True,
+                               help_text='料号来源-板厂', verbose_name="料号来源-板厂")
+
+    from_object_pcb_design = models.ForeignKey(Customer, on_delete=models.CASCADE,
+                                        related_name='job_manage_job_account_customer_pcb_design', null=True, blank=True,
+                                        help_text='料号来源-设计端', verbose_name="料号来源-设计端")
+
     status = models.CharField(max_length=10, choices=(('draft', '草稿'), ('published', '正式')), default='draft',
                               help_text='草稿表示未经人工确认', )
     # tags=TaggableManager()

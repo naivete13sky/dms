@@ -59,6 +59,7 @@ from django.utils.decorators import method_decorator
 from django.core import serializers
 from account.models import QueryData
 from django.views.decorators.csrf import csrf_exempt
+from account.models import Customer
 
 
 def readFile(filename,chunk_size=512):
@@ -1930,6 +1931,31 @@ class JobCreateView(CreateView):
         # etc...
         return initial
     success_url = 'JobListViewInput'
+
+    def get_customer_pcb_factory(self):
+        data_customer_pcb_factory=Customer.objects.filter(customer_type='pcb_factory')
+        return data_customer_pcb_factory
+
+    def get_customer_pcb_design(self):
+        data_customer_pcb_design=Customer.objects.filter(customer_type='design_customer')
+        return data_customer_pcb_design
+
+    def get_context_data(self, **kwargs):
+        context = super(JobCreateView, self).get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            pass
+
+        else:
+            pass
+
+
+        context['get_customer_pcb_factory']=self.get_customer_pcb_factory()
+        context['get_customer_pcb_design'] = self.get_customer_pcb_design()
+
+        return context
+
+
+
 
 @method_decorator(casbin_permission("job_org_compressed","delete"), name='dispatch')
 class JobUpdateView(UpdateView):
