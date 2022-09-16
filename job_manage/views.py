@@ -1948,9 +1948,9 @@ class JobCreateView(CreateView):
         else:
             pass
 
-
-        context['get_customer_pcb_factory']=self.get_customer_pcb_factory()
-        context['get_customer_pcb_design'] = self.get_customer_pcb_design()
+        #暂时用不着下面的方法
+        # context['get_customer_pcb_factory']=self.get_customer_pcb_factory()
+        # context['get_customer_pcb_design'] = self.get_customer_pcb_design()
 
         return context
 
