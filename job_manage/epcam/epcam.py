@@ -8,7 +8,8 @@ import threading
 # bin_path = r'C:\cc\ep_local\product\EP-CAM\version\20220803\EP-CAM_beta_2.28.054_s8_jiami\Release'
 # bin_path = r'C:\cc\ep_local\product\EP-CAM\version\20220826\EP-CAM_beta_2.28.054_s22_jiami\Release'
 # bin_path = r'C:\cc\ep_local\product\EP-CAM\version\20220907\EP-CAM_beta_2.28.054_s26_jiami\Release'
-bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220909\EP-CAM_beta_2.28.054_s28_jiami\Release'
+# bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220909\EP-CAM_beta_2.28.054_s28_jiami\Release'
+bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220916\EP-CAM_beta_2.28.054_s32_jiami\Release'
 # bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220916\EP-CAM_beta_2.28.054_s30_jiami\Release'
 # from django.conf import settings
 # bin_path=settings.EP_CAM_PATH

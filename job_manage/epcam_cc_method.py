@@ -87,6 +87,9 @@ class EpGerberToODB:
         """
         for root, dirs, files in os.walk(file_path):
             epcam_api.file_translate_init(job)
+            offsetFlag = False
+            offset1 = 0
+            offset2 = 0
             for file in files:
                 if self.is_chinese(file):
                     os.rename(file_path + r'/' + file, file_path + r'/''unknow' + str(index))
@@ -100,6 +103,9 @@ class EpGerberToODB:
                 file_format = data['paras']['format']
                 file_name = data['paras']['name']
                 file_param = data['paras']['parameters']
+                file_minNum = file_param['min_numbers']
+                min_1 = file_minNum['first']
+                min_2 = file_minNum['second']
                 # file_param = {'Coordinates':'Absolute',
                 #               'Decimal_numbers':True,
                 #               'Number_format_integer':2,
@@ -139,7 +145,15 @@ class EpGerberToODB:
                         print("except:"*5)
                         re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])
 
-                if file_format == 'Gerber274x' or file_format == 'DXF':
+                if file_format == 'Gerber274x':
+                    print(file)
+                    if (offsetFlag == False) and (min_1 < sys.maxsize * 0.5 and min_2 < sys.maxsize * 0.5):
+                        offset1 = min_1
+                        offset2 = min_2
+                        offsetFlag = True
+                    file_param['offset_numbers'] = {'first':offset1, 'second':offset2}
+                    re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])  # translate
+                if file_format == 'DXF':
                     print(file)
                     re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])  # translate
 
@@ -235,6 +249,9 @@ class EpGerberToODB:
         """
         for root, dirs, files in os.walk(file_path):
             epcam_api.file_translate_init(job)
+            offsetFlag = False
+            offset1 = 0
+            offset2 = 0
             for file in files:
                 if self.is_chinese(file):
                     os.rename(file_path + r'/' + file, file_path + r'/''unknow' + str(index))
@@ -248,6 +265,9 @@ class EpGerberToODB:
                 file_format = data['paras']['format']
                 file_name = data['paras']['name']
                 file_param = data['paras']['parameters']
+                file_minNum = file_param['min_numbers']
+                min_1 = file_minNum['first']
+                min_2 = file_minNum['second']
                 # file_param = {'Coordinates':'Absolute',
                 #               'Decimal_numbers':True,
                 #               'Number_format_integer':2,
@@ -287,9 +307,21 @@ class EpGerberToODB:
                         print("except:"*5)
                         re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])
 
-                if file_format == 'Gerber274x' or file_format == 'DXF':
+                if file_format == 'Gerber274x':
                     print(file)
-                    re = epcam_api.file_translate(os.path.join(root, file.replace(' ','-').replace('(','-').replace(')','-')), job, step, file_name, file_param, '', '', '',[])  # translate
+                    if (offsetFlag == False) and (min_1 < sys.maxsize * 0.5 and min_2 < sys.maxsize * 0.5):
+                        offset1 = min_1
+                        offset2 = min_2
+                        offsetFlag = True
+                    file_param['offset_numbers'] = {'first': offset1, 'second': offset2}
+                    re = epcam_api.file_translate(
+                        os.path.join(root, file.replace(' ', '-').replace('(', '-').replace(')', '-')), job, step,
+                        file_name, file_param, '', '', '', [])  # translate
+                if file_format == 'DXF':
+                    print(file)
+                    re = epcam_api.file_translate(
+                        os.path.join(root, file.replace(' ', '-').replace('(', '-').replace(')', '-')), job, step,
+                        file_name, file_param, '', '', '', [])  # translate
 
     def ep_gerber_to_odb_pytest(self,job, step, file_path, out_path,job_id):
         """Gerber转ODB
