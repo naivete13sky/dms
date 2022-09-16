@@ -25,60 +25,35 @@
 
 
 
-
-                            <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
-
-                            <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
-                            <script src="/static/admin/js/nav_sidebar.js" defer></script>
+                            {#-----------------------------重要说明--开始：这里通过调用js替换网页内容，实现了把admmin里好用的功能拿了过来-----------------------------#}
 
                             <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
-
-
-                            <script src="/admin/jsi18n/"></script>
                             <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
-                            <script src="/static/admin/js/calendar.js"></script>
                             <script src="/static/admin/js/jquery.init.js"></script>
-                            <script src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
-                            <script src="/static/admin/js/core.js"></script>
                             <script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
-                            <script src="/static/admin/js/actions.js"></script>
-                            <script src="/static/admin/js/urlify.js"></script>
-                            <script src="/static/admin/js/prepopulate.js"></script>
-                            <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
-                            <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
-
-                            <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
                             <script>
                                 $(document).ready(function(){
-                                    var html_to_be="";
-                                    html_to_be=`<div>
-                                                    <label for="id_from_object_pcb_factory">料号来源-板厂:</label>
-                                                    <input type="text" name="from_object_pcb_factory" id="id_from_object_pcb_factory" class="vForeignKeyRawIdAdminField">
-                                                    <a href="/admin/account/customer/?_to_field=id" class="related-lookup" id="lookup_id_from_object_pcb_factory" title="查询"></a>
-                                                </div>
-                                                `;
-                                    document.getElementById("replace").outerHTML=html_to_be;
+
+                                    var html_to_be_from_object_pcb_factory="";
+                                    html_to_be_from_object_pcb_factory=`
+                                                <input type="text" name="from_object_pcb_factory" id="id_from_object_pcb_factory" class="vForeignKeyRawIdAdminField">
+                                                <a href="/admin/account/customer/?_to_field=id" class="related-lookup" id="lookup_id_from_object_pcb_factory" title="查询"></a>
+                                               `;
+                                    document.getElementById("id_from_object_pcb_factory").outerHTML=html_to_be_from_object_pcb_factory;
+
+
+                                    var html_to_be_from_object_pcb_design="";
+                                    html_to_be_from_object_pcb_design=`
+                                                <input type="text" name="from_object_pcb_design" id="id_from_object_pcb_design" class="vForeignKeyRawIdAdminField">
+                                                <a href="/admin/account/customer/?_to_field=id" class="related-lookup" id="lookup_id_from_object_pcb_design" title="查询"></a>
+                                               `;
+                                    document.getElementById("id_from_object_pcb_design").outerHTML=html_to_be_from_object_pcb_design;
+
+
                                 });
                             </script>
-                            <div id = "replace">
-                            </div>
 
-                            <script id="django-admin-form-add-constants"
-                                    src="/static/admin/js/change_form.js"
-
-                                        data-model-name="job"
-
-                                    async>
-                            </script>
-
-{#                            <script id="django-admin-prepopulated-fields-constants"#}
-{#                                    src="/static/admin/js/prepopulate_init.js"#}
-{#                                    data-prepopulated-fields="[{&quot;id&quot;: &quot;#id_remark&quot;, &quot;name&quot;: &quot;remark&quot;, &quot;dependency_ids&quot;: [&quot;#id_job_name&quot;], &quot;dependency_list&quot;: [&quot;job_name&quot;], &quot;maxLength&quot;: 100, &quot;allowUnicode&quot;: false}]">#}
-{#                            </script>#}
-
-
-
-
+                            {#-----------------------------重要说明--结束：这里-----------------------------#}
 
 
 
