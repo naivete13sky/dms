@@ -149,7 +149,8 @@ class Customer(models.Model):
         ordering = ('-publish',)
 
     def __str__(self):
-        return "Profile for customer {}".format(self.name_simple)
+        # return "Profile for customer {}".format(self.name_simple)
+        return self.name_simple
 
     def get_absolute_url(self):
         return reverse('CustomerDetailView', args=[self.id, ])
