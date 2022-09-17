@@ -459,6 +459,95 @@ class Asw():
 
         return result
 
+    def layer_compare_analysis_temp_path(self, jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res,temp_path):
+        print("*" * 100, "comare")
+        results = []
+        try:
+            self.jobpath1 = jobpath1
+            # self.job_name_1=self.jobpath1.split("\\")[-1]
+            self.step1 = step1
+            self.layer1 = layer1
+            self.jobpath2 = jobpath2
+            self.step2 = step2
+            self.layer2 = layer2
+            self.layer2_ext = layer2_ext
+            self.tol = tol
+            self.map_layer = map_layer
+            self.map_layer_res = map_layer_res
+        except Exception as e:
+            print(e)
+            print("*" * 100)
+            return results
+
+        job1 = os.path.basename(jobpath1)
+        job2 = os.path.basename(jobpath2)
+        layer_cp = layer2 + layer2_ext
+
+        temp_path = temp_path
+
+        # if os.path.exists(os.path.join(temp_path, str(job.file_odb_g).split('/')[-1])):
+        #     os.remove(os.path.join(temp_g_path, str(job.file_odb_g).split('/')[-1]))
+        # print("g_tgz_file_now:", os.listdir(temp_g_path)[0])
+
+
+        features = (r"{}\{}\steps\{}\layers\{}\features".format(temp_path,job1, step1,self.map_layer))
+        features_Z = (r"{}\{}\steps\{}\layers\{}\features.Z".format(temp_path,job1, step1,self.map_layer))
+        print(features, "\n", features_Z)
+        if os.path.isfile(features_Z):
+            pass
+            compress = Compress()
+            compress.uncompress_z(features_Z)
+
+        try:
+            f = open(features, "r")
+        except Exception as e:
+            print("未能比对！！！请重新执行比对！！！")
+            result = "未比对"
+
+
+        # shutil.copytree(r"C:\genesis\fw\jobs\{}".format(job_name_1),r"C:\cc\jobs\{}".format(job_name_1))
+        # time.sleep(15)
+        try:
+            with open(features, "r") as f:
+                s = f.readlines()
+                print(s[3])
+            if "r0" in s[3]:
+                print("比对发现有差异！！！！！！")
+                result = "错误"
+            else:
+                print("恭喜！比对通过！！！")
+                result = "正常"
+
+                try:
+                    diff = False
+                    matrix_path = r"{}\{}\matrix\matrix".format(temp_path,job1)
+                    print('matrix_path:',matrix_path)
+                    with open(matrix_path, 'r') as f:
+                        for var in f.readlines():
+                            line = var.strip()
+                            if len(line) == 0:
+                                continue
+                            attr = line.split('=')
+                            if len(attr) == 2:
+                                # print(attr)
+                                if attr[0] == 'NAME' and attr[1].lower() == layer_cp:
+                                    diff = True
+                                    break
+                    if diff == True:
+                        print('Difference were found')
+                        result = "错误"
+                    else:
+                        print('Layers Match')
+                        result = "正常"
+                except:
+                    print("matrix查看方法失败")
+
+        except:
+            print("查看结果失败！")
+            result='未比对'
+
+        return result
+
     def layer_compare_close_job(self, jobpath1,step1,layer1,jobpath2,step2,layer2,layer2_ext,tol,map_layer,map_layer_res):
         print("*" * 100, "close job")
         results = []
