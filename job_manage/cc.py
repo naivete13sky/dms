@@ -148,13 +148,31 @@ def job_create_test():
     epcam_api.open_job(r"C:\cc\share", "abc")
     epcam_api.close_job("abc")
 
-    # time.sleep(15)
+    time.sleep(5)
     epcam_api.delete_job("abc")
+    time.sleep(5)
 
     epcam_api.create_job(r"C:\cc\share", "ccc")
     epcam_api.close_job("ccc")
     epcam_api.create_job(r"C:\cc\share", "abc")
 
+
+def job_create_test2():
+    pass
+    epcam.init()
+    epcam_api.create_job(r"C:\cc\share", "abc")
+    epcam_api.open_job(r"C:\cc\share", "abc")
+    epcam_api.close_job("abc")
+
+    # time.sleep(5)
+    epcam_api.close_job("abc")
+    # epcam_api.delete_job("abc")
+    print("close job")
+    time.sleep(10)
+
+    epcam_api.create_job(r"C:\cc\share", "ccc")
+    epcam_api.close_job("ccc")
+    epcam_api.create_job(r"C:\cc\share", "abc")
 
 import functools
 
@@ -190,8 +208,8 @@ if __name__ == "__main__":
     # maketgz(r'C:\cc\share\temp_cc_9\01234567890123456789012',r'C:\cc\share\temp_cc_9',r'01234567890123456789012.tgz')
 
     # now(1,2)
-    # job_create_test()
-    list_sort_test
+    job_create_test2()
+    # list_sort_test
 
 
 

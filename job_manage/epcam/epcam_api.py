@@ -64,7 +64,7 @@ def close_job(job):
     data = {
         'func': 'CLOSE_JOB',
         'paras': 
-                  {'job': job}
+                  {'jobname': job}
     }
     # print(json.dumps(data))
     ret = epcam.process(json.dumps(data))
