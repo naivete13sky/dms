@@ -8,8 +8,17 @@ import time
 import linecache
 import gl as gl
 LAYER_COMPARE_JSON = 'layer_compare.json'
+sys.path.append(r'C:\cc\python\epwork\dms\job_manage')
+from django.conf import settings
+import django
+sys.path.append(r'C:\cc\python\epwork\dms')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dms.settings')
+django.setup()
 from job_manage import models
 from job_manage.epcam import job_operation
+
+
+
 
 class Asw():
     def __init__(self,gateway_path):
@@ -719,6 +728,33 @@ class Asw():
 
         return "clean finish!"
 
+    def clean_g_all_pre_get_job_list(self,job_list_path):
+        pass
+        cmd_list = [
+            'COM info,args=-t root -m display -d JOBS_LIST,out_file={},write_mode=replace,units=inch'.format(job_list_path)
+        ]
+
+        for cmd in cmd_list:
+            print(cmd)
+            ret = self.exec_cmd(cmd)
+            print(ret)
+            if ret != 0:
+                print('inner error')
+        return "已生成job_list!"
+
+    def clean_g_all_do_clean(self,job_list_path):
+        with open(job_list_path, "r") as f:
+            s = f.readlines()
+        print(s)
+
+        for each_job in s:
+
+            job_name = each_job.split("=")[1]
+            self.delete_job(job_name)
+
+        return "clean finish!"
+
+
     def Create_Entity(self, job, step):
         print("*"*100,job,step)
         cmd_list1 = [
@@ -1113,4 +1149,6 @@ if __name__ == '__main__':
     pass
     asw = Asw(gl.gateway_path)
 
-
+    #删除所有料号
+    # asw.clean_g_all_pre_get_job_list(r'//vmware-host/Shared Folders/share/job_list.txt')
+    asw.clean_g_all_do_clean(r'C:\cc\share\job_list.txt')
