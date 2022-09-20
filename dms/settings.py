@@ -231,7 +231,8 @@ G_GETWAY_PATH=os.path.join(BASE_DIR,r"job_manage\g\gateway.exe")
 # EP_CAM_PATH=r'C:\cc\ep_local\product\EP-CAM\version\20220917\EP-CAM_beta_2.28.054_s33_jiami\Release'
 # EP_CAM_PATH=r'C:\cc\ep_local\product\EP-CAM\version\20220919\EP-CAM_beta_2.28.054_s34_jiami\Release'
 # EP_CAM_PATH=r'C:\cc\ep_local\product\EP-CAM\version\20220919\EP-CAM_beta_2.28.054_s36_jiami\Release'
-EP_CAM_PATH=r'C:\cc\ep_local\product\EP-CAM\version\20220920\EP-CAM_beta_2.28.054_s37_jiami\Release'
+# EP_CAM_PATH=r'C:\cc\ep_local\product\EP-CAM\version\20220920\EP-CAM_beta_2.28.054_s37_jiami\Release'
+EP_CAM_PATH=r'C:\cc\ep_local\product\EP-CAM\version\20220920\EP-CAM_beta_2.28.054_s38_jiami\Release'
 
 #权限管理，用casbin
 CASBIN_MODEL = os.path.join(BASE_DIR, 'casbin.conf')
