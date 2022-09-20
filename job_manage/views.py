@@ -1653,7 +1653,7 @@ class JobListViewInput(ListView):
                 if selected == "batch_delete_ep_odb":
                     # 判断权限
                     sub = request.user.username  # 想要访问资源的用户
-                    obj = "data_group_job_all"  # 将要被访问的资源
+                    obj = "data_group_job_test"  # 将要被访问的资源
                     act = "delete"  # 用户对资源进行的操作
                     print('sub,obj,act:', sub, obj, act)
                     if enforcer.enforce(sub, obj, act):
@@ -1693,7 +1693,7 @@ class JobListViewInput(ListView):
                 if selected == "batch_input_ep_odb":
                     # 判断权限
                     sub = request.user.username  # 想要访问资源的用户
-                    obj = "data_group_job_all"  # 将要被访问的资源
+                    obj = "data_group_job_test"  # 将要被访问的资源
                     act = "delete"  # 用户对资源进行的操作
                     print('sub,obj,act:', sub, obj, act)
                     if enforcer.enforce(sub, obj, act):
