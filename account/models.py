@@ -97,6 +97,11 @@ class QueryData(models.Model):
                                           validators=[validators.MinLengthValidator(limit_value=0)],
                                           help_text='此用户筛选条件记录用的', verbose_name="筛选-料号来源", )
 
+    query_job_from_object_pcb_factory = models.CharField(blank=True, null=True, max_length=100,
+                                             validators=[validators.MinLengthValidator(limit_value=0)],
+                                             help_text='此用户筛选条件记录用的', verbose_name="筛选-料号来源-板厂", )
+
+
     query_job_paginator_page = models.IntegerField(default=10,null=True,blank=True,
                                      validators=[validators.MaxValueValidator(1000), validators.MinValueValidator(5)],help_text="每页显示行数",verbose_name='query_job_paginator_page')
 
