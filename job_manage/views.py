@@ -690,6 +690,10 @@ class JobListView(ListView):
             current_query_data.query_job_from_object = ""
             current_query_data.save()
 
+
+
+
+
         # 每页显示行数
         context['query_job_paginator_page'] = current_query_data.query_job_paginator_page
 
@@ -708,6 +712,20 @@ class JobListView(ListView):
                 Q(author__username__contains=context['query_job_author'])
 
             )
+
+        # 料号来源-板厂
+        context['query_job_from_object_pcb_factory'] = current_query_data.query_job_from_object_pcb_factory
+        if context['query_job_from_object_pcb_factory'] == None:
+            context['query_job_from_object_pcb_factory'] = ""
+            current_query_data.query_job_from_object_pcb_factory = ""
+            current_query_data.save()
+        if context['query_job_from_object_pcb_factory'] != "":
+            context['jobs'] = context['jobs'].filter(
+                from_object_pcb_factory__name_simple__contains=context['query_job_from_object_pcb_factory'])
+
+
+
+
 
         #分页
         print(context)
@@ -792,6 +810,22 @@ class JobListView(ListView):
                     Q(job_name__contains=query_job_name) &
                     Q(author__username__contains=query_job_author)
                 )
+
+
+            #料号来源-板厂筛选
+            query_job_from_object_pcb_factory = self.request.GET.get("query_job_from_object_pcb_factory", False)
+            context['query_job_from_object_pcb_factory'] = query_job_from_object_pcb_factory
+            # 先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_from_object_pcb_factory:
+                current_query_data.query_job_from_object_pcb_factory = query_job_from_object_pcb_factory
+                current_query_data.save()
+            if context['query_job_from_object_pcb_factory'] != "":
+                context['jobs'] = context['jobs'].filter(
+                    from_object_pcb_factory__name_simple__contains=context['query_job_from_object_pcb_factory'])
+
+
+
 
             # 分页
             print(context)
