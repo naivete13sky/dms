@@ -817,7 +817,7 @@ class JobListView(ListView):
             context['query_job_from_object_pcb_factory'] = query_job_from_object_pcb_factory
             # 先把本次筛选条件存储起来
             current_query_data = QueryData.objects.get(author=self.request.user)
-            if query_job_from_object_pcb_factory:
+            if query_job_from_object_pcb_factory != None:
                 current_query_data.query_job_from_object_pcb_factory = query_job_from_object_pcb_factory
                 current_query_data.save()
             if context['query_job_from_object_pcb_factory'] != "":
@@ -1619,7 +1619,7 @@ class JobListViewInput(ListView):
             context['query_job_from_object_pcb_factory'] = query_job_from_object_pcb_factory
             # 先把本次筛选条件存储起来
             current_query_data = QueryData.objects.get(author=self.request.user)
-            if query_job_from_object_pcb_factory:
+            if query_job_from_object_pcb_factory != None:
                 current_query_data.query_job_from_object_pcb_factory = query_job_from_object_pcb_factory
                 current_query_data.save()
             if context['query_job_from_object_pcb_factory'] != "":
