@@ -223,6 +223,11 @@ class Layer(models.Model):
 
     units_ep = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('none', '未记录')), default='none',
                                              verbose_name="units_EP")
+
+    coordinates_ep = models.CharField(max_length=20, choices=(('Absolute', 'Absolute'), ('Incremental', 'Incremental'), ('none', '未记录')),
+                                default='none',
+                                verbose_name="coordinates_ep")
+
     zeroes_omitted_ep = models.CharField(max_length=10, choices=(
     ('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', '未记录')), default='none', verbose_name="省零EP")
     number_format_A_ep = models.CharField(max_length=10, choices=(
@@ -238,6 +243,10 @@ class Layer(models.Model):
 
     units_g = models.CharField(max_length=10, choices=(('Inch', 'Inch'), ('MM', 'MM'), ('none', '未记录')),
                                 default='none',verbose_name="units_G")
+    coordinates_g = models.CharField(max_length=20, choices=(
+    ('Absolute', 'Absolute'), ('Incremental', 'Incremental'), ('none', '未记录')),
+                                      default='none',
+                                      verbose_name="coordinates_g")
     zeroes_omitted_g = models.CharField(max_length=10, choices=(
         ('Leading', 'Leading'), ('Trailing', 'Trailing'), ('none', '未记录')), default='none', verbose_name="省零G")
     number_format_A_g = models.CharField(max_length=10, choices=(

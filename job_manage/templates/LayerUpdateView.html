@@ -42,6 +42,14 @@
                     $("#id_units_g").val(my_value);
                 });
 
+                //coordinates_ep
+                $("#id_coordinates_ep").change(function(){
+                    var my_value = $("#id_coordinates_ep").val();
+                    {#alert(my_value);#}
+                    //设置value为3的项被选中
+                    $("#id_coordinates_g").val(my_value);
+                });
+
                 //省零
                 $("#id_zeroes_omitted_ep").change(function(){
                     var my_value = $("#id_zeroes_omitted_ep").val();
