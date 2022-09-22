@@ -135,6 +135,7 @@ class EpGerberToODB:
                         if layer_e2.status=='published':
                             pass
                             file_param['units']=layer_e2.units_ep
+                            # file_param['Coordinates'] = layer_e2.coordinates_ep
                             file_param['zeroes_omitted'] = layer_e2.zeroes_omitted_ep
                             file_param['Number_format_integer'] = int(layer_e2.number_format_A_ep)
                             file_param['Number_format_decimal'] = int(layer_e2.number_format_B_ep)
@@ -297,6 +298,7 @@ class EpGerberToODB:
                         if layer_e2.status=='published':
                             pass
                             file_param['units']=layer_e2.units_ep
+                            # file_param['Coordinates'] = layer_e2.coordinates_ep
                             file_param['zeroes_omitted'] = layer_e2.zeroes_omitted_ep
                             file_param['Number_format_integer'] = int(layer_e2.number_format_A_ep)
                             file_param['Number_format_decimal'] = int(layer_e2.number_format_B_ep)
