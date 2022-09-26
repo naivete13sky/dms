@@ -19,7 +19,8 @@ import threading
 # bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220921\EP-CAM_beta_2.28.054_s39_jiami\Release'
 # bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220922\EP-CAM_beta_2.28.054_s43_jiami\Release'
 # bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220923\EP-CAM_beta_2.28.054_s45_jiami\Release'
-bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220924\EP-CAM_beta_2.28.054_s46_jiami\Release'
+# bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220924\EP-CAM_beta_2.28.054_s46_jiami\Release'
+bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220926\EP-CAM_beta_2.28.054_s47_jiami\Release'
 
 
 
