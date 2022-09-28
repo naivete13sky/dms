@@ -2526,7 +2526,7 @@ class JobUpdateView(UpdateView):
 
     # success_url = '../JobListView' # 修改成功后跳转的链接
 
-@method_decorator(casbin_permission("job_org_compressed","delete"), name='dispatch')
+@method_decorator(casbin_permission("job_org_compressed","put"), name='dispatch')
 class JobUpdateViewCam(UpdateView):
     """
     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
