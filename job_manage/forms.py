@@ -192,6 +192,17 @@ class JobForm2(forms.ModelForm):
         model=Job
         fields = '__all__'
 
+class JobFormCam(forms.ModelForm):
+    pass
+    class Meta:
+        model=Job
+        # fields = '__all__'
+        fields = ['job_name','job_type','totalFeatureNum','bgaNum','copperLayerNum','hdiLevel','routLayerName','pcsSize','minLineWidth4outer','minLineSpace4outer','impLineNum','hasPGlayer','hasSMlayer','solderMaxWindowNum4singleSide','linedCopper',]
+
+        def __init__(self, *args, **kwargs):
+            super(JobFormCam, self).__init__(*args, **kwargs)
+            for name, field in ['job_name']:
+                field.widget.attrs['readonly'] = 'true'
 
 class LayerForm(forms.ModelForm):
     pass

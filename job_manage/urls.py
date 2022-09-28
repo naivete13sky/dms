@@ -32,6 +32,7 @@ urlpatterns = [
     path('job_settings', views.job_settings, name='job_settings'),#函数视图，用来设置料号比对参数用的。
     path('JobUpdateView/<int:pk>/<int:current_page>', views.JobUpdateView.as_view(), name='JobUpdateView'),#类视图，用来更新料号的。
     path('JobUpdateViewVs/<int:pk>', views.JobUpdateViewVs.as_view(), name='JobUpdateViewVs'),#类视图，现在没有用这个。与VS交互的逻辑已经在JobUpdateView里都实现了。
+    path('JobUpdateViewCam/<int:pk>/<int:current_page>', views.JobUpdateViewCam.as_view(), name='JobUpdateViewCam'),#类视图，用来给CAM工程师更新料号的。
     path('JobDeleteView/<int:pk>', views.JobDeleteView.as_view(),name='JobDeleteView'),#类视图，删除料号。
     path('gerber274x_to_odb_ep/<int:job_id>/', views.gerber274x_to_odb_ep,name='gerber274x_to_odb_ep'),#悦谱转图，已经不用了。
     path('gerber274x_to_odb_ep2/<int:job_id>/<int:current_page>', views.gerber274x_to_odb_ep2,name='gerber274x_to_odb_ep2'),#悦谱转图。
