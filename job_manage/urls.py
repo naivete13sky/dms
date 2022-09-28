@@ -16,6 +16,7 @@ urlpatterns = [
     path('JobListView2',login_required(views.JobListView2.as_view()),name='JobListView2'),#类视图，研究用的。目前这个视图在dms中没用上。
     path('JobListViewJquery',login_required(views.JobListViewJquery.as_view()),name='JobListViewJquery'),#类视图，研究前端用Jquery的DataTable插件用的，感觉没有django的模板好用。目前这个视图在dms中没用上。
     path('JobListView',login_required(views.JobListView.as_view()),name='JobListView'),#类视图，用来组普通用户展示料号列表的。
+    path('JobListViewCam',login_required(views.JobListViewCam.as_view()),name='JobListViewCam'),#类视图，CAM工程师维护料号信息用的。
     re_path('detail/(?P<pk>\d+)/', login_required(views.JobDetailView.as_view()), name='detail'),#类视图DetailView，用来查看料号详细信息的。dms中没有用这个函数视图，用了类视图JobFormView。
     re_path('JobFormView/(?P<parm>\w+)/', login_required(views.JobFormView.as_view()), name='JobFormView'),#类视图，多用了ModelForm，查看某相料号的详细信息。其实还是DetailView省事。
     # path('tag/<slug:tag_slug>/', views.job_list, name='job_list_by_tag'),#原来查看tag的，为了增加tag支持中文，修改了url。不用<slug：，只能用<str:了。

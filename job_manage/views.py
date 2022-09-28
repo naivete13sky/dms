@@ -1850,8 +1850,490 @@ class JobListViewInput(ListView):
 
                 return HttpResponse(request.POST.get("post_type",False))
 
+class JobListViewCam(ListView):
+    queryset = models.Job.objects.all()
+    # model=models.Job
+    context_object_name = 'jobs'
+    paginate_by = 10
+    # ordering = ['-publish']
+    template_name = 'JobListViewCam.html'
+
+    def get_context_data(self, **kwargs):  # 重写get_context_data方法
+        # 很关键，必须把原方法的结果拿到
+        context = super().get_context_data(**kwargs)
+        job_field_verbose_name = [Job._meta.get_field('id').verbose_name,
+                                  Job._meta.get_field('job_name').verbose_name,
+                                  Job._meta.get_field('file_compressed').verbose_name,
+                                  Job._meta.get_field('file_odb_g').verbose_name,
+                                  Job._meta.get_field('bug_info').verbose_name,
+                                  Job._meta.get_field('file_usage_type').verbose_name,
+                                  Job._meta.get_field('remark').verbose_name,
+                                  Job._meta.get_field('author').verbose_name,
+                                  # Job._meta.get_field('from_object').verbose_name,
+                                  Job._meta.get_field('status').verbose_name,
+                                  Job._meta.get_field('updated').verbose_name,
+                                  "标签",
+                                  "操作",
+                                  ]
+
+        context['job_field_verbose_name'] = job_field_verbose_name# 表头用
+
+        #加载当前用户的筛选条件
+        try:
+            current_query_data=QueryData.objects.get(author=self.request.user)
+            print(current_query_data)
+        except:
+            print("此用户无QueryData信息，此时要新建一下")
+            new_query_data=QueryData(author=self.request.user)
+            new_query_data.save()
+        current_query_data = QueryData.objects.get(author=self.request.user)
+
+        #料号使用类型
+        context['query_job_file_usage_type']=current_query_data.query_job_file_usage_type
+        # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
+        if context['query_job_file_usage_type'] == 'all':
+            pass
+            query_job_file_usage_type_value = ""
+        else:
+            query_job_file_usage_type_value = context['query_job_file_usage_type']
 
 
+
+        # 料号名称
+        context['query_job_job_name'] = current_query_data.query_job_job_name
+        if context['query_job_job_name'] == None:
+            context['query_job_job_name'] = ""
+            current_query_data.query_job_job_name=""
+            current_query_data.save()
+
+        # 负责人
+        context['query_job_author'] = current_query_data.query_job_author
+        if context['query_job_author'] == None:
+            context['query_job_author'] = ""
+            current_query_data.query_job_author = ""
+            current_query_data.save()
+
+        # 料号来源
+        context['query_job_from_object'] = current_query_data.query_job_from_object
+        if context['query_job_from_object'] == None:
+            context['query_job_from_object'] = ""
+            current_query_data.query_job_from_object = ""
+            current_query_data.save()
+
+
+
+
+
+
+
+        #每页显示行数
+        context['query_job_paginator_page']=current_query_data.query_job_paginator_page
+        # print("context['query_job_paginator_page']","first get:",context['query_job_paginator_page'])
+
+
+
+        # from_object比较奇怪，空值用Q筛选异常，所以不用Q筛选
+        if context['query_job_from_object'] != "":
+            context['jobs'] = models.Job.objects.filter(
+                Q(file_usage_type__startswith = query_job_file_usage_type_value) &
+                Q(job_name__contains = context['query_job_job_name']) &
+                Q(author__username__contains = context['query_job_author'])
+
+            ).filter(from_object__contains = context['query_job_from_object'])
+        else:
+            context['jobs'] = models.Job.objects.filter(
+                Q(file_usage_type__startswith=query_job_file_usage_type_value) &
+                Q(job_name__contains=context['query_job_job_name']) &
+                Q(author__username__contains=context['query_job_author'])
+
+            )
+
+        # 是否存在悦谱最新转图
+        context['query_job_file_odb_current'] = current_query_data.query_job_file_odb_current
+        # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
+        if context['query_job_file_odb_current'] == 'all':
+            pass
+        if context['query_job_file_odb_current'] == 'no':
+            context['jobs'] = context['jobs'].filter(file_odb_current__exact="")
+        if context['query_job_file_odb_current'] == 'yes':
+            context['jobs'] = context['jobs'].exclude(file_odb_current__exact="")
+
+        # 料号状态
+        context['query_job_status'] = current_query_data.query_job_status
+        # print("query_job_file_usage_type:",context['query_job_file_usage_type'])
+        if context['query_job_status'] == 'all':
+            pass
+        if context['query_job_status'] == 'draft':
+            context['jobs'] = context['jobs'].filter(status="draft")
+        if context['query_job_status'] == 'published':
+            context['jobs'] = context['jobs'].filter(status="published")
+
+        # 料号来源-板厂
+        context['query_job_from_object_pcb_factory'] = current_query_data.query_job_from_object_pcb_factory
+        if context['query_job_from_object_pcb_factory'] == None:
+            context['query_job_from_object_pcb_factory'] = ""
+            current_query_data.query_job_from_object_pcb_factory = ""
+            current_query_data.save()
+        if context['query_job_from_object_pcb_factory'] != "":
+            context['jobs'] = context['jobs'].filter(from_object_pcb_factory__name_simple__contains=context['query_job_from_object_pcb_factory'])
+
+
+        #分页
+        print(context)
+        page = self.request.GET.get('page')
+        paginator = Paginator(context['jobs'], context['query_job_paginator_page'])  # 每页显示3篇文章
+        print("context['query_job_paginator_page']", "first get:", context['query_job_paginator_page'])
+        # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
+        try:
+            context['jobs_page'] = paginator.page(page)
+        except PageNotAnInteger:
+            # 如果page参数不是一个整数就返回第一页
+            context['jobs_page'] = paginator.page(1)
+        except EmptyPage:
+            # 如果页数超出总页数就返回最后一页
+            context['jobs_page'] = paginator.page(paginator.num_pages)
+        pagination_data = self.get_pagination_data(paginator, context['jobs_page'])
+        context.update(pagination_data)
+
+
+
+        #使用分类筛选
+        context['select_file_usage_type'] = [('all','所有'), ('input_test','导入测试'), ('customer_job','客户资料'), ('test','测试'), ('else','其它')]
+        context['select_author'] = [('all', '所有'), ('mine', '我的'), ]
+        context['select_page'] = [('5', '5'), ('10', '10'), ('20', '20'),('50', '50'),('100', '100'),('200', '200'),]
+        context['select_file_odb_current'] = [('all', '所有'), ('no', '无'), ('yes', '有'),]
+        context['select_status'] = [('all', '所有'), ('draft', '草稿'), ('published', '正式'),]
+
+        #get方式query数据
+        submit_query_get = self.request.GET.get('submit_query_get',False)
+        if submit_query_get:
+            # 料号使用类型筛选:所有,或者对应的查询值
+            query_job_file_usage_type = self.request.GET.get("query_job_file_usage_type", False)
+            context['query_job_file_usage_type'] = query_job_file_usage_type
+            #先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_file_usage_type:
+                current_query_data.query_job_file_usage_type = query_job_file_usage_type
+                current_query_data.save()
+            if query_job_file_usage_type == 'all':
+                pass
+                query_job_file_usage_type = ""
+
+            # 料号名称筛选
+            query_job_name=self.request.GET.get('query_job_name',False)
+            context['query_job_job_name'] = query_job_name
+            # 先把本次筛选条件存储起来
+            if query_job_name != None:
+                current_query_data.query_job_job_name = query_job_name
+                current_query_data.save()
+
+            # 料号名称筛选
+            query_job_author = self.request.GET.get('query_job_author', False)
+            context['query_job_author'] = query_job_author
+            # 先把本次筛选条件存储起来
+            if query_job_author != None:
+                current_query_data.query_job_author = query_job_author
+                current_query_data.save()
+
+
+            query_job_from_object = self.request.GET.get('query_job_from_object', False)
+            context['query_job_from_object'] = query_job_from_object
+            # 先把本次筛选条件存储起来
+            if query_job_from_object != None:
+                current_query_data.query_job_from_object = query_job_from_object
+                current_query_data.save()
+
+            query_job_paginator_page = self.request.GET.get('query_job_paginator_page', False)
+            context['query_job_paginator_page'] = query_job_paginator_page
+            #把每页显示多少行存储起来
+            if query_job_paginator_page != None:
+                current_query_data.query_job_paginator_page = query_job_paginator_page
+                current_query_data.save()
+
+
+
+            #from_object比较奇怪，空值用Q筛选异常，所以不用Q筛选
+            if query_job_from_object != "":
+                context['jobs'] = models.Job.objects.filter(
+                    Q(file_usage_type__startswith=query_job_file_usage_type) &
+                    Q(job_name__contains = query_job_name) &
+                    Q(author__username__contains = query_job_author)
+                ).filter(from_object__contains=query_job_from_object)
+
+            else:
+                context['jobs'] = models.Job.objects.filter(
+                    Q(file_usage_type__startswith=query_job_file_usage_type) &
+                    Q(job_name__contains=query_job_name) &
+                    Q(author__username__contains=query_job_author)
+                )
+
+            # 是否存在悦谱最新转图
+            query_job_file_odb_current = self.request.GET.get("query_job_file_odb_current", False)
+            context['query_job_file_odb_current'] = query_job_file_odb_current
+            # 先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_file_odb_current:
+                current_query_data.query_job_file_odb_current = query_job_file_odb_current
+                current_query_data.save()
+
+            if context['query_job_file_odb_current'] == 'all':
+                pass
+            if context['query_job_file_odb_current'] == 'no':
+                context['jobs'] = context['jobs'].filter(file_odb_current__exact="")
+            if context['query_job_file_odb_current'] == 'yes':
+                context['jobs'] = context['jobs'].exclude(file_odb_current__exact="")
+
+            # 料号状态
+            query_job_status = self.request.GET.get("query_job_status", False)
+            context['query_job_status'] = query_job_status
+            # 先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_status:
+                current_query_data.query_job_status = query_job_status
+                current_query_data.save()
+
+            if context['query_job_status'] == 'all':
+                pass
+            if context['query_job_status'] == 'draft':
+                context['jobs'] = context['jobs'].filter(status="draft")
+            if context['query_job_status'] == 'published':
+                context['jobs'] = context['jobs'].filter(status="published")
+
+            # 料号来源-板厂
+            query_job_from_object_pcb_factory = self.request.GET.get("query_job_from_object_pcb_factory", False)
+            context['query_job_from_object_pcb_factory'] = query_job_from_object_pcb_factory
+            # 先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_from_object_pcb_factory != None:
+                current_query_data.query_job_from_object_pcb_factory = query_job_from_object_pcb_factory
+                current_query_data.save()
+            if context['query_job_from_object_pcb_factory'] != "":
+                context['jobs'] = context['jobs'].filter(from_object_pcb_factory__name_simple__contains=context['query_job_from_object_pcb_factory'])
+
+
+            # 分页
+            print(context)
+            page = self.request.GET.get('page')
+            paginator = Paginator(context['jobs'], context['query_job_paginator_page'])  # 每页显示3篇文章
+            # paginator=context.get('paginator')#不能用这个paginator,因为这个是所有的jobs的。而我们需要的是筛选过的jobs。
+            try:
+                context['jobs_page'] = paginator.page(page)
+            except PageNotAnInteger:
+                # 如果page参数不是一个整数就返回第一页
+                context['jobs_page'] = paginator.page(1)
+            except EmptyPage:
+                # 如果页数超出总页数就返回最后一页
+                context['jobs_page'] = paginator.page(paginator.num_pages)
+            pagination_data = self.get_pagination_data(paginator, context['jobs_page'])
+            context.update(pagination_data)
+
+
+        print("len(context['jobs']:",len(context['jobs']))
+
+        # 料号很多时，要多页显示，但是在修改非首页内容时，比如修改某个料号，这个料号在第3页，如果不记住页数，修改完成后只能重定向到固定页。为了能记住当前页，用了下面的方法。
+        if self.request.GET.__contains__("page"):
+            current_page = self.request.GET["page"]
+            print("current_page", current_page)
+            context['current_page'] = current_page
+        else:
+            context['current_page'] = 1
+
+        #根据料号ID精准搜索
+        search_by_job_id=self.request.GET.get('search_by_job_id',False)
+        if search_by_job_id:
+            pass
+            print("search_by_job_id:",search_by_job_id)
+            context['jobs_page'] = models.Job.objects.filter(Q(id=search_by_job_id))
+
+
+
+        return context
+
+    def get_pagination_data(self, paginator, page_obj, around_count=2):
+        left_has_more = False
+
+        right_has_more = False
+        current_page = page_obj.number
+        if current_page <= around_count + 2:
+            left_range = range(1, current_page)
+        else:
+            left_has_more = True
+            left_range = range(current_page - around_count, current_page)
+
+        if current_page >= paginator.num_pages - around_count - 1:
+            right_range = range(current_page + 1, paginator.num_pages + 1)
+        else:
+            right_has_more = True
+            right_range = range(current_page + 1, current_page + around_count + 1)
+
+        pagination_data = {
+            'left_has_more': left_has_more,
+            'right_has_more': right_has_more,
+            'left_range': left_range,
+            'right_range': right_range
+        }
+        return pagination_data
+
+    def post(self, request):  # ***** this method required! ******
+        self.object_list = self.get_queryset()
+        if request.method == 'POST':
+            print("POST!!!")
+            # for each in request.POST:
+            #     print(each)
+            # ret=request.REQUEST.get_list('check_box_list')
+            # ret=request.GET.getlist('check_box_list')
+            # ret=request.POST.getlist('ids_list')
+            # print(ret)
+
+            if request.POST.__contains__("ids"):
+                ret = request.POST.get('ids')
+                ret = ret.split(",")
+                print(ret)
+                selected = request.POST.get('batch_job_set', None)
+                print("seleted:", selected)
+                if selected == "batch_delete_ep_odb":
+                    # 判断权限
+                    sub = request.user.username  # 想要访问资源的用户
+                    obj = "data_group_job_test"  # 将要被访问的资源
+                    act = "delete"  # 用户对资源进行的操作
+                    print('sub,obj,act:', sub, obj, act)
+                    if enforcer.enforce(sub, obj, act):
+                        pass
+                        print("权限通过！")
+                        for each in ret:
+                            if len(each) != 0:
+                                # print(each)
+                                each_job = Job.objects.get(id=int(each))
+                                print(each_job)
+                                # print("项目根目录：",settings.BASE_DIR,settings.PROJECT_PATH)
+                                delete_file = (
+                                    os.path.join(settings.BASE_DIR, r'media', str(each_job.file_odb_current))).replace(
+                                    r'/', '\\')
+                                print(delete_file)
+                                each_job.file_odb_current = None
+                                try:
+                                    if os.path.exists(delete_file):
+                                        os.remove(delete_file)
+                                except:
+                                    print("删除文件异常！")
+
+                                each_job.save()
+
+                        return HttpResponse("完成删除！")
+
+                    else:
+                        return HttpResponse("您无此权限！请联系管理员！")
+
+
+
+
+
+
+
+
+                if selected == "batch_input_ep_odb":
+                    # 判断权限
+                    sub = request.user.username  # 想要访问资源的用户
+                    obj = "data_group_job_test"  # 将要被访问的资源
+                    act = "delete"  # 用户对资源进行的操作
+                    print('sub,obj,act:', sub, obj, act)
+                    if enforcer.enforce(sub, obj, act):
+                        pass
+                        print("权限通过！")
+
+                        for each in ret:
+                            if len(each) != 0:
+                                # print(each)
+                                each_job=Job.objects.get(id=int(each))
+                                print(each_job)
+                                print("each:",each)
+                                gerber274x_to_odb_ep2(request,int(each),request.POST.get("current_page"))
+                                # try:
+                                #     if os.path.exists(delete_file):
+                                #         os.remove(delete_file)
+                                # except:
+                                #     print("删除文件异常！")
+                                #
+                                # each_job.save()
+
+                        return HttpResponse("完成批量悦谱转图！")
+                    # return redirect('job_manage:job_view')
+
+                    else:
+                        return HttpResponse("您无此权限！请联系管理员！")
+
+            if request.POST.__contains__("page_jump"):
+                print(request.POST.get("page_jump"))
+
+                return HttpResponse(request.POST.get("page_jump"))
+
+
+
+            if request.POST.get("post_type",False):
+                print("*"*100,request.POST.get("post_type",False))
+                if request.POST.get("post_type",False)== 'get_file_name_from_org':
+                    pass
+                    get_file_name_from_org(request,request.POST.get("job_id",False))
+
+                if request.POST.get("post_type",False)== 'search_ajax':
+                    pass
+                    print("search_ajax")
+
+                    #用户筛选,所有或者自己的
+                    select_author=request.POST.get("select_author",False)
+                    print("select_author",select_author)
+                    if select_author=='all':
+                        pass
+                        select_author_search_value=""
+                    else:
+                        select_author_search_value = request.user.username
+                    select_author_search_value_q_string="Q(author__username__contains=select_author_search_value) &"#拼接起来filter不认识,没用
+
+                    #料号使用类型筛选:所有,或者对应的查询值
+                    select_file_usage_type = request.POST.get("select_file_usage_type", False)
+                    print("select_file_usage_type",select_file_usage_type)
+                    if select_file_usage_type == 'all':
+                        pass
+                        select_file_usage_type_value = ""
+                    else:
+                        select_file_usage_type_value = select_file_usage_type
+
+
+                    # 料号名称筛选:模糊的
+                    query_job_name = request.POST.get("query_job_name", False)
+                    print("query_job_name:",query_job_name)
+                    query_job_name_value = query_job_name
+
+
+                    # 料号来源筛选:模糊的
+                    query_from_object = request.POST.get("query_from_object", False)
+                    print("query_from_object:",query_from_object)
+                    query_from_object_value = query_from_object
+
+
+                    #开始查询
+                    data = {}
+                    #不知道什么原因导致了from_object这个字段用Q查询会异常.空白会搜索出来from_object带有值的内容,而我的期望是空白时搜索出来所有.所有只能分支来写查询了.
+                    if query_from_object_value != "":
+                        jobs = Job.objects.filter(
+                            Q(author__username__contains=select_author_search_value) &
+                            Q(file_usage_type__startswith=select_file_usage_type_value) &
+                            Q(job_name__contains=query_job_name_value)
+                        ).filter(from_object__contains=query_from_object_value)
+                    else:
+                        jobs = Job.objects.filter(
+                            Q(author__username__contains=select_author_search_value) &
+                            Q(file_usage_type__startswith=select_file_usage_type_value) &
+                            Q(job_name__contains=query_job_name_value)
+                        )
+
+                    jobs_values = jobs.values()
+                    print("my job length:",len(jobs_values))
+                    data["data"] = list(jobs_values)
+                    print(data["data"])
+                    return JsonResponse(json.dumps(data, default=str, ensure_ascii=False),safe=False)
+
+                return HttpResponse(request.POST.get("post_type",False))
 
 class JobDetailView(DetailView):
     model = Job
