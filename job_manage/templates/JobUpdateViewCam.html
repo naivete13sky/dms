@@ -15,7 +15,7 @@
                 <div class="panel-content">
                     <div class="row">
                         <div class="col-md-12">
-
+                            <h3>料号ID：{{ job_id }}；料号名称：{{ job_name }}</h3>
                             <form action="" method="post" novalidate enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ form.as_p }}

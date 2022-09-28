@@ -2549,9 +2549,10 @@ class JobUpdateViewCam(UpdateView):
         self.job_id = job_update.id
         current_page = self.kwargs['current_page']
         print("current_page",current_page)
+        job_name=job_update.job_name
 
 
-        return render(request, 'JobUpdateViewCam.html', {'form':form})
+        return render(request, 'JobUpdateViewCam.html', {'form':form,'job_id':self.kwargs['pk'],'job_name':job_name})
 
     #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
     def get_success_url(self):

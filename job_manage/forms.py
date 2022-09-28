@@ -197,12 +197,13 @@ class JobFormCam(forms.ModelForm):
     class Meta:
         model=Job
         # fields = '__all__'
-        fields = ['job_name','job_type','totalFeatureNum','bgaNum','copperLayerNum','hdiLevel','routLayerName','pcsSize','minLineWidth4outer','minLineSpace4outer','impLineNum','hasPGlayer','hasSMlayer','solderMaxWindowNum4singleSide','linedCopper',]
+        fields = ['job_type','totalFeatureNum','bgaNum','copperLayerNum','hdiLevel','routLayerName','pcsSize','minLineWidth4outer','minLineSpace4outer','impLineNum','hasPGlayer','hasSMlayer','solderMaxWindowNum4singleSide','linedCopper',]
 
-        def __init__(self, *args, **kwargs):
-            super(JobFormCam, self).__init__(*args, **kwargs)
-            for name, field in ['job_name']:
-                field.widget.attrs['readonly'] = 'true'
+        #让某些字段不可修改
+        # def __init__(self, *args, **kwargs):
+        #     super(JobFormCam, self).__init__(*args, **kwargs)
+        #     for name, field in ['job_name']:
+        #         field.widget.attrs['readonly'] = 'true'
 
 class LayerForm(forms.ModelForm):
     pass
