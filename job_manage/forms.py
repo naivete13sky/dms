@@ -197,7 +197,12 @@ class JobFormCam(forms.ModelForm):
     class Meta:
         model=Job
         # fields = '__all__'
-        fields = ['job_type','totalFeatureNum','bgaNum','copperLayerNum','hdiLevel','routLayerName','pcsSize','minLineWidth4outer','minLineSpace4outer','impLineNum','hasPGlayer','hasSMlayer','solderMaxWindowNum4singleSide','linedCopper',]
+        fields = ['file_odb','hasOrig','hasNet','hasPre','hasPcs','hasSet','hasPanel',
+                  'job_type_1','job_type_2','job_type_3','pcsSize','matrixRowNum','totalFeatureNum',
+                  'copperLayerNum','pgLayerNum','hasPGlayer','linedCopper','bgaNum','impLineNum','minLineWidth4outer','minLineSpace4outer',
+                  'solderWindowNumTop','solderWindowNumBottom','hasSMlayer',
+                  'pcsDrlNum','hdiLevel',
+                  ]
 
         #让某些字段不可修改
         # def __init__(self, *args, **kwargs):
