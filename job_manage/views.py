@@ -1492,6 +1492,15 @@ class JobListViewInput(ListView):
         if context['query_job_from_object_pcb_factory'] != "":
             context['jobs'] = context['jobs'].filter(from_object_pcb_factory__name_simple__contains=context['query_job_from_object_pcb_factory'])
 
+        # G软件比图结果
+        context['query_job_vs_result_g'] = current_query_data.query_job_vs_result_g
+        if context['query_job_vs_result_g'] == 'all':
+            pass
+        if context['query_job_vs_result_g'] != "all":
+            context['jobs'] = context['jobs'].filter(
+                vs_result_g__contains=context['query_job_vs_result_g'])
+
+
 
         #分页
         print(context)
@@ -1518,6 +1527,7 @@ class JobListViewInput(ListView):
         context['select_page'] = [('5', '5'), ('10', '10'), ('20', '20'),('50', '50'),('100', '100'),('200', '200'),]
         context['select_file_odb_current'] = [('all', '所有'), ('no', '无'), ('yes', '有'),]
         context['select_status'] = [('all', '所有'), ('draft', '草稿'), ('published', '正式'),]
+        context['select_g_vs_result'] = [('all', '所有'), ('passed', '通过'), ('failed', '未通过'),('none', '未比对'), ]
 
         #get方式query数据
         submit_query_get = self.request.GET.get('submit_query_get',False)
@@ -1624,6 +1634,22 @@ class JobListViewInput(ListView):
                 current_query_data.save()
             if context['query_job_from_object_pcb_factory'] != "":
                 context['jobs'] = context['jobs'].filter(from_object_pcb_factory__name_simple__contains=context['query_job_from_object_pcb_factory'])
+
+            # G软件比图结果
+            query_job_vs_result_g = self.request.GET.get("query_job_vs_result_g", False)
+            context['query_job_vs_result_g'] = query_job_vs_result_g
+            # 先把本次筛选条件存储起来
+            current_query_data = QueryData.objects.get(author=self.request.user)
+            if query_job_vs_result_g:
+                current_query_data.query_job_vs_result_g = query_job_vs_result_g
+                current_query_data.save()
+
+            if context['query_job_vs_result_g'] == 'all':
+                pass
+                print("allcc"*10)
+            if context['query_job_vs_result_g'] != "all":
+                context['jobs'] = context['jobs'].filter(
+                    vs_result_g__contains=context['query_job_vs_result_g'])
 
 
             # 分页

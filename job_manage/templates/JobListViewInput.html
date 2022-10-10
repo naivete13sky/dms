@@ -78,6 +78,20 @@
                             </select>
 
 
+                            <label style="font-size:20px;">G软件比图结果</label>
+                            <select id="query_job_vs_result_g" name="query_job_vs_result_g" class="form-control">
+                                {% for each in select_g_vs_result %}
+                                    {% if each.0 == query_job_vs_result_g  %}
+                                        <option selected="selected" value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+                                    {% if each.0 != query_job_vs_result_g  %}
+                                        <option value = {{ each.0 }} >{{ each.1 }}</option>
+                                    {% endif %}
+
+                                {% endfor %}
+                            </select>
+
+
                             <label style="font-size:20px;">悦谱最新转图</label>
                             <select id="query_job_file_odb_current" name="query_job_file_odb_current" class="form-control">
                                 {% for each in select_file_odb_current %}

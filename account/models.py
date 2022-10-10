@@ -115,6 +115,12 @@ class QueryData(models.Model):
                                                       ('all', '所有'), ('draft', '草稿'), ('published', '正式'),),
                                                   default='all', help_text='此用户筛选条件记录用的', verbose_name='筛选-状态')
 
+    query_job_vs_result_g = models.CharField(max_length=20, blank=True, null=True,
+                                        choices=(
+                                            ('all', '所有'), ('passed', '通过'), ('failed', '未通过'),('none', '未比对')),
+                                        default='all', help_text='此用户筛选条件记录用的', verbose_name='筛选-G软件比图结果')
+
+
     remark = models.CharField(max_length=20, validators=[validators.MinLengthValidator(limit_value=3)],
                               verbose_name="备注", blank=True,null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True, related_name='account_query_data_user', verbose_name="用户")
