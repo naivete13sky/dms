@@ -29,7 +29,8 @@ import threading
 # bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20220930\EP-CAM_beta_2.29.055_s6_jiami\Release'
 # bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20221009\EP-CAM_beta_2.29.055_s10_jiami\Release'
 # bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20221010\EP-CAM_beta_2.29.055_s13_jiami\Release'
-bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20221013\EP-CAM_beta_2.29.055_s14_test_jiami\Release'
+# bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20221013\EP-CAM_beta_2.29.055_s14_test_jiami\Release'
+bin_path=r'C:\cc\ep_local\product\EP-CAM\version\20221017\EP-CAM_beta_2.29.055_s15_jiami\Release'
 
 
 # from django.conf import settings
