@@ -2,7 +2,7 @@ import sys
 import json
 import time
 from time import sleep
-import pytest
+
 from os.path import dirname, abspath
 import os,sys,json,shutil
 path = os.path.dirname(os.path.realpath(__file__)) + r'/epcam'
