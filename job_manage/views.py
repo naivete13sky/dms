@@ -2565,6 +2565,40 @@ class JobUpdateViewCam(UpdateView):
     该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
     """
     model = Job
+    fields = "__all__"
+    # fields = ['job_type','totalFeatureNum','bgaNum','copperLayerNum','hdiLevel','routLayerName','pcsSize',
+    #           'minLineWidth4outer','minLineSpace4outer','impLineNum','hasPGlayer','hasSMlayer','solderMaxWindowNum4singleSide','linedCopper',]
+    # template_name_suffix = '_update_form'  # html文件后缀
+    template_name = 'JobUpdateViewCam.html'
+
+    def get(self, request, *args, **kwargs):
+
+        job_update = models.Job.objects.get(id=self.kwargs['pk'])
+        # print(job_update)
+        # initial = {'name': adv_positin.name}
+        # form = self.form_class(initial)
+        form=JobForm2(instance=job_update)
+        # print("*pk"*30,self.kwargs['pk'])
+        self.job_id = job_update.id
+        current_page = self.kwargs['current_page']
+        print("current_page",current_page)
+        job_name=job_update.job_name
+
+
+        return render(request, 'JobUpdateViewCam.html', {'form':form,'job_id':self.kwargs['pk'],'job_name':job_name})
+
+    #为什么不直接用success_url = '../view_layer/{}'.format(job_id)，因为这个job_id变量没办法把pk值同步过来 ，全局变量都 搞不定
+    def get_success_url(self):
+        return '../../JobListViewCam?page={}'.format(self.kwargs['current_page'])
+
+    # success_url = '../JobListView' # 修改成功后跳转的链接
+
+@method_decorator(casbin_permission("job_org_compressed","put"), name='dispatch')
+class JobUpdateViewCam2(UpdateView):
+    """
+    该类必须要有一个pk或者slug来查询（会调用self.object = self.get_object()）
+    """
+    model = Job
     # fields = "__all__"
     fields = ['job_type','totalFeatureNum','bgaNum','copperLayerNum','hdiLevel','routLayerName','pcsSize',
               'minLineWidth4outer','minLineSpace4outer','impLineNum','hasPGlayer','hasSMlayer','solderMaxWindowNum4singleSide','linedCopper',]
@@ -2592,7 +2626,6 @@ class JobUpdateViewCam(UpdateView):
         return '../../JobListViewCam?page={}'.format(self.kwargs['current_page'])
 
     # success_url = '../JobListView' # 修改成功后跳转的链接
-
 
 
 
