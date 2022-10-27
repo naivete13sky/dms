@@ -75,7 +75,7 @@ class Job(models.Model):
                               help_text='草稿表示未经人工确认', )
     # tags=TaggableManager()
     # 声明这个manager也是基于我们自定义的模型类
-    tags = TaggableManager(through=TaggedWhatever)
+    tags = TaggableManager(through=TaggedWhatever,help_text='必填')
     remark = models.CharField(max_length=100, validators=[validators.MinLengthValidator(limit_value=0)], blank=True,
                               null=True, help_text='料号的说明备注', verbose_name="备注")
 
@@ -163,7 +163,7 @@ class Job(models.Model):
                                  help_text="BGA总数", verbose_name='BGA总数')
     impLineNum = models.IntegerField(null=True, blank=True,
                                      validators=[validators.MaxValueValidator(100000), validators.MinValueValidator(0)],
-                                     help_text="阻抗线数(包括槽孔,镭射孔等)", verbose_name='阻抗线数')
+                                     help_text="阻抗线数", verbose_name='阻抗线数')
     minLineWidth4outer = models.FloatField(null=True, blank=True, help_text='外层的最小线宽(单位:mil)', verbose_name='外层最小线宽')
     minLineSpace4outer = models.FloatField(null=True, blank=True, help_text='外层的最小线距(单位:mil)', verbose_name='外层最小线距')
 
@@ -186,7 +186,7 @@ class Job(models.Model):
     # ------------------------------------------------孔层相关的-------------------------------------------
     pcsDrlNum = models.IntegerField(null=True, blank=True,
                                     validators=[validators.MaxValueValidator(100000000),
-                                                validators.MinValueValidator(0)], help_text="某个单支step(如orig、net、pcs)所有孔层的所有孔数量(包括槽孔,镭射孔等)，",
+                                                validators.MinValueValidator(0)], help_text="所有孔层的所有孔数量(包括槽孔,镭射孔等)",
                                     verbose_name='pcs所有孔数')
 
     hdiLevel = models.IntegerField(null=True, blank=True,
