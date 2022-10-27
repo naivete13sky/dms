@@ -2361,7 +2361,7 @@ class JobListViewCam(ListView):
 
                 return HttpResponse(request.POST.get("post_type",False))
 
-class JobDetailView(DetailView):
+class JobDetailView_1(DetailView):
     model = Job
     template_name = "detail_listview.html"
     context_object_name = "job"
@@ -2371,6 +2371,13 @@ class JobDetailView(DetailView):
         job = models.Job.objects.filter(id=kwargs['pk']).first()
         form = JobFormsReadOnly(instance=job)
         return self.render_to_response({'form': form})
+
+class JobDetailView(DetailView):
+    model = Job
+    template_name = "JobDetailView.html"
+    context_object_name = "job"
+    pk_url_kwarg = "pk"  # pk_url_kwarg默认值就是pk，这里可以覆盖，但必须和url中的命名组参数名称一致
+
 
 class JobFormView(FormView):
     form_class = JobFormsReadOnly
