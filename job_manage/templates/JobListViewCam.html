@@ -220,9 +220,15 @@
                                 <td>{{ job.id }}</td>
 
                                 <td>
-                                    <a href="{{ job.get_absolute_url }}" title="查看{{ job.job_name }}详细信息">
+{#                                    <a href="{{ job.get_absolute_url }}" title="查看{{ job.job_name }}详细信息">#}
+{#                                        {{ job.job_name|slice:"20" }}#}
+{#                                    </a>#}
+
+                                    <a href="JobDetailViewCAM/{{ job.id }}" title="查看{{ job.job_name }}详细信息">
                                         {{ job.job_name|slice:"20" }}
                                     </a>
+
+{#                                    <li><a class="" href="JobDetailViewCAM/{{ job.id }}">料号查询</a></li>#}
 
 
                                 </td>

@@ -2372,7 +2372,7 @@ class JobDetailView_1(DetailView):
         form = JobFormsReadOnly(instance=job)
         return self.render_to_response({'form': form})
 
-class JobDetailView(DetailView):
+class JobDetailViewCAM(DetailView):
     model = Job
     template_name = "JobDetailView.html"
     context_object_name = "job"
