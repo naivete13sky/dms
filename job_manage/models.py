@@ -158,6 +158,16 @@ class Job(models.Model):
                                   help_text="是否有地电层(负片层)", verbose_name="是否有地电层(负片层)")
     linedCopper = models.CharField(max_length=10, choices=(('yes', '是'), ('no', '否'), ('none', 'None')), default='none',
                                    help_text="线路层是否为线铜", verbose_name="线路层是否为线铜")
+
+    bgaNumTop = models.IntegerField(null=True, blank=True,
+                                 validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],
+                                 help_text="正面BGA总数", verbose_name='正面BGA总数')
+
+    bgaNumBottom = models.IntegerField(null=True, blank=True,
+                                 validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],
+                                 help_text="背面BGA总数", verbose_name='背面BGA总数')
+
+
     bgaNum = models.IntegerField(null=True, blank=True,
                                  validators=[validators.MaxValueValidator(100000000), validators.MinValueValidator(0)],
                                  help_text="BGA总数", verbose_name='BGA总数')

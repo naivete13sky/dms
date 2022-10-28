@@ -200,7 +200,7 @@ class JobFormCam(forms.ModelForm):
         # fields = '__all__'
         fields = ['file_odb','hasOrig','hasNet','hasPre','hasPcs','hasSet','hasPanel',
                   'job_type_1','job_type_2','job_type_3','pcsSize','matrixRowNum','totalFeatureNum',
-                  'copperLayerNum','pgLayerNum','hasPGlayer','linedCopper','bgaNum','impLineNum',
+                  'copperLayerNum','pgLayerNum','hasPGlayer','linedCopper','bgaNumTop','bgaNumBottom','impLineNum',
                   'minLineWidth4outerTop','minLineSpace4outerTop','minLineWidth4outerBottom','minLineSpace4outerBottom',
                   'solderWindowNumTop','solderWindowNumBottom','hasSMlayer',
                   'pcsDrlNum','hdiLevel',
