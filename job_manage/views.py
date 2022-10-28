@@ -2374,7 +2374,7 @@ class JobDetailView_1(DetailView):
 
 class JobDetailViewCAM(DetailView):
     model = Job
-    template_name = "JobDetailView.html"
+    template_name = "JobDetailViewCam.html"
     context_object_name = "job"
     pk_url_kwarg = "pk"  # pk_url_kwarg默认值就是pk，这里可以覆盖，但必须和url中的命名组参数名称一致
 

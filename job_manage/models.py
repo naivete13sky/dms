@@ -164,6 +164,14 @@ class Job(models.Model):
     impLineNum = models.IntegerField(null=True, blank=True,
                                      validators=[validators.MaxValueValidator(100000), validators.MinValueValidator(0)],
                                      help_text="阻抗线数", verbose_name='阻抗线数')
+
+    minLineWidth4outerTop = models.FloatField(null=True, blank=True, help_text='正面外层的最小线宽(单位:mil)', verbose_name='正面外层最小线宽')
+    minLineSpace4outerTop = models.FloatField(null=True, blank=True, help_text='正面外层的最小线距(单位:mil)', verbose_name='正面外层最小线距')
+
+    minLineWidth4outerBottom = models.FloatField(null=True, blank=True, help_text='背面外层的最小线宽(单位:mil)', verbose_name='背面外层最小线宽')
+    minLineSpace4outerBottom = models.FloatField(null=True, blank=True, help_text='背面外层的最小线距(单位:mil)', verbose_name='背面外层最小线距')
+
+
     minLineWidth4outer = models.FloatField(null=True, blank=True, help_text='外层的最小线宽(单位:mil)', verbose_name='外层最小线宽')
     minLineSpace4outer = models.FloatField(null=True, blank=True, help_text='外层的最小线距(单位:mil)', verbose_name='外层最小线距')
 
