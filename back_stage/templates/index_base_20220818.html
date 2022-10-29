@@ -117,7 +117,7 @@
 {#                                            <img alt="" src={% static "index_base_20220818/img/avatar1_small.jpg" %}>#}
                                         </span>
 
-                                        <span class="user-name">{{ request.user.username }}</span>
+                                        <span class="user-name">{{ request.user.last_name }}{{ request.user.first_name }}</span>
 
                                         <b class="caret"></b>
                         </a>
