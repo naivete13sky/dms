@@ -3827,7 +3827,8 @@ def send_vs_g_local_result(request):
         vs_time_g=body_dict["vs_time_g"]
         g_vs_total_result_flag=True
 
-
+        if len(body_dict["all_result_g"]) == 0:
+            g_vs_total_result_flag = False
 
 
         # 原始层文件信息，最全的
