@@ -3860,6 +3860,8 @@ def send_vs_g_local_result(request):
                             new_vs.vs_result = 'none'
                             g_vs_total_result_flag = False
                         else:
+                            each.vs_result_g = 'failed'
+                            new_vs.vs_result = 'failed'
                             print("异常，状态异常！！！")
 
                     except:
